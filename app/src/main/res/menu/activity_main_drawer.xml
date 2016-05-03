@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inStock"
+            android:icon="@mipmap/in_stock"
+            android:title="@string/in_stock"/>
+        <item
+            android:id="@+id/nav_inProcessing"
+            android:icon="@mipmap/in_processing"
+            android:title="@string/in_processing"/>
+        <item
+            android:id="@+id/nav_awaitingSending"
+            android:icon="@mipmap/awaiting_sending"
+            android:title="@string/awaiting_sending"/>
+        <item
+            android:id="@+id/nav_heldDueToDebt"
+            android:icon="@mipmap/held_due_to_debt"
+            android:title="@string/held_due_to_debt"/>
+        <item
+            android:id="@+id/nav_sent"
+            android:icon="@mipmap/sent"
+            android:title="@string/sent"/>
+        <item
+            android:id="@+id/nav_heldByCustoms"
+            android:icon="@mipmap/held_by_customs"
+            android:title="@string/held_by_customs"/>
+        <item
+            android:id="@+id/nav_localDeposit"
+            android:icon="@mipmap/local_deposit"
+            android:title="@string/local_deposit"/>
+        <item
+            android:id="@+id/nav_takeToDelivery"
+            android:icon="@mipmap/take_to_delivery"
+            android:title="@string/take_to_delivery"/>
+        <item
+            android:id="@+id/nav_received"
+            android:icon="@mipmap/received"
+            android:title="@string/received"/>
+    </group>
+
+    <item android:title="@string/settings">
+        <menu>
+            <item
+                android:id="@+id/nav_profileSettings"
+                android:icon="@mipmap/prof_settings"
+                android:title="@string/profile_settings"/>
+            <item
+                android:id="@+id/nav_paymentHistory"
+                android:icon="@mipmap/payment_history"
+                android:title="@string/payment_history"/>
+            <item
+                android:id="@+id/nav_accountReplenishment"
+                android:icon="@mipmap/account_replenishment"
+                android:title="@string/account_replenishment"/>
+            <item
+                android:id="@+id/nav_addresses"
+                android:icon="@mipmap/addresses"
+                android:title="@string/addresses"/>
+            <item
+                android:id="@+id/nav_shippingCalculator"
+                android:icon="@mipmap/shipping_calculator"
+                android:title="@string/shipping_calculator"/>
+            <item
+                android:id="@+id/nav_contactUs"
+                android:icon="@mipmap/contact_us"
+                android:title="@string/contact_us"/>
+        </menu>
+    </item>
+
+</menu>

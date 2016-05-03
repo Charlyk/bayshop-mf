@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">BayShop MF</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="in_stock">In stock</string>
+    <string name="in_processing">In processing</string>
+    <string name="awaiting_sending">Awaiting sending</string>
+    <string name="held_due_to_debt">Held due to debt</string>
+    <string name="sent">Sent</string>
+    <string name="held_by_customs">Held by customs</string>
+    <string name="local_deposit">Local deposit</string>
+    <string name="take_to_delivery">Take to delivery</string>
+    <string name="received">Received</string>
+    <string name="settings">Settings</string>
+    <string name="profile_settings">Profile settings</string>
+    <string name="payment_history">Payment history</string>
+    <string name="account_replenishment">Account replenishment</string>
+    <string name="addresses">Addresses</string>
+    <string name="shipping_calculator">Shipping calculator</string>
+    <string name="contact_us">Contact us</string>
+    <string name="mail_forwarding">MAIL FORWARDING</string>
+    <string name="logo">Logo</string>
+</resources>
