@@ -32,18 +32,13 @@ public class StoragesHolderFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mActivity = (MainActivity) context;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_storages_holder, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.storages_viewPager);
         mTabLayout = (TabLayout) view.findViewById(R.id.storages_tabLayout);
+        mActivity = (MainActivity) getActivity();
         initializeTabs();
         return view;
     }

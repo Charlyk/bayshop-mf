@@ -50,16 +50,11 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mActivity = (MainActivity) context;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_storage, container, false);
+        mActivity = (MainActivity) getActivity();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
         final LinearLayoutManager manager = new LinearLayoutManager(mActivity);
         recyclerView.setLayoutManager(manager);
