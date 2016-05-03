@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf;
+package com.softranger.bayshopmf.util;
 
 /**
  * Created by eduard on 29.04.16.

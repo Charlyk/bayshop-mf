@@ -12,7 +12,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:theme="@style/AppThemeNoToolbar"
-    tools:context="com.softranger.bayshopmf.SplashActivity">
+    tools:context=".ui.auth.SplashActivity">
 
 
     <ImageView

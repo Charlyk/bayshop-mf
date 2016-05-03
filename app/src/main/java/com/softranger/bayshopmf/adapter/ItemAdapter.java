@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf;
+package com.softranger.bayshopmf.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.softranger.bayshopmf.model.Item;
+import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.util.ViewAnimator;
 
 import java.util.ArrayList;
 
@@ -34,9 +38,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mItems.get(position);
-        holder.itemView.setSelected(holder.mItem.isSelected());
+        holder.mViewAnimator.setAnimationListener(new ViewAnimator.AnimationListener() {
+            @Override
+            public void onAnimationStarted() {
+
+            }
+
+            @Override
+            public void onAnimationFinished() {
+                holder.mImageView.setImageResource(holder.mItem.isSelected() ? R.mipmap.parcel_selected : R.mipmap.parcel_active);
+            }
+        });
+        if (holder.mItem.isSelected()) holder.mViewAnimator.flip(holder.mImageView);
+        else holder.mViewAnimator.flipBack(holder.mImageView);
     }
 
     @Override
@@ -44,8 +60,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         return mItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener,
-            ViewAnimator.AnimationListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         final ImageView mImageView;
         ViewAnimator mViewAnimator;
         Item mItem;
@@ -57,17 +72,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             mImageView = (ImageView) itemView.findViewById(R.id.item_image);
             mImageView.setOnClickListener(this);
             mViewAnimator = new ViewAnimator();
-            mViewAnimator.setAnimationListener(this);
-        }
-
-        @Override
-        public void onAnimationStarted() {
-
-        }
-
-        @Override
-        public void onAnimationFinished() {
-            notifyItemChanged(getAdapterPosition());
         }
 
         @Override
@@ -75,7 +79,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             switch (view.getId()) {
                 case R.id.item_image: {
                     mItem.setSelected(!mItem.isSelected());
-                    mViewAnimator.flip(mImageView);
+                    notifyItemChanged(getAdapterPosition());
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onIconClick(mItem, mItem.isSelected(), getAdapterPosition());
                     }

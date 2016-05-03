@@ -1,9 +1,12 @@
-package com.softranger.bayshopmf;
+package com.softranger.bayshopmf.ui.auth;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.ui.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

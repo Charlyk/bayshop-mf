@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf;
+package com.softranger.bayshopmf.util;
 
 import android.animation.Animator;
 import android.view.View;
@@ -44,7 +44,35 @@ public class ViewAnimator {
         );
     }
 
+    public void flipBack(final View view) {
+        view.animate().rotationYBy(-180).setDuration(250).setListener(
+                new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+                        if (mAnimationListener != null) {
+                            mAnimationListener.onAnimationStarted();
+                        }
+                    }
 
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        if (mAnimationListener != null) {
+                            mAnimationListener.onAnimationFinished();
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                }
+        );
+    }
 
     public interface AnimationListener {
         void onAnimationStarted();

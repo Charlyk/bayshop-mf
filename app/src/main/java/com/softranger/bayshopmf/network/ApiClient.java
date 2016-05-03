@@ -1,8 +1,11 @@
-package com.softranger.bayshopmf;
+package com.softranger.bayshopmf.network;
 
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+
+import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.Constants;
 
 import java.io.IOException;
 

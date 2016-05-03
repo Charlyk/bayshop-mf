@@ -1,9 +1,11 @@
-package com.softranger.bayshopmf;
+package com.softranger.bayshopmf.util;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
+import com.softranger.bayshopmf.network.ApiClient;
 
 import org.json.JSONObject;
 

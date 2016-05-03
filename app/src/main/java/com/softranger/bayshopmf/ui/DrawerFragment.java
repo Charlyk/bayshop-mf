@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf;
+package com.softranger.bayshopmf.ui;
 
 
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.softranger.bayshopmf.R;
 
 
 /**
