@@ -115,11 +115,6 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     }
 
     @Override
-    public void onLongClick(Item item, boolean isSelected, int position) {
-
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mActivity.unregisterReceiver(mBroadcastReceiver);

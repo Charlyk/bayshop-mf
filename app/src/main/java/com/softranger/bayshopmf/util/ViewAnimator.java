@@ -15,7 +15,7 @@ public class ViewAnimator {
     }
 
     public void flip(final View view) {
-        view.animate().rotationYBy(180).setDuration(250).setListener(
+        view.animate().rotationYBy(90).setDuration(125).setListener(
                 new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
@@ -26,9 +26,7 @@ public class ViewAnimator {
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
-                        if (mAnimationListener != null) {
-                            mAnimationListener.onAnimationFinished();
-                        }
+                        flipBack(view);
                     }
 
                     @Override
@@ -45,7 +43,7 @@ public class ViewAnimator {
     }
 
     public void flipBack(final View view) {
-        view.animate().rotationYBy(-180).setDuration(250).setListener(
+        view.animate().rotationYBy(-90).setDuration(125).setListener(
                 new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {

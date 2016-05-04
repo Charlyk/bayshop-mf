@@ -3,8 +3,10 @@ package com.softranger.bayshopmf.ui;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.ui.auth.SplashActivity;
 import com.softranger.bayshopmf.ui.instock.StoragesHolderFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +29,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        supportPostponeEnterTransition();
+        supportStartPostponedEnterTransition();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ActivityCompat.finishAfterTransition(SplashActivity.instance);
+            }
+        }, 1000);
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

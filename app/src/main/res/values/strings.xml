@@ -26,4 +26,12 @@
     <string name="contact_us">Contact us</string>
     <string name="mail_forwarding">MAIL FORWARDING</string>
     <string name="logo">Logo</string>
+    <string name="transition_image_view">Logo transition name</string>
+    <string name="fill_in_the_declaration">Fill in the declaration</string>
+    <string name="check_product">Check product</string>
+    <string name="additional_photo">Additional photo</string>
+    <string name="tracking">Tracking</string>
+    <string name="weight">Weight</string>
+    <string name="date">Date</string>
+    <string name="price">Price</string>
 </resources>

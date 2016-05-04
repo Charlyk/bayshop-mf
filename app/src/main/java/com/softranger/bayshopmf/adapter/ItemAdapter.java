@@ -1,6 +1,8 @@
 package com.softranger.bayshopmf.adapter;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,16 +45,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.mViewAnimator.setAnimationListener(new ViewAnimator.AnimationListener() {
             @Override
             public void onAnimationStarted() {
+                @ColorInt int color = holder.mItem.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
+                        mContext.getResources().getColor(R.color.colorPrimary);
 
+                holder.itemView.setBackgroundColor(color);
             }
 
             @Override
             public void onAnimationFinished() {
-                holder.mImageView.setImageResource(holder.mItem.isSelected() ? R.mipmap.parcel_selected : R.mipmap.parcel_active);
+                @DrawableRes int image = holder.mItem.isSelected() ? R.mipmap.parcel_selected : R.mipmap.parcel_active;
+
+                holder.mImageView.setImageResource(image);
             }
         });
-        if (holder.mItem.isSelected()) holder.mViewAnimator.flip(holder.mImageView);
-        else holder.mViewAnimator.flipBack(holder.mImageView);
     }
 
     @Override
@@ -79,7 +84,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             switch (view.getId()) {
                 case R.id.item_image: {
                     mItem.setSelected(!mItem.isSelected());
-                    notifyItemChanged(getAdapterPosition());
+                    mViewAnimator.flip(mImageView);
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onIconClick(mItem, mItem.isSelected(), getAdapterPosition());
                     }
@@ -108,7 +113,5 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         void onRowClick(Item item, int position);
 
         void onIconClick(Item item, boolean isSelected, int position);
-
-        void onLongClick(Item item, boolean isSelected, int position);
     }
 }

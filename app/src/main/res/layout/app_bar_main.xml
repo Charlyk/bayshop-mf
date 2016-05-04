@@ -28,6 +28,7 @@
                 android:contentDescription="@string/logo"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:transitionName="@string/transition_image_view"
                 android:src="@mipmap/logo_toolbar"/>
             </android.support.v7.widget.Toolbar>
 
