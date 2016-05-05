@@ -6,33 +6,33 @@ import android.os.Parcelable;
 /**
  * Created by eduard on 28.04.16.
  */
-public class Item implements Parcelable {
+public class InStockItem implements Parcelable {
 
-    private boolean isSelected;
-    private boolean hasDeclaration;
-    private String mName;
-    private String mTrackingNumber;
+    protected boolean isSelected;
+    protected boolean hasDeclaration;
+    protected String mName;
+    protected String mTrackingNumber;
 
-    public Item() {
+    public InStockItem() {
 
     }
 
-    protected Item(Parcel in) {
+    protected InStockItem(Parcel in) {
         isSelected = in.readByte() != 0;
         mName = in.readString();
         mTrackingNumber = in.readString();
         hasDeclaration = in.readByte() != 0;
     }
 
-    public static final Creator<Item> CREATOR = new Creator<Item>() {
+    public static final Creator<InStockItem> CREATOR = new Creator<InStockItem>() {
         @Override
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
+        public InStockItem createFromParcel(Parcel in) {
+            return new InStockItem(in);
         }
 
         @Override
-        public Item[] newArray(int size) {
-            return new Item[size];
+        public InStockItem[] newArray(int size) {
+            return new InStockItem[size];
         }
     };
 
@@ -82,10 +82,10 @@ public class Item implements Parcelable {
     }
 
     public static class Builder {
-        private boolean isSelected;
-        private boolean hasDeclaration;
-        private String mName;
-        private String mTrackingNumber;
+        protected boolean isSelected;
+        protected boolean hasDeclaration;
+        protected String mName;
+        protected String mTrackingNumber;
 
         public Builder isSelected(boolean isSelected) {
             this.isSelected = isSelected;
@@ -107,13 +107,13 @@ public class Item implements Parcelable {
             return this;
         }
 
-        public Item build() {
-            Item item = new Item();
-            item.setName(mName);
-            item.setTrackingNumber(mTrackingNumber);
-            item.setSelected(this.isSelected);
-            item.setHasDeclaration(this.hasDeclaration);
-            return item;
+        public InStockItem build() {
+            InStockItem inStockItem = new InStockItem();
+            inStockItem.setName(mName);
+            inStockItem.setTrackingNumber(mTrackingNumber);
+            inStockItem.setSelected(this.isSelected);
+            inStockItem.setHasDeclaration(this.hasDeclaration);
+            return inStockItem;
         }
     }
 }

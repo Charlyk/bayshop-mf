@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
-import com.softranger.bayshopmf.model.Item;
+import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.util.Application;
@@ -41,9 +41,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         // Required empty public constructor
     }
 
-    public static StorageItemsFragment newInstance(ArrayList<Item> items) {
+    public static StorageItemsFragment newInstance(ArrayList<InStockItem> inStockItems) {
         Bundle args = new Bundle();
-        args.putParcelableArrayList("items", items);
+        args.putParcelableArrayList("inStockItems", inStockItems);
         StorageItemsFragment fragment = new StorageItemsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -58,8 +58,8 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
         final LinearLayoutManager manager = new LinearLayoutManager(mActivity);
         recyclerView.setLayoutManager(manager);
-        ArrayList<Item> items = getArguments().getParcelableArrayList("items");
-        ItemAdapter adapter = new ItemAdapter(items, mActivity);
+        ArrayList<InStockItem> inStockItems = getArguments().getParcelableArrayList("inStockItems");
+        ItemAdapter adapter = new ItemAdapter(inStockItems, mActivity);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
         mActivity.registerReceiver(mBroadcastReceiver, new IntentFilter(Application.TOKEN_READY));
@@ -81,36 +81,18 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     };
 
     @Override
-    public void onRowClick(Item item, int position) {
-        FragmentManager fragmentManager = mActivity.getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.animator.slide_in, R.animator.slide_out, R.animator.slide_in, R.animator.slide_out);
-        transaction.add(R.id.fragment_container, DetailsFragment.newInstance(item));
-        transaction.addToBackStack("DetailsFragment");
-        transaction.commit();
-
+    public void onRowClick(final InStockItem inStockItem, int position) {
+        mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mActivity.mDrawerToggle.setDrawerIndicatorEnabled(false);
-                mActivity.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                mActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-                mActivity.getSupportActionBar().setHomeButtonEnabled(true);
-                mActivity.mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mActivity.onBackPressed();
-                    }
-                });
-                mActivity.mDrawerToggle.syncState();
-
+                mActivity.setToolbarTitle(inStockItem.getName(), true);
             }
         }, 300);
     }
 
     @Override
-    public void onIconClick(Item item, boolean isSelected, int position) {
+    public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
 
     }
 

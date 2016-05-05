@@ -29,9 +29,17 @@
     <string name="transition_image_view">Logo transition name</string>
     <string name="fill_in_the_declaration">Fill in the declaration</string>
     <string name="check_product">Check product</string>
+    <string name="check_in_progress">Checking in progress</string>
     <string name="additional_photo">Additional photo</string>
+    <string name="photos_in_progress">Photos in progress</string>
     <string name="tracking">Tracking</string>
     <string name="weight">Weight</string>
     <string name="date">Date</string>
     <string name="price">Price</string>
+    <string name="check_product_cost">The service cost is $10</string> <!-- TODO remove price and set it from server -->
+    <string name="check_product_description">During product checking at the warehouse you allow to open the parcel and remove the original package. If we find the defect, you will receive the automatic notification about it.</string>
+    <string name="additional_photo_description">We provide 2 product photos for free. BayShop staff will take them, when the parcel is delivered to the warehouse.\n\nYou can order 8 additional photos if needed.</string>
+    <string name="leave_comment">Leave comment</string>
+    <string name="confirm">Confirm</string>
+    <string name="warehouse">Warehouse</string>
 </resources>

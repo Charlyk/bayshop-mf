@@ -2,7 +2,6 @@ package com.softranger.bayshopmf.ui.instock;
 
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.StorageTabAdapter;
-import com.softranger.bayshopmf.model.Item;
+import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.ui.MainActivity;
 
 import java.util.ArrayList;
@@ -94,12 +93,15 @@ public class StoragesHolderFragment extends Fragment {
         }
     }
 
-    private ArrayList<Item> getItems() {
-        ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<InStockItem> getItems() {
+        ArrayList<InStockItem> inStockItems = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            Item item = new Item();
-            items.add(item);
+            InStockItem inStockItem = new InStockItem.Builder()
+                    .name("MF7529416\n(Smartphone neidentificat)")
+                    .trackingNumber("213234723461237412")
+                    .build();
+            inStockItems.add(inStockItem);
         }
-        return items;
+        return inStockItems;
     }
 }

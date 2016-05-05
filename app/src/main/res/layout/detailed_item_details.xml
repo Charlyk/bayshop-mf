@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/details_title_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MF6756545\n(Smartphone neidentificat"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"/>
-
-    <TextView
         android:id="@+id/details_tracking_titleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/tracking"/>
 
     <TextView
@@ -24,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="12312413412312"
+        tools:text="12312413412312"
         android:textColor="@android:color/black"
         android:textSize="18sp"/>
 
@@ -40,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="23.01.2016 until 23.02.2016"
+        tools:text="23.01.2016 until 23.02.2016"
         android:textColor="@android:color/black"
         android:textSize="18sp"/>
 
@@ -56,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="0.05 kg."
+        tools:text="0.05 kg."
         android:textColor="@android:color/black"
         android:textSize="18sp"/>
 
@@ -72,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="$ 25"
+        tools:text="$ 25"
         android:textColor="@android:color/black"
         android:textSize="18sp"/>
 </LinearLayout>

@@ -9,30 +9,30 @@ import java.util.ArrayList;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class ItemDetailed extends Item {
+public class InStockDetailed extends InStockItem {
 
     private ArrayList<String> mPhotoUrls;
     private String mDate;
     private String mWeight;
     private String mPrice;
 
-    private ItemDetailed() {
+    private InStockDetailed() {
 
     }
 
-    public ItemDetailed(Parcel in) {
+    public InStockDetailed(Parcel in) {
         super(in);
     }
 
-    public static final Creator<ItemDetailed> CREATOR = new Creator<ItemDetailed>() {
+    public static final Creator<InStockDetailed> CREATOR = new Creator<InStockDetailed>() {
         @Override
-        public ItemDetailed createFromParcel(Parcel source) {
-            return new ItemDetailed(source);
+        public InStockDetailed createFromParcel(Parcel source) {
+            return new InStockDetailed(source);
         }
 
         @Override
-        public ItemDetailed[] newArray(int size) {
-            return new ItemDetailed[size];
+        public InStockDetailed[] newArray(int size) {
+            return new InStockDetailed[size];
         }
     };
 
@@ -68,7 +68,7 @@ public class ItemDetailed extends Item {
         mPrice = price;
     }
 
-    public static class Builder extends Item.Builder {
+    public static class Builder extends InStockItem.Builder {
         private ArrayList<String> mPhotoUrls;
         private String mDate;
         private String mWeight;
@@ -94,12 +94,14 @@ public class ItemDetailed extends Item {
             return this;
         }
 
-        public ItemDetailed build() {
-            ItemDetailed itemDetailed = new ItemDetailed();
+        public InStockDetailed build() {
+            InStockDetailed itemDetailed = new InStockDetailed();
             itemDetailed.setPhotoUrls(mPhotoUrls);
             itemDetailed.setDate(mDate);
             itemDetailed.setPrice(mPrice);
             itemDetailed.setWeight(mWeight);
+            itemDetailed.setTrackingNumber(mTrackingNumber);
+            itemDetailed.setName(mName);
             return itemDetailed;
         }
     }
