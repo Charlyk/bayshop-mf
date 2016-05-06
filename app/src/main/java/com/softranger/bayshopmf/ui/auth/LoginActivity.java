@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +53,17 @@ public class LoginActivity extends AppCompatActivity {
         mLoginProgressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
         mLogoImage = (ImageView) findViewById(R.id.logo_circle);
         mLoginButton = (Button) findViewById(R.id.loginButton);
+        Button signUpButton = (Button) findViewById(R.id.signUpButton);
+        String actionColor = "#e64d50";
+        String questionText = getColoredSpanned(getString(R.string.haveAnAccountText), actionColor);
+        String blackColor = "#000000";
+        String signUpText = getColoredSpanned(getString(R.string.signup), blackColor);
+        String underlinedText = "<u>" + signUpText + "</u>";
+        signUpButton.setText(Html.fromHtml(questionText + " " + underlinedText));
+    }
+
+    private String getColoredSpanned(String text, String color) {
+        return "<font color=" + color + ">" + text + "</font>";
     }
 
     /**

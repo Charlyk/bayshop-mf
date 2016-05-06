@@ -8,4 +8,8 @@
     <color name="colorProcessing">#ffc13d</color>
     <color name="colorSelection">#f5f5f5</color>
     <color name="colorDivider">#dedede</color>
+    <color name="colorFbButton">#405b9c</color>
+    <color name="colorFbButtonPressed">#364d84</color>
+    <color name="colorGoogleBtn">#df462e</color>
+    <color name="colorGoogleBtnPressed">#c43f2a</color>
 </resources>

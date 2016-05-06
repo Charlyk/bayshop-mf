@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -12,89 +13,84 @@
         android:orientation="horizontal">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="loginWithFacebook"
-            android:layout_weight="1"
-            android:text="@string/facebook"
-            android:id="@+id/button"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="loginWithGoogle"
-            android:layout_weight="1"
-            android:text="@string/google"
-            android:id="@+id/button2"/>
-    </LinearLayout>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/email"
-        android:gravity="center"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/loginEmailInput"
-        android:layout_gravity="center_horizontal"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/password"
-        android:gravity="center"
-        android:ems="10"
-        android:id="@+id/loginPasswordInput"
-        android:layout_gravity="center_horizontal"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="loginWithBayApi"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-        android:background="@drawable/declaration_btn_background"
-        android:textColor="@android:color/white"
-        android:text="@string/login"
-        android:id="@+id/loginButton"
-        android:layout_gravity="center_horizontal"/>
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/loginProgressBar"
-        android:visibility="gone"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:layout_weight="1"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="@string/don_t_have_an_account"
-            android:id="@+id/textView3"/>
-
-        <Button
+            android:id="@+id/button"
             style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="signUpToBayShop"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:text="@string/signup"
-            android:id="@+id/textView4"/>
+            android:background="@drawable/fb_btn_bg"
+            android:drawableLeft="@mipmap/ic_login_fb"
+            android:drawableStart="@mipmap/ic_login_fb"
+            android:onClick="loginWithFacebook"
+            android:text="@string/facebook"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/button2"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/google_btn_bg"
+            android:drawableLeft="@mipmap/ic_login_google"
+            android:drawableStart="@mipmap/ic_login_google"
+            android:onClick="loginWithGoogle"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:text="@string/google"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/loginEmailInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"/>
+
+    <EditText
+        android:id="@+id/loginPasswordInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/password"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/declaration_btn_background"
+        android:onClick="loginWithBayApi"
+        android:text="@string/login"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"/>
+
+    <ProgressBar
+        android:id="@+id/loginProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/signUpButton"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="Don't have an account? Signup"
+        android:layout_marginTop="30dp"
+        android:onClick="signUpToBayShop"
+        android:textSize="18sp"/>
 </LinearLayout>
