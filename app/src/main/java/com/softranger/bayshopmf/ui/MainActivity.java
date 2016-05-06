@@ -19,8 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.auth.SplashActivity;
-import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.instock.StoragesHolderFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ActivityCompat.finishAfterTransition(SplashActivity.instance);
+                ActivityCompat.finishAfterTransition(LoginActivity.instance);
             }
         }, 1000);
 
