@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eduard on 28.04.16.
+ *
  */
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
@@ -45,22 +46,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.mInStockItem = mInStockItems.get(position);
         holder.mNameLabel.setText(holder.mInStockItem.getName());
         holder.mTrackingLabel.setText(holder.mInStockItem.getTrackingNumber());
-        holder.mViewAnimator.setAnimationListener(new ViewAnimator.AnimationListener() {
-            @Override
-            public void onAnimationStarted() {
-                @ColorInt int color = holder.mInStockItem.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
-                        mContext.getResources().getColor(R.color.colorPrimary);
-
-                holder.itemView.setBackgroundColor(color);
-            }
-
-            @Override
-            public void onAnimationFinished() {
-                @DrawableRes int image = holder.mInStockItem.isSelected() ? R.mipmap.parcel_selected : R.mipmap.parcel_active;
-
-                holder.mImageView.setImageResource(image);
-            }
-        });
     }
 
     @Override
@@ -74,16 +59,34 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         final ImageView mImageView;
         ViewAnimator mViewAnimator;
         InStockItem mInStockItem;
+        View mView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnLongClickListener(this);
-            itemView.setOnClickListener(this);
+            mView = itemView;
+            mView.setOnLongClickListener(this);
+            mView.setOnClickListener(this);
             mNameLabel = (TextView) itemView.findViewById(R.id.product_name);
             mTrackingLabel = (TextView) itemView.findViewById(R.id.tracking_number);
             mImageView = (ImageView) itemView.findViewById(R.id.item_image);
             mImageView.setOnClickListener(this);
             mViewAnimator = new ViewAnimator();
+            mViewAnimator.setAnimationListener(new ViewAnimator.AnimationListener() {
+                @Override
+                public void onAnimationStarted() {
+                    @ColorInt int color = mInStockItem.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
+                            mContext.getResources().getColor(R.color.colorPrimary);
+
+                    mView.setBackgroundColor(color);
+                }
+
+                @Override
+                public void onAnimationFinished() {
+                    @DrawableRes int image = mInStockItem.isSelected() ? R.mipmap.parcel_selected : R.mipmap.parcel_active;
+
+                    mImageView.setImageResource(image);
+                }
+            });
         }
 
         @Override

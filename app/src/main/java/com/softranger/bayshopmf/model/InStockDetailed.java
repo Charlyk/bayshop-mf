@@ -102,6 +102,7 @@ public class InStockDetailed extends InStockItem {
             itemDetailed.setWeight(mWeight);
             itemDetailed.setTrackingNumber(mTrackingNumber);
             itemDetailed.setName(mName);
+            itemDetailed.setDeposit(mDeposit);
             return itemDetailed;
         }
     }

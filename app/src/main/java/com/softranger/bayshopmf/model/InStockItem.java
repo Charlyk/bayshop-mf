@@ -12,6 +12,7 @@ public class InStockItem implements Parcelable {
     protected boolean hasDeclaration;
     protected String mName;
     protected String mTrackingNumber;
+    protected String mDeposit;
 
     public InStockItem() {
 
@@ -68,6 +69,14 @@ public class InStockItem implements Parcelable {
         this.hasDeclaration = hasDeclaration;
     }
 
+    public String getDeposit() {
+        return mDeposit;
+    }
+
+    public void setDeposit(String deposit) {
+        mDeposit = deposit;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -86,6 +95,7 @@ public class InStockItem implements Parcelable {
         protected boolean hasDeclaration;
         protected String mName;
         protected String mTrackingNumber;
+        protected String mDeposit;
 
         public Builder isSelected(boolean isSelected) {
             this.isSelected = isSelected;
@@ -107,12 +117,18 @@ public class InStockItem implements Parcelable {
             return this;
         }
 
+        public Builder deposit(String deposit) {
+            mDeposit = deposit;
+            return this;
+        }
+
         public InStockItem build() {
             InStockItem inStockItem = new InStockItem();
             inStockItem.setName(mName);
             inStockItem.setTrackingNumber(mTrackingNumber);
             inStockItem.setSelected(this.isSelected);
             inStockItem.setHasDeclaration(this.hasDeclaration);
+            inStockItem.setDeposit(mDeposit);
             return inStockItem;
         }
     }
