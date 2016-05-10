@@ -11,16 +11,16 @@ import android.os.Parcelable;
 public class Product implements Parcelable {
     private String mProductName;
     private String mProductUrl;
-    private int mProductQuantity;
-    private double mProductPrice;
+    private String mProductQuantity;
+    private String mProductPrice;
 
     private Product() {}
 
     protected Product(Parcel in) {
         mProductName = in.readString();
         mProductUrl = in.readString();
-        mProductQuantity = in.readInt();
-        mProductPrice = in.readDouble();
+        mProductQuantity = in.readString();
+        mProductPrice = in.readString();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -43,11 +43,11 @@ public class Product implements Parcelable {
         return mProductUrl;
     }
 
-    public int getProductQuantity() {
+    public String getProductQuantity() {
         return mProductQuantity;
     }
 
-    public double getProductPrice() {
+    public String getProductPrice() {
         return mProductPrice;
     }
 
@@ -59,11 +59,11 @@ public class Product implements Parcelable {
         mProductUrl = productUrl;
     }
 
-    public void setProductQuantity(int productQuantity) {
+    public void setProductQuantity(String productQuantity) {
         mProductQuantity = productQuantity;
     }
 
-    public void setProductPrice(double productPrice) {
+    public void setProductPrice(String productPrice) {
         mProductPrice = productPrice;
     }
 
@@ -76,15 +76,15 @@ public class Product implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mProductName);
         dest.writeString(mProductUrl);
-        dest.writeInt(mProductQuantity);
-        dest.writeDouble(mProductPrice);
+        dest.writeString(mProductQuantity);
+        dest.writeString(mProductPrice);
     }
 
     public static class Builder {
         private String mProductName;
         private String mProductUrl;
-        private int mProductQuantity;
-        private double mProductPrice;
+        private String mProductQuantity;
+        private String mProductPrice;
 
         public Builder productName(String productName) {
             mProductName = productName;
@@ -96,12 +96,12 @@ public class Product implements Parcelable {
             return this;
         }
 
-        public Builder productQuantity(int productQuantity) {
+        public Builder productQuantity(String productQuantity) {
             mProductQuantity = productQuantity;
             return this;
         }
 
-        public Builder productPrice(double productPrice) {
+        public Builder productPrice(String productPrice) {
             mProductPrice = productPrice;
             return this;
         }

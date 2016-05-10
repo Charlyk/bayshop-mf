@@ -12,6 +12,7 @@
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:padding="5dp"
         android:orientation="vertical">
 
         <TextView
@@ -83,7 +84,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:padding="2dp"
-                    android:hint="200"
+                    android:hint="0"
                     android:background="@drawable/input_background"
                     android:inputType="number"
                     android:layout_height="30dp"
@@ -109,7 +110,7 @@
                     android:padding="2dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:hint="2"
+                    android:hint="0.0"
                     android:background="@drawable/input_background"
                     android:inputType="numberDecimal"
                     android:layout_height="30dp"

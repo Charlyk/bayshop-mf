@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.ui.DeclarationFragment;
 import com.softranger.bayshopmf.ui.MainActivity;
 
 import java.text.SimpleDateFormat;
@@ -41,6 +42,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     private Button mFillDeclaration;
     private Button mCheckProduct;
     private Button mAdditionalPhoto;
+    private InStockDetailed mInStockDetailed;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -66,10 +68,11 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         loadImages(gridLayout, new ArrayList<String>());
         final InStockItem inStockItem = getArguments().getParcelable(ITEM_ARG);
+        mInStockDetailed = getItemDetails(inStockItem);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                showDetails(view, getItemDetails(inStockItem));
+                showDetails(view, mInStockDetailed);
             }
         }, 500);
         return view;
@@ -167,7 +170,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fill_declarationButton:
-
+                mActivity.addFragment(DeclarationFragment.newInstance(mInStockDetailed), true);
                 break;
             case R.id.check_productButton:
                 mActivity.addFragment(new CheckProductFragment(), true);

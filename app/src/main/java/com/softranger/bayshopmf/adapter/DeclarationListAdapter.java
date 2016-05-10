@@ -29,14 +29,34 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int ITEM = 0;
     private static final int ACTION = 2;
     private ArrayList<Product> mProducts;
+    private Object mActionHolder;
+    private OnActionButtonsClick mOnActionButtonsClick;
 
     public DeclarationListAdapter(InStockDetailed inStockDetailed) {
         mProducts = new ArrayList<>();
         mObjects = new ArrayList<>();
         mObjects.add(inStockDetailed);
-        Product product = new Product.Builder().productName("").productUrl("").build();
+        Product product = new Product.Builder().productName("").productUrl("").productPrice("").productQuantity("").build();
         mObjects.add(product);
-        mObjects.add(new Object());
+        mObjects.add(product);
+        mActionHolder = new Object();
+        mObjects.add(mActionHolder);
+    }
+
+    public void setOnActionButtonsClickListener(OnActionButtonsClick onActionButtonsClickListener) {
+        mOnActionButtonsClick = onActionButtonsClickListener;
+    }
+
+    public void addNewProductCard() {
+        Product product = new Product.Builder().productName("").productUrl("").productPrice("").productQuantity("").build();
+        final int actionPosition = mObjects.indexOf(mActionHolder);
+        mObjects.add(actionPosition, product);
+        notifyItemInserted(actionPosition);
+    }
+
+    public void addItem(Product product) {
+        mObjects.add(0, product);
+        notifyItemInserted(0);
     }
 
     @Override
@@ -70,9 +90,13 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
             Product product = (Product) mObjects.get(position);
             itemHolder.mProduct = product;
+            itemHolder.mProductName.addTextChangedListener(new NameTextWatcher(itemHolder.mProduct, position));
             itemHolder.mProductName.setText(product.getProductName());
+            itemHolder.mProductUrl.addTextChangedListener(new UrlTextWatcher(itemHolder.mProduct, position));
             itemHolder.mProductUrl.setText(product.getProductUrl());
+            itemHolder.mProductPrice.addTextChangedListener(new PriceTextWatcher(itemHolder.mProduct, position));
             itemHolder.mProductPrice.setText(String.valueOf(product.getProductPrice()));
+            itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProduct, position));
             itemHolder.mProductQuantity.setText(String.valueOf(product.getProductQuantity()));
         } else if (mObjects.get(position) instanceof InStockItem) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
@@ -105,9 +129,15 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.addFieldsBtn:
+                    if (mOnActionButtonsClick != null) {
+                        mOnActionButtonsClick.onAddFieldsClick();
+                    }
                     // TODO: 5/10/16 Add fields to list
                     break;
                 case R.id.saveFieldsBtn:
+                    if (mOnActionButtonsClick != null) {
+                        mOnActionButtonsClick.onSaveItemsClick(mProducts);
+                    }
                     // TODO: 5/10/16 Save all items
                     break;
             }
@@ -139,13 +169,9 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public ItemViewHolder(View itemView) {
             super(itemView);
             mProductName = (EditText) itemView.findViewById(R.id.productNameInput);
-            mProductName.addTextChangedListener(new NameTextWatcher(mProduct, getAdapterPosition()));
             mProductUrl = (EditText) itemView.findViewById(R.id.productUrlInput);
-            mProductUrl.addTextChangedListener(new UrlTextWatcher(mProduct, getAdapterPosition()));
             mProductQuantity = (EditText) itemView.findViewById(R.id.productQuantityInput);
-            mProductQuantity.addTextChangedListener(new QuantityTextWatcher(mProduct, getAdapterPosition()));
             mProductPrice = (EditText) itemView.findViewById(R.id.productPriceInput);
-            mProductPrice.addTextChangedListener(new PriceTextWatcher(mProduct, getAdapterPosition()));
         }
     }
 
@@ -220,7 +246,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mProduct.setProductQuantity(Integer.parseInt(s.toString()));
+            mProduct.setProductQuantity(s.toString());
 //            notifyItemChanged(mPosition);
         }
 
@@ -247,7 +273,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mProduct.setProductPrice(Double.parseDouble(s.toString()));
+            mProduct.setProductPrice(s.toString());
 //            notifyItemChanged(mPosition);
         }
 
@@ -255,5 +281,10 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public void afterTextChanged(Editable s) {
 
         }
+    }
+
+    public interface OnActionButtonsClick {
+        void onAddFieldsClick();
+        void onSaveItemsClick(ArrayList<Product> products);
     }
 }
