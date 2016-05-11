@@ -8,7 +8,7 @@
         android:orientation="vertical"
         android:clipToPadding="false"
         android:padding="16dp"
-        tools:context="com.softranger.bayshopmf.ui.instock.CheckProductFragment"
+        tools:context=".ui.general.CheckProductFragment"
         android:layout_width="match_parent"
         android:animateLayoutChanges="true"
         android:layout_height="wrap_content">

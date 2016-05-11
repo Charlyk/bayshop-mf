@@ -37,6 +37,9 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mObjects = new ArrayList<>();
         mObjects.add(inStockDetailed);
         Product product = new Product.Builder().productName("").productUrl("").productPrice("").productQuantity("").build();
+        // TODO: 5/11/16 de editat tat bredu ista
+        mProducts.add(product);
+        mProducts.add(product);
         mObjects.add(product);
         mObjects.add(product);
         mActionHolder = new Object();
@@ -49,12 +52,14 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void addNewProductCard() {
         Product product = new Product.Builder().productName("").productUrl("").productPrice("").productQuantity("").build();
+        mProducts.add(product);
         final int actionPosition = mObjects.indexOf(mActionHolder);
         mObjects.add(actionPosition, product);
         notifyItemInserted(actionPosition);
     }
 
     public void addItem(Product product) {
+        mProducts.add(product);
         mObjects.add(0, product);
         notifyItemInserted(0);
     }
@@ -90,19 +95,22 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
             Product product = (Product) mObjects.get(position);
             itemHolder.mProduct = product;
-            itemHolder.mProductName.addTextChangedListener(new NameTextWatcher(itemHolder.mProduct, position));
+            itemHolder.mProductName.addTextChangedListener(new NameTextWatcher(itemHolder.mProduct));
             itemHolder.mProductName.setText(product.getProductName());
-            itemHolder.mProductUrl.addTextChangedListener(new UrlTextWatcher(itemHolder.mProduct, position));
+            itemHolder.mProductUrl.addTextChangedListener(new UrlTextWatcher(itemHolder.mProduct));
             itemHolder.mProductUrl.setText(product.getProductUrl());
-            itemHolder.mProductPrice.addTextChangedListener(new PriceTextWatcher(itemHolder.mProduct, position));
+            itemHolder.mProductPrice.addTextChangedListener(new PriceTextWatcher(itemHolder.mProduct));
             itemHolder.mProductPrice.setText(String.valueOf(product.getProductPrice()));
-            itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProduct, position));
+            itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProduct));
             itemHolder.mProductQuantity.setText(String.valueOf(product.getProductQuantity()));
         } else if (mObjects.get(position) instanceof InStockItem) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            String trackingNumber = ((InStockDetailed) mObjects.get(position)).getTrackingNumber();
+            headerHolder.mInStockDetailed = (InStockDetailed) mObjects.get(position);
+            headerHolder.mGeneralDescription.addTextChangedListener(new DescriptionTextWatcher(headerHolder.mInStockDetailed));
+            headerHolder.mGeneralDescription.setText(headerHolder.mInStockDetailed.getDescription());
+            String trackingNumber = headerHolder.mInStockDetailed.getTrackingNumber();
             headerHolder.mTrackingNumber.setText(trackingNumber);
-            headerHolder.mDepositName.setText("USA"); // TODO: 5/10/16 replace with parcel deposit name
+            headerHolder.mDepositName.setText(headerHolder.mInStockDetailed.getDeposit());
         }
     }
 
@@ -149,6 +157,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         final TextView mDepositName;
         final TextView mTrackingNumber;
         final EditText mGeneralDescription;
+        InStockDetailed mInStockDetailed;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
@@ -175,14 +184,36 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
+    class DescriptionTextWatcher implements TextWatcher {
+
+        private InStockDetailed mInStockDetailed;
+
+        public DescriptionTextWatcher(InStockDetailed inStockDetailed) {
+            mInStockDetailed = inStockDetailed;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mInStockDetailed.setDescription(s.toString());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    }
+
     class NameTextWatcher implements TextWatcher {
 
         private Product mProduct;
-        private int mPosition;
 
-        public NameTextWatcher(Product productBuilder, int position) {
+        public NameTextWatcher(Product productBuilder) {
             mProduct = productBuilder;
-            mPosition = position;
         }
 
         @Override
@@ -193,7 +224,6 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             mProduct.setProductName(s.toString());
-//            notifyItemChanged(mPosition);
         }
 
         @Override
@@ -205,11 +235,9 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class UrlTextWatcher implements TextWatcher {
 
         private Product mProduct;
-        private int mPosition;
 
-        public UrlTextWatcher(Product productBuilder, int position) {
+        public UrlTextWatcher(Product productBuilder) {
             mProduct = productBuilder;
-            mPosition = position;
         }
 
         @Override
@@ -220,7 +248,6 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             mProduct.setProductUrl(s.toString());
-//            notifyItemChanged(mPosition);
         }
 
         @Override
@@ -232,11 +259,9 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class QuantityTextWatcher implements TextWatcher {
 
         private Product mProduct;
-        private int mPosition;
 
-        public QuantityTextWatcher(Product productBuilder, int position) {
+        public QuantityTextWatcher(Product productBuilder) {
             mProduct = productBuilder;
-            mPosition = position;
         }
 
         @Override
@@ -247,7 +272,6 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             mProduct.setProductQuantity(s.toString());
-//            notifyItemChanged(mPosition);
         }
 
         @Override
@@ -259,11 +283,9 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class PriceTextWatcher implements TextWatcher {
 
         private Product mProduct;
-        private int mPosition;
 
-        public PriceTextWatcher(Product productBuilder, int position) {
+        public PriceTextWatcher(Product productBuilder) {
             mProduct = productBuilder;
-            mPosition = position;
         }
 
         @Override
@@ -274,7 +296,6 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             mProduct.setProductPrice(s.toString());
-//            notifyItemChanged(mPosition);
         }
 
         @Override

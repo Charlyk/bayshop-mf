@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.ui.general.AdditionalPhotoFragment;
+import com.softranger.bayshopmf.ui.general.CheckProductFragment;
 import com.softranger.bayshopmf.ui.DeclarationFragment;
 import com.softranger.bayshopmf.ui.MainActivity;
 

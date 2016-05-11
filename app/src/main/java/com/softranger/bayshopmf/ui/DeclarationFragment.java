@@ -3,6 +3,7 @@ package com.softranger.bayshopmf.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -63,6 +64,7 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
 
     @Override
     public void onSaveItemsClick(ArrayList<Product> products) {
-
+        mActivity.onBackPressed();
+        Snackbar.make(mRecyclerView, "Saved " + products.size() + " products", Snackbar.LENGTH_SHORT).show();
     }
 }

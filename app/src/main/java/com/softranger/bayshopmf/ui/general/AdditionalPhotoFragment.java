@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.instock;
+package com.softranger.bayshopmf.ui.general;
 
 
 import android.app.Fragment;
@@ -12,17 +12,18 @@ import android.widget.EditText;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CheckProductFragment extends Fragment implements View.OnClickListener {
+public class AdditionalPhotoFragment extends Fragment implements View.OnClickListener {
 
     private EditText mCommentInput;
     private Button mLeaveComment;
     private MainActivity mActivity;
 
-    public CheckProductFragment() {
+    public AdditionalPhotoFragment() {
         // Required empty public constructor
     }
 
@@ -31,7 +32,7 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_check_product, container, false);
+        View view = inflater.inflate(R.layout.fragment_additional_photo, container, false);
         mActivity = (MainActivity) getActivity();
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
         mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
@@ -54,7 +55,7 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
                 }
                 break;
             case R.id.check_product_confirmBtn:
-                Intent intent = new Intent(DetailsFragment.ACTION_CHECK_IN_PROCESSING);
+                Intent intent = new Intent(DetailsFragment.ACTION_PHOTO_IN_PROCESSING);
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
                 break;

@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.instock;
+package com.softranger.bayshopmf.ui.arrival;
 
 
 import android.app.Fragment;
@@ -13,27 +13,27 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.StorageTabAdapter;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.instock.StorageItemsFragment;
 
 import java.util.ArrayList;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoragesHolderFragment extends Fragment {
+public class WaitingArrivalFragment extends Fragment {
 
     private MainActivity mActivity;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
-    public StoragesHolderFragment() {
+    public WaitingArrivalFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_storages_holder, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.storages_viewPager);
         mTabLayout = (TabLayout) view.findViewById(R.id.storages_tabLayout);
@@ -68,7 +68,6 @@ public class StoragesHolderFragment extends Fragment {
 
             }
         });
-
     }
 
     private void invalidateTabs(int position) {

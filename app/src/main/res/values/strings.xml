@@ -54,4 +54,8 @@
     <string name="general_description">General description</string>
     <string name="add_item">Add fields</string>
     <string name="save">Save</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="awaiting_arrival">Awaiting arrival</string>
 </resources>
