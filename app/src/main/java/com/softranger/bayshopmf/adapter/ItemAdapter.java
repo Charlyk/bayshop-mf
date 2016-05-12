@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.softranger.bayshopmf.model.InProcessingProduct;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
@@ -27,7 +29,7 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<T> mInStockItems;
     private OnItemClickListener mOnItemClickListener;
 
-    private static final int IN_STOCK_ITEM = 0, PRODUCT = 1;
+    private static final int IN_STOCK_ITEM = 0, PRODUCT = 1, IN_PROCESSING = 2;
 
     public ItemAdapter(ArrayList<T> inStockItems, Context context) {
         mContext = context;
@@ -44,6 +46,8 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return IN_STOCK_ITEM;
         } else if (mInStockItems.get(position) instanceof Product) {
             return PRODUCT;
+        } else if (mInStockItems.get(position) instanceof InProcessingProduct) {
+            return IN_PROCESSING;
         }
         return super.getItemViewType(position);
     }
@@ -59,6 +63,9 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case PRODUCT:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.arrival_list_item, parent, false);
                 return new ProductViewHolder(view);
+            case IN_PROCESSING:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_procesing_list_item, parent, false);
+                return new InProcessingViewHolder(view);
         }
 
         return new InStockViewHolder(view);
@@ -77,6 +84,15 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
             productHolder.mItemName.setText(productHolder.mProduct.getProductName());
             productHolder.mItemId.setText(productHolder.mProduct.getProductId());
             productHolder.mTrackingNumber.setText(productHolder.mProduct.getTrackingNumber());
+        } else if (mInStockItems.get(position) instanceof InProcessingProduct) {
+            InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
+            processingHolder.mProduct = (InProcessingProduct) mInStockItems.get(position);
+            processingHolder.mParcelId.setText(processingHolder.mProduct.getParcelId());
+            processingHolder.mProductName.setText(processingHolder.mProduct.getProductName());
+            processingHolder.mCreatedDate.setText(processingHolder.mProduct.getCreatedDate());
+            processingHolder.mProgress.setText(processingHolder.mProduct.getProcessingProgress() + "%");
+            processingHolder.mWeight.setText(processingHolder.mProduct.getWeight());
+            processingHolder.mProcessingProgressBar.setProgress(processingHolder.mProduct.getProcessingProgress());
         }
     }
 
@@ -172,9 +188,33 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    class InProcessingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight;
+        final ProgressBar mProcessingProgressBar;
+        InProcessingProduct mProduct;
+        public InProcessingViewHolder(View itemView) {
+            super(itemView);
+            itemView.setOnClickListener(this);
+            mParcelId = (TextView) itemView.findViewById(R.id.inProcessingParcelId);
+            mProductName = (TextView) itemView.findViewById(R.id.inProcessingProductName);
+            mCreatedDate = (TextView) itemView.findViewById(R.id.inProcessingCreatedDate);
+            mProgress = (TextView) itemView.findViewById(R.id.inProcessingProgress);
+            mWeight = (TextView) itemView.findViewById(R.id.inProcessingWeight);
+            mProcessingProgressBar = (ProgressBar) itemView.findViewById(R.id.inProcessingProgressBar);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onInProcessingProductClick(mProduct, getAdapterPosition());
+            }
+        }
+    }
+
     public interface OnItemClickListener {
         void onRowClick(InStockItem inStockItem, int position);
         void onIconClick(InStockItem inStockItem, boolean isSelected, int position);
         void onProductClick(Product product, int position);
+        void onInProcessingProductClick(InProcessingProduct inProcessingProduct, int position);
     }
 }

@@ -20,6 +20,7 @@ import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 public class CheckProductFragment extends Fragment implements View.OnClickListener {
 
     public static final String ACTION_CHECK_IN_PROCESSING = "ACTION CHECK IN PROCESSING";
+    public static final String ACTION_CANCEL_CHECK_PRODUCT = "ACTION CANCEL CHECK PRODUCT";
 
     private EditText mCommentInput;
     private Button mLeaveComment;
@@ -39,6 +40,8 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
         mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
         Button confirm = (Button) view.findViewById(R.id.check_product_confirmBtn);
+        Button cancel = (Button) view.findViewById(R.id.check_product_cancelButton);
+        cancel.setOnClickListener(this);
         mLeaveComment.setOnClickListener(this);
         confirm.setOnClickListener(this);
         return view;
@@ -56,11 +59,18 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
                     mLeaveComment.setText("Leave comment");
                 }
                 break;
-            case R.id.check_product_confirmBtn:
+            case R.id.check_product_confirmBtn: {
                 Intent intent = new Intent(ACTION_CHECK_IN_PROCESSING);
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
                 break;
+            }
+            case R.id.check_product_cancelButton: {
+                Intent intent = new Intent(ACTION_CANCEL_CHECK_PRODUCT);
+                mActivity.sendBroadcast(intent);
+                mActivity.onBackPressed();
+                break;
+            }
         }
     }
 }

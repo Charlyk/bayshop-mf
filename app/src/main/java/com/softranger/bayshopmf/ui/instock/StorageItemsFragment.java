@@ -20,10 +20,12 @@ import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
+import com.softranger.bayshopmf.model.InProcessingProduct;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.AwaitingArrivalProductFragment;
+import com.softranger.bayshopmf.ui.InProcessingDetails;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -102,6 +104,11 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
     @Override
     public void onProductClick(Product product, int position) {
         mActivity.addFragment(AwaitingArrivalProductFragment.newInstance(product), true);
+    }
+
+    @Override
+    public void onInProcessingProductClick(InProcessingProduct inProcessingProduct, int position) {
+        mActivity.addFragment(InProcessingDetails.newInstance(inProcessingProduct), true);
     }
 
     @Override

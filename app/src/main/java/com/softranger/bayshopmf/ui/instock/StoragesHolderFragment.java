@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.StorageTabAdapter;
+import com.softranger.bayshopmf.model.InProcessingProduct;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.ui.MainActivity;
@@ -62,6 +63,12 @@ public class StoragesHolderFragment extends Fragment {
                         StorageItemsFragment.newInstance(getAwaitingProducts(Constants.UK), Constants.UK),
                         StorageItemsFragment.newInstance(getAwaitingProducts(Constants.DE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_arrival), true);
+                break;
+            case Constants.ListToShow.IN_PROCESSING:
+                initializeTabs(StorageItemsFragment.newInstance(getProcessingProducts(Constants.USA), Constants.USA),
+                        StorageItemsFragment.newInstance(getProcessingProducts(Constants.UK), Constants.UK),
+                        StorageItemsFragment.newInstance(getProcessingProducts(Constants.DE), Constants.DE));
+                mActivity.setToolbarTitle(mActivity.getString(R.string.in_processing), true);
                 break;
         }
         return view;
@@ -114,6 +121,22 @@ public class StoragesHolderFragment extends Fragment {
                 mTabLayout.getTabAt(0).setIcon(R.mipmap.ic_usa_flag_inactive);
                 break;
         }
+    }
+
+    private ArrayList<InProcessingProduct> getProcessingProducts(String deposit) {
+        ArrayList<InProcessingProduct> processingProducts = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            InProcessingProduct product = new InProcessingProduct.Builder()
+                    .productName("Laptop din SUA")
+                    .parcelId("PUS213342432423")
+                    .deposit(deposit)
+                    .weight("3.2kg")
+                    .processingProgress(i + 1)
+                    .createdDate("23 Jan 2016, 10:35")
+                    .build();
+            processingProducts.add(product);
+        }
+        return processingProducts;
     }
 
     private ArrayList<Product> getAwaitingProducts(String deposit) {

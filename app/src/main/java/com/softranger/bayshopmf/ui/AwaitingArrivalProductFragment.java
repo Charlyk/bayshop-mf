@@ -58,6 +58,8 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
+        intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
+        intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mProduct = getArguments().getParcelable(PRODUCT_ARG);
         bindViews(view);
@@ -82,6 +84,14 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                 case AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING:
                     mAdditionalPhoto.setSelected(true);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
+                    break;
+                case AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST:
+                    mAdditionalPhoto.setSelected(false);
+                    mAdditionalPhoto.setText(mActivity.getString(R.string.additional_photo));
+                    break;
+                case CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT:
+                    mCheckProduct.setSelected(false);
+                    mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
             }
         }

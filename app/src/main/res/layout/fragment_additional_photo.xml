@@ -67,13 +67,30 @@
             android:gravity="top"
             android:inputType="textMultiLine"/>
 
-        <Button
-            android:id="@+id/check_product_confirmBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/additional_btns_bg"
-            android:text="@string/confirm"
-            android:textColor="@android:color/white"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/check_product_confirmBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/additional_btns_bg"
+                android:text="@string/confirm"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/check_product_cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/additional_btns_bg"
+                android:text="@string/cancel"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

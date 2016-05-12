@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
     }
 
@@ -123,11 +124,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_inStock:
                 replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
                 selectedFragment = SelectedFragment.IN_STOCK;
+                mActionButton.show();
                 break;
             case R.id.nav_waitingArrival:
                 replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.AWAITING_ARRIVAL));
                 selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
+                mActionButton.hide();
                 break;
+            case R.id.nav_inProcessing:
+                replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.IN_PROCESSING));
+                selectedFragment = SelectedFragment.IN_PROCESSING;
+                mActionButton.hide();
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -140,7 +147,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
             if (getFragmentManager().getBackStackEntryCount() == 1) {
-                mActionButton.show();
+                if (selectedFragment == SelectedFragment.IN_STOCK)
+                    mActionButton.show();
                 mDrawerToggle.setDrawerIndicatorEnabled(true);
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -154,6 +162,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case AWAITING_ARRIVAL:
                         setToolbarTitle(getString(R.string.awaiting_arrival), true);
                         break;
+                    case IN_PROCESSING:
+                        setToolbarTitle(getString(R.string.in_processing), true);
+                        break;
                 }
             }
         } else {
@@ -162,6 +173,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public enum SelectedFragment {
-        IN_STOCK, AWAITING_ARRIVAL
+        IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING
     }
 }

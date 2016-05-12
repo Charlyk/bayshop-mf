@@ -33,5 +33,6 @@ public class Constants {
     public static class ListToShow {
         public static final String IN_STOCK = "in stock items";
         public static final String AWAITING_ARRIVAL = "awaiting arrival";
+        public static final String IN_PROCESSING = "in processing";
     }
 }

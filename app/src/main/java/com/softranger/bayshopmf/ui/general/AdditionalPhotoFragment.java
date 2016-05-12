@@ -20,6 +20,7 @@ import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 public class AdditionalPhotoFragment extends Fragment implements View.OnClickListener {
 
     public static final String ACTION_PHOTO_IN_PROCESSING = "ACTION PHOTO IN PROCESSING";
+    public static final String ACTION_CANCEL_PHOTO_REQUEST = "ACTION CANCEL PHOTO REQUEST";
 
     private EditText mCommentInput;
     private Button mLeaveComment;
@@ -28,7 +29,6 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
     public AdditionalPhotoFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +39,8 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
         mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
         Button confirm = (Button) view.findViewById(R.id.check_product_confirmBtn);
+        Button cancel = (Button) view.findViewById(R.id.check_product_cancelButton);
+        cancel.setOnClickListener(this);
         mLeaveComment.setOnClickListener(this);
         confirm.setOnClickListener(this);
         return view;
@@ -56,11 +58,17 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                     mLeaveComment.setText("Leave comment");
                 }
                 break;
-            case R.id.check_product_confirmBtn:
+            case R.id.check_product_confirmBtn: {
                 Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
                 break;
+            }
+            case R.id.check_product_cancelButton: {
+                Intent intent = new Intent(ACTION_CANCEL_PHOTO_REQUEST);
+                mActivity.sendBroadcast(intent);
+                mActivity.onBackPressed();
+            }
         }
     }
 }
