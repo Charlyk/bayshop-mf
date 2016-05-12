@@ -22,6 +22,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.auth.SplashActivity;
 import com.softranger.bayshopmf.ui.instock.StoragesHolderFragment;
+import com.softranger.bayshopmf.util.Constants;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout mDrawerLayout;
     public Toolbar mToolbar;
     public FloatingActionButton mActionButton;
+    private static SelectedFragment selectedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fragment_container, new StoragesHolderFragment());
-        transaction.commit();
+        replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
+        selectedFragment = SelectedFragment.IN_STOCK;
     }
 
     public void addFragment(Fragment fragment, boolean addToBackStack) {
@@ -100,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, 300);
     }
 
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+    }
+
     public void setToolbarTitle(String title, boolean hideLogo) {
         TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText(title);
@@ -112,7 +119,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        switch (id) {
+            case R.id.nav_inStock:
+                replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
+                selectedFragment = SelectedFragment.IN_STOCK;
+                break;
+            case R.id.nav_waitingArrival:
+                replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.AWAITING_ARRIVAL));
+                selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
+                break;
+        }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -131,9 +147,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setDisplayShowHomeEnabled(false);
                 getSupportActionBar().setHomeButtonEnabled(false);
                 mDrawerToggle.syncState();
+                switch (selectedFragment) {
+                    case IN_STOCK:
+                        setToolbarTitle(getString(R.string.in_stock), true);
+                        break;
+                    case AWAITING_ARRIVAL:
+                        setToolbarTitle(getString(R.string.awaiting_arrival), true);
+                        break;
+                }
             }
         } else {
             super.onBackPressed();
         }
+    }
+
+    public enum SelectedFragment {
+        IN_STOCK, AWAITING_ARRIVAL
     }
 }

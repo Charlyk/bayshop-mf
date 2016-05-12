@@ -6,6 +6,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/storage_itemsList"
+        android:background="@color/button_material_light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </FrameLayout>

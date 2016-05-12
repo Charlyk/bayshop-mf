@@ -19,6 +19,8 @@ import com.softranger.bayshopmf.ui.instock.DetailsFragment;
  */
 public class AdditionalPhotoFragment extends Fragment implements View.OnClickListener {
 
+    public static final String ACTION_PHOTO_IN_PROCESSING = "ACTION PHOTO IN PROCESSING";
+
     private EditText mCommentInput;
     private Button mLeaveComment;
     private MainActivity mActivity;
@@ -55,7 +57,7 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.check_product_confirmBtn:
-                Intent intent = new Intent(DetailsFragment.ACTION_PHOTO_IN_PROCESSING);
+                Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
                 break;

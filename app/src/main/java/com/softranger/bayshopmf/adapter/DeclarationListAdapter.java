@@ -39,8 +39,6 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         Product product = new Product.Builder().productName("").productUrl("").productPrice("").productQuantity("").build();
         // TODO: 5/11/16 de editat tat bredu ista
         mProducts.add(product);
-        mProducts.add(product);
-        mObjects.add(product);
         mObjects.add(product);
         mActionHolder = new Object();
         mObjects.add(mActionHolder);
@@ -62,6 +60,13 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mProducts.add(product);
         mObjects.add(0, product);
         notifyItemInserted(0);
+    }
+
+    public void removeItem(Product itemToRemove) {
+        mProducts.remove(itemToRemove);
+        final int itemPosition = mObjects.indexOf(itemToRemove);
+        mObjects.remove(itemToRemove);
+        notifyItemRemoved(itemPosition);
     }
 
     @Override
@@ -167,12 +172,13 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final EditText mProductName;
         final EditText mProductUrl;
         final EditText mProductQuantity;
         final EditText mProductPrice;
+        final Button mItemDeleteButton;
         Product mProduct;
 
         public ItemViewHolder(View itemView) {
@@ -181,6 +187,13 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             mProductUrl = (EditText) itemView.findViewById(R.id.productUrlInput);
             mProductQuantity = (EditText) itemView.findViewById(R.id.productQuantityInput);
             mProductPrice = (EditText) itemView.findViewById(R.id.productPriceInput);
+            mItemDeleteButton = (Button) itemView.findViewById(R.id.itemDeleteButton);
+            mItemDeleteButton.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            removeItem(mProduct);
         }
     }
 

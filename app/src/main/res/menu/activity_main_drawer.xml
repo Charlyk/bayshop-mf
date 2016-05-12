@@ -5,6 +5,7 @@
         <item
             android:id="@+id/nav_inStock"
             android:icon="@mipmap/in_stock"
+            android:checked="true"
             android:title="@string/in_stock"/>
         <item
             android:id="@+id/nav_waitingArrival"

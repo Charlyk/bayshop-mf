@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +21,9 @@ import android.view.ViewGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.AwaitingArrivalProductFragment;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -30,18 +34,20 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItemClickListener {
+public class StorageItemsFragment<T extends Parcelable> extends Fragment implements ItemAdapter.OnItemClickListener {
 
     private MainActivity mActivity;
+    public String mDeposit;
 
     public StorageItemsFragment() {
         // Required empty public constructor
     }
 
-    public static StorageItemsFragment newInstance(ArrayList<InStockItem> inStockItems) {
+    public static <T extends Parcelable> StorageItemsFragment newInstance(@NonNull ArrayList<T> items, @NonNull String deposit) {
         Bundle args = new Bundle();
-        args.putParcelableArrayList("inStockItems", inStockItems);
-        StorageItemsFragment fragment = new StorageItemsFragment();
+        args.putParcelableArrayList("items", items);
+        StorageItemsFragment<T> fragment = new StorageItemsFragment<>();
+        fragment.mDeposit = deposit;
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,8 +61,8 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
         final LinearLayoutManager manager = new LinearLayoutManager(mActivity);
         recyclerView.setLayoutManager(manager);
-        ArrayList<InStockItem> inStockItems = getArguments().getParcelableArrayList("inStockItems");
-        ItemAdapter adapter = new ItemAdapter(inStockItems, mActivity);
+        ArrayList<T> items = getArguments().getParcelableArrayList("items");
+        ItemAdapter<T> adapter = new ItemAdapter<>(items, mActivity);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
         mActivity.registerReceiver(mBroadcastReceiver, new IntentFilter(Application.TOKEN_READY));
@@ -91,6 +97,11 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     @Override
     public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
 
+    }
+
+    @Override
+    public void onProductClick(Product product, int position) {
+        mActivity.addFragment(AwaitingArrivalProductFragment.newInstance(product), true);
     }
 
     @Override

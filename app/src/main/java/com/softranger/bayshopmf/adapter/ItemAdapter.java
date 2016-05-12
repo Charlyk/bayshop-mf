@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.util.ViewAnimator;
 
 import java.util.ArrayList;
@@ -20,13 +21,15 @@ import java.util.ArrayList;
  * Created by eduard on 28.04.16.
  *
  */
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<InStockItem> mInStockItems;
+    private ArrayList<T> mInStockItems;
     private OnItemClickListener mOnItemClickListener;
 
-    public ItemAdapter(ArrayList<InStockItem> inStockItems, Context context) {
+    private static final int IN_STOCK_ITEM = 0, PRODUCT = 1;
+
+    public ItemAdapter(ArrayList<T> inStockItems, Context context) {
         mContext = context;
         mInStockItems = inStockItems;
     }
@@ -36,16 +39,45 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-        return new ViewHolder(view);
+    public int getItemViewType(int position) {
+        if (mInStockItems.get(position) instanceof InStockItem) {
+            return IN_STOCK_ITEM;
+        } else if (mInStockItems.get(position) instanceof Product) {
+            return PRODUCT;
+        }
+        return super.getItemViewType(position);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mInStockItem = mInStockItems.get(position);
-        holder.mNameLabel.setText(holder.mInStockItem.getName());
-        holder.mTrackingLabel.setText(holder.mInStockItem.getTrackingNumber());
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = null;
+
+        switch (viewType) {
+            case IN_STOCK_ITEM:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+                return new InStockViewHolder(view);
+            case PRODUCT:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.arrival_list_item, parent, false);
+                return new ProductViewHolder(view);
+        }
+
+        return new InStockViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (mInStockItems.get(position) instanceof InStockItem) {
+            InStockViewHolder inStockViewHolder = (InStockViewHolder) holder;
+            inStockViewHolder.mInStockItem = (InStockItem) mInStockItems.get(position);
+            inStockViewHolder.mNameLabel.setText(inStockViewHolder.mInStockItem.getName());
+            inStockViewHolder.mTrackingLabel.setText(inStockViewHolder.mInStockItem.getTrackingNumber());
+        } else if (mInStockItems.get(position) instanceof Product) {
+            ProductViewHolder productHolder = (ProductViewHolder) holder;
+            productHolder.mProduct = (Product) mInStockItems.get(position);
+            productHolder.mItemName.setText(productHolder.mProduct.getProductName());
+            productHolder.mItemId.setText(productHolder.mProduct.getProductId());
+            productHolder.mTrackingNumber.setText(productHolder.mProduct.getTrackingNumber());
+        }
     }
 
     @Override
@@ -53,7 +85,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         return mInStockItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class InStockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         final TextView mNameLabel;
         final TextView mTrackingLabel;
         final ImageView mImageView;
@@ -61,7 +93,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         InStockItem mInStockItem;
         View mView;
 
-        public ViewHolder(View itemView) {
+        public InStockViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mView.setOnLongClickListener(this);
@@ -119,9 +151,30 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         }
     }
 
+    class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final TextView mItemId;
+        final TextView mItemName;
+        final TextView mTrackingNumber;
+        Product mProduct;
+        public ProductViewHolder(View itemView) {
+            super(itemView);
+            itemView.setOnClickListener(this);
+            mItemId = (TextView) itemView.findViewById(R.id.itemIdLabel);
+            mItemName = (TextView) itemView.findViewById(R.id.itemNameLabel);
+            mTrackingNumber = (TextView) itemView.findViewById(R.id.itemTrackingLabel);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onProductClick(mProduct, getAdapterPosition());
+            }
+        }
+    }
+
     public interface OnItemClickListener {
         void onRowClick(InStockItem inStockItem, int position);
-
         void onIconClick(InStockItem inStockItem, boolean isSelected, int position);
+        void onProductClick(Product product, int position);
     }
 }

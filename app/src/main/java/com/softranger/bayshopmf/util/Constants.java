@@ -5,6 +5,10 @@ package com.softranger.bayshopmf.util;
  */
 public class Constants {
 
+    public static final String USA = "USA";
+    public static final String UK = "UK";
+    public static final String DE = "DE";
+
     public static class ApiResponse {
         public static final int RESPONSE_OK = 1;
         public static final int RESPONSE_FAILED = -1;
@@ -24,5 +28,10 @@ public class Constants {
         public static String getStorageUrl() {
             return URL + STORAGE;
         }
+    }
+
+    public static class ListToShow {
+        public static final String IN_STOCK = "in stock items";
+        public static final String AWAITING_ARRIVAL = "awaiting arrival";
     }
 }

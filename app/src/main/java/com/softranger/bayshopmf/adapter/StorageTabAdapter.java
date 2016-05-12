@@ -3,7 +3,7 @@ package com.softranger.bayshopmf.adapter;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.softranger.bayshopmf.ui.instock.StorageItemsFragment;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class StorageTabAdapter extends FragmentPagerAdapter {
+public class StorageTabAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mFragmentList = new ArrayList<>();
     private List<String> mTitles = new ArrayList<>();

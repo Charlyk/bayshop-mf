@@ -58,4 +58,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="awaiting_arrival">Awaiting arrival</string>
+    <string name="delete_item">Delete item</string>
+    <string name="link">Link</string>
+    <string name="edit_details">Edit details</string>
+    <string name="delete">Delete</string>
+    <string name="state_description">You\'ve ordered the extra photos of this incoming package. You\'ll be notified when the photos of a package will be made</string>
 </resources>

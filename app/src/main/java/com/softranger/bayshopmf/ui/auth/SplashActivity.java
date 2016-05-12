@@ -34,19 +34,19 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startActivity(ImageView imageView, ImageView lettersLogoImage) {
         Intent intent = new Intent(this, LoginActivity.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Pair<View, String> circleLogo = new Pair<View, String>(imageView, getString(R.string.transition_image_view));
-            ActivityOptionsCompat options;
-            if (lettersLogoImage != null) {
-                Pair<View, String> lettersLogo = new Pair<View, String>(lettersLogoImage, "lettersTransitionName");
-                options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, circleLogo, lettersLogo);
-            } else {
-                options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imageView, getString(R.string.transition_image_view));
-            }
-            startActivity(intent, options.toBundle());
-        }
-        else {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Pair<View, String> circleLogo = new Pair<View, String>(imageView, getString(R.string.transition_image_view));
+//            ActivityOptionsCompat options;
+//            if (lettersLogoImage != null) {
+//                Pair<View, String> lettersLogo = new Pair<View, String>(lettersLogoImage, "lettersTransitionName");
+//                options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, circleLogo, lettersLogo);
+//            } else {
+//                options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imageView, getString(R.string.transition_image_view));
+//            }
+//            startActivity(intent, options.toBundle());
+//        }
+//        else {
             startActivity(intent);
-        }
+//        }
     }
 }

@@ -37,8 +37,7 @@ import java.util.Locale;
  */
 public class DetailsFragment extends Fragment implements View.OnClickListener {
 
-    public static final String ACTION_CHECK_IN_PROCESSING = "ACTION CHECK IN PROCESSING";
-    public static final String ACTION_PHOTO_IN_PROCESSING = "ACTION PHOTO IN PROCESSING";
+
     private static final String ITEM_ARG = "ITEM ARGUMENT";
     private MainActivity mActivity;
     private Button mFillDeclaration;
@@ -65,8 +64,8 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         final View view = inflater.inflate(R.layout.fragment_details, container, false);
         GridLayout gridLayout = (GridLayout) view.findViewById(R.id.details_gridLayout);
         mActivity = (MainActivity) getActivity(); // used as context to create views programmatically
-        IntentFilter intentFilter = new IntentFilter(ACTION_CHECK_IN_PROCESSING);
-        intentFilter.addAction(ACTION_PHOTO_IN_PROCESSING);
+        IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
+        intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         loadImages(gridLayout, new ArrayList<String>());
         final InStockItem inStockItem = getArguments().getParcelable(ITEM_ARG);
@@ -84,11 +83,11 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case ACTION_CHECK_IN_PROCESSING:
+                case CheckProductFragment.ACTION_CHECK_IN_PROCESSING:
                     mCheckProduct.setSelected(true);
                     mCheckProduct.setText(mActivity.getString(R.string.check_in_progress));
                     break;
-                case ACTION_PHOTO_IN_PROCESSING:
+                case AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING:
                     mAdditionalPhoto.setSelected(true);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
                     break;
@@ -186,7 +185,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mActivity.setToolbarTitle("", false);
         mActivity.unregisterReceiver(mStatusReceiver);
     }
 }
