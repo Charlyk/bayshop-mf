@@ -6,13 +6,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
@@ -32,6 +36,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
     private ImageView mStorageIcon, mPhotoPreview;
 
     private MainActivity mActivity;
+    private Product mProduct;
 
     public AwaitingArrivalProductFragment() {
         // Required empty public constructor
@@ -54,14 +59,15 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
-        Product product = getArguments().getParcelable(PRODUCT_ARG);
+        mProduct = getArguments().getParcelable(PRODUCT_ARG);
         bindViews(view);
-        mProductId.setText(product.getProductId());
-        mProductName.setText(product.getProductName());
-        mProductTracking.setText(product.getTrackingNumber());
-        mProductDate.setText(product.getDate());
-        mProductPrice.setText(product.getProductPrice());
-        mStorageIcon.setImageResource(getStorageIcon(product.getDeposit()));
+        mActivity.setToolbarTitle(mProduct.getProductId(), true);
+        mProductId.setText(mProduct.getProductId());
+        mProductName.setText(mProduct.getProductName());
+        mProductTracking.setText(mProduct.getTrackingNumber());
+        mProductDate.setText(mProduct.getDate());
+        mProductPrice.setText(mProduct.getProductPrice());
+        mStorageIcon.setImageResource(getStorageIcon(mProduct.getDeposit()));
         return view;
     }
 
@@ -127,13 +133,13 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.awaitingDetailsGoToUrlBtn:
-
+                mActivity.addFragment(WebViewFragment.newInstance(mProduct.getProductUrl()), true);
                 break;
             case R.id.awaitingDetailsEditButton:
-
+                mActivity.addFragment(EditAwaitingFragment.newInstance(mProduct), true);
                 break;
             case R.id.awaitingDetailsDeleteButton:
-
+                deleteItem(mProduct);
                 break;
             case R.id.awaitingDetailsCheckProductBtn:
                 mActivity.addFragment(new CheckProductFragment(), true);
@@ -142,5 +148,34 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                 mActivity.addFragment(new AdditionalPhotoFragment(), true);
                 break;
         }
+    }
+
+    private void deleteItem(Product product) {
+        View deleteDialog = LayoutInflater.from(mActivity).inflate(R.layout.delete_dialog, null, false);
+        Button cancel = (Button) deleteDialog.findViewById(R.id.dialog_cancel_buttonn);
+        Button delete = (Button) deleteDialog.findViewById(R.id.dialog_delete_button);
+        final AlertDialog dialog = new AlertDialog.Builder(mActivity).setView(deleteDialog).create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.onBackPressed();
+                dialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity.unregisterReceiver(mStatusReceiver);
     }
 }

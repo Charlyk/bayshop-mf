@@ -125,7 +125,7 @@ public class StoragesHolderFragment extends Fragment {
                     .productPrice("200$")
                     .productQuantity("1")
                     .date("12 May 2016")
-                    .productUrl("http://google.com")
+                    .productUrl("http://ebay.com")
                     .trackingNumber("213124382127312")
                     .deposit(deposit)
                     .build();

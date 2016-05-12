@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              tools:background="@android:color/black"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="30dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Parcel will be deleted"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:id="@+id/textView13"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/dialog_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorAccent"
+        android:paddingEnd="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingStart="20dp"
+        android:text="Delete"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/dialog_cancel_buttonn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorGreenAction"
+        android:paddingEnd="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingStart="20dp"
+        android:text="Cancel"
+        android:textColor="@android:color/white"/>
+</LinearLayout>

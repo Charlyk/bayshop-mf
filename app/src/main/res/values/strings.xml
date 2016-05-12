@@ -63,4 +63,8 @@
     <string name="edit_details">Edit details</string>
     <string name="delete">Delete</string>
     <string name="state_description">You\'ve ordered the extra photos of this incoming package. You\'ll be notified when the photos of a package will be made</string>
+    <string name="ipad_mini">iPad mini</string>
+    <string name="tracking_number">Tracking number</string>
+    <string name="link_to_the_product_ordered_by_you">Link to the product ordered by you</string>
+    <string name="held_by_prohibition">Held by prohibition</string>
 </resources>

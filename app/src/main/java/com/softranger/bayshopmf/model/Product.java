@@ -91,6 +91,22 @@ public class Product implements Parcelable {
         mProductPrice = productPrice;
     }
 
+    public void setProductId(String productId) {
+        mProductId = productId;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        mTrackingNumber = trackingNumber;
+    }
+
+    public void setDeposit(String deposit) {
+        mDeposit = deposit;
+    }
+
+    public void setDate(String date) {
+        mDate = date;
+    }
+
     @Override
     public int describeContents() {
         return 0;
