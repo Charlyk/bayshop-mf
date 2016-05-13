@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui;
+package com.softranger.bayshopmf.ui.instock;
 
 
 import android.app.Fragment;
@@ -14,6 +14,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.DeclarationListAdapter;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.ui.MainActivity;
 
 import java.util.ArrayList;
 

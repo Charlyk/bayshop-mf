@@ -1,7 +1,8 @@
-package com.softranger.bayshopmf.ui;
+package com.softranger.bayshopmf.ui.inprocessing;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,17 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.InProcessingParcel;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.ui.GalleryActivity;
+import com.softranger.bayshopmf.ui.MainActivity;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InProcessingDetails extends Fragment {
+public class InProcessingDetails extends Fragment implements ImagesAdapter.OnImageClickListener {
 
 
     private static final String PRODUCT_ARG = "in processing arguments";
@@ -71,7 +75,7 @@ public class InProcessingDetails extends Fragment {
         listItems.addAll(processingParcel.getProducts());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.inProcessingDetailsList);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        InProcessingDetailsAdapter adapter = new InProcessingDetailsAdapter(listItems);
+        InProcessingDetailsAdapter adapter = new InProcessingDetailsAdapter(listItems, this);
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -99,5 +103,13 @@ public class InProcessingDetails extends Fragment {
             images.add(R.drawable.computer_mac_image);
         }
         return images;
+    }
+
+    @Override
+    public void onImageClick(ArrayList<Integer> images, int position) {
+        Intent intent = new Intent(mActivity, GalleryActivity.class);
+        intent.putExtra("images", images);
+        intent.putExtra("position", position);
+        mActivity.startActivity(intent);
     }
 }

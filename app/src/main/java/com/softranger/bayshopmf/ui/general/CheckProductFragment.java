@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 
@@ -21,6 +22,7 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
 
     public static final String ACTION_CHECK_IN_PROCESSING = "ACTION CHECK IN PROCESSING";
     public static final String ACTION_CANCEL_CHECK_PRODUCT = "ACTION CANCEL CHECK PRODUCT";
+    private static final String PRODUCT_ARG = "PRODUCT ARGUMENT";
 
     private EditText mCommentInput;
     private Button mLeaveComment;
@@ -30,6 +32,13 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
         // Required empty public constructor
     }
 
+    public static CheckProductFragment newInstance(Product product) {
+        Bundle args = new Bundle();
+        args.putParcelable(PRODUCT_ARG, product);
+        CheckProductFragment fragment = new CheckProductFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,8 +49,6 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
         mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
         Button confirm = (Button) view.findViewById(R.id.check_product_confirmBtn);
-        Button cancel = (Button) view.findViewById(R.id.check_product_cancelButton);
-        cancel.setOnClickListener(this);
         mLeaveComment.setOnClickListener(this);
         confirm.setOnClickListener(this);
         return view;
@@ -61,12 +68,6 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.check_product_confirmBtn: {
                 Intent intent = new Intent(ACTION_CHECK_IN_PROCESSING);
-                mActivity.sendBroadcast(intent);
-                mActivity.onBackPressed();
-                break;
-            }
-            case R.id.check_product_cancelButton: {
-                Intent intent = new Intent(ACTION_CANCEL_CHECK_PRODUCT);
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
                 break;

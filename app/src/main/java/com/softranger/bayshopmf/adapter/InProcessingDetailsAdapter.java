@@ -26,9 +26,11 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private static final int PARCEL = 0, PRODUCT = 1;
     private ArrayList<Object> mItems;
+    private ImagesAdapter.OnImageClickListener mOnImageClickListener;
 
-    public InProcessingDetailsAdapter(ArrayList<Object> items) {
+    public InProcessingDetailsAdapter(ArrayList<Object> items, ImagesAdapter.OnImageClickListener onImageClickListener) {
         mItems = items;
+        mOnImageClickListener = onImageClickListener;
     }
 
     @Override
@@ -88,7 +90,9 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             itemHolder.mProductName.setText(itemHolder.mProduct.getProductName());
             itemHolder.mPrice.setText(itemHolder.mProduct.getProductPrice());
             itemHolder.mItemCount.setText(itemHolder.mProduct.getProductQuantity());
-            itemHolder.mPhotosList.setAdapter(new ImagesAdapter(itemHolder.mProduct));
+            ImagesAdapter imagesAdapter = new ImagesAdapter(itemHolder.mProduct.getImages(), R.layout.product_image_list_item);
+            imagesAdapter.setOnImageClickListener(mOnImageClickListener);
+            itemHolder.mPhotosList.setAdapter(imagesAdapter);
         }
     }
 

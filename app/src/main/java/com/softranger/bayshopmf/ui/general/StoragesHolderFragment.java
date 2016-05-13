@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.instock;
+package com.softranger.bayshopmf.ui.general;
 
 
 import android.app.Fragment;

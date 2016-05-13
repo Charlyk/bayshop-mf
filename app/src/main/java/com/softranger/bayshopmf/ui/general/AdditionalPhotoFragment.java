@@ -39,8 +39,6 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
         mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
         Button confirm = (Button) view.findViewById(R.id.check_product_confirmBtn);
-        Button cancel = (Button) view.findViewById(R.id.check_product_cancelButton);
-        cancel.setOnClickListener(this);
         mLeaveComment.setOnClickListener(this);
         confirm.setOnClickListener(this);
         return view;
@@ -63,11 +61,6 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
                 break;
-            }
-            case R.id.check_product_cancelButton: {
-                Intent intent = new Intent(ACTION_CANCEL_PHOTO_REQUEST);
-                mActivity.sendBroadcast(intent);
-                mActivity.onBackPressed();
             }
         }
     }

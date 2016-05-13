@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.softranger.bayshopmf.ui.instock.StorageItemsFragment;
+import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
 
 import java.util.ArrayList;
 import java.util.List;

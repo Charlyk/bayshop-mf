@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui;
+package com.softranger.bayshopmf.ui.awaitingarrival;
 
 
 import android.app.Fragment;
@@ -16,12 +16,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.ui.general.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.general.CheckProductFragment;
+import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 /**

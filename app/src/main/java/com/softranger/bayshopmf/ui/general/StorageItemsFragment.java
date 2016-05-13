@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.instock;
+package com.softranger.bayshopmf.ui.general;
 
 
 import android.content.BroadcastReceiver;
@@ -24,9 +24,10 @@ import com.softranger.bayshopmf.model.InProcessingParcel;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.AwaitingArrivalProductFragment;
-import com.softranger.bayshopmf.ui.InProcessingDetails;
+import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
+import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
 import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 

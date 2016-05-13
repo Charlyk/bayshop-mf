@@ -4,7 +4,7 @@
              android:layout_height="match_parent"
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:background="#FFDEDEDE"
-             tools:context="com.softranger.bayshopmf.ui.InProcessingDetails">
+             tools:context=".ui.inprocessing.InProcessingDetails">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/inProcessingDetailsList"

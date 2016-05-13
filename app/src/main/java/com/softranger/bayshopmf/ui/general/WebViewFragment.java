@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui;
+package com.softranger.bayshopmf.ui.general;
 
 
 import android.app.Fragment;
@@ -14,6 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.ui.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.

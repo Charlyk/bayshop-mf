@@ -5,13 +5,13 @@
             android:background="@android:color/white">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:clipToPadding="false"
-        android:padding="16dp"
-        tools:context=".ui.general.CheckProductFragment"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:layout_height="wrap_content">
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".ui.general.CheckProductFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,11 +41,11 @@
 
                 <TextView
                     android:id="@+id/check_productPrice"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginTop="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/check_product_cost"/>
+                    android:layout_marginTop="16dp"
+                    android:text="@string/check_product_cost"
+                    android:textColor="@color/colorAccent"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -60,37 +60,22 @@
         <EditText
             android:id="@+id/check_product_commentInput"
             android:layout_width="match_parent"
-            android:padding="5dp"
             android:layout_height="200dp"
-            android:visibility="gone"
             android:background="@drawable/edit_text_rectangle_bg"
             android:gravity="top"
-            android:inputType="textMultiLine"/>
+            android:inputType="textMultiLine"
+            android:padding="5dp"
+            android:visibility="gone"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/check_product_confirmBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/additional_btns_bg"
-                android:text="@string/confirm"
-                android:textColor="@android:color/white"/>
-
-            <Button
-                android:id="@+id/check_product_cancelButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/additional_btns_bg"
-                android:text="@string/cancel"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+        <Button
+            android:id="@+id/check_product_confirmBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/additional_btns_bg"
+            android:text="@string/confirm"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
 </ScrollView>

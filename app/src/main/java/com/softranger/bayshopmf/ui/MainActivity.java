@@ -20,8 +20,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
-import com.softranger.bayshopmf.ui.auth.SplashActivity;
-import com.softranger.bayshopmf.ui.instock.StoragesHolderFragment;
+import com.softranger.bayshopmf.ui.general.StoragesHolderFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

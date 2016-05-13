@@ -10,7 +10,11 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,11 +23,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.ui.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.general.CheckProductFragment;
-import com.softranger.bayshopmf.ui.DeclarationFragment;
 import com.softranger.bayshopmf.ui.MainActivity;
 
 import java.text.SimpleDateFormat;
@@ -35,7 +40,7 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailsFragment extends Fragment implements View.OnClickListener {
+public class DetailsFragment extends Fragment implements View.OnClickListener, ImagesAdapter.OnImageClickListener {
 
 
     private static final String ITEM_ARG = "ITEM ARGUMENT";
@@ -43,6 +48,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     private Button mFillDeclaration;
     private Button mCheckProduct;
     private Button mAdditionalPhoto;
+    private RecyclerView mRecyclerView;
     private InStockDetailed mInStockDetailed;
 
     public DetailsFragment() {
@@ -62,14 +68,16 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_details, container, false);
-        GridLayout gridLayout = (GridLayout) view.findViewById(R.id.details_gridLayout);
         mActivity = (MainActivity) getActivity(); // used as context to create views programmatically
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.inStockDetailsImageList);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false));
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
-        loadImages(gridLayout, new ArrayList<String>());
+        loadImages(new ArrayList<String>());
         final InStockItem inStockItem = getArguments().getParcelable(ITEM_ARG);
         mInStockDetailed = getItemDetails(inStockItem);
         new Handler().postDelayed(new Runnable() {
@@ -142,39 +150,16 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     /**
      * This method will add images to the grid layout starting from third row
      * (first two rows are in use by additional buttons and parcel details)
-     * @param gridLayout to add the views in
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void loadImages(GridLayout gridLayout, ArrayList<String> imagesUrl) {
-        // get maximal column numbers from layout
-        final int columns = gridLayout.getColumnCount();
-        gridLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        final int widthAndHeight = gridLayout.getMeasuredWidth() / 2;
-        int startRow = 2; // first two rows are in use by top buttons and parcel details
-        // TODO: 5/5/16 replace 12 with image list size
-        for (int i = 0, c = 0, r = startRow; i < 5 ; i++, c++) {
-
-            // jump to a new row once we get to column count limit
-            if (c == columns) {
-                c = 0;
-                r++;
-            }
-
-            // create a layout params object and set parameters to add a new view to the layout
-            GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(new ViewGroup.LayoutParams(widthAndHeight, widthAndHeight));
-            // set row number for current view
-            layoutParams.rowSpec = GridLayout.spec(r);
-            float weight = 1.0f; // set the weight for newer android version
-            // set column number, layout gravity and column weight
-            layoutParams.columnSpec = GridLayout.spec(c, GridLayout.FILL, weight);
-            // create any view and set layout params for them
-            ImageView button = new ImageView(mActivity);
-            layoutParams.setMargins(5, 5, 5, 5);
-            button.setImageResource(R.drawable.example_image);
-            button.setScaleType(ImageView.ScaleType.FIT_XY);
-            button.setLayoutParams(layoutParams);
-            gridLayout.addView(button);
+    private void loadImages(ArrayList<String> imagesUrl) {
+        ArrayList<Integer> images = new ArrayList<>();
+        for (int i = 0; i < 5 ; i++) {
+            images.add(R.drawable.computer_mac_image);
         }
+        ImagesAdapter adapter = new ImagesAdapter(images, R.layout.in_stock_detailed_image);
+        adapter.setOnImageClickListener(this);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -196,5 +181,13 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     public void onDestroyView() {
         super.onDestroyView();
         mActivity.unregisterReceiver(mStatusReceiver);
+    }
+
+    @Override
+    public void onImageClick(ArrayList<Integer> images, int position) {
+        Intent intent = new Intent(mActivity, GalleryActivity.class);
+        intent.putExtra("images", images);
+        intent.putExtra("position", position);
+        mActivity.startActivity(intent);
     }
 }
