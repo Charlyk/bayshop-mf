@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.StorageTabAdapter;
-import com.softranger.bayshopmf.model.InProcessingProduct;
+import com.softranger.bayshopmf.model.InProcessingParcel;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.ui.MainActivity;
@@ -123,15 +123,15 @@ public class StoragesHolderFragment extends Fragment {
         }
     }
 
-    private ArrayList<InProcessingProduct> getProcessingProducts(String deposit) {
-        ArrayList<InProcessingProduct> processingProducts = new ArrayList<>();
+    private ArrayList<InProcessingParcel> getProcessingProducts(String deposit) {
+        ArrayList<InProcessingParcel> processingProducts = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            InProcessingProduct product = new InProcessingProduct.Builder()
+            InProcessingParcel product = (InProcessingParcel) new InProcessingParcel.Builder()
+                    .processingProgress(i + 1)
                     .productName("Laptop din SUA")
                     .parcelId("PUS213342432423")
                     .deposit(deposit)
                     .weight("3.2kg")
-                    .processingProgress(i + 1)
                     .createdDate("23 Jan 2016, 10:35")
                     .build();
             processingProducts.add(product);

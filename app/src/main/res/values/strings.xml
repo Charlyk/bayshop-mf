@@ -31,7 +31,7 @@
     <string name="tracking">Tracking</string>
     <string name="weight">"Weight: "</string>
     <string name="date">Date</string>
-    <string name="price">Price</string>
+    <string name="price">Price:</string>
     <string name="check_product_cost">The service cost is $10</string> <!-- TODO remove price and set it from server -->
     <string name="check_product_description">During product checking at the warehouse you allow to open the parcel and remove the original package. If we find the defect, you will receive the automatic notification about it.</string>
     <string name="additional_photo_description">We provide 2 product photos for free. BayShop staff will take them, when the parcel is delivered to the warehouse.\n\nYou can order 8 additional photos if needed.</string>
@@ -45,7 +45,7 @@
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="total_price">Total price</string>
+    <string name="total_price">Total price:</string>
     <string name="units_quantity">Units quantity</string>
     <string name="product_name">Product name</string>
     <string name="url_to_the_product">Url to the product</string>
@@ -68,7 +68,11 @@
     <string name="created_on">"Created on: "</string>
     <string name="complete">" complete"</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel">Cancel</string>
+    <string name="shipping_address">Shipping address:</string>
+    <string name="goods_price">Goods price:</string>
+    <string name="customs_clearance">Customs clearance:</string>
+    <string name="shipping_price">Shipping price:</string>
+    <string name="parcel_components">Parcel components</string>
+    <string name="item">Item:</string>
 </resources>

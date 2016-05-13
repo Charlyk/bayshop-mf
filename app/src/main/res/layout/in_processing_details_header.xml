@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:cardElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/inProcessingDetailsStorageIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerInside"
+                    tools:src="@mipmap/ic_uk_flag"/>
+
+                <TextView
+                    android:id="@+id/inProcessingDetailsParcelIdLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"
+                    tools:text="MF3121241412"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffbdbdbd"/>
+
+            <TextView
+                android:id="@+id/inProcessingDetailsShippingAddressTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:drawableLeft="@mipmap/ic_shipping_address"
+                android:drawableStart="@mipmap/ic_shipping_address"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/shipping_address"/>
+
+            <TextView
+                android:id="@+id/inProcessingDetailsShippingAddressLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                tools:text="Eduard Albu\nFloriolor 16/1 ap 106\nChisinau, Moldova\nMD-2001\n(79) 466 284"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffbdbdbd"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:stretchColumns="0">
+
+                <TableRow>
+                    <TextView
+                        android:text="@string/goods_price"
+                        android:id="@+id/inProcessingDetailsGoodsPriceTitle"
+                        android:layout_column="0"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        tools:text="$ 200"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="end"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/inProcessingDetailsGoodsPriceLabel"
+                        android:layout_column="1"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:text="@string/customs_clearance"
+                        android:id="@+id/inProcessingDetailsCustomsClearanceTitle"
+                        android:layout_marginBottom="5dp"
+                        android:layout_column="0"/>
+
+                    <TextView
+                        tools:text="$ 2.5"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="end"
+                        android:id="@+id/inProcessingDetailsCustomsClearanceLabel"
+                        android:layout_column="1"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:text="@string/shipping_price"
+                        android:id="@+id/inProcessingDetailsShippingPriceTitle"
+                        android:layout_marginBottom="5dp"
+                        android:layout_column="0"/>
+
+                    <TextView
+                        tools:text="$ 25.00"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="end"
+                        android:id="@+id/inProcessingDetailsShippingPriceLabel"
+                        android:layout_column="1"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:text="@string/total_price"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/inProcessingDetailsTotalPriceTitle"
+                        android:layout_column="0"/>
+
+                    <TextView
+                        tools:text="$ 280"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="end"
+                        android:id="@+id/inProcessingDetailsTotalPriceLabel"
+                        android:layout_column="1"/>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Shipping by:"
+                android:drawableLeft="@mipmap/ic_shipping_tracking"
+                android:drawableStart="@mipmap/ic_shipping_tracking"
+                android:drawablePadding="10dp"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:stretchColumns="0">
+
+            <TableRow>
+                <TextView
+                    tools:text="BayShop AirPost"
+                    android:id="@+id/inProcessingDetailsShippingByLabel"
+                    android:textColor="@android:color/black"
+                    android:layout_column="0"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    tools:text="tracking21323122432"
+                    android:textColor="@color/colorAccent"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/inProcessingDetailsShippingByTracking"
+                    android:layout_column="1"/>
+            </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:text="@string/parcel_components"/>
+</LinearLayout>

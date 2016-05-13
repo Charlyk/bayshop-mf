@@ -2,7 +2,14 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@android:color/white"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:background="#FFDEDEDE"
              tools:context="com.softranger.bayshopmf.ui.InProcessingDetails">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/inProcessingDetailsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="6dp"
+        android:clipToPadding="false"/>
 </FrameLayout>

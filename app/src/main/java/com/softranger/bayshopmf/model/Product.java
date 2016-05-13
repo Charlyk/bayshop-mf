@@ -3,6 +3,8 @@ package com.softranger.bayshopmf.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by Eduard Albu on 5/10/16, 05, 2016
  * for project BayShop MF
@@ -17,6 +19,7 @@ public class Product implements Parcelable {
     private String mTrackingNumber;
     private String mDeposit;
     private String mDate;
+    private ArrayList<Integer> mImages;
 
     private Product() {}
 
@@ -29,6 +32,7 @@ public class Product implements Parcelable {
         mTrackingNumber = in.readString();
         mDeposit = in.readString();
         mDate = in.readString();
+        in.readList(mImages, Integer.class.getClassLoader());
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -107,6 +111,14 @@ public class Product implements Parcelable {
         mDate = date;
     }
 
+    public ArrayList<Integer> getImages() {
+        return mImages;
+    }
+
+    public void setImages(ArrayList<Integer> images) {
+        mImages = images;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -122,6 +134,7 @@ public class Product implements Parcelable {
         dest.writeString(mTrackingNumber);
         dest.writeString(mDeposit);
         dest.writeString(mDate);
+        dest.writeList(mImages);
     }
 
     public static class Builder {
@@ -133,6 +146,7 @@ public class Product implements Parcelable {
         private String mTrackingNumber;
         private String mDeposit;
         private String mDate;
+        private ArrayList<Integer> mImages;
 
         public Builder productId(String productId) {
             mProductId = productId;
@@ -174,6 +188,11 @@ public class Product implements Parcelable {
             return this;
         }
 
+        public Builder images(ArrayList<Integer> images) {
+            mImages = images;
+            return this;
+        }
+
         public Product build() {
             Product product = new Product();
             product.mProductId = this.mProductId;
@@ -184,6 +203,7 @@ public class Product implements Parcelable {
             product.mTrackingNumber = this.mTrackingNumber;
             product.mDeposit = this.mDeposit;
             product.mDate = this.mDate;
+            product.mImages = this.mImages;
             return product;
         }
     }
