@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.add_packageButtonIcon:
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 addFragment(new AddAwaitingFragment(), true);
+                setToolbarTitle(getString(R.string.add_awaiting_package), true);
                 break;
         }
     }

@@ -68,6 +68,6 @@
             android:textStyle="bold"
             android:layout_marginLeft="32dp"
             android:textColor="@android:color/white"
-            android:text="Add awaiting package"/>
+            android:text="@string/add_awaiting_package"/>
     </LinearLayout>
 </RelativeLayout>

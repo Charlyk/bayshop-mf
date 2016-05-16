@@ -80,4 +80,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_parcel">Add parcel</string>
     <string name="add_awaiting_alert">It\'s important to enter the tracking number, there is no use in parcel processing without it. That\'s alright if you don\'t know the tracking number, your parcel won\'t be lost.</string>
+    <string name="add_awaiting_package">Add awaiting package</string>
 </resources>
