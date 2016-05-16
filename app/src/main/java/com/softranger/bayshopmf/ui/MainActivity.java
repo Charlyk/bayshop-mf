@@ -16,14 +16,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
+import com.softranger.bayshopmf.ui.general.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.StoragesHolderFragment;
 import com.softranger.bayshopmf.util.Constants;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     public ActionBarDrawerToggle mDrawerToggle;
     public DrawerLayout mDrawerLayout;
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        LinearLayout addAwaiting = (LinearLayout) navigationView.getHeaderView(0).findViewById(R.id.add_packageButtonIcon);
+        addAwaiting.setOnClickListener(this);
 
         replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
         selectedFragment = SelectedFragment.IN_STOCK;
@@ -168,6 +172,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.add_packageButtonIcon:
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                addFragment(new AddAwaitingFragment(), true);
+                break;
         }
     }
 

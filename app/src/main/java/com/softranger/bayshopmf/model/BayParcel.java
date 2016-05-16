@@ -19,6 +19,7 @@ public class BayParcel implements Parcelable {
     protected String mDeposit;
     protected String mShippingBy;
     protected String mTrackingNumber;
+    protected String mUrl;
     protected Address mAddress;
     protected ArrayList<Product> mProducts;
 
@@ -34,6 +35,7 @@ public class BayParcel implements Parcelable {
         mDeposit = in.readString();
         mShippingBy = in.readString();
         mTrackingNumber = in.readString();
+        mUrl = in.readString();
         mAddress = in.readParcelable(Address.class.getClassLoader());
         in.readList(mProducts, Product.class.getClassLoader());
     }
@@ -106,6 +108,14 @@ public class BayParcel implements Parcelable {
         mTrackingNumber = trackingNumber;
     }
 
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String url) {
+        mUrl = url;
+    }
+
     public Address getAddress() {
         return mAddress;
     }
@@ -136,6 +146,7 @@ public class BayParcel implements Parcelable {
         dest.writeString(mDeposit);
         dest.writeString(mShippingBy);
         dest.writeString(mTrackingNumber);
+        dest.writeString(mUrl);
         dest.writeParcelable(mAddress, flags);
         dest.writeList(mProducts);
     }
@@ -148,6 +159,7 @@ public class BayParcel implements Parcelable {
         protected String mDeposit;
         protected String mShippingBy;
         protected String mTrackingNumber;
+        protected String mUrl;
         protected Address mAddress;
         protected ArrayList<Product> mProducts;
 
@@ -186,6 +198,11 @@ public class BayParcel implements Parcelable {
             return this;
         }
 
+        public Builder url(String url) {
+            mUrl =url;
+            return this;
+        }
+
         public Builder address(Address address) {
             mAddress = address;
             return this;
@@ -204,6 +221,7 @@ public class BayParcel implements Parcelable {
             bayParcel.mWeight = this.mWeight;
             bayParcel.mDeposit = this.mDeposit;
             bayParcel.mShippingBy = this.mShippingBy;
+            bayParcel.mUrl = this.mUrl;
             bayParcel.mAddress = this.mAddress;
             bayParcel.mProducts = this.mProducts;
             bayParcel.mTrackingNumber = this.mTrackingNumber;
