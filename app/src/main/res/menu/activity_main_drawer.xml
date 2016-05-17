@@ -12,8 +12,12 @@
             android:icon="@mipmap/in_stock"
             android:title="@string/in_stock"/>
         <item
+            android:id="@+id/nav_inForming"
+            android:icon="@mipmap/ic_in_forming"
+            android:title="@string/in_forming"/>
+        <item
             android:id="@+id/nav_inProcessing"
-            android:icon="@mipmap/in_processing"
+            android:icon="@mipmap/ic_in_processing"
             android:title="@string/in_processing"/>
         <item
             android:id="@+id/nav_awaitingSending"
