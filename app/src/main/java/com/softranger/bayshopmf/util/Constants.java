@@ -5,20 +5,23 @@ package com.softranger.bayshopmf.util;
  */
 public class Constants {
 
-    public static final String USA = "USA";
-    public static final String UK = "UK";
-    public static final String DE = "DE";
+    public static final String USA = "usa";
+    public static final String UK = "uk";
+    public static final String DE = "de";
 
     public static class ApiResponse {
         public static final int RESPONSE_OK = 1;
         public static final int RESPONSE_FAILED = -1;
         public static final int RESPONSE_ERROR = 0;
-        public static final int ARRAY_IS_EMPTY = 2;
+        public static final int RESONSE_UNAUTHORIZED = -2;
     }
 
     public static class Api {
         private static final String URL = "http://md.bay-dev.tk/api/";
         private static final String STORAGE = "storage/";
+        private static final String MF_LIST = "mf-list/";
+        private static final String IN_STOCK = "in-stock/";
+        private static final String WAITING_MF = "waiting-mf-list/";
         private static final String AUTH = "auth";
 
         public static String getAuthUrl() {
@@ -27,6 +30,14 @@ public class Constants {
 
         public static String getStorageUrl() {
             return URL + STORAGE;
+        }
+
+        public static String getWaitingMf(String storage) {
+            return URL + WAITING_MF + storage;
+        }
+
+        public static String getInStockItems(String storage) {
+            return URL + MF_LIST + IN_STOCK + storage;
         }
     }
 

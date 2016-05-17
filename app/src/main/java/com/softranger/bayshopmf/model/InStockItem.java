@@ -13,6 +13,7 @@ public class InStockItem implements Parcelable {
     protected String mName;
     protected String mTrackingNumber;
     protected String mDeposit;
+    protected String mParcelId;
 
     public InStockItem() {
 
@@ -23,6 +24,7 @@ public class InStockItem implements Parcelable {
         mName = in.readString();
         mTrackingNumber = in.readString();
         hasDeclaration = in.readByte() != 0;
+        mParcelId = in.readString();
     }
 
     public static final Creator<InStockItem> CREATOR = new Creator<InStockItem>() {
@@ -77,6 +79,14 @@ public class InStockItem implements Parcelable {
         mDeposit = deposit;
     }
 
+    public String getParcelId() {
+        return mParcelId;
+    }
+
+    public void setParcelId(String parcelId) {
+        mParcelId = parcelId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -88,6 +98,7 @@ public class InStockItem implements Parcelable {
         parcel.writeString(mName);
         parcel.writeString(mTrackingNumber);
         parcel.writeByte((byte) (hasDeclaration ? 1 : 0));
+        parcel.writeString(mParcelId);
     }
 
     public static class Builder {
@@ -96,6 +107,7 @@ public class InStockItem implements Parcelable {
         protected String mName;
         protected String mTrackingNumber;
         protected String mDeposit;
+        protected String mParcelId;
 
         public Builder isSelected(boolean isSelected) {
             this.isSelected = isSelected;
@@ -122,6 +134,11 @@ public class InStockItem implements Parcelable {
             return this;
         }
 
+        public Builder parcelId(String parcelId) {
+            mParcelId = parcelId;
+            return this;
+        }
+
         public InStockItem build() {
             InStockItem inStockItem = new InStockItem();
             inStockItem.setName(mName);
@@ -129,6 +146,7 @@ public class InStockItem implements Parcelable {
             inStockItem.setSelected(this.isSelected);
             inStockItem.setHasDeclaration(this.hasDeclaration);
             inStockItem.setDeposit(mDeposit);
+            inStockItem.mParcelId = this.mParcelId;
             return inStockItem;
         }
     }

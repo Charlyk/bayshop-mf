@@ -3,6 +3,7 @@ package com.softranger.bayshopmf.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -17,12 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.general.AddAwaitingFragment;
-import com.softranger.bayshopmf.ui.general.StoragesHolderFragment;
+import com.softranger.bayshopmf.ui.general.StorageHolderFragment;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Toolbar mToolbar;
     public FloatingActionButton mActionButton;
     private static SelectedFragment selectedFragment;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +43,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         supportPostponeEnterTransition();
         supportStartPostponedEnterTransition();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ActivityCompat.finishAfterTransition(LoginActivity.instance);
-            }
-        }, 1000);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -65,13 +62,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
+        mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         LinearLayout addAwaiting = (LinearLayout) navigationView.getHeaderView(0).findViewById(R.id.add_packageButtonIcon);
         addAwaiting.setOnClickListener(this);
 
-        replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
+        replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
         selectedFragment = SelectedFragment.IN_STOCK;
+    }
+
+    public void toggleLoadingProgress(boolean show) {
+        mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void addFragment(Fragment fragment, boolean addToBackStack) {
@@ -103,6 +106,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, 300);
     }
 
+    public void logOut() {
+        Application.getInstance().setLoginStatus(false);
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -125,17 +135,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_inStock:
-                replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
+                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
                 selectedFragment = SelectedFragment.IN_STOCK;
                 mActionButton.show();
                 break;
             case R.id.nav_waitingArrival:
-                replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.AWAITING_ARRIVAL));
+                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.AWAITING_ARRIVAL));
                 selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
                 mActionButton.hide();
                 break;
             case R.id.nav_inProcessing:
-                replaceFragment(StoragesHolderFragment.newInstance(Constants.ListToShow.IN_PROCESSING));
+                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_PROCESSING));
                 selectedFragment = SelectedFragment.IN_PROCESSING;
                 mActionButton.hide();
         }

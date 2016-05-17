@@ -3,6 +3,10 @@
           package="com.softranger.bayshopmf">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 
     <application
         android:name=".util.Application"
@@ -11,11 +15,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".ui.auth.SplashActivity"
             android:screenOrientation="portrait"
@@ -26,11 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.auth.LoginActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.GalleryActivity">
-        </activity>
-    </application>
 
+        <activity android:name=".ui.GalleryActivity"/>
+    </application>
 </manifest>

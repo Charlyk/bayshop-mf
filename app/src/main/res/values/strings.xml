@@ -81,4 +81,11 @@
     <string name="add_parcel">Add parcel</string>
     <string name="add_awaiting_alert">It\'s important to enter the tracking number, there is no use in parcel processing without it. That\'s alright if you don\'t know the tracking number, your parcel won\'t be lost.</string>
     <string name="add_awaiting_package">Add awaiting package</string>
+    <string name="enter_valid_email">Please specify a valid email address</string>
+    <string name="enter_valid_password">Please enter your password</string>
+    <string name="unknown_error">Something went wrong</string>
+    <string name="remember_that_we_have_three_awesome_services_for_each_parcel_you_are_going_to_receive">Remember that we have three awesome services for each parcel you are going to receive</string>
+    <string name="you_can_combine_several_parcels_in_one">You can combine several parcels in one</string>
+    <string name="you_can_order_product_checking">You can order product checking</string>
+    <string name="and_receive_the_additional_photos">And receive the additional photos</string>
 </resources>

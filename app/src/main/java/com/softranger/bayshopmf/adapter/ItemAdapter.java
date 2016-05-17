@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,17 +24,17 @@ import java.util.ArrayList;
  * Created by eduard on 28.04.16.
  *
  */
-public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<T> mInStockItems;
+    private ArrayList<Object> mInStockItems;
     private OnItemClickListener mOnItemClickListener;
 
-    private static final int IN_STOCK_ITEM = 0, PRODUCT = 1, IN_PROCESSING = 2;
+    private static final int HEADER = -1, IN_STOCK_ITEM = 0, PRODUCT = 1, IN_PROCESSING = 2;
 
-    public ItemAdapter(ArrayList<T> inStockItems, Context context) {
+    public ItemAdapter(Context context) {
         mContext = context;
-        mInStockItems = inStockItems;
+        mInStockItems = new ArrayList<>();
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -49,12 +50,12 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else if (mInStockItems.get(position) instanceof InProcessingParcel) {
             return IN_PROCESSING;
         }
-        return super.getItemViewType(position);
+        return HEADER;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
 
         switch (viewType) {
             case IN_STOCK_ITEM:
@@ -66,9 +67,10 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case IN_PROCESSING:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_procesing_list_item, parent, false);
                 return new InProcessingViewHolder(view);
+            default:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.additional_services_layout, parent, false);
+                return new HeaderViewHolder(view);
         }
-
-        return new InStockViewHolder(view);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (mInStockItems.get(position) instanceof InStockItem) {
             InStockViewHolder inStockViewHolder = (InStockViewHolder) holder;
             inStockViewHolder.mInStockItem = (InStockItem) mInStockItems.get(position);
-            inStockViewHolder.mNameLabel.setText(inStockViewHolder.mInStockItem.getName());
+            inStockViewHolder.mNameLabel.setText(inStockViewHolder.mInStockItem.getParcelId());
             inStockViewHolder.mTrackingLabel.setText(inStockViewHolder.mInStockItem.getTrackingNumber());
         } else if (mInStockItems.get(position) instanceof Product) {
             ProductViewHolder productHolder = (ProductViewHolder) holder;
@@ -99,6 +101,12 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         return mInStockItems.size();
+    }
+
+    public void refreshList(ArrayList<Object> objects) {
+        mInStockItems.clear();
+        mInStockItems.addAll(objects);
+        notifyDataSetChanged();
     }
 
     class InStockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -211,10 +219,51 @@ public class ItemAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final LinearLayout mCombineBtn;
+        final LinearLayout mCheckBtn;
+        final LinearLayout mPhotosBtn;
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+            mCombineBtn = (LinearLayout) itemView.findViewById(R.id.inStockAddsCombineParcelsBtn);
+            mCheckBtn = (LinearLayout) itemView.findViewById(R.id.inStockAddsOrderCheckBtn);
+            mPhotosBtn = (LinearLayout) itemView.findViewById(R.id.inStockAddsAdditionalPhotosBtn);
+
+            mCombineBtn.setOnClickListener(this);
+            mCheckBtn.setOnClickListener(this);
+            mPhotosBtn.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.inStockAddsCombineParcelsBtn:
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onCombineClick();
+                    }
+                    break;
+                case R.id.inStockAddsOrderCheckBtn:
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onCheckOrderClick();
+                    }
+                    break;
+                case R.id.inStockAddsAdditionalPhotosBtn:
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onAdditionalPhotosClick();
+                    }
+                    break;
+            }
+        }
+    }
+
     public interface OnItemClickListener {
         void onRowClick(InStockItem inStockItem, int position);
         void onIconClick(InStockItem inStockItem, boolean isSelected, int position);
         void onProductClick(Product product, int position);
         void onInProcessingProductClick(InProcessingParcel inProcessingParcel, int position);
+        void onCombineClick();
+        void onCheckOrderClick();
+        void onAdditionalPhotosClick();
     }
 }

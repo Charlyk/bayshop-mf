@@ -3,7 +3,12 @@ package com.softranger.bayshopmf.ui.general;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -18,27 +23,32 @@ import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Response;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoragesHolderFragment extends Fragment {
+public class StorageHolderFragment extends Fragment {
 
     private MainActivity mActivity;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    private static String listToShow;
+    public static String listToShow;
 
-    public StoragesHolderFragment() {
+    public StorageHolderFragment() {
         // Required empty public constructor
     }
 
-    public static StoragesHolderFragment newInstance(@NonNull String listToShow) {
+    public static StorageHolderFragment newInstance(@NonNull String listToShow) {
         Bundle args = new Bundle();
         args.putString("list to show", listToShow);
-        StoragesHolderFragment fragment = new StoragesHolderFragment();
+        StorageHolderFragment fragment = new StorageHolderFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,15 +63,15 @@ public class StoragesHolderFragment extends Fragment {
         listToShow = getArguments().getString("list to show");
         switch (listToShow) {
             case Constants.ListToShow.IN_STOCK:
-                initializeTabs(StorageItemsFragment.newInstance(getItems(Constants.USA), Constants.USA),
-                        StorageItemsFragment.newInstance(getItems(Constants.UK), Constants.UK),
-                        StorageItemsFragment.newInstance(getItems(Constants.DE), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.USA), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.UK), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.DE), Constants.USA));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_stock), true);
                 break;
             case Constants.ListToShow.AWAITING_ARRIVAL:
-                initializeTabs(StorageItemsFragment.newInstance(getAwaitingProducts(Constants.USA), Constants.USA),
-                        StorageItemsFragment.newInstance(getAwaitingProducts(Constants.UK), Constants.UK),
-                        StorageItemsFragment.newInstance(getAwaitingProducts(Constants.DE), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.USA), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.UK), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.DE), Constants.USA));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_arrival), true);
                 break;
             case Constants.ListToShow.IN_PROCESSING:
@@ -122,6 +132,59 @@ public class StoragesHolderFragment extends Fragment {
                 break;
         }
     }
+
+    private Handler mResponseHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        boolean error = response.getBoolean("error");
+                        if (!error) {
+                            switch (listToShow) {
+                                case Constants.ListToShow.IN_STOCK:
+
+                                    break;
+                                case Constants.ListToShow.AWAITING_ARRIVAL:
+
+                                    break;
+                                case Constants.ListToShow.IN_PROCESSING:
+
+                                    break;
+                            }
+                        } else {
+                            String message = response.optString("message", getString(R.string.unknown_error));
+                            Snackbar.make(mViewPager, message, Snackbar.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        mActivity.toggleLoadingProgress(false);
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    Response response = (Response) msg.obj;
+                    String message = response.message();
+                    Snackbar.make(mViewPager, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    IOException exception = (IOException) msg.obj;
+                    String message = exception.getMessage();
+                    Snackbar.make(mViewPager, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
+                    break;
+                }
+                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
+                    mActivity.toggleLoadingProgress(false);
+                    mActivity.logOut();
+                }
+            }
+        }
+    };
 
     private ArrayList<InProcessingParcel> getProcessingProducts(String deposit) {
         ArrayList<InProcessingParcel> processingProducts = new ArrayList<>();

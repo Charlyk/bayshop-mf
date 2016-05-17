@@ -9,6 +9,10 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +29,8 @@ import com.softranger.bayshopmf.ui.general.CheckProductFragment;
 import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.util.Constants;
 
+import org.json.JSONObject;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -38,6 +44,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
 
     private MainActivity mActivity;
     private Product mProduct;
+    private View mRootView;
 
     public AwaitingArrivalProductFragment() {
         // Required empty public constructor
@@ -55,7 +62,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
@@ -63,7 +70,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mProduct = getArguments().getParcelable(PRODUCT_ARG);
-        bindViews(view);
+        bindViews(mRootView);
         mActivity.setToolbarTitle(mProduct.getProductId(), true);
         mProductId.setText(mProduct.getProductId());
         mProductName.setText(mProduct.getProductName());
@@ -71,7 +78,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         mProductDate.setText(mProduct.getDate());
         mProductPrice.setText(mProduct.getProductPrice());
         mStorageIcon.setImageResource(getStorageIcon(mProduct.getDeposit()));
-        return view;
+        return mRootView;
     }
 
     private BroadcastReceiver mStatusReceiver = new BroadcastReceiver() {
@@ -94,6 +101,40 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
+            }
+        }
+    };
+
+    private Handler mAwaitingListHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        boolean error = response.getBoolean("error");
+                        if (!error) {
+
+                        } else {
+                            String message = response.optString("message", getString(R.string.unknown_error));
+                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+
+                    break;
+                }
+                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
+
+                }
             }
         }
     };

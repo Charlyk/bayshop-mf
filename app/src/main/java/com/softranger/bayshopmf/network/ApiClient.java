@@ -60,7 +60,8 @@ public class ApiClient extends OkHttpClient {
     public void sendRequest(RequestBody requestBody, String urlString, Handler handler) {
         if (Application.currentToken != null) {
             HttpUrl url = HttpUrl.parse(urlString);
-            Request request = new Request.Builder().addHeader("Bearer", Application.currentToken)
+            Request request = new Request.Builder()
+                    .addHeader("Bearer", Application.currentToken)
                     .addHeader("DeviceId", deviceId)
                     .post(requestBody).url(url).build();
             execute(request, handler);
@@ -70,8 +71,11 @@ public class ApiClient extends OkHttpClient {
     public void sendRequest(String urlString, Handler handler) {
         if (Application.currentToken != null) {
             HttpUrl url = HttpUrl.parse(urlString);
-            Request request = new Request.Builder().addHeader("Bearer", Application.currentToken)
-                    .addHeader("DeviceId", deviceId).url(url).build();
+            Request request = new Request.Builder().
+                    addHeader("Bearer", Application.currentToken)
+                    .addHeader("DeviceId", deviceId)
+                    .url(url)
+                    .build();
             execute(request, handler);
         }
     }
@@ -93,6 +97,10 @@ public class ApiClient extends OkHttpClient {
                     message.arg1 = responseCode;
                     message.what = Constants.ApiResponse.RESPONSE_OK;
                     message.obj = response.body().string();
+                } else if (responseCode == 401) {
+                    message.arg1 = responseCode;
+                    message.what = Constants.ApiResponse.RESONSE_UNAUTHORIZED;
+                    message.obj = response;
                 } else {
                     message.arg1 = responseCode;
                     message.what = Constants.ApiResponse.RESPONSE_ERROR;
