@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:paddingTop="10dp"
                 android:background="@drawable/selectable_background"
                 android:orientation="horizontal">
@@ -33,17 +34,18 @@
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Product name text"
+            tools:text="Product name text"
             android:textColor="@color/colorAccent"
             android:ellipsize="end"
             android:singleLine="true"
             android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/tracking_title"
+            android:id="@+id/productNameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tracking"/>
+            android:textColor="@android:color/black"
+            tools:text="Tracking"/>
 
         <TextView
             android:id="@+id/tracking_number"
@@ -51,9 +53,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="2131241231223"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"/>
+            tools:text="2131241231223"
+            android:textColor="@android:color/black"/>
     </LinearLayout>
 
     <View

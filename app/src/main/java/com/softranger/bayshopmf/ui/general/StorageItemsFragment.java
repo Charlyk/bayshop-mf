@@ -169,9 +169,11 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         JSONObject jsonItem = jsonData.getJSONObject(i);
                         InStockItem inStockItem = new InStockItem.Builder()
                                 .deposit(mDeposit)
+                                .id(jsonItem.getInt("id"))
                                 .trackingNumber(jsonItem.getString("tracking"))
                                 .name(jsonItem.optString("title", ""))
                                 .parcelId(jsonItem.getString("uid"))
+                                .hasDeclaration(jsonItem.getInt("isDeclarationFilled") == 1)
                                 .build();
                         mObjects.add(inStockItem);
                     }
@@ -183,8 +185,9 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         JSONObject jsonItem = jsonData.getJSONObject(i);
                         Product inStockItem = new Product.Builder()
                                 .deposit(mDeposit)
+                                .id(jsonItem.getInt("id"))
                                 .trackingNumber(jsonItem.getString("tracking"))
-                                .productName(jsonItem.getString("title"))
+                                .productName(jsonItem.optString("title", ""))
                                 .productId(jsonItem.getString("uid"))
                                 .build();
                         mObjects.add(inStockItem);
@@ -212,6 +215,11 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                 mActivity.setToolbarTitle(inStockItem.getName(), true);
             }
         }, 300);
+    }
+
+    @Override
+    public void onNoDeclarationItemSelected(InStockItem inStockItem, int position) {
+
     }
 
     @Override

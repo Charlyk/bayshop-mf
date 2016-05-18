@@ -16,6 +16,10 @@ public class Constants {
         public static final int RESONSE_UNAUTHORIZED = -2;
     }
 
+    public static class ParcelStatus {
+        public static final String IN_STOCK = "in-stock";
+    }
+
     public static class Api {
         private static final String URL = "http://md.bay-dev.tk/api/";
         private static final String STORAGE = "storage/";
@@ -30,6 +34,10 @@ public class Constants {
 
         public static String getStorageUrl() {
             return URL + STORAGE;
+        }
+
+        public static String getMfList(String id) {
+            return URL + MF_LIST + id;
         }
 
         public static String getWaitingMf(String storage) {

@@ -14,6 +14,7 @@ public class InStockItem implements Parcelable {
     protected String mTrackingNumber;
     protected String mDeposit;
     protected String mParcelId;
+    protected int mID;
 
     public InStockItem() {
 
@@ -25,6 +26,7 @@ public class InStockItem implements Parcelable {
         mTrackingNumber = in.readString();
         hasDeclaration = in.readByte() != 0;
         mParcelId = in.readString();
+        mID = in.readInt();
     }
 
     public static final Creator<InStockItem> CREATOR = new Creator<InStockItem>() {
@@ -87,6 +89,14 @@ public class InStockItem implements Parcelable {
         mParcelId = parcelId;
     }
 
+    public int getID() {
+        return mID;
+    }
+
+    public void setID(int ID) {
+        mID = ID;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -99,6 +109,7 @@ public class InStockItem implements Parcelable {
         parcel.writeString(mTrackingNumber);
         parcel.writeByte((byte) (hasDeclaration ? 1 : 0));
         parcel.writeString(mParcelId);
+        parcel.writeInt(mID);
     }
 
     public static class Builder {
@@ -108,6 +119,7 @@ public class InStockItem implements Parcelable {
         protected String mTrackingNumber;
         protected String mDeposit;
         protected String mParcelId;
+        protected int mID;
 
         public Builder isSelected(boolean isSelected) {
             this.isSelected = isSelected;
@@ -139,6 +151,11 @@ public class InStockItem implements Parcelable {
             return this;
         }
 
+        public Builder id(int id) {
+            mID = id;
+            return this;
+        }
+
         public InStockItem build() {
             InStockItem inStockItem = new InStockItem();
             inStockItem.setName(mName);
@@ -147,6 +164,7 @@ public class InStockItem implements Parcelable {
             inStockItem.setHasDeclaration(this.hasDeclaration);
             inStockItem.setDeposit(mDeposit);
             inStockItem.mParcelId = this.mParcelId;
+            inStockItem.mID = this.mID;
             return inStockItem;
         }
     }

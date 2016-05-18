@@ -78,7 +78,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (mInStockItems.get(position) instanceof InStockItem) {
             InStockViewHolder inStockViewHolder = (InStockViewHolder) holder;
             inStockViewHolder.mInStockItem = (InStockItem) mInStockItems.get(position);
-            inStockViewHolder.mNameLabel.setText(inStockViewHolder.mInStockItem.getParcelId());
+            @DrawableRes int image = inStockViewHolder.mInStockItem.isHasDeclaration() ? R.mipmap.parcel_active : R.mipmap.unactive_parcel;
+            inStockViewHolder.mImageView.setImageResource(image);
+            inStockViewHolder.mUIDLabel.setText(inStockViewHolder.mInStockItem.getParcelId());
+            inStockViewHolder.mProductName.setText(inStockViewHolder.mInStockItem.getName());
             inStockViewHolder.mTrackingLabel.setText(inStockViewHolder.mInStockItem.getTrackingNumber());
         } else if (mInStockItems.get(position) instanceof Product) {
             ProductViewHolder productHolder = (ProductViewHolder) holder;
@@ -110,8 +113,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class InStockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        final TextView mNameLabel;
+        final TextView mUIDLabel;
         final TextView mTrackingLabel;
+        final TextView mProductName;
         final ImageView mImageView;
         ViewAnimator mViewAnimator;
         InStockItem mInStockItem;
@@ -122,7 +126,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mView = itemView;
             mView.setOnLongClickListener(this);
             mView.setOnClickListener(this);
-            mNameLabel = (TextView) itemView.findViewById(R.id.product_name);
+            mUIDLabel = (TextView) itemView.findViewById(R.id.product_name);
+            mProductName = (TextView) itemView.findViewById(R.id.productNameLabel);
             mTrackingLabel = (TextView) itemView.findViewById(R.id.tracking_number);
             mImageView = (ImageView) itemView.findViewById(R.id.item_image);
             mImageView.setOnClickListener(this);
@@ -149,10 +154,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.item_image: {
-                    mInStockItem.setSelected(!mInStockItem.isSelected());
-                    mViewAnimator.flip(mImageView);
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onIconClick(mInStockItem, mInStockItem.isSelected(), getAdapterPosition());
+                    if (mInStockItem.isHasDeclaration()) {
+                        mInStockItem.setSelected(!mInStockItem.isSelected());
+                        mViewAnimator.flip(mImageView);
+                        if (mOnItemClickListener != null) {
+                            mOnItemClickListener.onIconClick(mInStockItem, mInStockItem.isSelected(), getAdapterPosition());
+                        }
+                    } else {
+                        if (mOnItemClickListener != null) {
+                            mOnItemClickListener.onNoDeclarationItemSelected(mInStockItem, getAdapterPosition());
+                        }
                     }
                     break;
                 }
@@ -166,10 +177,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public boolean onLongClick(View view) {
-            mInStockItem.setSelected(!mInStockItem.isSelected());
-            mViewAnimator.flip(mImageView);
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onIconClick(mInStockItem, mInStockItem.isSelected(), getAdapterPosition());
+            if (mInStockItem.isHasDeclaration()) {
+                mInStockItem.setSelected(!mInStockItem.isSelected());
+                mViewAnimator.flip(mImageView);
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onIconClick(mInStockItem, mInStockItem.isSelected(), getAdapterPosition());
+                }
+            } else {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onNoDeclarationItemSelected(mInStockItem, getAdapterPosition());
+                }
             }
             return true;
         }
@@ -259,6 +276,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnItemClickListener {
         void onRowClick(InStockItem inStockItem, int position);
+        void onNoDeclarationItemSelected(InStockItem inStockItem, int position);
         void onIconClick(InStockItem inStockItem, boolean isSelected, int position);
         void onProductClick(Product product, int position);
         void onInProcessingProductClick(InProcessingParcel inProcessingParcel, int position);

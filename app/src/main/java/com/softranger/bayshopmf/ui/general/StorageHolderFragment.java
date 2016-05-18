@@ -64,14 +64,14 @@ public class StorageHolderFragment extends Fragment {
         switch (listToShow) {
             case Constants.ListToShow.IN_STOCK:
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.USA), Constants.USA),
-                        StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.UK), Constants.USA),
-                        StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.DE), Constants.USA));
+                        StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.UK), Constants.UK),
+                        StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.DE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_stock), true);
                 break;
             case Constants.ListToShow.AWAITING_ARRIVAL:
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.USA), Constants.USA),
-                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.UK), Constants.USA),
-                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.DE), Constants.USA));
+                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.UK), Constants.UK),
+                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.DE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_arrival), true);
                 break;
             case Constants.ListToShow.IN_PROCESSING:

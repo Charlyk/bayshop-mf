@@ -11,11 +11,14 @@ import java.util.ArrayList;
  */
 public class InStockDetailed extends InStockItem {
 
-    private ArrayList<String> mPhotoUrls;
+    private ArrayList<Photo> mPhotoUrls;
     private String mDate;
     private String mWeight;
     private String mPrice;
     private String mDescription;
+    private String mCurency;
+    private int mPhotoInProgress;
+    private int mCheckInProgress;
 
     private InStockDetailed() {
 
@@ -23,11 +26,14 @@ public class InStockDetailed extends InStockItem {
 
     public InStockDetailed(Parcel in) {
         super(in);
-        in.readStringList(mPhotoUrls);
+        in.readList(mPhotoUrls, Photo.class.getClassLoader());
         mDate = in.readString();
         mWeight = in.readString();
         mPrice = in.readString();
         mDescription = in.readString();
+        mCurency = in.readString();
+        mPhotoInProgress = in.readInt();
+        mCheckInProgress = in.readInt();
     }
 
     public static final Creator<InStockDetailed> CREATOR = new Creator<InStockDetailed>() {
@@ -42,11 +48,11 @@ public class InStockDetailed extends InStockItem {
         }
     };
 
-    public ArrayList<String> getPhotoUrls() {
+    public ArrayList<Photo> getPhotoUrls() {
         return mPhotoUrls;
     }
 
-    public void setPhotoUrls(ArrayList<String> photoUrls) {
+    public void setPhotoUrls(ArrayList<Photo> photoUrls) {
         mPhotoUrls = photoUrls;
     }
 
@@ -82,23 +88,53 @@ public class InStockDetailed extends InStockItem {
         return mDescription;
     }
 
+    public String getCurency() {
+        return mCurency;
+    }
+
+    public void setCurency(String curency) {
+        mCurency = curency;
+    }
+
+    public int getPhotoInProgress() {
+        return mPhotoInProgress;
+    }
+
+    public void setPhotoInProgress(int photoInProgress) {
+        mPhotoInProgress = photoInProgress;
+    }
+
+    public int getCheckInProgress() {
+        return mCheckInProgress;
+    }
+
+    public void setCheckInProgress(int checkInProgress) {
+        mCheckInProgress = checkInProgress;
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
-        parcel.writeStringList(mPhotoUrls);
+        parcel.writeList(mPhotoUrls);
         parcel.writeString(mDate);
         parcel.writeString(mWeight);
         parcel.writeString(mPrice);
         parcel.writeString(mDescription);
+        parcel.writeString(mCurency);
+        parcel.writeInt(mPhotoInProgress);
+        parcel.writeInt(mCheckInProgress);
     }
 
     public static class Builder extends InStockItem.Builder {
-        private ArrayList<String> mPhotoUrls;
+        private ArrayList<Photo> mPhotoUrls;
         private String mDate;
         private String mWeight;
         private String mPrice;
+        private String mCurency;
+        private int mPhotoInProgress;
+        private int mCheckInProgress;
 
-        public Builder photoUrls(ArrayList<String> photoUrls) {
+        public Builder photoUrls(ArrayList<Photo> photoUrls) {
             mPhotoUrls = photoUrls;
             return this;
         }
@@ -118,6 +154,21 @@ public class InStockDetailed extends InStockItem {
             return this;
         }
 
+        public Builder curency(String curency) {
+            mCurency = curency;
+            return this;
+        }
+
+        public Builder photoInProgress(int photoInProgress) {
+            mPhotoInProgress = photoInProgress;
+            return this;
+        }
+
+        public Builder checkInProgress(int checkInProgress) {
+            mCheckInProgress = checkInProgress;
+            return this;
+        }
+
         public InStockDetailed build() {
             InStockDetailed itemDetailed = new InStockDetailed();
             itemDetailed.setPhotoUrls(mPhotoUrls);
@@ -127,6 +178,10 @@ public class InStockDetailed extends InStockItem {
             itemDetailed.setTrackingNumber(mTrackingNumber);
             itemDetailed.setName(mName);
             itemDetailed.setDeposit(mDeposit);
+            itemDetailed.setCurency(mCurency);
+            itemDetailed.setHasDeclaration(hasDeclaration);
+            itemDetailed.setPhotoInProgress(mPhotoInProgress);
+            itemDetailed.setCheckInProgress(mCheckInProgress);
             return itemDetailed;
         }
     }

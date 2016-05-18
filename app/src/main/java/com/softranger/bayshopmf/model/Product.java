@@ -19,6 +19,7 @@ public class Product implements Parcelable {
     private String mTrackingNumber;
     private String mDeposit;
     private String mDate;
+    private int mID;
     private ArrayList<Integer> mImages;
 
     private Product() {}
@@ -32,6 +33,7 @@ public class Product implements Parcelable {
         mTrackingNumber = in.readString();
         mDeposit = in.readString();
         mDate = in.readString();
+        mID = in.readInt();
         in.readList(mImages, Integer.class.getClassLoader());
     }
 
@@ -119,6 +121,14 @@ public class Product implements Parcelable {
         mImages = images;
     }
 
+    public int getID() {
+        return mID;
+    }
+
+    public void setID(int ID) {
+        mID = ID;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -134,6 +144,7 @@ public class Product implements Parcelable {
         dest.writeString(mTrackingNumber);
         dest.writeString(mDeposit);
         dest.writeString(mDate);
+        dest.writeInt(mID);
         dest.writeList(mImages);
     }
 
@@ -146,6 +157,7 @@ public class Product implements Parcelable {
         private String mTrackingNumber;
         private String mDeposit;
         private String mDate;
+        private int mID;
         private ArrayList<Integer> mImages;
 
         public Builder productId(String productId) {
@@ -193,6 +205,11 @@ public class Product implements Parcelable {
             return this;
         }
 
+        public Builder id(int id) {
+            mID = id;
+            return this;
+        }
+
         public Product build() {
             Product product = new Product();
             product.mProductId = this.mProductId;
@@ -204,6 +221,7 @@ public class Product implements Parcelable {
             product.mDeposit = this.mDeposit;
             product.mDate = this.mDate;
             product.mImages = this.mImages;
+            product.mID = this.mID;
             return product;
         }
     }

@@ -10,6 +10,9 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,15 +29,24 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.general.CheckProductFragment;
 import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.util.Constants;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import okhttp3.Response;
 
 
 /**
@@ -50,6 +62,8 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
     private Button mAdditionalPhoto;
     private RecyclerView mRecyclerView;
     private InStockDetailed mInStockDetailed;
+    private InStockItem mInStockItem;
+    private View mRootView;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -67,26 +81,20 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_details, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_details, container, false);
         mActivity = (MainActivity) getActivity(); // used as context to create views programmatically
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.inStockDetailsImageList);
+        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.inStockDetailsImageList);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false));
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
-        loadImages(new ArrayList<String>());
-        final InStockItem inStockItem = getArguments().getParcelable(ITEM_ARG);
-        mInStockDetailed = getItemDetails(inStockItem);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showDetails(view, mInStockDetailed);
-            }
-        }, 500);
-        return view;
+        mInStockItem = getArguments().getParcelable(ITEM_ARG);
+        ApiClient.getInstance().sendRequest(Constants.Api.getMfList(String.valueOf(mInStockItem.getID())), mDetailsHandler);
+        mActivity.toggleLoadingProgress(true);
+        return mRootView;
     }
 
     private BroadcastReceiver mStatusReceiver = new BroadcastReceiver() {
@@ -113,18 +121,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         }
     };
 
-    private InStockDetailed getItemDetails(InStockItem item) {
-        // TODO: 5/5/16 make a request to server for item details
-        return (InStockDetailed) new InStockDetailed.Builder()
-                .price("$ 200")
-                .date(new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date()))
-                .weight("15 kg.")
-                .name(item.getName())
-                .trackingNumber(item.getTrackingNumber())
-                .hasDeclaration(item.isHasDeclaration())
-                .build();
-    }
-
     private void showDetails(View view, InStockDetailed detailed) {
         // fill text views
         TextView tracking = (TextView) view.findViewById(R.id.details_tracking_label);
@@ -132,35 +128,120 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         TextView weight = (TextView) view.findViewById(R.id.details_weight_label);
         TextView price = (TextView) view.findViewById(R.id.details_price_label);
 
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+
+        Date createdDate;
+        String strDate = "";
+        try {
+            createdDate = inputFormat.parse(detailed.getDate());
+            strDate = outputFormat.format(createdDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         tracking.setText(detailed.getTrackingNumber());
-        date.setText(detailed.getDate());
-        weight.setText(detailed.getWeight());
-        price.setText(detailed.getPrice());
+        date.setText(strDate);
+        weight.setText(detailed.getWeight() + "kg");
+        price.setText(detailed.getCurency() + detailed.getPrice());
 
         // set buttons listeners
         mFillDeclaration = (Button) view.findViewById(R.id.fill_declarationButton);
         mCheckProduct = (Button) view.findViewById(R.id.check_productButton);
         mAdditionalPhoto = (Button) view.findViewById(R.id.additional_photoButton);
 
+        mFillDeclaration.setSelected(detailed.isHasDeclaration());
+        if (mFillDeclaration.isSelected()) {
+            mFillDeclaration.setText(mActivity.getString(R.string.edit_declaration));
+        }
         mFillDeclaration.setOnClickListener(this);
         mCheckProduct.setOnClickListener(this);
         mAdditionalPhoto.setOnClickListener(this);
+        loadImages(detailed.getPhotoUrls());
     }
 
     /**
      * This method will add images to the grid layout starting from third row
      * (first two rows are in use by additional buttons and parcel details)
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void loadImages(ArrayList<String> imagesUrl) {
+    private void loadImages(ArrayList<Photo> imagesUrl) {
         ArrayList<Integer> images = new ArrayList<>();
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0; i < imagesUrl.size() ; i++) {
             images.add(R.drawable.computer_mac_image);
         }
         ImagesAdapter adapter = new ImagesAdapter(images, R.layout.in_stock_detailed_image);
         adapter.setOnImageClickListener(this);
         mRecyclerView.setAdapter(adapter);
     }
+
+    private Handler mDetailsHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        boolean error = response.getBoolean("error");
+                        if (!error) {
+                            JSONObject data = response.getJSONObject("data");
+                            mInStockDetailed = (InStockDetailed) new InStockDetailed.Builder()
+                                    .date(data.getString("createdDate"))
+                                    .price(data.getString("price"))
+                                    .photoInProgress(data.getBoolean("photosInProgress") ? 1 : 0)
+                                    .checkInProgress(data.getBoolean("checkProductInProgress") ? 1 : 0)
+                                    .curency(data.getString("currency"))
+                                    .weight(data.getString("weight"))
+                                    .deposit(mInStockItem.getDeposit())
+                                    .trackingNumber(data.getString("trackingNumber"))
+                                    .hasDeclaration(data.getBoolean("declarationFilled"))
+                                    .parcelId(data.getString("uid"))
+                                    .id(Integer.parseInt(data.getString("id")))
+                                    .build();
+                            JSONArray jsonPhotos = data.getJSONArray("photos");
+                            ArrayList<Photo> photos = new ArrayList<>();
+                            for (int i = 0; i < jsonPhotos.length(); i++) {
+                                JSONObject o = jsonPhotos.getJSONObject(i);
+                                Photo photo = new Photo.Builder()
+                                        .smallImage(o.getString("photoThumbnail"))
+                                        .bigImage(o.getString("photo"))
+                                        .build();
+                                photos.add(photo);
+                            }
+                            mInStockDetailed.setPhotoUrls(photos);
+                            showDetails(mRootView, mInStockDetailed);
+                        } else {
+                            String message = response.optString("message", getString(R.string.unknown_error));
+                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    Response response = (Response) msg.obj;
+                    String message = response.message();
+                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = mActivity.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
+
+                }
+            }
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
 
     @Override
     public void onClick(View v) {
