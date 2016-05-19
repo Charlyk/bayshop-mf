@@ -3,6 +3,10 @@ package com.softranger.bayshopmf.ui.awaitingarrival;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +17,17 @@ import android.widget.RadioGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +42,7 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
     private Button mSaveButton;
     private static Product product;
     private MainActivity mActivity;
+    private View mRootView;
 
     public EditAwaitingFragment() {
         // Required empty public constructor
@@ -46,10 +60,10 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_edit_awaiting, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_edit_awaiting, container, false);
         mActivity = (MainActivity) getActivity();
         product = getArguments().getParcelable(PRODUCT_ARG);
-        bindViews(view);
+        bindViews(mRootView);
         mNameInput.setText(product.getProductName());
         mTrackingInput.setText(product.getTrackingNumber());
         mUrlInput.setText(product.getProductUrl());
@@ -66,7 +80,7 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
             case Constants.DE:
                 mDeSelector.setChecked(true);
         }
-        return view;
+        return mRootView;
     }
 
     private void bindViews(View view) {
@@ -131,6 +145,65 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
         product.setTrackingNumber(trackingNumber);
         product.setProductUrl(urlToProduct);
         product.setProductPrice(price);
-        mActivity.onBackPressed();
+        RequestBody body = new FormBody.Builder()
+                .add("storage", product.getDeposit())
+                .add("tracking", product.getTrackingNumber())
+                .add("title", product.getProductName())
+                .add("url", product.getProductUrl())
+                .add("packagePrice", product.getProductPrice())
+                .build();
+        ApiClient.getInstance().sendRequest(body, Constants.Api.editWaitingMfItem(product.getProductId()), mEdithandler);
+        mActivity.toggleLoadingProgress(true);
     }
+
+    private Handler mEdithandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        boolean error = response.getBoolean("error");
+                        if (!error) {
+                            JSONObject data = response.getJSONObject("data");
+                            product.setProductId(data.getString("id"));
+                            product.setDeposit(data.getString("storage").toLowerCase());
+                            product.setDate(data.getString("createdDate"));
+                            product.setTrackingNumber(data.getString("trackingNumber"));
+                            product.setProductPrice(data.getString("currency") + data.getString("price"));
+                            product.setProductUrl(data.getString("productUrl"));
+                        } else {
+                            String message = response.optString("message", getString(R.string.unknown_error));
+                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    Response response = (Response) msg.obj;
+                    String message = response.message();
+                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = mActivity.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
+                    mActivity.logOut();
+                }
+            }
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -69,9 +68,9 @@ public class StorageHolderFragment extends Fragment {
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_stock), true);
                 break;
             case Constants.ListToShow.AWAITING_ARRIVAL:
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.USA), Constants.USA),
-                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.UK), Constants.UK),
-                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMf(Constants.DE), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.getWaitingMfList(Constants.USA), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMfList(Constants.UK), Constants.UK),
+                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMfList(Constants.DE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_arrival), true);
                 break;
             case Constants.ListToShow.IN_PROCESSING:

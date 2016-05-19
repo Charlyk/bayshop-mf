@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.ui.general.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.general.CheckProductFragment;
@@ -30,6 +31,13 @@ import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,6 +86,8 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         mProductDate.setText(mProduct.getDate());
         mProductPrice.setText(mProduct.getProductPrice());
         mStorageIcon.setImageResource(getStorageIcon(mProduct.getDeposit()));
+        mActivity.toggleLoadingProgress(true);
+        ApiClient.getInstance().sendRequest(Constants.Api.getWaitingMfItem(mProduct.getProductId()), mAwaitingListHandler);
         return mRootView;
     }
 
@@ -114,28 +124,45 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                         JSONObject response = new JSONObject((String) msg.obj);
                         boolean error = response.getBoolean("error");
                         if (!error) {
-
+                            JSONObject data = response.getJSONObject("data");
+                            mProduct.setDate(data.getString("createdDate"));
+                            mProduct.setProductPrice(data.getString("currency") + data.getString("price"));
+                            mProduct.setProductUrl(data.getString("productUrl"));
+                            setDataInPlace(mProduct);
                         } else {
                             String message = response.optString("message", getString(R.string.unknown_error));
                             Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-
+                    Response response = (Response) msg.obj;
+                    String message = response.message();
+                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_ERROR: {
-
+                    String message = mActivity.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
                     break;
                 }
                 case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-
+                    mActivity.toggleLoadingProgress(false);
+                    mActivity.logOut();
                 }
             }
+            mActivity.toggleLoadingProgress(false);
         }
     };
 
@@ -149,6 +176,22 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                 return R.mipmap.ic_de_flag;
         }
         return R.mipmap.ic_usa_flag;
+    }
+
+    private void setDataInPlace(Product product) {
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+        mProductId.setText(product.getProductId());
+        mProductName.setText(product.getProductName());
+        mProductTracking.setText(product.getTrackingNumber());
+        Date date = new Date();
+        try {
+            date = input.parse(product.getDate());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mProductDate.setText(output.format(date));
+        mProductPrice.setText(product.getProductPrice());
     }
 
     private void bindViews(View view) {
@@ -185,6 +228,10 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.awaitingDetailsGoToUrlBtn:
+                if (mProduct.getProductUrl() == null || mProduct.getProductUrl().equals("")) {
+                    Snackbar.make(mRootView, "There is no url for this product", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
                 mActivity.addFragment(WebViewFragment.newInstance(mProduct.getProductUrl()), true);
                 break;
             case R.id.awaitingDetailsEditButton:

@@ -3,6 +3,10 @@ package com.softranger.bayshopmf.ui.general;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +16,18 @@ import android.widget.RadioGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.InProcessingParcel;
+import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,8 +39,9 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
     private EditText mProductNameInput;
     private EditText mProductPriceInput;
 
-    private InProcessingParcel.Builder mParcelBuilder;
     private MainActivity mActivity;
+    private Product mProduct;
+    private View mRootView;
 
     public AddAwaitingFragment() {
         // Required empty public constructor
@@ -37,31 +52,31 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_blank, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_blank, container, false);
         mActivity = (MainActivity) getActivity();
-        mProductUrlInput = (EditText) view.findViewById(R.id.addAwaitingLinkToProductInput);
-        mProductTrackingNumInput = (EditText) view.findViewById(R.id.addAwaitingTrackingInput);
-        mProductNameInput = (EditText) view.findViewById(R.id.addAwaitingNameInput);
-        mProductPriceInput = (EditText) view.findViewById(R.id.addAwaitingPriceInput);
-        RadioGroup storageSelector = (RadioGroup) view.findViewById(R.id.addAwaitingStorageSelectorGroup);
+        mProductUrlInput = (EditText) mRootView.findViewById(R.id.addAwaitingLinkToProductInput);
+        mProductTrackingNumInput = (EditText) mRootView.findViewById(R.id.addAwaitingTrackingInput);
+        mProductNameInput = (EditText) mRootView.findViewById(R.id.addAwaitingNameInput);
+        mProductPriceInput = (EditText) mRootView.findViewById(R.id.addAwaitingPriceInput);
+        RadioGroup storageSelector = (RadioGroup) mRootView.findViewById(R.id.addAwaitingStorageSelectorGroup);
         storageSelector.setOnCheckedChangeListener(this);
-        Button addParcelBtn = (Button) view.findViewById(R.id.addAwaitingAddParcelButton);
+        Button addParcelBtn = (Button) mRootView.findViewById(R.id.addAwaitingAddParcelButton);
         addParcelBtn.setOnClickListener(this);
-        mParcelBuilder = new InProcessingParcel.Builder();
-        return view;
+        mProduct = new Product.Builder().build();
+        return mRootView;
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.addAwaitingUsaSelector:
-                mParcelBuilder.deposit(Constants.USA);
+                mProduct.setDeposit(Constants.USA);
                 break;
             case R.id.addAwaitingUkSelector:
-                mParcelBuilder.deposit(Constants.UK);
+                mProduct.setDeposit(Constants.UK);
                 break;
             case R.id.addAwaitingDeSelector:
-                mParcelBuilder.deposit(Constants.DE);
+                mProduct.setDeposit(Constants.DE);
                 break;
         }
     }
@@ -70,15 +85,83 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
     public void onClick(View v) {
         if (v.getId() == R.id.addAwaitingAddParcelButton) {
             String productUrl = String.valueOf(mProductUrlInput.getText());
+            if (productUrl.equals("")) {
+                mProductUrlInput.setError("Please specify product url");
+                return;
+            }
             String trackingNum = String.valueOf(mProductTrackingNumInput.getText());
+            if (productUrl.equals("")) {
+                mProductTrackingNumInput.setError("Please specify product tracking number");
+                return;
+            }
             String productName = String.valueOf(mProductNameInput.getText());
+            if (productUrl.equals("")) {
+                mProductNameInput.setError("Please specify product name");
+                return;
+            }
             String productPrice = String.valueOf(mProductPriceInput.getText());
-            mParcelBuilder.totalPrice(productPrice)
-                    .trackingNumber(trackingNum)
-                    .productName(productName)
-                    .url(productUrl);
-            // TODO: 5/16/16 send parcel to server
-            mActivity.onBackPressed();
+            if (productUrl.equals("")) {
+                mProductPriceInput.setError("Please specify product price");
+                return;
+            }
+            mProduct.setProductPrice(productPrice);
+            mProduct.setTrackingNumber(trackingNum);
+            mProduct.setProductName(productName);
+            mProduct.setProductUrl(productUrl);
+            RequestBody body = new FormBody.Builder()
+                    .add("storage", mProduct.getDeposit())
+                    .add("tracking", mProduct.getTrackingNumber())
+                    .add("title", mProduct.getProductName())
+                    .add("url", mProduct.getProductUrl())
+                    .add("packagePrice", mProduct.getProductPrice())
+                    .build();
+            ApiClient.getInstance().sendRequest(body, Constants.Api.addWaitingMfItem(), mEdithandler);
+            mActivity.toggleLoadingProgress(true);
         }
     }
+
+    private Handler mEdithandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        boolean error = response.getBoolean("error");
+                        if (!error) {
+                            mActivity.onBackPressed();
+                        } else {
+                            String message = response.optString("message", getString(R.string.unknown_error));
+                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    Response response = (Response) msg.obj;
+                    String message = response.message();
+                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = mActivity.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
+                    mActivity.logOut();
+                }
+            }
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
 }

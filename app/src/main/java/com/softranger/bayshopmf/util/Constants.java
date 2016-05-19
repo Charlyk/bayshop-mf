@@ -25,7 +25,9 @@ public class Constants {
         private static final String STORAGE = "storage/";
         private static final String MF_LIST = "mf-list/";
         private static final String IN_STOCK = "in-stock/";
-        private static final String WAITING_MF = "waiting-mf-list/";
+        private static final String WAITING_MF_LIST = "waiting-mf-list/";
+        private static final String WAITING_MF = "waiting-mf/";
+        private static final String EDIT = "edit/";
         private static final String AUTH = "auth";
 
         public static String getAuthUrl() {
@@ -40,8 +42,20 @@ public class Constants {
             return URL + MF_LIST + id;
         }
 
-        public static String getWaitingMf(String storage) {
-            return URL + WAITING_MF + storage;
+        public static String getWaitingMfList(String storage) {
+            return URL + WAITING_MF_LIST + storage;
+        }
+
+        public static String getWaitingMfItem(String waitingItemId) {
+            return URL + WAITING_MF_LIST + waitingItemId;
+        }
+
+        public static String editWaitingMfItem(String itemId) {
+            return URL + WAITING_MF + EDIT + itemId;
+        }
+
+        public static String addWaitingMfItem() {
+            return URL + WAITING_MF + EDIT + "add";
         }
 
         public static String getInStockItems(String storage) {
