@@ -104,6 +104,10 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                 mProductPriceInput.setError("Please specify product price");
                 return;
             }
+            if (mProduct.getDeposit() == null) {
+                Snackbar.make(mRootView, "Please select depot.", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
             mProduct.setProductPrice(productPrice);
             mProduct.setTrackingNumber(trackingNum);
             mProduct.setProductName(productName);

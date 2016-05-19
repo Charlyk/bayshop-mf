@@ -55,7 +55,7 @@ public class Constants {
         }
 
         public static String addWaitingMfItem() {
-            return URL + WAITING_MF + EDIT + "add";
+            return URL + WAITING_MF + "add";
         }
 
         public static String getInStockItems(String storage) {
