@@ -15,6 +15,7 @@ import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.InProcessingParcel;
+import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.ui.GalleryActivity;
 import com.softranger.bayshopmf.ui.MainActivity;
@@ -97,16 +98,16 @@ public class InProcessingDetails extends Fragment implements ImagesAdapter.OnIma
         return products;
     }
 
-    private ArrayList<Integer> images() {
-        ArrayList<Integer> images = new ArrayList<>();
+    private ArrayList<Photo> images() {
+        ArrayList<Photo> images = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            images.add(R.drawable.computer_mac_image);
+            images.add(new Photo.Builder().build());
         }
         return images;
     }
 
     @Override
-    public void onImageClick(ArrayList<Integer> images, int position) {
+    public void onImageClick(ArrayList<Photo> images, int position) {
         Intent intent = new Intent(mActivity, GalleryActivity.class);
         intent.putExtra("images", images);
         intent.putExtra("position", position);

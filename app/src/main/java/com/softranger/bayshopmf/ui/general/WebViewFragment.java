@@ -52,6 +52,9 @@ public class WebViewFragment extends Fragment {
         mWebView.setWebViewClient(new WebClient());
         mActivity = (MainActivity) getActivity();
         String productUrl = getArguments().getString(URL_ARG);
+        if (!productUrl.contains("https://") && !productUrl.contains("http://")) {
+            productUrl = "http://" + productUrl;
+        }
         mWebView.loadUrl(productUrl);
         return view;
     }
@@ -60,7 +63,7 @@ public class WebViewFragment extends Fragment {
     private class WebClient extends WebViewClient {
 
         @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             mProgressBar.setVisibility(View.VISIBLE);
         }
 

@@ -107,10 +107,9 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
                 product.setDeposit(Constants.USA);
                 break;
             case R.id.editAwaitingUkSelector:
-                product.setDeposit(Constants.UK);
-                break;
             case R.id.editAwaitingDeSelector:
-                product.setDeposit(Constants.DE);
+                Snackbar.make(mRootView, getString(R.string.not_suported), Snackbar.LENGTH_SHORT).show();
+                mUsaSelector.setChecked(true);
                 break;
         }
     }
@@ -152,7 +151,7 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
                 .add("url", product.getProductUrl())
                 .add("packagePrice", product.getProductPrice())
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.editWaitingMfItem(product.getProductId()), mEdithandler);
+        ApiClient.getInstance().sendRequest(body, Constants.Api.editWaitingMfItem(String.valueOf(product.getID())), mEdithandler);
         mActivity.toggleLoadingProgress(true);
     }
 
@@ -163,20 +162,24 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
                 case Constants.ApiResponse.RESPONSE_OK: {
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
-                        boolean error = response.getBoolean("error");
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
-                            product.setProductId(data.getString("id"));
+                            product.setProductName(data.getString("packageName"));
+                            product.setID(Integer.parseInt(data.getString("id")));
                             product.setDeposit(data.getString("storage").toLowerCase());
-                            product.setDate(data.getString("createdDate"));
-                            product.setTrackingNumber(data.getString("trackingNumber"));
-                            product.setProductPrice(data.getString("currency") + data.getString("price"));
-                            product.setProductUrl(data.getString("productUrl"));
+                            product.setTrackingNumber(data.getString("tracking"));
+                            product.setProductPrice(data.getString("packagePrice"));
+                            product.setProductUrl(data.getString("url"));
+                            product.setBarcode(data.getString("barCode"));
+                            Snackbar.make(mRootView, getString(R.string.saved_succesfuly), Snackbar.LENGTH_SHORT).show();
+                            mActivity.onBackPressed();
                         } else {
-                            String message = response.optString("message", getString(R.string.unknown_error));
                             Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
+                        Snackbar.make(mRootView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                     break;

@@ -10,8 +10,10 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.softranger.bayshopmf.R;
@@ -39,6 +41,8 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
     private EditText mProductNameInput;
     private EditText mProductPriceInput;
 
+    private RadioButton mUsaSelector, mUkSelector, mDeSelector;
+
     private MainActivity mActivity;
     private Product mProduct;
     private View mRootView;
@@ -63,6 +67,11 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
         Button addParcelBtn = (Button) mRootView.findViewById(R.id.addAwaitingAddParcelButton);
         addParcelBtn.setOnClickListener(this);
         mProduct = new Product.Builder().build();
+        mUsaSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingUsaSelector);
+        mUkSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingUkSelector);
+        mDeSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingDeSelector);
+        mUsaSelector.setChecked(true);
+        mProduct.setDeposit(Constants.USA);
         return mRootView;
     }
 
@@ -73,10 +82,9 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                 mProduct.setDeposit(Constants.USA);
                 break;
             case R.id.addAwaitingUkSelector:
-                mProduct.setDeposit(Constants.UK);
-                break;
             case R.id.addAwaitingDeSelector:
-                mProduct.setDeposit(Constants.DE);
+                Snackbar.make(mRootView, getString(R.string.not_suported), Snackbar.LENGTH_SHORT).show();
+                mUsaSelector.setChecked(true);
                 break;
         }
     }
@@ -85,8 +93,8 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
     public void onClick(View v) {
         if (v.getId() == R.id.addAwaitingAddParcelButton) {
             String productUrl = String.valueOf(mProductUrlInput.getText());
-            if (productUrl.equals("")) {
-                mProductUrlInput.setError("Please specify product url");
+            if (productUrl.equals("") || !URLUtil.isValidUrl(productUrl)) {
+                mProductUrlInput.setError("Please specify a valid product url");
                 return;
             }
             String trackingNum = String.valueOf(mProductTrackingNumInput.getText());
@@ -100,7 +108,7 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                 return;
             }
             String productPrice = String.valueOf(mProductPriceInput.getText());
-            if (productUrl.equals("")) {
+            if (productPrice.equals("")) {
                 mProductPriceInput.setError("Please specify product price");
                 return;
             }
@@ -117,7 +125,7 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                     .add("tracking", mProduct.getTrackingNumber())
                     .add("title", mProduct.getProductName())
                     .add("url", mProduct.getProductUrl())
-                    .add("packagePrice", mProduct.getProductPrice())
+                    .add("packagePrice", mProduct.getProductPrice().replace(".", ","))
                     .build();
             ApiClient.getInstance().sendRequest(body, Constants.Api.addWaitingMfItem(), mEdithandler);
             mActivity.toggleLoadingProgress(true);
@@ -131,11 +139,11 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                 case Constants.ApiResponse.RESPONSE_OK: {
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
-                        boolean error = response.getBoolean("error");
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             mActivity.onBackPressed();
                         } else {
-                            String message = response.optString("message", getString(R.string.unknown_error));
                             Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -147,7 +155,6 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                     Response response = (Response) msg.obj;
                     String message = response.message();
                     Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_ERROR: {

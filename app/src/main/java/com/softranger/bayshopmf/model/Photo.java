@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.model;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,6 +12,8 @@ import android.os.Parcelable;
 public class Photo implements Parcelable {
     private String mSmallImage;
     private String mBigImage;
+    private Bitmap mSmallBitmap;
+    private Bitmap mBigBitmap;
 
     private Photo() {
 
@@ -38,7 +41,7 @@ public class Photo implements Parcelable {
     }
 
     public void setSmallImage(String smallImage) {
-        mSmallImage = smallImage;
+        mSmallImage = "http://md.bay-dev.tk" + smallImage;
     }
 
     public String getBigImage() {
@@ -46,7 +49,23 @@ public class Photo implements Parcelable {
     }
 
     public void setBigImage(String bigImage) {
-        mBigImage = bigImage;
+        mBigImage = "http://md.bay-dev.tk" + bigImage;
+    }
+
+    public Bitmap getSmallBitmap() {
+        return mSmallBitmap;
+    }
+
+    public void setSmallBitmap(Bitmap smallBitmap) {
+        mSmallBitmap = smallBitmap;
+    }
+
+    public Bitmap getBigBitmap() {
+        return mBigBitmap;
+    }
+
+    public void setBigBitmap(Bitmap bigBitmap) {
+        mBigBitmap = bigBitmap;
     }
 
     @Override
@@ -63,6 +82,8 @@ public class Photo implements Parcelable {
     public static class Builder {
         private String mSmallImage;
         private String mBigImage;
+        private Bitmap mSmallBitmap;
+        private Bitmap mBigBitmap;
 
         public Builder smallImage(String smallImage) {
             mSmallImage = smallImage;
@@ -74,10 +95,22 @@ public class Photo implements Parcelable {
             return this;
         }
 
+        public Builder bigBitmap(Bitmap bigBitmap) {
+            mBigBitmap = bigBitmap;
+            return this;
+        }
+
+        public Builder smallBitmap(Bitmap smallBitmap) {
+            mSmallBitmap = smallBitmap;
+            return this;
+        }
+
         public Photo build() {
             Photo photo = new Photo();
-            photo.mSmallImage = this.mSmallImage;
-            photo.mBigImage = this.mBigImage;
+            photo.mSmallImage = "http://md.bay-dev.tk" + this.mSmallImage;
+            photo.mBigImage = "http://md.bay-dev.tk" + this.mBigImage;
+            photo.mBigBitmap = this.mBigBitmap;
+            photo.mSmallBitmap = this.mSmallBitmap;
             return photo;
         }
     }

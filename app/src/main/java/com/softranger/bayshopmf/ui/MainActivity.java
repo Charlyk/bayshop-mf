@@ -148,6 +148,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_PROCESSING));
                 selectedFragment = SelectedFragment.IN_PROCESSING;
                 mActionButton.hide();
+                break;
+            case R.id.nav_logOut:
+                Application.getInstance().setLoginStatus(false);
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

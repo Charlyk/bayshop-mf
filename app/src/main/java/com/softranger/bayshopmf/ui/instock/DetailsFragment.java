@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -164,14 +167,15 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
      * This method will add images to the grid layout starting from third row
      * (first two rows are in use by additional buttons and parcel details)
      */
-    private void loadImages(ArrayList<Photo> imagesUrl) {
-        ArrayList<Integer> images = new ArrayList<>();
-        for (int i = 0; i < imagesUrl.size() ; i++) {
-            images.add(R.drawable.computer_mac_image);
-        }
-        ImagesAdapter adapter = new ImagesAdapter(images, R.layout.in_stock_detailed_image);
-        adapter.setOnImageClickListener(this);
-        mRecyclerView.setAdapter(adapter);
+    private void loadImages(final ArrayList<Photo> images) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ImagesAdapter adapter = new ImagesAdapter(images, R.layout.in_stock_detailed_image);
+                adapter.setOnImageClickListener(DetailsFragment.this);
+                mRecyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     private Handler mDetailsHandler = new Handler(Looper.getMainLooper()) {
@@ -181,7 +185,8 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                 case Constants.ApiResponse.RESPONSE_OK: {
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
-                        boolean error = response.getBoolean("error");
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
                             mInStockDetailed = (InStockDetailed) new InStockDetailed.Builder()
@@ -209,8 +214,8 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                             }
                             mInStockDetailed.setPhotoUrls(photos);
                             showDetails(mRootView, mInStockDetailed);
+                            new DownloadThread(mInStockDetailed.getPhotoUrls()).start();
                         } else {
-                            String message = response.optString("message", getString(R.string.unknown_error));
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -265,10 +270,36 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
     }
 
     @Override
-    public void onImageClick(ArrayList<Integer> images, int position) {
-        Intent intent = new Intent(mActivity, GalleryActivity.class);
-        intent.putExtra("images", images);
-        intent.putExtra("position", position);
-        mActivity.startActivity(intent);
+    public void onImageClick(ArrayList<Photo> images, int position) {
+        try {
+            Intent intent = new Intent(mActivity, GalleryActivity.class);
+            intent.putExtra("images", images);
+            intent.putExtra("position", position);
+            mActivity.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    class DownloadThread extends Thread {
+
+        private ArrayList<Photo> mPhotos;
+
+        public DownloadThread(ArrayList<Photo> photos) {
+            mPhotos = photos;
+        }
+
+        @Override
+        public void run() {
+            for (Photo photo : mPhotos) {
+                try {
+                    URL biImageUlr = new URL(photo.getBigImage());
+                    photo.setBigBitmap(BitmapFactory.decodeStream(biImageUlr.openStream()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            loadImages(mPhotos);
+        }
     }
 }

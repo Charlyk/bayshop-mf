@@ -118,11 +118,11 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                 case Constants.ApiResponse.RESPONSE_OK: {
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
-                        boolean error = response.getBoolean("error");
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             buildItemsList(response);
                         } else {
-                            String message = response.optString("message", getString(R.string.unknown_error));
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {

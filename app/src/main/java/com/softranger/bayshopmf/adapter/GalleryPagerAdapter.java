@@ -1,58 +1,75 @@
 package com.softranger.bayshopmf.adapter;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.ui.GalleryImageFragment;
+import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Eduard Albu on 5/13/16, 05, 2016
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class GalleryPagerAdapter extends PagerAdapter {
+public class GalleryPagerAdapter extends FragmentStatePagerAdapter {
 
+    private List<Fragment> mFragmentList = new ArrayList<>();
+    private List<String> mTitles = new ArrayList<>();
+    private FragmentManager mFragmentManager;
     private Context mContext;
-    private ArrayList<Integer> mImages;
 
-    public GalleryPagerAdapter(Context context, ArrayList<Integer> images) {
+    public GalleryPagerAdapter(Context context, FragmentManager fm) {
+        super(fm);
+        mFragmentManager = fm;
         mContext = context;
-        mImages = images;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        if (object instanceof GalleryImageFragment) {
+            mFragmentManager.beginTransaction().remove((Fragment) object).commit();
+            return POSITION_NONE;
+        }
+        return super.getItemPosition(object);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        return Fragment.instantiate(mContext, mFragmentList.get(position).getClass().getName(),
+                mFragmentList.get(position).getArguments());
     }
 
     @Override
     public int getCount() {
-        return mImages.size();
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        SubsamplingScaleImageView imageView = new SubsamplingScaleImageView(mContext);
-        imageView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_INSIDE);
-        imageView.setLayoutParams(layoutParams);
-        imageView.setImage(ImageSource.resource(mImages.get(position)));
-        container.addView(imageView);
-        return imageView;
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+        return mFragmentList.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return (position + 1) + " from " + mImages.size();
+        return mTitles.get(position);
+    }
+
+
+
+    public void addFragment(Fragment fragment, String title) {
+        mFragmentList.add(fragment);
+        mTitles.add(title);
+        notifyDataSetChanged();
+    }
+
+    public void clearLists() {
+        mFragmentList.clear();
+        mTitles.clear();
     }
 }

@@ -47,7 +47,7 @@ public class Constants {
         }
 
         public static String getWaitingMfItem(String waitingItemId) {
-            return URL + WAITING_MF_LIST + waitingItemId;
+            return URL + WAITING_MF + waitingItemId;
         }
 
         public static String editWaitingMfItem(String itemId) {

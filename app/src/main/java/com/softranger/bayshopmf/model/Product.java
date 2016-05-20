@@ -19,8 +19,10 @@ public class Product implements Parcelable {
     private String mTrackingNumber;
     private String mDeposit;
     private String mDate;
+    private String mBarcode;
+    private String mCurrency;
     private int mID;
-    private ArrayList<Integer> mImages;
+    private ArrayList<Photo> mImages;
 
     private Product() {}
 
@@ -33,6 +35,8 @@ public class Product implements Parcelable {
         mTrackingNumber = in.readString();
         mDeposit = in.readString();
         mDate = in.readString();
+        mBarcode = in.readString();
+        mCurrency = in.readString();
         mID = in.readInt();
         in.readList(mImages, Integer.class.getClassLoader());
     }
@@ -113,11 +117,11 @@ public class Product implements Parcelable {
         mDate = date;
     }
 
-    public ArrayList<Integer> getImages() {
+    public ArrayList<Photo> getImages() {
         return mImages;
     }
 
-    public void setImages(ArrayList<Integer> images) {
+    public void setImages(ArrayList<Photo> images) {
         mImages = images;
     }
 
@@ -127,6 +131,22 @@ public class Product implements Parcelable {
 
     public void setID(int ID) {
         mID = ID;
+    }
+
+    public String getBarcode() {
+        return mBarcode;
+    }
+
+    public void setBarcode(String barcode) {
+        mBarcode = barcode;
+    }
+
+    public String getCurrency() {
+        return mCurrency;
+    }
+
+    public void setCurrency(String currency) {
+        mCurrency = currency;
     }
 
     @Override
@@ -144,6 +164,8 @@ public class Product implements Parcelable {
         dest.writeString(mTrackingNumber);
         dest.writeString(mDeposit);
         dest.writeString(mDate);
+        dest.writeString(mBarcode);
+        dest.writeString(mCurrency);
         dest.writeInt(mID);
         dest.writeList(mImages);
     }
@@ -157,8 +179,10 @@ public class Product implements Parcelable {
         private String mTrackingNumber;
         private String mDeposit;
         private String mDate;
+        private String mBarcode;
+        private String mCurrency;
         private int mID;
-        private ArrayList<Integer> mImages;
+        private ArrayList<Photo> mImages;
 
         public Builder productId(String productId) {
             mProductId = productId;
@@ -200,13 +224,23 @@ public class Product implements Parcelable {
             return this;
         }
 
-        public Builder images(ArrayList<Integer> images) {
+        public Builder images(ArrayList<Photo> images) {
             mImages = images;
             return this;
         }
 
         public Builder id(int id) {
             mID = id;
+            return this;
+        }
+
+        public Builder barcode(String barcode) {
+            mBarcode = barcode;
+            return this;
+        }
+
+        public Builder currency(String currency) {
+            mCurrency = currency;
             return this;
         }
 
@@ -221,7 +255,9 @@ public class Product implements Parcelable {
             product.mDeposit = this.mDeposit;
             product.mDate = this.mDate;
             product.mImages = this.mImages;
+            product.mBarcode = this.mBarcode;
             product.mID = this.mID;
+            product.mCurrency = this.mCurrency;
             return product;
         }
     }

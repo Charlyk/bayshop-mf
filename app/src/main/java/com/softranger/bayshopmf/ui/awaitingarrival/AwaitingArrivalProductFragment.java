@@ -87,7 +87,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         mProductPrice.setText(mProduct.getProductPrice());
         mStorageIcon.setImageResource(getStorageIcon(mProduct.getDeposit()));
         mActivity.toggleLoadingProgress(true);
-        ApiClient.getInstance().sendRequest(Constants.Api.getWaitingMfItem(mProduct.getProductId()), mAwaitingListHandler);
+        ApiClient.getInstance().sendRequest(Constants.Api.getWaitingMfItem(String.valueOf(mProduct.getID())), mAwaitingListHandler);
         return mRootView;
     }
 
@@ -122,15 +122,16 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                 case Constants.ApiResponse.RESPONSE_OK: {
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
-                        boolean error = response.getBoolean("error");
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
                             mProduct.setDate(data.getString("createdDate"));
-                            mProduct.setProductPrice(data.getString("currency") + data.getString("price"));
+                            mProduct.setCurrency(data.getString("currency"));
+                            mProduct.setProductPrice(data.getString("price"));
                             mProduct.setProductUrl(data.getString("productUrl"));
                             setDataInPlace(mProduct);
                         } else {
-                            String message = response.optString("message", getString(R.string.unknown_error));
                             Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -180,7 +181,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
 
     private void setDataInPlace(Product product) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+        SimpleDateFormat output = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
         mProductId.setText(product.getProductId());
         mProductName.setText(product.getProductName());
         mProductTracking.setText(product.getTrackingNumber());
@@ -191,7 +192,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
             e.printStackTrace();
         }
         mProductDate.setText(output.format(date));
-        mProductPrice.setText(product.getProductPrice());
+        mProductPrice.setText(product.getCurrency() + product.getProductPrice());
     }
 
     private void bindViews(View view) {

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.Photo;
 
 import java.util.ArrayList;
 
@@ -18,14 +19,14 @@ import java.util.ArrayList;
  */
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder> {
 
-    private ArrayList<Integer> mImages;
+    private ArrayList<Photo> mImages;
     private OnImageClickListener mOnImageClickListener;
 
     @LayoutRes private int mLayoutId;
 
     public int imageHeight;
 
-    public ImagesAdapter(ArrayList<Integer> images, @LayoutRes int layoutId) {
+    public ImagesAdapter(ArrayList<Photo> images, @LayoutRes int layoutId) {
         mImages = images;
         mLayoutId = layoutId;
     }
@@ -44,7 +45,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mProductImage.setImageResource(mImages.get(position));
+        holder.mProductImage.setImageBitmap(mImages.get(position).getBigBitmap());
     }
 
     @Override
@@ -69,6 +70,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     }
 
     public interface OnImageClickListener {
-        void onImageClick(ArrayList<Integer> images, int position);
+        void onImageClick(ArrayList<Photo> images, int position);
     }
 }

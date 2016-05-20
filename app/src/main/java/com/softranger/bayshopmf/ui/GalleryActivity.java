@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.GalleryPagerAdapter;
+import com.softranger.bayshopmf.model.Photo;
 
 import java.util.ArrayList;
 
@@ -19,10 +20,14 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
         Intent intent = getIntent();
-        ArrayList<Integer> images = intent.getExtras().getIntegerArrayList("images");
+        ArrayList<Photo> images = intent.getExtras().getParcelableArrayList("images");
         int position = intent.getExtras().getInt("position");
         ViewPager viewPager = (ViewPager) findViewById(R.id.galleryViewPager);
-        GalleryPagerAdapter adapter = new GalleryPagerAdapter(this, images);
+        viewPager.setOffscreenPageLimit(3);
+        GalleryPagerAdapter adapter = new GalleryPagerAdapter(this, getSupportFragmentManager());
+        for (int i = 0; i < images.size(); i++) {
+            adapter.addFragment(GalleryImageFragment.newInstance(images.get(i)), (i + 1) + " from " + images.size());
+        }
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(position);
     }
