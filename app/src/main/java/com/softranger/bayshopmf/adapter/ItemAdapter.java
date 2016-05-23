@@ -112,7 +112,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    class InStockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class InStockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ViewAnimator.AnimationListener {
         final TextView mUIDLabel;
         final TextView mTrackingLabel;
         final TextView mProductName;
@@ -132,22 +132,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mImageView = (ImageView) itemView.findViewById(R.id.item_image);
             mImageView.setOnClickListener(this);
             mViewAnimator = new ViewAnimator();
-            mViewAnimator.setAnimationListener(new ViewAnimator.AnimationListener() {
-                @Override
-                public void onAnimationStarted() {
-                    @ColorInt int color = mInStockItem.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
-                            mContext.getResources().getColor(R.color.colorPrimary);
-
-                    mView.setBackgroundColor(color);
-                }
-
-                @Override
-                public void onAnimationFinished() {
-                    @DrawableRes int image = mInStockItem.isSelected() ? R.mipmap.parcel_selected : R.mipmap.parcel_active;
-
-                    mImageView.setImageResource(image);
-                }
-            });
+            mViewAnimator.setAnimationListener(this);
         }
 
         @Override
@@ -189,6 +174,19 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             }
             return true;
+        }
+
+        @Override
+        public void onAnimationStarted() {
+            @ColorInt int color = mInStockItem.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
+                    mContext.getResources().getColor(R.color.colorPrimary);
+            mView.setBackgroundColor(color);
+        }
+
+        @Override
+        public void onAnimationFinished() {
+            @DrawableRes int image = mInStockItem.isSelected() ? R.mipmap.parcel_selected : R.mipmap.parcel_active;
+            mImageView.setImageResource(image);
         }
     }
 

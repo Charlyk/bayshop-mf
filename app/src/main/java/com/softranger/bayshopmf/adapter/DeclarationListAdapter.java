@@ -31,15 +31,16 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private ArrayList<Product> mProducts;
     private Object mActionHolder;
     private OnActionButtonsClick mOnActionButtonsClick;
+    private InStockDetailed mInStockDetailed;
 
     public DeclarationListAdapter(InStockDetailed inStockDetailed) {
         mProducts = new ArrayList<>();
         mObjects = new ArrayList<>();
         mObjects.add(inStockDetailed);
         Product product = new Product.Builder().productName("").productUrl("").productPrice("").productQuantity("").build();
-        // TODO: 5/11/16 de editat tat bredu ista
         mProducts.add(product);
         mObjects.add(product);
+        mInStockDetailed = inStockDetailed;
         mActionHolder = new Object();
         mObjects.add(mActionHolder);
     }
@@ -50,23 +51,25 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void addNewProductCard() {
         Product product = new Product.Builder().productName("").productUrl("").productPrice("").productQuantity("").build();
-        mProducts.add(product);
         final int actionPosition = mObjects.indexOf(mActionHolder);
+        mProducts.add(actionPosition - 1, product);
         mObjects.add(actionPosition, product);
         notifyItemInserted(actionPosition);
     }
 
     public void addItem(Product product) {
-        mProducts.add(product);
-        mObjects.add(0, product);
-        notifyItemInserted(0);
+        mProducts.add(0, product);
+        mObjects.add(1, product);
+        notifyItemInserted(1);
     }
 
     public void removeItem(Product itemToRemove) {
-        mProducts.remove(itemToRemove);
-        final int itemPosition = mObjects.indexOf(itemToRemove);
-        mObjects.remove(itemToRemove);
-        notifyItemRemoved(itemPosition);
+        if (mObjects.size() != 2) {
+            mProducts.remove(itemToRemove);
+            final int itemPosition = mObjects.indexOf(itemToRemove);
+            mObjects.remove(itemToRemove);
+            notifyItemRemoved(itemPosition);
+        }
     }
 
     @Override
@@ -149,7 +152,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     break;
                 case R.id.saveFieldsBtn:
                     if (mOnActionButtonsClick != null) {
-                        mOnActionButtonsClick.onSaveItemsClick(mProducts);
+                        mOnActionButtonsClick.onSaveItemsClick(mInStockDetailed, mProducts);
                     }
                     // TODO: 5/10/16 Save all items
                     break;
@@ -212,7 +215,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mInStockDetailed.setDescription(s.toString());
+            mInStockDetailed.setDescription(String.valueOf(s));
         }
 
         @Override
@@ -236,7 +239,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mProduct.setProductName(s.toString());
+            mProduct.setProductName(String.valueOf(s));
         }
 
         @Override
@@ -260,7 +263,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mProduct.setProductUrl(s.toString());
+            mProduct.setProductUrl(String.valueOf(s));
         }
 
         @Override
@@ -284,7 +287,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mProduct.setProductQuantity(s.toString());
+            mProduct.setProductQuantity(String.valueOf(s));
         }
 
         @Override
@@ -308,7 +311,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mProduct.setProductPrice(s.toString());
+            mProduct.setProductPrice(String.valueOf(s));
         }
 
         @Override
@@ -319,6 +322,6 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public interface OnActionButtonsClick {
         void onAddFieldsClick();
-        void onSaveItemsClick(ArrayList<Product> products);
+        void onSaveItemsClick(InStockDetailed inStockDetailed, ArrayList<Product> products);
     }
 }

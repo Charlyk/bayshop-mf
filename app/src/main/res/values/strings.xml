@@ -93,4 +93,7 @@
     <string name="log_out">LogOut</string>
     <string name="saved_succesfuly">Saved successfuly</string>
     <string name="not_suported">Not suported yet</string>
+    <string name="specify_all_data">Please provide all data for</string>
+    <string name="declaration_saved">Declaration was successfuly saved</string>
+    <string name="please_enter_description">Please fill in a description for this package.</string>
 </resources>

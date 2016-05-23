@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class InStockDetailed extends InStockItem {
 
     private ArrayList<Photo> mPhotoUrls;
+    private ArrayList<Product> mProducts;
     private String mDate;
     private String mWeight;
     private String mPrice;
@@ -34,6 +35,7 @@ public class InStockDetailed extends InStockItem {
         mCurency = in.readString();
         mPhotoInProgress = in.readInt();
         mCheckInProgress = in.readInt();
+        in.readList(mProducts, Product.class.getClassLoader());
     }
 
     public static final Creator<InStockDetailed> CREATOR = new Creator<InStockDetailed>() {
@@ -112,6 +114,14 @@ public class InStockDetailed extends InStockItem {
         mCheckInProgress = checkInProgress;
     }
 
+    public ArrayList<Product> getProducts() {
+        return mProducts;
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        mProducts = products;
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
@@ -123,6 +133,7 @@ public class InStockDetailed extends InStockItem {
         parcel.writeString(mCurency);
         parcel.writeInt(mPhotoInProgress);
         parcel.writeInt(mCheckInProgress);
+        parcel.writeList(mProducts);
     }
 
     public static class Builder extends InStockItem.Builder {
@@ -133,6 +144,7 @@ public class InStockDetailed extends InStockItem {
         private String mCurency;
         private int mPhotoInProgress;
         private int mCheckInProgress;
+        private ArrayList<Product> mProducts;
 
         public Builder photoUrls(ArrayList<Photo> photoUrls) {
             mPhotoUrls = photoUrls;
@@ -169,6 +181,11 @@ public class InStockDetailed extends InStockItem {
             return this;
         }
 
+        public Builder products(ArrayList<Product> products) {
+            mProducts = products;
+            return this;
+        }
+
         public InStockDetailed build() {
             InStockDetailed itemDetailed = new InStockDetailed();
             itemDetailed.setPhotoUrls(mPhotoUrls);
@@ -182,6 +199,8 @@ public class InStockDetailed extends InStockItem {
             itemDetailed.setHasDeclaration(hasDeclaration);
             itemDetailed.setPhotoInProgress(mPhotoInProgress);
             itemDetailed.setCheckInProgress(mCheckInProgress);
+            itemDetailed.setProducts(mProducts);
+            itemDetailed.setID(mID);
             return itemDetailed;
         }
     }

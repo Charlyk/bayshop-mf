@@ -26,6 +26,7 @@ public class Constants {
         private static final String MF_LIST = "mf-list/";
         private static final String IN_STOCK = "in-stock/";
         private static final String WAITING_MF_LIST = "waiting-mf-list/";
+        private static final String MF_DECLARATION = "mf-storage-declaration/";
         private static final String WAITING_MF = "waiting-mf/";
         private static final String EDIT = "edit/";
         private static final String AUTH = "auth";
@@ -60,6 +61,10 @@ public class Constants {
 
         public static String getInStockItems(String storage) {
             return URL + MF_LIST + IN_STOCK + storage;
+        }
+
+        public static String getMfDeclarationUrl(String mfId) {
+            return URL + MF_DECLARATION + mfId;
         }
     }
 
