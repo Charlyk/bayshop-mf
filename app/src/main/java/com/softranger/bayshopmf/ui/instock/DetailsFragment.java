@@ -153,6 +153,14 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         mCheckProduct = (Button) view.findViewById(R.id.check_productButton);
         mAdditionalPhoto = (Button) view.findViewById(R.id.additional_photoButton);
 
+        if (detailed.getPhotoInProgress() == Constants.IN_PROGRESS) {
+            mAdditionalPhoto.setSelected(true);
+        }
+
+        if (detailed.getCheckInProgress() == Constants.IN_PROGRESS) {
+            mCheckProduct.setSelected(true);
+        }
+
         mFillDeclaration.setSelected(detailed.isHasDeclaration());
         if (mFillDeclaration.isSelected()) {
             mFillDeclaration.setText(mActivity.getString(R.string.edit_declaration));
@@ -192,7 +200,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                             mInStockDetailed = (InStockDetailed) new InStockDetailed.Builder()
                                     .date(data.getString("createdDate"))
                                     .price(data.getString("price"))
-                                    .photoInProgress(data.getBoolean("photosInProgress") ? 1 : 0)
+                                    .photoInProgress(data.getInt("photosInProgress"))
                                     .checkInProgress(data.getBoolean("checkProductInProgress") ? 1 : 0)
                                     .curency(data.getString("currency"))
                                     .weight(data.getString("weight"))
@@ -255,17 +263,19 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                 mActivity.addFragment(DeclarationFragment.newInstance(mInStockDetailed), true);
                 break;
             case R.id.check_productButton:
-                mActivity.addFragment(new CheckProductFragment(), true);
+                mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mInStockDetailed.getID()),
+                        mInStockDetailed.getCheckInProgress() == Constants.IN_PROGRESS), true);
                 break;
             case R.id.additional_photoButton:
-                mActivity.addFragment(new AdditionalPhotoFragment(), true);
+                mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mInStockDetailed.getID()),
+                        mInStockDetailed.getPhotoInProgress() == Constants.IN_PROGRESS), true);
                 break;
         }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDetach() {
+        super.onDetach();
         mActivity.unregisterReceiver(mStatusReceiver);
     }
 

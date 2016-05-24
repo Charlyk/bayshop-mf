@@ -41,6 +41,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mOnItemClickListener = onItemClickListener;
     }
 
+    public void deleteItem(Object o) {
+        if (mInStockItems.contains(o)) {
+            final int index = mInStockItems.indexOf(o);
+            mInStockItems.remove(o);
+            notifyItemRemoved(index);
+        }
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (mInStockItems.get(position) instanceof InStockItem) {

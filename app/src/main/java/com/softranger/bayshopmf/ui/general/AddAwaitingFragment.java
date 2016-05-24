@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.ui.general;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -142,6 +143,9 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
+                            Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                            intent.putExtra("deposit", mProduct.getDeposit());
+                            mActivity.sendBroadcast(intent);
                             mActivity.onBackPressed();
                         } else {
                             Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();

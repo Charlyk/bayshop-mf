@@ -4,6 +4,10 @@ package com.softranger.bayshopmf.ui.general;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +15,22 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.InStockDetailed;
+import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
+import com.softranger.bayshopmf.util.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,13 +39,27 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
 
     public static final String ACTION_PHOTO_IN_PROCESSING = "ACTION PHOTO IN PROCESSING";
     public static final String ACTION_CANCEL_PHOTO_REQUEST = "ACTION CANCEL PHOTO REQUEST";
+    private static final String ID_ARG = "id argument";
+    private static final String STATUS_ARG = "status argument";
 
     private EditText mCommentInput;
     private Button mLeaveComment;
+    private Button mConfirmButton;
     private MainActivity mActivity;
+    private String mId;
+    private boolean mIsInprogress;
 
     public AdditionalPhotoFragment() {
         // Required empty public constructor
+    }
+
+    public static AdditionalPhotoFragment newInstance(String id, boolean isInProgress) {
+        Bundle args = new Bundle();
+        args.putString(ID_ARG, id);
+        args.putBoolean(STATUS_ARG, isInProgress);
+        AdditionalPhotoFragment fragment = new AdditionalPhotoFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -38,9 +70,19 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
         mActivity = (MainActivity) getActivity();
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
         mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
-        Button confirm = (Button) view.findViewById(R.id.check_product_confirmBtn);
-        mLeaveComment.setOnClickListener(this);
-        confirm.setOnClickListener(this);
+        mConfirmButton = (Button) view.findViewById(R.id.check_product_confirmBtn);
+        mId = getArguments().getString(ID_ARG);
+        mIsInprogress = getArguments().getBoolean(STATUS_ARG);
+
+        if (mIsInprogress) {
+            mConfirmButton.setText(getString(R.string.cancel_request));
+            mConfirmButton.setBackgroundColor(mActivity.getResources().getColor(R.color.colorAccent));
+            mLeaveComment.setVisibility(View.GONE);
+        } else {
+            mLeaveComment.setOnClickListener(this);
+        }
+
+        mConfirmButton.setOnClickListener(this);
         return view;
     }
 
@@ -50,18 +92,75 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
             case R.id.check_product_leaveCommentBtn:
                 if (mCommentInput.getVisibility() == View.GONE) {
                     mCommentInput.setVisibility(View.VISIBLE);
-                    mLeaveComment.setText("Hide comment");
+                    mLeaveComment.setText(getString(R.string.hide_comment));
                 } else {
                     mCommentInput.setVisibility(View.GONE);
-                    mLeaveComment.setText("Leave comment");
+                    mLeaveComment.setText(getString(R.string.leave_comment));
                 }
                 break;
             case R.id.check_product_confirmBtn: {
-                Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
-                mActivity.sendBroadcast(intent);
-                mActivity.onBackPressed();
+                if (!mIsInprogress) {
+                    RequestBody body = new FormBody.Builder()
+                            .add("id", mId)
+                            .add("request", Constants.Api.OPTION_PHOTO)
+                            .add("package", String.valueOf(10)) // 10 is photo quantity id, it may change in the future but now is 10
+                            .add("comments", String.valueOf(mCommentInput.getText()))
+                            .build();
+                    ApiClient.getInstance().sendRequest(body, Constants.Api.getAdditioalPhotoUrl(), mHandler);
+                    mActivity.toggleLoadingProgress(true);
+                } else {
+                    Intent intent = new Intent(ACTION_CANCEL_PHOTO_REQUEST);
+                    mActivity.sendBroadcast(intent);
+                    mActivity.onBackPressed();
+                }
                 break;
             }
         }
     }
+
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
+                        if (error) {
+                            Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
+                            mActivity.sendBroadcast(intent);
+                            mActivity.onBackPressed();
+                        }
+                    } catch (Exception e) {
+                        Snackbar.make(mConfirmButton, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    Response response = (Response) msg.obj;
+                    String message = response.message();
+                    Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = mActivity.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
+
+                }
+            }
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
 }

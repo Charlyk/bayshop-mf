@@ -6,9 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,15 +14,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.general.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.StorageHolderFragment;
+import com.softranger.bayshopmf.ui.instock.BuildParcelFirstStep;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -33,9 +35,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public ActionBarDrawerToggle mDrawerToggle;
     public DrawerLayout mDrawerLayout;
     public Toolbar mToolbar;
-    public FloatingActionButton mActionButton;
+    public FloatingActionsMenu mActionMenu;
     private static SelectedFragment selectedFragment;
     private ProgressBar mProgressBar;
+    private FrameLayout mFabBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +51,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        mActionButton.setOnClickListener(new View.OnClickListener() {
+        // set click listener to collapse button and hide layout if user press on screen
+        mFabBackground = (FrameLayout) findViewById(R.id.fabBackgroundLayout);
+        mFabBackground.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
+        // set listener to either show or hide white background
+        mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab);
+        mActionMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+            @Override
+            public void onMenuExpanded() {
+                mFabBackground.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                mFabBackground.setVisibility(View.GONE);
+            }
+        });
+
+        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.buildParcelButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addFragment(new BuildParcelFirstStep(), true);
+                mActionMenu.collapse();
+                mFabBackground.setVisibility(View.GONE);
             }
         });
 
@@ -89,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mActionButton.hide();
+                mActionMenu.setVisibility(View.GONE);
                 mDrawerToggle.setDrawerIndicatorEnabled(false);
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -137,17 +165,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_inStock:
                 replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
                 selectedFragment = SelectedFragment.IN_STOCK;
-                mActionButton.show();
+                mActionMenu.setVisibility(View.VISIBLE);
                 break;
             case R.id.nav_waitingArrival:
                 replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.AWAITING_ARRIVAL));
                 selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
-                mActionButton.hide();
+                mActionMenu.setVisibility(View.GONE);
                 break;
             case R.id.nav_inProcessing:
                 replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_PROCESSING));
                 selectedFragment = SelectedFragment.IN_PROCESSING;
-                mActionButton.hide();
+                mActionMenu.setVisibility(View.GONE);
                 break;
             case R.id.nav_logOut:
                 Application.getInstance().setLoginStatus(false);
@@ -156,6 +184,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (mActionMenu.isExpanded()) {
+            mActionMenu.collapse();
+            mFabBackground.setVisibility(View.GONE);
+        }
         return true;
     }
 
@@ -163,11 +195,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else if (mActionMenu.isExpanded()) {
+            mActionMenu.collapse();
+            mFabBackground.setVisibility(View.GONE);
         } else if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
             if (getFragmentManager().getBackStackEntryCount() == 1) {
                 if (selectedFragment == SelectedFragment.IN_STOCK)
-                    mActionButton.show();
+                    mActionMenu.setVisibility(View.VISIBLE);
                 mDrawerToggle.setDrawerIndicatorEnabled(true);
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);

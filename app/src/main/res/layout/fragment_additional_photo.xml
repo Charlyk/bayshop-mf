@@ -74,6 +74,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:background="@drawable/additional_btns_bg"
             android:text="@string/confirm"
             android:textColor="@android:color/white"/>

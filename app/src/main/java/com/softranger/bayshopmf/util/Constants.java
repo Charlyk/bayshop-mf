@@ -9,6 +9,8 @@ public class Constants {
     public static final String UK = "uk";
     public static final String DE = "de";
 
+    public static final int IN_PROGRESS = 1, FINISHED = 2, NOT_REQUESTED = 0;
+
     public static class ApiResponse {
         public static final int RESPONSE_OK = 1;
         public static final int RESPONSE_FAILED = -1;
@@ -30,6 +32,8 @@ public class Constants {
         private static final String WAITING_MF = "waiting-mf/";
         private static final String EDIT = "edit/";
         private static final String AUTH = "auth";
+        public static final String OPTION_PHOTO = "photo";
+        public static final String OPTION_CHECK = "verification";
 
         public static String getAuthUrl() {
             return URL + AUTH;
@@ -65,6 +69,10 @@ public class Constants {
 
         public static String getMfDeclarationUrl(String mfId) {
             return URL + MF_DECLARATION + mfId;
+        }
+
+        public static String getAdditioalPhotoUrl() {
+            return URL + STORAGE;
         }
     }
 

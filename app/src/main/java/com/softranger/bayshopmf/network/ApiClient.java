@@ -57,6 +57,19 @@ public class ApiClient extends OkHttpClient {
         }
     }
 
+    public void delete(String url, Handler handler) {
+        if (Application.currentToken != null) {
+            HttpUrl httpUrl = HttpUrl.parse(url);
+            Request request = new Request.Builder()
+                    .url(httpUrl)
+                    .addHeader("Bearer", Application.currentToken)
+                    .addHeader("DeviceId", deviceId)
+                    .delete()
+                    .build();
+            execute(request, handler);
+        }
+    }
+
     public void sendRequest(RequestBody requestBody, String urlString, Handler handler) {
         if (Application.currentToken != null) {
             HttpUrl url = HttpUrl.parse(urlString);

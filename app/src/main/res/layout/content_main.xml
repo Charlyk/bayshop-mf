@@ -21,4 +21,13 @@
         android:layout_centerInParent="true"
         android:id="@+id/mainActivityProgressBar"
         android:layout_gravity="center"/>
+
+    <FrameLayout
+        android:id="@+id/fabBackgroundLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:layout_alignParentTop="true"
+        android:background="#c9ffffff"/>
 </RelativeLayout>

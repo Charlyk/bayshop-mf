@@ -96,4 +96,6 @@
     <string name="specify_all_data">Please provide all data for</string>
     <string name="declaration_saved">Declaration was successfuly saved</string>
     <string name="please_enter_description">Please fill in a description for this package.</string>
+    <string name="hide_comment">Hide comment</string>
+    <string name="cancel_request">Cancel request</string>
 </resources>

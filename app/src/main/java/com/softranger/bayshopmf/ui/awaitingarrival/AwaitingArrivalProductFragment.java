@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
@@ -27,6 +28,7 @@ import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.ui.general.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.general.CheckProductFragment;
+import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
 import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -112,6 +114,57 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
             }
+        }
+    };
+
+    private Handler mDeleteHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equals("Ok");
+                        if (error) {
+                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                        } else {
+                            mActivity.toggleLoadingProgress(false);
+                            Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                            intent.putExtra("deposit", mProduct.getDeposit());
+                            mActivity.sendBroadcast(intent);
+                            mActivity.onBackPressed();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    Response response = (Response) msg.obj;
+                    String message = response.message();
+                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = mActivity.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
+                    break;
+                }
+                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
+                    mActivity.toggleLoadingProgress(false);
+                    mActivity.logOut();
+                }
+            }
+            mActivity.toggleLoadingProgress(false);
         }
     };
 
@@ -242,15 +295,17 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                 deleteItem(mProduct);
                 break;
             case R.id.awaitingDetailsCheckProductBtn:
-                mActivity.addFragment(new CheckProductFragment(), true);
+                Toast.makeText(mActivity, getString(R.string.not_suported), Toast.LENGTH_SHORT).show();
+//                mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mProduct.getID())), true);
                 break;
             case R.id.awaitingDetailsAdditionalPhotosBtn:
-                mActivity.addFragment(new AdditionalPhotoFragment(), true);
+                Toast.makeText(mActivity, getString(R.string.not_suported), Toast.LENGTH_SHORT).show();
+//                mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mProduct.getID())), true);
                 break;
         }
     }
 
-    private void deleteItem(Product product) {
+    private void deleteItem(final Product product) {
         View deleteDialog = LayoutInflater.from(mActivity).inflate(R.layout.delete_dialog, null, false);
         Button cancel = (Button) deleteDialog.findViewById(R.id.dialog_cancel_buttonn);
         Button delete = (Button) deleteDialog.findViewById(R.id.dialog_delete_button);
@@ -267,7 +322,8 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActivity.onBackPressed();
+                ApiClient.getInstance().delete(Constants.Api.getWaitingMfItem(String.valueOf(product.getID())), mDeleteHandler);
+                mActivity.toggleLoadingProgress(true);
                 dialog.dismiss();
             }
         });
