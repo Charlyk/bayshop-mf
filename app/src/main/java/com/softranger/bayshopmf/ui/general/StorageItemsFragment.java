@@ -24,6 +24,7 @@ import android.view.animation.TranslateAnimation;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.model.InProcessingParcel;
+import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
@@ -58,6 +59,7 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
     private ArrayList<Object> mObjects;
     private ItemAdapter mAdapter;
     private String mUrl;
+    private ArrayList<InStockItem> mDetailedList;
 
     public StorageItemsFragment() {
         // Required empty public constructor
@@ -95,6 +97,9 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
         mRecyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
         final LinearLayoutManager manager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(manager);
+
+        mDetailedList = new ArrayList<>();
+        mActivity.mActionMenu.setVisibility(View.GONE);
 
         mObjects = new ArrayList<>();
         mAdapter = new ItemAdapter(mActivity);
@@ -250,7 +255,11 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
 
     @Override
     public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
+        if (isSelected) mDetailedList.add(inStockItem);
+        else mDetailedList.remove(inStockItem);
 
+        if (mDetailedList.size() <= 0) mActivity.mActionMenu.setVisibility(View.GONE);
+        else mActivity.mActionMenu.setVisibility(View.VISIBLE);
     }
 
     @Override
