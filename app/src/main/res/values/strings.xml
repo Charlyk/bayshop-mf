@@ -98,4 +98,9 @@
     <string name="please_enter_description">Please fill in a description for this package.</string>
     <string name="hide_comment">Hide comment</string>
     <string name="cancel_request">Cancel request</string>
+    <string name="total_weight">Total weight:</string>
+    <string name="next">Next</string>
+    <string name="has_li_ion_battery">Has li/ion battery</string>
+    <string name="first_step">First step</string>
+    <string name="list_items">Items list</string>
 </resources>
