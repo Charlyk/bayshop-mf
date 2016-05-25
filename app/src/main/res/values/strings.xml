@@ -3,6 +3,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="server_client_id">675996002572-a8ubjajrhundd08o76cipt37l9ngeqqh.apps.googleusercontent.com</string>
+    <string name="google_api_key">675996002572-el6qlu6q7jtolhmk89smsi000drtq9me.apps.googleusercontent.com</string>
 
     <string name="in_stock">In stock</string>
     <string name="in_processing">In processing</string>

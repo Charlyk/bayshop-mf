@@ -8,11 +8,20 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
@@ -25,19 +34,29 @@ import java.io.IOException;
 
 import okhttp3.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    private static final int RC_SIGN_IN = 1537;
     private EditText mEmailInput;
     private EditText mPasswordInput;
     private Button mLoginButton;
     private ProgressBar mLoginProgressBar;
     public static LoginActivity instance;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         instance = this;
+        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.PLUS_ME), new Scope(Scopes.EMAIL))
+                .requestServerAuthCode(getString(R.string.server_client_id), false)
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, options)
+                .build();
         initializeViews();
     }
 
@@ -91,7 +110,8 @@ public class LoginActivity extends AppCompatActivity {
      * @param view google button
      */
     public void loginWithGoogle(View view) {
-
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     /**
@@ -113,8 +133,25 @@ public class LoginActivity extends AppCompatActivity {
         showLoading();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
 
-
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            String serverCode = acct.getServerAuthCode();
+            String name = acct.getDisplayName();
+        } else {
+        }
+    }
 
     /**
      * Called when sign up is clicked
@@ -165,4 +202,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
 }

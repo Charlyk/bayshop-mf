@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "675996002572",
+    "project_id": "kinetic-physics-645"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675996002572:android:7953ca7e9014943b",
+        "android_client_info": {
+          "package_name": "com.softranger.bayshopmf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675996002572-el6qlu6q7jtolhmk89smsi000drtq9me.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softranger.bayshopmf",
+            "certificate_hash": "6D861682776DECE909FD2EA74522364F49BB435F"
+          }
+        },
+        {
+          "client_id": "675996002572-a8ubjajrhundd08o76cipt37l9ngeqqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbtZmtnHa-hMA_MFjkGRGBuaecJCGhXo4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
