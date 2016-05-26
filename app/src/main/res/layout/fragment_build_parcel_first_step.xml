@@ -106,6 +106,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/total_divider"
+        android:background="@color/colorDivider"
         tools:listitem="@layout/build_parcel_first_step_list_item"/>
 
 

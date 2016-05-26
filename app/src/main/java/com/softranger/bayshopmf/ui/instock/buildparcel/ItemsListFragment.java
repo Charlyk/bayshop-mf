@@ -15,26 +15,40 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.FirstStepAdapter;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItemsListFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class ItemsListFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener,
+        FirstStepAdapter.OnItemClickListener {
 
+    private static final String IN_STOCK_ARG = "in stock items argument";
     private MainActivity mActivity;
     private FirstStepAdapter mAdapter;
+    private TextView mTotalWeight;
+    private TextView mTotalPrice;
+    private ArrayList<InStockItem> mInStockItems;
 
     public ItemsListFragment() {
         // Required empty public constructor
     }
 
+    public static ItemsListFragment newInstance(ArrayList<InStockItem> inStockItems) {
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(IN_STOCK_ARG, inStockItems);
+        ItemsListFragment fragment = new ItemsListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,8 +61,15 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.buildFirstStepItemsList);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        mAdapter = new FirstStepAdapter(new ArrayList<InStockItem>());
+        mInStockItems = getArguments().getParcelableArrayList(IN_STOCK_ARG);
+        if (mInStockItems == null) mInStockItems = new ArrayList<>();
+        mAdapter = new FirstStepAdapter(mInStockItems);
+        mAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(mAdapter);
+
+        mTotalPrice = (TextView) view.findViewById(R.id.buildFirstFragmentTotalPriceLabel);
+        mTotalWeight = (TextView) view.findViewById(R.id.buildFirstFragmentTotalWeightLabel);
+        updateTotals();
 
         Button nextButton = (Button) view.findViewById(R.id.buildFirstStepNextButton);
         nextButton.setOnClickListener(this);
@@ -62,6 +83,22 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         return view;
     }
 
+    private int getTotalWeight(ArrayList<InStockItem> inStockItems) {
+        int totalWeight = 0;
+        for (InStockItem item : inStockItems) {
+            totalWeight = totalWeight + 40;
+        }
+        return totalWeight;
+    }
+
+    private int getTotalPrice(ArrayList<InStockItem> inStockItems) {
+        int totalPrice = 0;
+        for (InStockItem inStockItem : inStockItems) {
+            totalPrice = totalPrice + 1;
+        }
+        return totalPrice;
+    }
+
     @Override
     public void onClick(View v) {
         mActivity.addFragment(new SelectAddressFragment(), true);
@@ -70,6 +107,11 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+    }
+
+    private void updateTotals() {
+        mTotalPrice.setText(String.valueOf(getTotalPrice(mInStockItems)));
+        mTotalWeight.setText(String.valueOf(getTotalWeight(mInStockItems)));
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -87,5 +129,15 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     public void onDestroyView() {
         super.onDestroyView();
         mActivity.unregisterReceiver(mTitleReceiver);
+    }
+
+    @Override
+    public void onDeleteClick(InStockItem inStockItem, int position) {
+        mAdapter.removeItem(position);
+        if (mAdapter.getItemCount() == 0) {
+            mActivity.onBackPressed();
+        } else {
+            updateTotals();
+        }
     }
 }

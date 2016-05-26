@@ -23,12 +23,16 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
     private OnItemClickListener mOnItemClickListener;
 
     public FirstStepAdapter(ArrayList<InStockItem> inStockItems) {
-        mInStockItems = new ArrayList<>();
-        mInStockItems.addAll(inStockItems);
+        mInStockItems = inStockItems;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
+    }
+
+    public void removeItem(int position) {
+        mInStockItems.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -57,6 +61,7 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
         final TextView mWeightLabel;
         final ImageButton mDeleteButton;
         InStockItem mInStockItem;
+
         public ViewHolder(View itemView) {
             super(itemView);
             mMfLabel = (TextView) itemView.findViewById(R.id.buildFirstStepMfIdLabel);

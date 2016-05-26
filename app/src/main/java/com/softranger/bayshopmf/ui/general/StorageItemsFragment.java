@@ -144,7 +144,9 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         Snackbar.make(mRecyclerView, getString(R.string.please_select_parcels), Snackbar.LENGTH_SHORT).show();
                         mActivity.mActionMenu.collapse();
                     } else {
-                        mActivity.addFragment(new ItemsListFragment(), true);
+                        ArrayList<InStockItem> inStockItems = new ArrayList<>();
+                        inStockItems.addAll(mDetailedList);
+                        mActivity.addFragment(ItemsListFragment.newInstance(inStockItems), true);
                         mActivity.mActionMenu.collapse();
                     }
                     break;
