@@ -26,12 +26,14 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.general.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.StorageHolderFragment;
-import com.softranger.bayshopmf.ui.instock.BuildParcelFirstStep;
+import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+    public static final String ACTION_UPDATE_TITLE = "update toolbar title";
+    public static final String ACTION_START_CREATING_PARCEL = "start creating a new parcel";
     public ActionBarDrawerToggle mDrawerToggle;
     public DrawerLayout mDrawerLayout;
     public Toolbar mToolbar;
@@ -78,9 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragment(new BuildParcelFirstStep(), true);
-                mActionMenu.collapse();
-                mFabBackground.setVisibility(View.GONE);
+                Intent intent = new Intent(ACTION_START_CREATING_PARCEL);
+                sendBroadcast(intent);
             }
         });
 
@@ -149,11 +150,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-    public void setToolbarTitle(String title, boolean hideLogo) {
-        TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(title);
-        ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
-        logo.setVisibility(hideLogo ? View.GONE : View.VISIBLE);
+    public void setToolbarTitle(final String title, final boolean hideLogo) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+                        toolbarTitle.setText(title);
+                        ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
+                        logo.setVisibility(hideLogo ? View.GONE : View.VISIBLE);
+                    }
+                }, 300);
+            }
+        });
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -220,6 +231,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         setToolbarTitle(getString(R.string.in_processing), true);
                         break;
                 }
+            } else {
+                Intent updateTitleIntent = new Intent(ACTION_UPDATE_TITLE);
+                sendBroadcast(updateTitleIntent);
             }
         } else {
             super.onBackPressed();

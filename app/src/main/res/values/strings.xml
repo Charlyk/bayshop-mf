@@ -105,4 +105,10 @@
     <string name="has_li_ion_battery">Has li/ion battery</string>
     <string name="first_step">First step</string>
     <string name="list_items">Items list</string>
+    <string name="addresses_list">Addresses list</string>
+    <string name="details">Details</string>
+    <string name="select_method">Select method</string>
+    <string name="ok">OK</string>
+    <string name="shipping_method">Shipping method</string>
+    <string name="please_select_parcels">Select at least two parcels to start combine them.</string>
 </resources>

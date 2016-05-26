@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +33,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -102,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      * @param view facebook button
      */
     public void loginWithFacebook(View view) {
-
+        Toast.makeText(this, "Soon", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -112,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void loginWithGoogle(View view) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        showLoading();
     }
 
     /**
@@ -149,7 +153,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInAccount acct = result.getSignInAccount();
             String serverCode = acct.getServerAuthCode();
             String name = acct.getDisplayName();
+            RequestBody body = new FormBody.Builder()
+                    .add("code", serverCode)
+                    .add("type", "google")
+                    .build();
+            ApiClient.getInstance().sendRequest(body, Constants.Api.getAuthUrl(), mAuthHandler);
         } else {
+
         }
     }
 

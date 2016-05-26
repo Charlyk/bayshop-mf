@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
+import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
@@ -32,6 +33,7 @@ import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragmen
 import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
+import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -40,6 +42,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import okhttp3.Response;
 
@@ -64,6 +67,11 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
     public StorageItemsFragment() {
         // Required empty public constructor
     }
+
+
+    // TODO: 5/26/16 trebuie ca receiveru sa se filtreze in dependenta de depositul curent al fragmentului
+
+
 
     public static <T extends Parcelable> StorageItemsFragment newInstance(@NonNull ArrayList<T> items,
                                                                           @NonNull String deposit) {
@@ -92,6 +100,8 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
         mActivity = (MainActivity) getActivity();
 
         IntentFilter intentFilter = new IntentFilter(ACTION_ITEM_CHANGED);
+        intentFilter.addAction(MainActivity.ACTION_START_CREATING_PARCEL);
+        intentFilter.addAction(Application.TOKEN_READY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
@@ -99,13 +109,11 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
         mRecyclerView.setLayoutManager(manager);
 
         mDetailedList = new ArrayList<>();
-        mActivity.mActionMenu.setVisibility(View.GONE);
 
         mObjects = new ArrayList<>();
         mAdapter = new ItemAdapter(mActivity);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
-        mActivity.registerReceiver(mBroadcastReceiver, new IntentFilter(Application.TOKEN_READY));
         mUrl = getArguments().getString(URL_ARG);
         mDeposit = getArguments().getString(DEPOSIT_ARG);
         if (mUrl != null) {
@@ -130,6 +138,15 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                             }
                         }
                     }, 200);
+                    break;
+                case MainActivity.ACTION_START_CREATING_PARCEL:
+                    if (mDetailedList.size() < 2) {
+                        Snackbar.make(mRecyclerView, getString(R.string.please_select_parcels), Snackbar.LENGTH_SHORT).show();
+                        mActivity.mActionMenu.collapse();
+                    } else {
+                        mActivity.addFragment(new ItemsListFragment(), true);
+                        mActivity.mActionMenu.collapse();
+                    }
                     break;
             }
         }
@@ -233,33 +250,20 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
     @Override
     public void onRowClick(final InStockItem inStockItem, int position) {
         mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mActivity.setToolbarTitle(inStockItem.getName(), true);
-            }
-        }, 300);
+        mActivity.setToolbarTitle(inStockItem.getName(), true);
     }
 
     @Override
     public void onNoDeclarationItemSelected(final InStockItem inStockItem, int position) {
         mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
-        Snackbar.make(mRecyclerView, getString(R.string.fill_in_the_declaration), Snackbar.LENGTH_SHORT).show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mActivity.setToolbarTitle(inStockItem.getName(), true);
-            }
-        }, 300);
+        Toast.makeText(mActivity, getString(R.string.fill_in_the_declaration), Toast.LENGTH_SHORT).show();
+        mActivity.setToolbarTitle(inStockItem.getName(), true);
     }
 
     @Override
     public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
         if (isSelected) mDetailedList.add(inStockItem);
         else mDetailedList.remove(inStockItem);
-
-        if (mDetailedList.size() <= 0) mActivity.mActionMenu.setVisibility(View.GONE);
-        else mActivity.mActionMenu.setVisibility(View.VISIBLE);
     }
 
     @Override

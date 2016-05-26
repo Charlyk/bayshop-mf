@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/secondStepItemNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:drawableLeft="@mipmap/ic_shipping_address"
+        android:drawablePadding="15dp"
+        android:drawableStart="@mipmap/ic_shipping_address"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        tools:text="Jora Cardan"/>
+
+    <View
+        android:id="@+id/item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/secondStepItemNameLabel"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#ffbdbdbd"/>
+
+    <TextView
+        android:id="@+id/secondStepAddressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_divider"
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        tools:text="Eduard Albu\nFloriolor 16/1 ap 106\nChisinau, Moldova\nMD-2001\n(79) 466 284"/>
+
+    <View
+        android:id="@+id/item_divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/secondStepAddressText"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="5dp"
+        android:background="#ffbdbdbd"/>
+
+    <Button
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:layout_below="@id/item_divider2"
+        android:textColor="@color/colorGreenAction"
+        android:textSize="17sp"
+        android:text="Select address"
+        android:id="@+id/secondStepSelectBtn"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

@@ -4,7 +4,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:background="@android:color/white"
-                tools:context="com.softranger.bayshopmf.ui.instock.BuildParcelFirstStep">
+                tools:context=".ui.instock.buildparcel.ItemsListFragment">
 
     <LinearLayout
         android:id="@+id/buildFirstTotalLayout"
@@ -20,7 +20,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:text="@string/has_li_ion_battery"
-            android:id="@+id/checkBox"/>
+            android:id="@+id/buildFirstStepHasBattery"/>
 
         <View
             android:layout_width="match_parent"

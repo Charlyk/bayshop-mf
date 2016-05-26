@@ -9,6 +9,8 @@ public class Constants {
     public static final String UK = "uk";
     public static final String DE = "de";
 
+    public static Character[] ALPHABET = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
     public static final int IN_PROGRESS = 1, FINISHED = 2, NOT_REQUESTED = 0;
 
     public static class ApiResponse {

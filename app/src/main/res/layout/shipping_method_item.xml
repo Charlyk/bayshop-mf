@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/shippingMethodItemNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="16dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        tools:text="By plane"/>
+
+    <TextView
+        android:id="@+id/shippingMethodItemPriceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:padding="18sp"
+        android:textSize="18sp"
+        tools:text="$10"/>
+
+    <View
+        android:id="@+id/item_divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/shippingMethodItemPriceLabel"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="5dp"
+        android:background="#ffbdbdbd"/>
+
+
+
+    <Button
+        android:id="@+id/shippingMethodSelectBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_divider3"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="?selectableItemBackground"
+        android:text="@string/select_method"
+        android:textColor="@color/colorGreenAction"
+        android:textSize="17sp"/>
+
+    <Button
+        android:id="@+id/shippingMethodDetailsBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_divider3"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/shippingMethodSelectBtn"
+        android:layout_toStartOf="@+id/shippingMethodSelectBtn"
+        android:background="?selectableItemBackground"
+        android:text="@string/details"
+        android:textColor="@color/colorGreenAction"
+        android:textSize="17sp"/>
+</RelativeLayout>

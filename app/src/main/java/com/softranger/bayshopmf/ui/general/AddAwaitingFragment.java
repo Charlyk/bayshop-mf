@@ -126,7 +126,7 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                     .add("tracking", mProduct.getTrackingNumber())
                     .add("title", mProduct.getProductName())
                     .add("url", mProduct.getProductUrl())
-                    .add("packagePrice", mProduct.getProductPrice().replace(".", ","))
+                    .add("packagePrice", mProduct.getProductPrice())
                     .build();
             ApiClient.getInstance().sendRequest(body, Constants.Api.addWaitingMfItem(), mEdithandler);
             mActivity.toggleLoadingProgress(true);
