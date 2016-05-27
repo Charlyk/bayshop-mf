@@ -4,6 +4,9 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 /**
  * Created by eduard on 29.04.16.
  *
@@ -27,6 +30,8 @@ public class Application extends android.app.Application {
         instance = this;
         preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         currentToken = preferences.getString(AUTH_TOKEN, "no token");
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 
     public void setAuthToken(String authToken) {

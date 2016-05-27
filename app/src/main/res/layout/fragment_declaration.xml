@@ -10,5 +10,6 @@
         android:padding="11dp"
         android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        tools:listitem="@layout/declaration_item_layout"/>
 </FrameLayout>

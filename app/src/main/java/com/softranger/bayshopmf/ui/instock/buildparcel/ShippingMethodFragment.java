@@ -84,7 +84,7 @@ public class ShippingMethodFragment extends Fragment implements ShippingMethodAd
 
     @Override
     public void onSelectClick(ShippingMethod shippingMethod, int position) {
-
+        mActivity.addFragment(new CheckDeclarationFragment(), true);
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {

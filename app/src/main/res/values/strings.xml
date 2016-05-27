@@ -5,6 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="server_client_id">675996002572-a8ubjajrhundd08o76cipt37l9ngeqqh.apps.googleusercontent.com</string>
     <string name="google_api_key">675996002572-el6qlu6q7jtolhmk89smsi000drtq9me.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">1448296545440676</string>
+    <string name="fb_login_protocol_scheme">1448296545440676</string>
 
     <string name="in_stock">In stock</string>
     <string name="in_processing">In processing</string>
@@ -111,4 +113,16 @@
     <string name="ok">OK</string>
     <string name="shipping_method">Shipping method</string>
     <string name="please_select_parcels">Select at least two parcels to start combine them.</string>
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, fermentum eros vivamus, turpis tempor facilisi libero. Fusce adipiscing ornare, lorem libero massa ipsum velit ac mauris, nec tristique odio, cras morbi augue. Orci porta semper varius ut vel, non purus tincidunt. Sollicitudin dui posuere facilisis posuere, semper mauris quisque, vitae nam lacus, aenean aliquam odio. Dolor diam fringilla molestie et dolor porta, vel nec maecenas sed. A in magna vehicula neque sed, lacus dolor cras malesuada suspendisse euismod. Pede vel curabitur, cras libero morbi sodales venenatis scelerisque
+    </string>
+    <string name="select_this_method">Select this method</string>
+    <string name="fill_declaration">Fill declaration</string>
+    <string name="units">Units</string>
+    <string name="check_list">Goods list</string>
+    <string name="i_am_sure">I\'m sure</string>
+    <string name="message_example">Esti uveren in ceea ce faci? Asa iti poti pierde tot ce ai adunat o viata, gindestete ghini…</string>
+    <string name="delivery_price">Delivery price:</string>
+    <string name="insurance">Insurance</string>
+    <string name="declaration">Declaration</string>
 </resources>

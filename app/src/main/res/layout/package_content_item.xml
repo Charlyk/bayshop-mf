@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+    <TextView
+        android:id="@+id/packageContentProductDescriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textSize="17sp"
+        android:layout_marginBottom="5dp"
+        android:text="HP Pro supermega ZX 3"/>
+
+    <TextView
+        android:id="@+id/packageCOntentUnitsQuantityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/packageContentProductDescriptionLabel"
+        android:text="@string/units"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/packageCOntentUnitsQuantityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/packageCOntentUnitsQuantityTitle"
+        android:textColor="@android:color/black"
+        android:text="3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/packageContentWeightTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toRightOf="@id/packageCOntentUnitsQuantityTitle"
+        android:layout_toEndOf="@id/packageCOntentUnitsQuantityTitle"
+        android:layout_below="@id/packageContentProductDescriptionLabel"
+        android:text="@string/weight"/>
+
+    <TextView
+        android:id="@+id/packageContentWeightLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="2kg"
+        android:layout_below="@+id/packageContentWeightTitle"
+        android:layout_alignLeft="@+id/packageContentWeightTitle"
+        android:layout_alignStart="@+id/packageContentWeightTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/packageContentWeightTitle"
+        android:layout_toEndOf="@id/packageContentWeightTitle"
+        android:layout_below="@id/packageContentProductDescriptionLabel"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/price"
+        android:id="@+id/packageContentPriceTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="$234"
+        android:id="@+id/packageContentPriceLabel"
+        android:layout_below="@+id/packageContentPriceTitle"
+        android:layout_toRightOf="@+id/packageContentWeightTitle"
+        android:layout_toEndOf="@+id/packageContentWeightTitle"/>
+</RelativeLayout>

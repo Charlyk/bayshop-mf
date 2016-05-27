@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -28,6 +29,8 @@ import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.FacebookAuth;
+import com.softranger.bayshopmf.util.FacebookAuth.OnLoginDataReadyListener;
 
 import org.json.JSONObject;
 
@@ -37,7 +40,8 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
+        OnLoginDataReadyListener {
 
     private static final int RC_SIGN_IN = 1537;
     private EditText mEmailInput;
@@ -46,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private ProgressBar mLoginProgressBar;
     public static LoginActivity instance;
     private GoogleApiClient mGoogleApiClient;
+    private CallbackManager mCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addApi(Auth.GOOGLE_SIGN_IN_API, options)
                 .build();
         initializeViews();
+        mCallbackManager = CallbackManager.Factory.create();
     }
 
     /**
@@ -105,7 +111,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      * @param view facebook button
      */
     public void loginWithFacebook(View view) {
-        Toast.makeText(this, "Soon", Toast.LENGTH_SHORT).show();
+        FacebookAuth.getInstance().facebookLogin(this, this, mCallbackManager);
+        showLoading();
     }
 
     /**
@@ -145,6 +152,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -216,5 +224,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onLoginDataReady(String facebookData) {
+        RequestBody body = new FormBody.Builder()
+                .add("code", facebookData)
+                .add("type", "facebook")
+                .build();
+        ApiClient.getInstance().sendRequest(body, Constants.Api.getAuthUrl(), mAuthHandler);
     }
 }

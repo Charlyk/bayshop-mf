@@ -14,7 +14,7 @@
         android:text="Parcel will be deleted"
         android:textSize="20sp"
         android:textColor="@android:color/white"
-        android:id="@+id/textView13"
+        android:id="@+id/dialog_message_text"
         android:layout_gravity="center_horizontal"/>
 
     <Button

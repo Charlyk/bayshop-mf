@@ -86,7 +86,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     private int getTotalWeight(ArrayList<InStockItem> inStockItems) {
         int totalWeight = 0;
         for (InStockItem item : inStockItems) {
-            totalWeight = totalWeight + 40;
+            totalWeight = totalWeight + 1;
         }
         return totalWeight;
     }
@@ -94,7 +94,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     private int getTotalPrice(ArrayList<InStockItem> inStockItems) {
         int totalPrice = 0;
         for (InStockItem inStockItem : inStockItems) {
-            totalPrice = totalPrice + 1;
+            totalPrice = totalPrice + 40;
         }
         return totalPrice;
     }

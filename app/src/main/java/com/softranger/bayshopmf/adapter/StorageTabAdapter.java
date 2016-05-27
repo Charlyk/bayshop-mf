@@ -21,11 +21,16 @@ public class StorageTabAdapter extends FragmentStatePagerAdapter {
     private List<String> mTitles = new ArrayList<>();
     private FragmentManager mFragmentManager;
     private Context mContext;
+    private boolean mShowTitle;
 
     public StorageTabAdapter(Context context, FragmentManager fm) {
         super(fm);
         mFragmentManager = fm;
         mContext = context;
+    }
+
+    public void setShowTitle(boolean showTitle) {
+        mShowTitle = showTitle;
     }
 
     @Override
@@ -50,6 +55,7 @@ public class StorageTabAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
+        if (mShowTitle) return mTitles.get(position);
         return null;
     }
 
