@@ -41,7 +41,7 @@ public class FacebookAuth {
     public void facebookLogin(Activity activity, OnLoginDataReadyListener listener, CallbackManager callbackManager) {
         mResponseListener = listener;
         LoginManager.getInstance().logInWithReadPermissions(activity,
-                Arrays.asList("public_profile", "user_friends"));
+                Arrays.asList("public_profile", "user_friends", "email"));
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
