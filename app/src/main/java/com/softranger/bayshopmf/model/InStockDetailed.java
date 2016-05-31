@@ -74,8 +74,8 @@ public class InStockDetailed extends InStockItem {
         mWeight = weight;
     }
 
-    public String getPrice() {
-        return mPrice;
+    public String getPriceDetailed() {
+        return String.valueOf(mPrice);
     }
 
     public void setPrice(String price) {

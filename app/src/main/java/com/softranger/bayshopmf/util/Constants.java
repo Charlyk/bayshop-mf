@@ -45,9 +45,14 @@ public class Constants {
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";
         private static final String PARCELS = "parcels/";
+        private static final String PARCEL_STEP = "parcel_step/";
 
         public static String getAuthUrl() {
             return URL + AUTH;
+        }
+
+        public static String parcelStepUrl(int step) {
+            return URL + PARCEL_STEP + step;
         }
 
         public static String inProcessingUrl(String deposit, String parcelStatus) {

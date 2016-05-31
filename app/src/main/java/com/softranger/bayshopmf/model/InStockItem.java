@@ -10,11 +10,13 @@ public class InStockItem implements Parcelable {
 
     protected boolean isSelected;
     protected boolean hasDeclaration;
+    protected double mPrice;
     protected String mName;
     protected String mTrackingNumber;
     protected String mDeposit;
     protected String mParcelId;
     protected int mID;
+    protected String mCurrency;
 
     public InStockItem() {
 
@@ -27,6 +29,8 @@ public class InStockItem implements Parcelable {
         hasDeclaration = in.readByte() != 0;
         mParcelId = in.readString();
         mID = in.readInt();
+        mPrice = in.readDouble();
+        mCurrency = in.readString();
     }
 
     public static final Creator<InStockItem> CREATOR = new Creator<InStockItem>() {
@@ -97,6 +101,22 @@ public class InStockItem implements Parcelable {
         mID = ID;
     }
 
+    public double getPrice() {
+        return mPrice;
+    }
+
+    public void setPrice(double price) {
+        mPrice = price;
+    }
+
+    public String getCurrency() {
+        return mCurrency;
+    }
+
+    public void setCurrency(String currency) {
+        mCurrency = currency;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -110,6 +130,8 @@ public class InStockItem implements Parcelable {
         parcel.writeByte((byte) (hasDeclaration ? 1 : 0));
         parcel.writeString(mParcelId);
         parcel.writeInt(mID);
+        parcel.writeDouble(mPrice);
+        parcel.writeString(mCurrency);
     }
 
     public static class Builder {
@@ -120,6 +142,8 @@ public class InStockItem implements Parcelable {
         protected String mDeposit;
         protected String mParcelId;
         protected int mID;
+        protected double mPrice;
+        protected String mCurrency;
 
         public Builder isSelected(boolean isSelected) {
             this.isSelected = isSelected;
@@ -156,6 +180,16 @@ public class InStockItem implements Parcelable {
             return this;
         }
 
+        public Builder price(double price) {
+            mPrice = price;
+            return this;
+        }
+
+        public Builder currency(String currency) {
+            mCurrency = currency;
+            return this;
+        }
+
         public InStockItem build() {
             InStockItem inStockItem = new InStockItem();
             inStockItem.setName(mName);
@@ -165,6 +199,7 @@ public class InStockItem implements Parcelable {
             inStockItem.setDeposit(mDeposit);
             inStockItem.mParcelId = this.mParcelId;
             inStockItem.mID = this.mID;
+            inStockItem.mPrice = this.mPrice;
             return inStockItem;
         }
     }

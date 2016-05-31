@@ -142,7 +142,7 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                     }, 200);
                     break;
                 case MainActivity.ACTION_START_CREATING_PARCEL:
-                    if (mDetailedList.size() < 2) {
+                    if (mDetailedList.size() == 0) {
                         Snackbar.make(mRecyclerView, getString(R.string.please_select_parcels), Snackbar.LENGTH_SHORT).show();
                         mActivity.mActionMenu.collapse();
                     } else {

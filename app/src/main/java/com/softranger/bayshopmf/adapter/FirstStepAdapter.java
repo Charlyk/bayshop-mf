@@ -35,6 +35,11 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
         notifyItemRemoved(position);
     }
 
+    public void addItems(ArrayList<InStockItem> items) {
+        mInStockItems.addAll(items);
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
