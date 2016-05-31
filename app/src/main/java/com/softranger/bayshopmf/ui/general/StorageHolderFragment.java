@@ -74,11 +74,39 @@ public class StorageHolderFragment extends Fragment {
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_arrival), true);
                 break;
             case Constants.ListToShow.IN_PROCESSING:
-                initializeTabs(StorageItemsFragment.newInstance(getProcessingProducts(Constants.USA), Constants.USA),
-                        StorageItemsFragment.newInstance(getProcessingProducts(Constants.UK), Constants.UK),
-                        StorageItemsFragment.newInstance(getProcessingProducts(Constants.DE), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.IN_PROCESSING), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.IN_PROCESSING), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.IN_PROCESSING), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_processing), true);
                 break;
+            case Constants.ListToShow.IN_FORMING: {
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.LIVE), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.LIVE), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.LIVE), Constants.DE));
+                mActivity.setToolbarTitle(mActivity.getString(R.string.in_forming), true);
+                break;
+            }
+            case Constants.ListToShow.AWAITING_SENDING: {
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.PACKED), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.PACKED), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.PACKED), Constants.DE));
+                mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_sending), true);
+                break;
+            }
+            case Constants.ListToShow.SENT: {
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.SENT), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.SENT), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.SENT), Constants.DE));
+                mActivity.setToolbarTitle(mActivity.getString(R.string.sent), true);
+                break;
+            }
+            case Constants.ListToShow.RECEIVED: {
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.RECEIVED), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.RECEIVED), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.RECEIVED), Constants.DE));
+                mActivity.setToolbarTitle(mActivity.getString(R.string.sent), true);
+                break;
+            }
         }
         return view;
     }
@@ -130,105 +158,5 @@ public class StorageHolderFragment extends Fragment {
                 mTabLayout.getTabAt(0).setIcon(R.mipmap.ic_usa_flag_inactive);
                 break;
         }
-    }
-
-    private Handler mResponseHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        boolean error = response.getBoolean("error");
-                        if (!error) {
-                            switch (listToShow) {
-                                case Constants.ListToShow.IN_STOCK:
-
-                                    break;
-                                case Constants.ListToShow.AWAITING_ARRIVAL:
-
-                                    break;
-                                case Constants.ListToShow.IN_PROCESSING:
-
-                                    break;
-                            }
-                        } else {
-                            String message = response.optString("message", getString(R.string.unknown_error));
-                            Snackbar.make(mViewPager, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        mActivity.toggleLoadingProgress(false);
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
-                    Snackbar.make(mViewPager, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    IOException exception = (IOException) msg.obj;
-                    String message = exception.getMessage();
-                    Snackbar.make(mViewPager, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-                    mActivity.toggleLoadingProgress(false);
-                    mActivity.logOut();
-                }
-            }
-        }
-    };
-
-    private ArrayList<InProcessingParcel> getProcessingProducts(String deposit) {
-        ArrayList<InProcessingParcel> processingProducts = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            InProcessingParcel product = (InProcessingParcel) new InProcessingParcel.Builder()
-                    .processingProgress(i + 1)
-                    .productName("Laptop din SUA")
-                    .parcelId("PUS213342432423")
-                    .deposit(deposit)
-                    .weight("3.2kg")
-                    .createdDate("23 Jan 2016, 10:35")
-                    .build();
-            processingProducts.add(product);
-        }
-        return processingProducts;
-    }
-
-    private ArrayList<Product> getAwaitingProducts(String deposit) {
-        ArrayList<Product> products = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Product product = new Product.Builder()
-                    .productName("Telefon ciotcos")
-                    .productId("MF123123124")
-                    .productPrice("200$")
-                    .productQuantity("1")
-                    .date("12 May 2016")
-                    .productUrl("http://ebay.com")
-                    .trackingNumber("213124382127312")
-                    .deposit(deposit)
-                    .build();
-            products.add(product);
-        }
-        return products;
-    }
-
-    private ArrayList<InStockItem> getItems(String deposit) {
-        ArrayList<InStockItem> inStockItems = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            InStockItem inStockItem = new InStockItem.Builder()
-                    .name("MF7529416 (Smartphone neidentificat)")
-                    .trackingNumber("213234723461237412")
-                    .deposit(deposit)
-                    .build();
-            inStockItems.add(inStockItem);
-        }
-        return inStockItems;
     }
 }

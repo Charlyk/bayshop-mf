@@ -188,11 +188,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 selectedFragment = SelectedFragment.IN_PROCESSING;
                 mActionMenu.setVisibility(View.GONE);
                 break;
+            case R.id.nav_inForming:
+                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_FORMING));
+                selectedFragment = SelectedFragment.IN_FORMING;
+                mActionMenu.setVisibility(View.GONE);
+                break;
+            case R.id.nav_awaitingSending:
+                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.AWAITING_SENDING));
+                selectedFragment = SelectedFragment.AWAITING_SENDING;
+                mActionMenu.setVisibility(View.GONE);
+                break;
+            case R.id.nav_sent:
+                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.SENT));
+                selectedFragment = SelectedFragment.SENT;
+                mActionMenu.setVisibility(View.GONE);
+                break;
+            case R.id.nav_received:
+                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.RECEIVED));
+                selectedFragment = SelectedFragment.RECEIVED;
+                mActionMenu.setVisibility(View.GONE);
+                break;
             case R.id.nav_logOut:
                 Application.getInstance().setLoginStatus(false);
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 finish();
+                break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         if (mActionMenu.isExpanded()) {
@@ -230,6 +251,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case IN_PROCESSING:
                         setToolbarTitle(getString(R.string.in_processing), true);
                         break;
+                    case IN_FORMING:
+                        setToolbarTitle(getString(R.string.in_forming), true);
+                        break;
+                    case AWAITING_SENDING:
+                        setToolbarTitle(getString(R.string.awaiting_sending), true);
+                        break;
+                    case SENT:
+                        setToolbarTitle(getString(R.string.sent), true);
+                        break;
+                    case RECEIVED:
+                        setToolbarTitle(getString(R.string.received), true);
+                        break;
                 }
             } else {
                 Intent updateTitleIntent = new Intent(ACTION_UPDATE_TITLE);
@@ -252,6 +285,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public enum SelectedFragment {
-        IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING
+        IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED
     }
 }

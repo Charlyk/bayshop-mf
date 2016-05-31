@@ -27,7 +27,6 @@ import java.util.ArrayList;
  */
 public class InProcessingDetails extends Fragment implements ImagesAdapter.OnImageClickListener {
 
-
     private static final String PRODUCT_ARG = "in processing arguments";
 
     private MainActivity mActivity;

@@ -9,6 +9,9 @@ public class Constants {
     public static final String UK = "uk";
     public static final String DE = "de";
 
+    public static final String US = "us";
+    public static final String GB = "gb";
+
     public static Character[] ALPHABET = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
     public static final int IN_PROGRESS = 1, FINISHED = 2, NOT_REQUESTED = 0;
@@ -22,6 +25,11 @@ public class Constants {
 
     public static class ParcelStatus {
         public static final String IN_STOCK = "in-stock";
+        public static final String IN_PROCESSING = "processing";
+        public static final String LIVE = "live";
+        public static final String PACKED = "packed";
+        public static final String SENT = "sent";
+        public static final String RECEIVED = "received";
     }
 
     public static class Api {
@@ -36,9 +44,14 @@ public class Constants {
         private static final String AUTH = "auth";
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";
+        private static final String PARCELS = "parcels/";
 
         public static String getAuthUrl() {
             return URL + AUTH;
+        }
+
+        public static String inProcessingUrl(String deposit, String parcelStatus) {
+            return URL + PARCELS + deposit + "/" + parcelStatus;
         }
 
         public static String getStorageUrl() {
@@ -82,5 +95,9 @@ public class Constants {
         public static final String IN_STOCK = "in stock items";
         public static final String AWAITING_ARRIVAL = "awaiting arrival";
         public static final String IN_PROCESSING = "in processing";
+        public static final String IN_FORMING = "in forming";
+        public static final String AWAITING_SENDING = "awaiting sending";
+        public static final String SENT = "sent";
+        public static final String RECEIVED = "received";
     }
 }

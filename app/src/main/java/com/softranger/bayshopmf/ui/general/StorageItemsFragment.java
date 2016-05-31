@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
+import com.softranger.bayshopmf.model.InForming;
+import com.softranger.bayshopmf.model.InProcessing;
 import com.softranger.bayshopmf.model.InProcessingParcel;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
@@ -237,9 +239,27 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                     }
                     break;
                 }
-                case Constants.ListToShow.IN_PROCESSING:
-
+                // TODO: 5/31/16 handle results for each parcel status
+                case Constants.ListToShow.RECEIVED:
+                case Constants.ListToShow.SENT:
+                case Constants.ListToShow.AWAITING_SENDING:
+                case Constants.ListToShow.IN_FORMING:
+                case Constants.ListToShow.IN_PROCESSING: {
+                    JSONArray jsonData = response.getJSONArray("data");
+                    for (int i = 0; i < jsonData.length(); i++) {
+                        JSONObject jsonItem = jsonData.getJSONObject(i);
+                        InProcessing inProcessing = new InProcessing.Builder()
+                                .id(jsonItem.getInt("id"))
+                                .codeNumber(jsonItem.getString("codeNumber"))
+                                .name(jsonItem.getString("name"))
+                                .weight(jsonItem.getInt("realWeight"))
+                                .progress(jsonItem.optInt("percent", 0))
+                                .createdDate(jsonItem.optString("created", ""))
+                                .build();
+                        mObjects.add(inProcessing);
+                    }
                     break;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -274,8 +294,13 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
     }
 
     @Override
-    public void onInProcessingProductClick(InProcessingParcel inProcessingParcel, int position) {
-        mActivity.addFragment(InProcessingDetails.newInstance(inProcessingParcel), true);
+    public void onInProcessingProductClick(InProcessing inProcessingParcel, int position) {
+        mActivity.addFragment(InProcessingDetails.newInstance(new InProcessingParcel.Builder().build()), true);
+    }
+
+    @Override
+    public void onInFormingClick(InForming inForming, int position) {
+
     }
 
     @Override
