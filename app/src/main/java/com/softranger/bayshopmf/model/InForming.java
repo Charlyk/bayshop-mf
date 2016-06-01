@@ -3,6 +3,8 @@ package com.softranger.bayshopmf.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by Eduard Albu on 5/31/16, 05, 2016
  * for project BayShop MF
@@ -14,6 +16,10 @@ public class InForming implements Parcelable {
     private String mName;
     private int mWeight;
     private String mCreatedDate;
+    private String mUid;
+    private boolean mHasBattery;
+    private ArrayList<InStockItem> mItems;
+    private String mDeposit;
 
     private InForming() {
 
@@ -25,6 +31,10 @@ public class InForming implements Parcelable {
         mName = in.readString();
         mWeight = in.readInt();
         mCreatedDate = in.readString();
+        mUid = in.readString();
+        mHasBattery = in.readByte() != 0;
+        mItems = in.createTypedArrayList(InStockItem.CREATOR);
+        mDeposit = in.readString();
     }
 
     public static final Creator<InForming> CREATOR = new Creator<InForming>() {
@@ -79,6 +89,38 @@ public class InForming implements Parcelable {
         mCreatedDate = createdDate;
     }
 
+    public String getUid() {
+        return mUid;
+    }
+
+    public void setUid(String uid) {
+        mUid = uid;
+    }
+
+    public boolean isHasBattery() {
+        return mHasBattery;
+    }
+
+    public void setHasBattery(boolean hasBattery) {
+        mHasBattery = hasBattery;
+    }
+
+    public ArrayList<InStockItem> getItems() {
+        return mItems;
+    }
+
+    public void setItems(ArrayList<InStockItem> items) {
+        mItems = items;
+    }
+
+    public String getDeposit() {
+        return mDeposit;
+    }
+
+    public void setDeposit(String deposit) {
+        mDeposit = deposit;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -91,6 +133,10 @@ public class InForming implements Parcelable {
         dest.writeString(mName);
         dest.writeInt(mWeight);
         dest.writeString(mCreatedDate);
+        dest.writeString(mUid);
+        dest.writeByte((byte) (mHasBattery ? 1 : 0));
+        dest.writeTypedList(mItems);
+        dest.writeString(mDeposit);
     }
 
     public static class Builder {
@@ -99,6 +145,10 @@ public class InForming implements Parcelable {
         private String mName;
         private int mWeight;
         private String mCreatedDate;
+        private String mUid;
+        private boolean mHasBattery;
+        private ArrayList<InStockItem> mItems;
+        private String mDeposit;
 
         public Builder id(int id) {
             mId = id;
@@ -125,14 +175,38 @@ public class InForming implements Parcelable {
             return this;
         }
 
+        public Builder uid(String uid) {
+            mUid = uid;
+            return this;
+        }
+
+        public Builder hasBattery(int hasBattery) {
+            mHasBattery = hasBattery == 1;
+            return this;
+        }
+
+        public Builder items(ArrayList<InStockItem> items) {
+            mItems = items;
+            return this;
+        }
+
+        public Builder deposit(String deposit) {
+            mDeposit = deposit;
+            return this;
+        }
+
         public InForming build() {
-            InForming inProcessing = new InForming();
-            inProcessing.mId = this.mId;
-            inProcessing.mCodeNumber = this.mCodeNumber;
-            inProcessing.mName = this.mName;
-            inProcessing.mWeight = this.mWeight;
-            inProcessing.mCreatedDate = this.mCreatedDate;
-            return inProcessing;
+            InForming inForming = new InForming();
+            inForming.mId = this.mId;
+            inForming.mCodeNumber = this.mCodeNumber;
+            inForming.mName = this.mName;
+            inForming.mWeight = this.mWeight;
+            inForming.mCreatedDate = this.mCreatedDate;
+            inForming.mUid = this.mUid;
+            inForming.mHasBattery = this.mHasBattery;
+            inForming.mItems = this.mItems;
+            inForming.mDeposit = this.mDeposit;
+            return inForming;
         }
     }
 }

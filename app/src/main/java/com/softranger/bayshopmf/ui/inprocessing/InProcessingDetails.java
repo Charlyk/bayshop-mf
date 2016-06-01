@@ -61,8 +61,7 @@ public class InProcessingDetails extends Fragment implements ImagesAdapter.OnIma
 
         Address address = new Address.Builder()
                 .clientName("Eduard Albu")
-                .street("Florilor")
-                .buildingNumber("16/1")
+                .street("Florilor 16/1")
                 .city("Chisinau")
                 .country("Moldova")
                 .postalCode("MD-2088")

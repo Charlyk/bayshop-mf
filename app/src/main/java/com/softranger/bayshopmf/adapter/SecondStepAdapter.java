@@ -40,6 +40,13 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
         });
     }
 
+    public void refreshList(ArrayList<Address> addresses) {
+        mAddresses.clear();
+        mAddresses.addAll(addresses);
+        sortListByName();
+        notifyDataSetChanged();
+    }
+
     public void setOnAddressClickListener(OnAddressClickListener onAddressClickListener) {
         mOnAddressClickListener = onAddressClickListener;
     }
@@ -54,7 +61,6 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mAddressObj = mAddresses.get(position);
         String addressBUilder = holder.mAddressObj.getStreet() + " " +
-                holder.mAddressObj.getBuildingNumber() + "\n" +
                 holder.mAddressObj.getCity() + "\n" +
                 holder.mAddressObj.getCountry() + "\n" +
                 holder.mAddressObj.getPostalCode();

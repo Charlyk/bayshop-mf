@@ -71,7 +71,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
             Address address = headerHolder.mProcessingParcel.getAddress();
             String addressBuilder = address.getClientName() +
-                    "\n" + address.getStreet() + " " + address.getBuildingNumber() +
+                    "\n" + address.getStreet() + " " +
                     "\n" + address.getCity() + ", " + address.getCountry() +
                     "\n" + address.getPostalCode() +
                     "\n" + address.getPhoneNumber();
@@ -103,6 +103,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @DrawableRes
     private int getStorageIcon(String storage) {
+        if (storage == null) return R.mipmap.ic_usa_flag;
         switch (storage) {
             case Constants.DE:
                 return R.mipmap.ic_de_flag;

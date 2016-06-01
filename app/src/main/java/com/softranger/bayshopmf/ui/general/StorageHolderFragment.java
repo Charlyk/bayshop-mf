@@ -24,15 +24,13 @@ public class StorageHolderFragment extends Fragment {
     private MainActivity mActivity;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    public static String listToShow;
 
     public StorageHolderFragment() {
         // Required empty public constructor
     }
 
-    public static StorageHolderFragment newInstance(@NonNull String listToShow) {
+    public static StorageHolderFragment newInstance() {
         Bundle args = new Bundle();
-        args.putString("list to show", listToShow);
         StorageHolderFragment fragment = new StorageHolderFragment();
         fragment.setArguments(args);
         return fragment;
@@ -45,48 +43,47 @@ public class StorageHolderFragment extends Fragment {
         mViewPager = (ViewPager) view.findViewById(R.id.storages_viewPager);
         mTabLayout = (TabLayout) view.findViewById(R.id.storages_tabLayout);
         mActivity = (MainActivity) getActivity();
-        listToShow = getArguments().getString("list to show");
-        switch (listToShow) {
-            case Constants.ListToShow.IN_STOCK:
+        switch (MainActivity.selectedFragment) {
+            case IN_STOCK:
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlInStockItems(Constants.USA), Constants.USA),
                         StorageItemsFragment.newInstance(Constants.Api.urlInStockItems(Constants.UK), Constants.UK),
                         StorageItemsFragment.newInstance(Constants.Api.urlInStockItems(Constants.DE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_stock), true);
                 break;
-            case Constants.ListToShow.AWAITING_ARRIVAL:
+            case AWAITING_ARRIVAL:
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlWaitingArrival(Constants.USA), Constants.USA),
                         StorageItemsFragment.newInstance(Constants.Api.urlWaitingArrival(Constants.UK), Constants.UK),
                         StorageItemsFragment.newInstance(Constants.Api.urlWaitingArrival(Constants.DE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_arrival), true);
                 break;
-            case Constants.ListToShow.IN_PROCESSING:
+            case IN_PROCESSING:
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.IN_PROCESSING), Constants.US),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.IN_PROCESSING), Constants.GB),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.IN_PROCESSING), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_processing), true);
                 break;
-            case Constants.ListToShow.IN_FORMING: {
+            case IN_FORMING: {
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.LIVE), Constants.US),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.LIVE), Constants.GB),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.LIVE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_forming), true);
                 break;
             }
-            case Constants.ListToShow.AWAITING_SENDING: {
+            case AWAITING_SENDING: {
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.PACKED), Constants.US),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.PACKED), Constants.GB),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.PACKED), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_sending), true);
                 break;
             }
-            case Constants.ListToShow.SENT: {
+            case SENT: {
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.SENT), Constants.US),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.SENT), Constants.GB),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.SENT), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.sent), true);
                 break;
             }
-            case Constants.ListToShow.RECEIVED: {
+            case RECEIVED: {
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.RECEIVED), Constants.US),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.RECEIVED), Constants.GB),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.RECEIVED), Constants.DE));

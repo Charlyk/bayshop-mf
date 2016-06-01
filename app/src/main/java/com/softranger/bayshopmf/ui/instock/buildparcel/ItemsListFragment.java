@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,10 +25,13 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.FirstStepAdapter;
+import com.softranger.bayshopmf.model.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.PUSItem;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.StorageHolderFragment;
+import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -46,6 +51,9 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         FirstStepAdapter.OnItemClickListener {
 
     private static final String IN_STOCK_ARG = "in stock items argument";
+    private static final String ADD_ARG = "add new box";
+    private static final String IN_FORMING_ARG = "in formig object";
+    private static final String DEPOSIT_ARG = "selected deposit";
     private MainActivity mActivity;
     private FirstStepAdapter mAdapter;
     private TextView mTotalWeight;
@@ -53,16 +61,25 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     private ArrayList<InStockItem> mInStockItems;
     private RecyclerView mRecyclerView;
     private ArrayList<InStockItem> mInParcelItems;
+    private String mDeposit;
     private static int removedPos = -1;
-    private PUSItem mPUSItem;
+    private InForming mInForming;
+    private String mCurrency;
 
     public ItemsListFragment() {
         // Required empty public constructor
     }
 
-    public static ItemsListFragment newInstance(ArrayList<InStockItem> inStockItems) {
+    public static ItemsListFragment newInstance(@Nullable ArrayList<InStockItem> inStockItems, boolean add,
+                                                @Nullable InForming inForming, @NonNull String deposit) {
         Bundle args = new Bundle();
-        args.putParcelableArrayList(IN_STOCK_ARG, inStockItems);
+        args.putBoolean(ADD_ARG, add);
+        args.putString(DEPOSIT_ARG, deposit);
+        if (add) {
+            args.putParcelableArrayList(IN_STOCK_ARG, inStockItems);
+        } else {
+            args.putParcelable(IN_FORMING_ARG, inForming);
+        }
         ItemsListFragment fragment = new ItemsListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -80,15 +97,14 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         mInParcelItems = new ArrayList<>();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.buildFirstStepItemsList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        mInStockItems = getArguments().getParcelableArrayList(IN_STOCK_ARG);
-        if (mInStockItems == null) mInStockItems = new ArrayList<>();
+
         mAdapter = new FirstStepAdapter(mInParcelItems);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
         mTotalPrice = (TextView) view.findViewById(R.id.buildFirstFragmentTotalPriceLabel);
         mTotalWeight = (TextView) view.findViewById(R.id.buildFirstFragmentTotalWeightLabel);
-        updateTotals();
+
 
         Button nextButton = (Button) view.findViewById(R.id.buildFirstStepNextButton);
         nextButton.setOnClickListener(this);
@@ -98,7 +114,18 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
 
         String listItems = getString(R.string.list_items);
         mActivity.setToolbarTitle(listItems, true);
-        sendPackagesToServer();
+        mDeposit = getArguments().getString(DEPOSIT_ARG);
+        boolean addNewBoxes = getArguments().getBoolean(ADD_ARG);
+
+        if (addNewBoxes) {
+            mInStockItems = getArguments().getParcelableArrayList(IN_STOCK_ARG);
+            updateTotals(mInStockItems);
+            sendPackagesToServer();
+        } else {
+            mInForming = getArguments().getParcelable(IN_FORMING_ARG);
+            ApiClient.getInstance().sendRequest(Constants.Api.urlBuildStep(1, String.valueOf(mInForming.getId())), mCreateHandler);
+        }
+        mActivity.toggleLoadingProgress(true);
         return view;
     }
 
@@ -112,21 +139,20 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                     .add("boxes", String.valueOf(boxesArray))
                     .build();
             ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(1), mCreateHandler);
-            mActivity.toggleLoadingProgress(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private int getTotalWeight(ArrayList<InStockItem> inStockItems) {
+    private float getTotalWeight(ArrayList<InStockItem> inStockItems) {
         int totalWeight = 0;
         for (InStockItem item : inStockItems) {
             totalWeight += item.getWeight();
         }
-        return totalWeight;
+        return ((float) totalWeight / 1000);
     }
 
-    private double getTotalPrice(ArrayList<InStockItem> inStockItems) {
+    private float getTotalPrice(ArrayList<InStockItem> inStockItems) {
         int totalPrice = 0;
         for (InStockItem item : inStockItems) {
             totalPrice += item.getPrice();
@@ -151,17 +177,18 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                             for (int i = 0; i < jsonBoxes.length(); i++) {
                                 JSONObject jsonBox = jsonBoxes.getJSONObject(i);
                                 int packageId = jsonBox.getInt("id");
+                                mCurrency = jsonBox.getString("currency");
                                 InStockItem item = new InStockItem.Builder()
                                         .id(packageId)
                                         .parcelId(jsonBox.getString("uid"))
                                         .name(jsonBox.getString("title"))
                                         .price(jsonBox.getDouble("price"))
-                                        .currency(jsonBox.getString("currency"))
+                                        .currency(mCurrency)
                                         .weight(jsonWieghts.getJSONObject(String.valueOf(packageId)).getInt("weight"))
                                         .build();
                                 mInParcelItems.add(item);
                             }
-                            mPUSItem = new PUSItem.Builder()
+                            mInForming = new InForming.Builder()
                                     .id(jsoPus.getInt("id"))
                                     .uid(jsoPus.getString("uid"))
                                     .hasBattery(jsoPus.getInt("isBatteryLionExists"))
@@ -173,8 +200,11 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                     } catch (Exception e) {
                         Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
                     } finally {
+                        Intent refreshIntent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                        refreshIntent.putExtra("deposit", mDeposit);
+                        mActivity.sendBroadcast(refreshIntent);
                         mAdapter.notifyDataSetChanged();
-                        updateTotals();
+                        updateTotals(mInParcelItems);
                     }
                     break;
                 }
@@ -218,12 +248,16 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
-                            boolean hasParcels = data.getBoolean("isPackageHasMoreBoxes");
-                            if (!hasParcels) mActivity.onBackPressed();
-                            else if (removedPos > -1) {
+                            boolean hasParcels = data.getInt("isPackageHasMoreBoxes") == 1;
+                            if (!hasParcels) {
+                                mActivity.onBackPressed();
+                                Intent refreshIntent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                                refreshIntent.putExtra("deposit", mDeposit);
+                                mActivity.sendBroadcast(refreshIntent);
+                            } else if (removedPos > -1) {
                                 mAdapter.removeItem(removedPos);
                                 removedPos = -1;
-                                updateTotals();
+                                updateTotals(mInParcelItems);
                             }
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
@@ -255,20 +289,19 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         }
     };
 
-
     @Override
     public void onClick(View v) {
-        mActivity.addFragment(new SelectAddressFragment(), true);
+        mActivity.addFragment(SelectAddressFragment.newInstance(mInForming), true);
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+        mInForming.setHasBattery(isChecked);
     }
 
-    private void updateTotals() {
-        mTotalPrice.setText(String.valueOf(getTotalPrice(mInStockItems)));
-        mTotalWeight.setText(String.valueOf(getTotalWeight(mInParcelItems)));
+    private void updateTotals(ArrayList<InStockItem> items) {
+        mTotalPrice.setText(mCurrency + String.valueOf(getTotalPrice(items)));
+        mTotalWeight.setText(String.valueOf(getTotalWeight(items)) + "kg.");
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -291,7 +324,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onDeleteClick(InStockItem inStockItem, int position) {
         removedPos = position;
-        ApiClient.getInstance().delete(Constants.Api.urlDeleteBoxFromParcel(String.valueOf(mPUSItem.getId()),
+        ApiClient.getInstance().delete(Constants.Api.urlDeleteBoxFromParcel(String.valueOf(mInForming.getId()),
                 String.valueOf(inStockItem.getID())), mDeleteHandler);
         mActivity.toggleLoadingProgress(true);
     }

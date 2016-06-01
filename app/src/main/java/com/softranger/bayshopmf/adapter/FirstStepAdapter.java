@@ -52,6 +52,9 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
         holder.mInStockItem = mInStockItems.get(position);
         holder.mMfLabel.setText(holder.mInStockItem.getParcelId());
         holder.mNameLabel.setText(holder.mInStockItem.getName());
+        holder.mWeightLabel.setText(String.valueOf(((float) holder.mInStockItem.getWeight() / 1000)) + "kg.");
+        holder.mPriceLabel.setText(String.valueOf(holder.mInStockItem.getCurrency()
+                + holder.mInStockItem.getPrice()));
     }
 
     @Override

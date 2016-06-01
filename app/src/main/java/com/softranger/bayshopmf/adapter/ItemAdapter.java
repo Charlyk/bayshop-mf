@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.model.InForming;
 import com.softranger.bayshopmf.model.InProcessing;
-import com.softranger.bayshopmf.model.InProcessingParcel;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
@@ -99,8 +98,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (mInStockItems.get(position) instanceof InStockItem) {
             InStockViewHolder inStockViewHolder = (InStockViewHolder) holder;
             inStockViewHolder.mInStockItem = (InStockItem) mInStockItems.get(position);
-            @DrawableRes int image = inStockViewHolder.mInStockItem.isHasDeclaration() ? R.mipmap.parcel_active : R.mipmap.unactive_parcel;
-            inStockViewHolder.mImageView.setImageResource(image);
+
+            if (inStockViewHolder.mInStockItem.isSelected()) {
+                @ColorInt int color = mContext.getResources().getColor(R.color.colorSelection);
+                @DrawableRes int imageSelected = R.mipmap.parcel_selected;
+                inStockViewHolder.mImageView.setImageResource(imageSelected);
+                inStockViewHolder.mView.setBackgroundColor(color);
+            } else {
+                @DrawableRes int image = R.mipmap.parcel_active;
+                inStockViewHolder.mImageView.setImageResource(image);
+            }
             inStockViewHolder.mUIDLabel.setText(inStockViewHolder.mInStockItem.getParcelId());
             inStockViewHolder.mProductName.setText(inStockViewHolder.mInStockItem.getName());
             inStockViewHolder.mTrackingLabel.setText(inStockViewHolder.mInStockItem.getTrackingNumber());
@@ -113,9 +120,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (mInStockItems.get(position) instanceof InProcessing) {
             InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
             processingHolder.mProduct = (InProcessing) mInStockItems.get(position);
-            processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getId()));
+            processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
             processingHolder.mProductName.setText(processingHolder.mProduct.getName());
-            processingHolder.mCreatedDate.setText(getFromattedDate(processingHolder.mProduct.getCreatedDate()));
+            processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreatedDate()));
             processingHolder.mProgress.setText(processingHolder.mProduct.getProgress() + "%");
             double kg = processingHolder.mProduct.getWeight() / 1000;
             processingHolder.mWeight.setText(kg + "kg.");
@@ -123,15 +130,19 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (mInStockItems.get(position) instanceof InForming) {
             InFormingViewHolder processingHolder = (InFormingViewHolder) holder;
             processingHolder.mProduct = (InForming) mInStockItems.get(position);
-            processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
+            if (processingHolder.mProduct.getName() == null || processingHolder.mProduct.getName().equals("null"))
+                processingHolder.mProduct.setName("");
+            processingHolder.mParcelId.setText(processingHolder.mProduct.getUid());
             processingHolder.mProductName.setText(processingHolder.mProduct.getName());
-            processingHolder.mCreatedDate.setText(getFromattedDate(processingHolder.mProduct.getCreatedDate()));
+            processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreatedDate()));
             double kg = processingHolder.mProduct.getWeight() / 1000;
             processingHolder.mWeight.setText(kg + "kg.");
+            processingHolder.mProcessingProgressBar.setVisibility(View.INVISIBLE);
+            processingHolder.mProgressTitle.setVisibility(View.INVISIBLE);
         }
     }
 
-    private String getFromattedDate(String createdDate) {
+    private String getFormattedDate(String createdDate) {
         Date date = new Date();
         String formattedDate = "";
         try {
@@ -256,7 +267,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class InProcessingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight;
+        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle;
         final ProgressBar mProcessingProgressBar;
         InProcessing mProduct;
 
@@ -268,6 +279,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mCreatedDate = (TextView) itemView.findViewById(R.id.inProcessingCreatedDate);
             mProgress = (TextView) itemView.findViewById(R.id.inProcessingProgress);
             mWeight = (TextView) itemView.findViewById(R.id.inProcessingWeight);
+            mProgressTitle = (TextView) itemView.findViewById(R.id.inProcessingProgressTitle);
             mProcessingProgressBar = (ProgressBar) itemView.findViewById(R.id.inProcessingProgressBar);
         }
 
@@ -280,7 +292,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class InFormingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight;
+        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle;
         final ProgressBar mProcessingProgressBar;
         InForming mProduct;
 
@@ -292,6 +304,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mCreatedDate = (TextView) itemView.findViewById(R.id.inProcessingCreatedDate);
             mProgress = (TextView) itemView.findViewById(R.id.inProcessingProgress);
             mWeight = (TextView) itemView.findViewById(R.id.inProcessingWeight);
+            mProgressTitle = (TextView) itemView.findViewById(R.id.inProcessingProgressTitle);
             mProcessingProgressBar = (ProgressBar) itemView.findViewById(R.id.inProcessingProgressBar);
         }
 

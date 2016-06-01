@@ -6,7 +6,10 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,12 +26,19 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.InForming;
+import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.general.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.StorageHolderFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -38,9 +48,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout mDrawerLayout;
     public Toolbar mToolbar;
     public FloatingActionsMenu mActionMenu;
-    private static SelectedFragment selectedFragment;
+    public static SelectedFragment selectedFragment;
     private ProgressBar mProgressBar;
     private FrameLayout mFabBackground;
+    private ArrayList<InForming> mInFormingArrayList;
+    private ArrayList<FloatingActionButton> mActionButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 onBackPressed();
             }
         });
+
+        mInFormingArrayList = new ArrayList<>();
+        mActionButtons = new ArrayList<>();
 
         // set listener to either show or hide white background
         mActionMenu = (FloatingActionsMenu) findViewById(R.id.fab);
@@ -98,21 +113,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LinearLayout addAwaiting = (LinearLayout) navigationView.getHeaderView(0).findViewById(R.id.add_packageButtonIcon);
         addAwaiting.setOnClickListener(this);
 
-        replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
         selectedFragment = SelectedFragment.IN_STOCK;
+        replaceFragment(StorageHolderFragment.newInstance());
     }
 
     public void toggleLoadingProgress(boolean show) {
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    public void addFragment(Fragment fragment, boolean addToBackStack) {
+    public void addFragment(Fragment fragment, boolean showAnimation) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.animator.slide_in, R.animator.slide_out, R.animator.slide_in, R.animator.slide_out);
+        if (showAnimation)
+            transaction.setCustomAnimations(R.animator.slide_in, R.animator.slide_out, R.animator.slide_in, R.animator.slide_out);
+        else transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.add(R.id.fragment_container, fragment);
-        if (addToBackStack)
-            transaction.addToBackStack("DetailsFragment");
+        transaction.addToBackStack("DetailsFragment");
         transaction.commit();
 
         new Handler().postDelayed(new Runnable() {
@@ -174,45 +190,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_inStock:
-                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_STOCK));
                 selectedFragment = SelectedFragment.IN_STOCK;
+                replaceFragment(StorageHolderFragment.newInstance());
                 mActionMenu.setVisibility(View.VISIBLE);
                 break;
             case R.id.nav_waitingArrival:
-                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.AWAITING_ARRIVAL));
                 selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
+                replaceFragment(StorageHolderFragment.newInstance());
                 mActionMenu.setVisibility(View.GONE);
                 break;
             case R.id.nav_inProcessing:
-                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_PROCESSING));
                 selectedFragment = SelectedFragment.IN_PROCESSING;
+                replaceFragment(StorageHolderFragment.newInstance());
                 mActionMenu.setVisibility(View.GONE);
                 break;
             case R.id.nav_inForming:
-                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.IN_FORMING));
                 selectedFragment = SelectedFragment.IN_FORMING;
+                replaceFragment(StorageHolderFragment.newInstance());
                 mActionMenu.setVisibility(View.GONE);
                 break;
             case R.id.nav_awaitingSending:
-                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.AWAITING_SENDING));
                 selectedFragment = SelectedFragment.AWAITING_SENDING;
+                replaceFragment(StorageHolderFragment.newInstance());
                 mActionMenu.setVisibility(View.GONE);
                 break;
             case R.id.nav_sent:
-                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.SENT));
                 selectedFragment = SelectedFragment.SENT;
+                replaceFragment(StorageHolderFragment.newInstance());
                 mActionMenu.setVisibility(View.GONE);
                 break;
             case R.id.nav_received:
-                replaceFragment(StorageHolderFragment.newInstance(Constants.ListToShow.RECEIVED));
                 selectedFragment = SelectedFragment.RECEIVED;
+                replaceFragment(StorageHolderFragment.newInstance());
                 mActionMenu.setVisibility(View.GONE);
                 break;
             case R.id.nav_logOut:
-                Application.getInstance().setLoginStatus(false);
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                logOut();
                 break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -280,6 +293,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 addFragment(new AddAwaitingFragment(), true);
                 setToolbarTitle(getString(R.string.add_awaiting_package), true);
+                break;
+            default:
                 break;
         }
     }

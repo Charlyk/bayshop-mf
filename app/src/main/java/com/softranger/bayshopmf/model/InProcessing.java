@@ -15,6 +15,7 @@ public class InProcessing implements Parcelable {
     private String mCreatedDate;
     private int mWeight;
     private int mProgress;
+    private String mDeposit;
 
     private InProcessing() {
 
@@ -26,6 +27,7 @@ public class InProcessing implements Parcelable {
         mName = in.readString();
         mWeight = in.readInt();
         mProgress = in.readInt();
+        mDeposit = in.readString();
     }
 
     public static final Creator<InProcessing> CREATOR = new Creator<InProcessing>() {
@@ -88,6 +90,14 @@ public class InProcessing implements Parcelable {
         mCreatedDate = createdDate;
     }
 
+    public String getDeposit() {
+        return mDeposit;
+    }
+
+    public void setDeposit(String deposit) {
+        mDeposit = deposit;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -100,6 +110,7 @@ public class InProcessing implements Parcelable {
         dest.writeString(mName);
         dest.writeInt(mWeight);
         dest.writeInt(mProgress);
+        dest.writeString(mDeposit);
     }
 
     public static class Builder {
@@ -109,6 +120,7 @@ public class InProcessing implements Parcelable {
         private int mWeight;
         private int mProgress;
         private String mCreatedDate;
+        private String mDeposit;
 
         public Builder id(int id) {
             mId = id;
@@ -140,6 +152,11 @@ public class InProcessing implements Parcelable {
             return this;
         }
 
+        public Builder desposit(String deposit) {
+            mDeposit = deposit;
+            return this;
+        }
+
         public InProcessing build() {
             InProcessing inProcessing = new InProcessing();
             inProcessing.mId = this.mId;
@@ -148,6 +165,7 @@ public class InProcessing implements Parcelable {
             inProcessing.mWeight = this.mWeight;
             inProcessing.mProgress = this.mProgress;
             inProcessing.mCreatedDate = this.mCreatedDate;
+            inProcessing.mDeposit = this.mDeposit;
             return inProcessing;
         }
     }

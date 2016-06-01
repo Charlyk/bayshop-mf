@@ -218,6 +218,7 @@ public class InStockItem implements Parcelable {
             inStockItem.mID = this.mID;
             inStockItem.mPrice = this.mPrice;
             inStockItem.mWeight = this.mWeight;
+            inStockItem.mCurrency = this.mCurrency;
             return inStockItem;
         }
     }

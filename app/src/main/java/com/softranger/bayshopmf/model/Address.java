@@ -11,11 +11,11 @@ import android.os.Parcelable;
 public class Address implements Parcelable {
     private String mClientName;
     private String mStreet;
-    private String mBuildingNumber;
     private String mCity;
     private String mCountry;
     private String mPostalCode;
     private String mPhoneNumber;
+    private int mId;
 
     private Address() {
 
@@ -24,11 +24,11 @@ public class Address implements Parcelable {
     protected Address(Parcel in) {
         mClientName = in.readString();
         mStreet = in.readString();
-        mBuildingNumber = in.readString();
         mCity = in.readString();
         mCountry = in.readString();
         mPostalCode = in.readString();
         mPhoneNumber = in.readString();
+        mId = in.readInt();
     }
 
     public static final Creator<Address> CREATOR = new Creator<Address>() {
@@ -57,14 +57,6 @@ public class Address implements Parcelable {
 
     public void setStreet(String street) {
         mStreet = street;
-    }
-
-    public String getBuildingNumber() {
-        return mBuildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        mBuildingNumber = buildingNumber;
     }
 
     public String getCity() {
@@ -99,6 +91,14 @@ public class Address implements Parcelable {
         mPhoneNumber = phoneNumber;
     }
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -108,21 +108,21 @@ public class Address implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mClientName);
         dest.writeString(mStreet);
-        dest.writeString(mBuildingNumber);
         dest.writeString(mCity);
         dest.writeString(mCountry);
         dest.writeString(mPostalCode);
         dest.writeString(mPhoneNumber);
+        dest.writeInt(mId);
     }
 
     public static class Builder {
         private String mClientName;
         private String mStreet;
-        private String mBuildingNumber;
         private String mCity;
         private String mCountry;
         private String mPostalCode;
         private String mPhoneNumber;
+        private int mId;
 
         public Builder clientName(String clientName) {
             mClientName = clientName;
@@ -131,11 +131,6 @@ public class Address implements Parcelable {
 
         public Builder street(String street) {
             mStreet = street;
-            return this;
-        }
-
-        public Builder buildingNumber(String buildingNumber) {
-            mBuildingNumber = buildingNumber;
             return this;
         }
 
@@ -159,15 +154,20 @@ public class Address implements Parcelable {
             return this;
         }
 
+        public Builder id(int id) {
+            mId = id;
+            return this;
+        }
+
         public Address build() {
             Address address = new Address();
             address.mClientName = this.mClientName;
             address.mStreet = this.mStreet;
-            address.mBuildingNumber = this.mBuildingNumber;
             address.mCity = this.mCity;
             address.mCountry = this.mCountry;
             address.mPostalCode = this.mPostalCode;
             address.mPhoneNumber = this.mPhoneNumber;
+            address.mId = this.mId;
             return address;
         }
     }

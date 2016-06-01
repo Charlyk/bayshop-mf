@@ -12,14 +12,17 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
@@ -65,6 +68,8 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
     private ItemAdapter mAdapter;
     private String mUrl;
     private ArrayList<InStockItem> mDetailedList;
+    private TextView mNoValueText;
+    private ArrayList<InForming> mInFormingItems;
 
     public StorageItemsFragment() {
         // Required empty public constructor
@@ -110,6 +115,8 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
         final LinearLayoutManager manager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(manager);
 
+        mNoValueText = (TextView) view.findViewById(R.id.storageItemsNoValueText);
+
         mDetailedList = new ArrayList<>();
 
         mObjects = new ArrayList<>();
@@ -123,6 +130,10 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
             mActivity.toggleLoadingProgress(true);
         }
         return view;
+    }
+
+    private void showNoValueText(boolean show) {
+        mNoValueText.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -139,16 +150,26 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                                 ApiClient.getInstance().sendRequest(mUrl, mStorageHandler);
                             }
                         }
-                    }, 200);
+                    }, 100);
                     break;
                 case MainActivity.ACTION_START_CREATING_PARCEL:
-                    if (mDetailedList.size() == 0) {
+                    if (intent.hasExtra("inForming")) {
+                        InForming inForming = intent.getExtras().getParcelable("inForming");
+
+                        if (inForming != null && mDeposit.equals(inForming.getDeposit())) {
+                            ArrayList<InStockItem> inStockItems = new ArrayList<>();
+                            inStockItems.addAll(mDetailedList);
+                            boolean add = inStockItems.size() > 0;
+                            mActivity.addFragment(ItemsListFragment.newInstance(add ? inStockItems : null, add, inForming, mDeposit), false);
+                            mActivity.mActionMenu.collapse();
+                        }
+                    } else if (mDetailedList.size() == 0) {
                         Snackbar.make(mRecyclerView, getString(R.string.please_select_parcels), Snackbar.LENGTH_SHORT).show();
                         mActivity.mActionMenu.collapse();
                     } else {
                         ArrayList<InStockItem> inStockItems = new ArrayList<>();
                         inStockItems.addAll(mDetailedList);
-                        mActivity.addFragment(ItemsListFragment.newInstance(inStockItems), true);
+                        mActivity.addFragment(ItemsListFragment.newInstance(inStockItems, true, null, mDeposit), false);
                         mActivity.mActionMenu.collapse();
                     }
                     break;
@@ -163,15 +184,18 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                 case Constants.ApiResponse.RESPONSE_OK: {
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
+                        String message = response.optString("message", mActivity.getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             buildItemsList(response);
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+                            mActivity.toggleLoadingProgress(false);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        mActivity.toggleLoadingProgress(false);
                     }
                     break;
                 }
@@ -185,6 +209,7 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         message = exception.getMessage();
                     }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_ERROR: {
@@ -196,17 +221,20 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         message = exception.getMessage();
                     }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
                     break;
                 }
             }
-            mActivity.toggleLoadingProgress(false);
         }
     };
 
+
     private void buildItemsList(JSONObject response) {
         try {
-            switch (StorageHolderFragment.listToShow) {
-                case Constants.ListToShow.IN_STOCK: {
+            mObjects.clear();
+            switch (MainActivity.selectedFragment) {
+                case IN_STOCK: {
+                    mInFormingItems = new ArrayList<>();
                     mObjects.add(new Object());
                     JSONArray jsonData = response.getJSONArray("data");
                     for (int i = 0; i < jsonData.length(); i++) {
@@ -214,16 +242,16 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         InStockItem inStockItem = new InStockItem.Builder()
                                 .deposit(mDeposit)
                                 .id(jsonItem.getInt("id"))
-                                .trackingNumber(jsonItem.getString("tracking"))
+                                .trackingNumber(jsonItem.optString("tracking", ""))
                                 .name(jsonItem.optString("title", ""))
-                                .parcelId(jsonItem.getString("uid"))
+                                .parcelId(jsonItem.optString("uid", ""))
                                 .hasDeclaration(jsonItem.getInt("isDeclarationFilled") == 1)
                                 .build();
                         mObjects.add(inStockItem);
                     }
                     break;
                 }
-                case Constants.ListToShow.AWAITING_ARRIVAL: {
+                case AWAITING_ARRIVAL: {
                     JSONArray jsonData = response.getJSONArray("data");
                     for (int i = 0; i < jsonData.length(); i++) {
                         JSONObject jsonItem = jsonData.getJSONObject(i);
@@ -238,22 +266,37 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                     }
                     break;
                 }
-                // TODO: 5/31/16 handle results for each parcel status
-                case Constants.ListToShow.RECEIVED:
-                case Constants.ListToShow.SENT:
-                case Constants.ListToShow.AWAITING_SENDING:
-                case Constants.ListToShow.IN_FORMING:
-                case Constants.ListToShow.IN_PROCESSING: {
+                case IN_FORMING: {
+                    JSONArray jsonData = response.getJSONArray("data");
+                    for (int i = 0; i < jsonData.length(); i++) {
+                        JSONObject o = jsonData.getJSONObject(i);
+                        InForming inForming = new InForming.Builder()
+                                .id(o.getInt("id"))
+                                .uid(o.optString("codeNumber", ""))
+                                .createdDate(o.optString("created", ""))
+                                .weight(o.getInt("realWeight"))
+                                .name(o.optString("name", ""))
+                                .deposit(mDeposit)
+                                .build();
+                        mObjects.add(inForming);
+                    }
+                    break;
+                }
+                case RECEIVED:
+                case SENT:
+                case AWAITING_SENDING:
+                case IN_PROCESSING: {
                     JSONArray jsonData = response.getJSONArray("data");
                     for (int i = 0; i < jsonData.length(); i++) {
                         JSONObject jsonItem = jsonData.getJSONObject(i);
                         InProcessing inProcessing = new InProcessing.Builder()
                                 .id(jsonItem.getInt("id"))
                                 .codeNumber(jsonItem.optString("codeNumber", ""))
-                                .name(jsonItem.getString("name"))
+                                .name(jsonItem.optString("name", ""))
                                 .weight(jsonItem.getInt("realWeight"))
                                 .progress(jsonItem.optInt("percent", 0))
                                 .createdDate(jsonItem.optString("created", ""))
+                                .desposit(mDeposit)
                                 .build();
                         mObjects.add(inProcessing);
                     }
@@ -261,12 +304,15 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                 }
             }
         } catch (Exception e) {
+            Log.e("StorageItems", "URL: " + mUrl + "(" + String.valueOf(MainActivity.selectedFragment) + ")");
             e.printStackTrace();
         } finally {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     mAdapter.refreshList(mObjects);
+                    if (mObjects.size() <= 0) showNoValueText(true);
+                    else showNoValueText(false);
                     mActivity.toggleLoadingProgress(false);
                 }
             });
@@ -304,7 +350,7 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
 
     @Override
     public void onInFormingClick(InForming inForming, int position) {
-
+        mActivity.addFragment(ItemsListFragment.newInstance(null, false, inForming, mDeposit), true);
     }
 
     @Override
