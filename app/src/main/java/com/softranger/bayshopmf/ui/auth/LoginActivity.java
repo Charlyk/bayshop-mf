@@ -8,12 +8,10 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.Auth;
@@ -165,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     .add("code", serverCode)
                     .add("type", "google")
                     .build();
-            ApiClient.getInstance().sendRequest(body, Constants.Api.getAuthUrl(), mAuthHandler);
+            ApiClient.getInstance().sendRequest(body, Constants.Api.urlAuth(), mAuthHandler);
         } else {
 
         }
@@ -186,7 +184,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 case Constants.ApiResponse.RESPONSE_OK: {
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
-                        boolean error = response.getBoolean("error");
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
                             Application.currentToken = data.optString("access_token");
@@ -195,29 +194,33 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                         } else {
-                            String message = response.optString("message", getString(R.string.unknown_error));
+                            message = response.optString("message", getString(R.string.unknown_error));
                             Snackbar.make(mLoginButton, message, Snackbar.LENGTH_SHORT).show();
-                            hideLoading();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                         Snackbar.make(mLoginButton, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                        hideLoading();
                     }
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_ERROR:
-                    Response response = (Response) msg.obj;
-                    Snackbar.make(mLoginButton, response.message(), Snackbar.LENGTH_SHORT).show();
-                    hideLoading();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Snackbar.make(mLoginButton, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 case Constants.ApiResponse.RESPONSE_FAILED: {
                     IOException exception = (IOException) msg.obj;
                     Snackbar.make(mLoginButton, exception.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    hideLoading();
                     break;
                 }
             }
+            hideLoading();
         }
     };
 
@@ -232,6 +235,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .add("code", facebookData)
                 .add("type", "facebook")
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.getAuthUrl(), mAuthHandler);
+        ApiClient.getInstance().sendRequest(body, Constants.Api.urlAuth(), mAuthHandler);
     }
 }

@@ -15,18 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.InStockDetailed;
-import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
-import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.util.Constants;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -106,7 +101,7 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                             .add("package", String.valueOf(10)) // 10 is photo quantity id, it may change in the future but now is 10
                             .add("comments", String.valueOf(mCommentInput.getText()))
                             .build();
-                    ApiClient.getInstance().sendRequest(body, Constants.Api.getAdditioalPhotoUrl(), mHandler);
+                    ApiClient.getInstance().sendRequest(body, Constants.Api.urlAdditionalPhoto(), mHandler);
                     mActivity.toggleLoadingProgress(true);
                 } else {
                     Intent intent = new Intent(ACTION_CANCEL_PHOTO_REQUEST);
@@ -140,8 +135,14 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
@@ -155,9 +156,6 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                     }
                     Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
                     break;
-                }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-
                 }
             }
             mActivity.toggleLoadingProgress(false);

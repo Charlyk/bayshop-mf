@@ -18,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.InProcessingParcel;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
@@ -128,7 +127,7 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                     .add("url", mProduct.getProductUrl())
                     .add("packagePrice", mProduct.getProductPrice())
                     .build();
-            ApiClient.getInstance().sendRequest(body, Constants.Api.addWaitingMfItem(), mEdithandler);
+            ApiClient.getInstance().sendRequest(body, Constants.Api.urlAddWaitingArrivalItem(), mEdithandler);
             mActivity.toggleLoadingProgress(true);
         }
     }
@@ -156,8 +155,14 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
@@ -171,9 +176,6 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                     }
                     Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                     break;
-                }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-                    mActivity.logOut();
                 }
             }
             mActivity.toggleLoadingProgress(false);

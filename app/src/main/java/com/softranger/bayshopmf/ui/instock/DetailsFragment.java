@@ -1,14 +1,12 @@
 package com.softranger.bayshopmf.ui.instock;
 
 
-import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,12 +16,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -42,7 +37,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -95,7 +89,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false));
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mInStockItem = getArguments().getParcelable(ITEM_ARG);
-        ApiClient.getInstance().sendRequest(Constants.Api.getMfList(String.valueOf(mInStockItem.getID())), mDetailsHandler);
+        ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mDetailsHandler);
         mActivity.toggleLoadingProgress(true);
         return mRootView;
     }
@@ -232,8 +226,14 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
@@ -247,9 +247,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                     }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
-                }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-
                 }
             }
             mActivity.toggleLoadingProgress(false);

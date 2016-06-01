@@ -89,7 +89,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         mProductPrice.setText(mProduct.getProductPrice());
         mStorageIcon.setImageResource(getStorageIcon(mProduct.getDeposit()));
         mActivity.toggleLoadingProgress(true);
-        ApiClient.getInstance().sendRequest(Constants.Api.getWaitingMfItem(String.valueOf(mProduct.getID())), mAwaitingListHandler);
+        ApiClient.getInstance().sendRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mProduct.getID())), mAwaitingListHandler);
         return mRootView;
     }
 
@@ -159,10 +159,6 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                     mActivity.toggleLoadingProgress(false);
                     break;
                 }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-                    mActivity.toggleLoadingProgress(false);
-                    mActivity.logOut();
-                }
             }
             mActivity.toggleLoadingProgress(false);
         }
@@ -210,10 +206,6 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                     Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                     mActivity.toggleLoadingProgress(false);
                     break;
-                }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-                    mActivity.toggleLoadingProgress(false);
-                    mActivity.logOut();
                 }
             }
             mActivity.toggleLoadingProgress(false);
@@ -322,7 +314,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApiClient.getInstance().delete(Constants.Api.getWaitingMfItem(String.valueOf(product.getID())), mDeleteHandler);
+                ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(String.valueOf(product.getID())), mDeleteHandler);
                 mActivity.toggleLoadingProgress(true);
                 dialog.dismiss();
             }

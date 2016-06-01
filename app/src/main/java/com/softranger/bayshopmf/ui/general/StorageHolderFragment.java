@@ -3,11 +3,7 @@ package com.softranger.bayshopmf.ui.general;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -16,18 +12,8 @@ import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.StorageTabAdapter;
-import com.softranger.bayshopmf.model.InProcessingParcel;
-import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
-
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import okhttp3.Response;
 
 
 /**
@@ -62,48 +48,48 @@ public class StorageHolderFragment extends Fragment {
         listToShow = getArguments().getString("list to show");
         switch (listToShow) {
             case Constants.ListToShow.IN_STOCK:
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.USA), Constants.USA),
-                        StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.UK), Constants.UK),
-                        StorageItemsFragment.newInstance(Constants.Api.getInStockItems(Constants.DE), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlInStockItems(Constants.USA), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.urlInStockItems(Constants.UK), Constants.UK),
+                        StorageItemsFragment.newInstance(Constants.Api.urlInStockItems(Constants.DE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_stock), true);
                 break;
             case Constants.ListToShow.AWAITING_ARRIVAL:
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.getWaitingMfList(Constants.USA), Constants.USA),
-                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMfList(Constants.UK), Constants.UK),
-                        StorageItemsFragment.newInstance(Constants.Api.getWaitingMfList(Constants.DE), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlWaitingArrival(Constants.USA), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.urlWaitingArrival(Constants.UK), Constants.UK),
+                        StorageItemsFragment.newInstance(Constants.Api.urlWaitingArrival(Constants.DE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_arrival), true);
                 break;
             case Constants.ListToShow.IN_PROCESSING:
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.IN_PROCESSING), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.IN_PROCESSING), Constants.GB),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.IN_PROCESSING), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.IN_PROCESSING), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.IN_PROCESSING), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.IN_PROCESSING), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_processing), true);
                 break;
             case Constants.ListToShow.IN_FORMING: {
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.LIVE), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.LIVE), Constants.GB),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.LIVE), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.LIVE), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.LIVE), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.LIVE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_forming), true);
                 break;
             }
             case Constants.ListToShow.AWAITING_SENDING: {
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.PACKED), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.PACKED), Constants.GB),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.PACKED), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.PACKED), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.PACKED), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.PACKED), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_sending), true);
                 break;
             }
             case Constants.ListToShow.SENT: {
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.SENT), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.SENT), Constants.GB),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.SENT), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.SENT), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.SENT), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.SENT), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.sent), true);
                 break;
             }
             case Constants.ListToShow.RECEIVED: {
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.US, Constants.ParcelStatus.RECEIVED), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.GB, Constants.ParcelStatus.RECEIVED), Constants.GB),
-                        StorageItemsFragment.newInstance(Constants.Api.inProcessingUrl(Constants.DE, Constants.ParcelStatus.RECEIVED), Constants.DE));
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.RECEIVED), Constants.US),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.RECEIVED), Constants.GB),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.RECEIVED), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.sent), true);
                 break;
             }

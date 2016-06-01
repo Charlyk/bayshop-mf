@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.DeclarationListAdapter;
 import com.softranger.bayshopmf.model.InStockDetailed;
-import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
@@ -69,7 +68,7 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
         mDeclarationAdapter = new DeclarationListAdapter(mInStockDetailed);
         mDeclarationAdapter.setOnActionButtonsClickListener(this);
         mRecyclerView.setAdapter(mDeclarationAdapter);
-        ApiClient.getInstance().sendRequest(Constants.Api.getMfDeclarationUrl(String.valueOf(mInStockDetailed.getID())), mDeclarationHandler);
+        ApiClient.getInstance().sendRequest(Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mDeclarationHandler);
         return view;
     }
 
@@ -102,7 +101,7 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
         }
         RequestBody body = new FormBody.Builder().add("title", inStockDetailed.getDescription())
                 .add("declarationItems", String.valueOf(buildProductsArray(products))).build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.getMfDeclarationUrl(String.valueOf(mInStockDetailed.getID())), mEditDeclarationHandler);
+        ApiClient.getInstance().sendRequest(body, Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mEditDeclarationHandler);
     }
 
     private JSONArray buildProductsArray(ArrayList<Product> products) {
@@ -168,9 +167,6 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-
-                }
             }
         }
     };
@@ -209,8 +205,14 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
@@ -224,9 +226,6 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
                     }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
-                }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-
                 }
             }
         }

@@ -1,5 +1,7 @@
 package com.softranger.bayshopmf.util;
 
+import java.io.File;
+
 /**
  * Created by eduard on 29.04.16.
  */
@@ -20,7 +22,6 @@ public class Constants {
         public static final int RESPONSE_OK = 1;
         public static final int RESPONSE_FAILED = -1;
         public static final int RESPONSE_ERROR = 0;
-        public static final int RESONSE_UNAUTHORIZED = -2;
     }
 
     public static class ParcelStatus {
@@ -45,53 +46,143 @@ public class Constants {
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";
         private static final String PARCELS = "parcels/";
-        private static final String PARCEL_STEP = "parcel_step/";
+        private static final String PARCEL_STEP = "parcel-step/";
+        private static final String DELETE_BOX = "delete-box/";
 
-        public static String getAuthUrl() {
+        /**
+         * POST
+         * @return authentication to bay shop url
+         */
+        public static String urlAuth() {
             return URL + AUTH;
         }
 
-        public static String parcelStepUrl(int step) {
+        /**
+         * POST
+         * Create an url to delete a box from a PUS parcel
+         * @param packageId in which you want to delete the box
+         * @param boxId for box you want to delete
+         * @return url to delete the box with given parameters
+         */
+        public static String urlDeleteBoxFromParcel(String packageId, String boxId) {
+            return URL + PARCELS.replace("s", "") + DELETE_BOX + packageId + File.separator + boxId;
+        }
+
+        /**
+         * GET
+         * Build an url to access parcel building
+         * @param step building steps 1 - 6
+         * @return url to the given step
+         */
+        public static String urlBuildStep(int step) {
             return URL + PARCEL_STEP + step;
         }
 
-        public static String inProcessingUrl(String deposit, String parcelStatus) {
-            return URL + PARCELS + deposit + "/" + parcelStatus;
+        /**
+         * POST
+         * Build an url to add items to a parcel
+         * @param step building steps 1 - 6
+         * @param parcelId PUS parcel id to which you want to add boxes
+         * @return url to the given step
+         */
+        public static String urlBuildStep(int step, String parcelId) {
+            return URL + PARCEL_STEP + step + File.separator + parcelId;
         }
 
-        public static String getStorageUrl() {
+        /**
+         * GET
+         * Create an url to get parcels after they leave In Stock status
+         * @param depot for which to get the parcels (US, GB, DE)
+         * @param parcelStatus status you want to access
+         * @return a url to obtain a list of parcels
+         */
+        public static String urlOutgoing(String depot, String parcelStatus) {
+            return URL + PARCELS + depot + "/" + parcelStatus;
+        }
+
+        /**
+         * Hz ce za url este aista))
+         * @return
+         */
+        public static String urlStorage() {
             return URL + STORAGE;
         }
 
-        public static String getMfList(String id) {
+        /**
+         * GET
+         * Create an url to access the details for given in stock item id
+         * @param id for which you want to get details
+         * @return url to obtain item details
+         */
+        public static String urlDetailedInStock(String id) {
             return URL + MF_LIST + id;
         }
 
-        public static String getWaitingMfList(String storage) {
-            return URL + WAITING_MF_LIST + storage;
+        /**
+         * GET
+         * Create an url to obtain a list of waiting arrival items
+         * @param depot for which you need to get the list
+         * @return url to awaiting arrival list for given storage
+         */
+        public static String urlWaitingArrival(String depot) {
+            return URL + WAITING_MF_LIST + depot;
         }
 
-        public static String getWaitingMfItem(String waitingItemId) {
+        /**
+         * GET
+         * Create an url to obtain details for an awaiting arrival item
+         * @param waitingItemId for which you need the details
+         * @return an url to access given item details
+         */
+        public static String urlWaitingArrivalDetails(String waitingItemId) {
             return URL + WAITING_MF + waitingItemId;
         }
 
-        public static String editWaitingMfItem(String itemId) {
+        /**
+         * POST
+         * Create an url used to edit awaiting arrival item details
+         * @param itemId for which you want to edit details
+         * @return url to item for which you need to edit details
+         */
+        public static String urlEditWaitingArrivalItem(String itemId) {
             return URL + WAITING_MF + EDIT + itemId;
         }
 
-        public static String addWaitingMfItem() {
+        /**
+         * POST
+         * Create a url to add an awaiting arrival item
+         * @return url to which to send a new awaiting arrival item
+         */
+        public static String urlAddWaitingArrivalItem() {
             return URL + WAITING_MF + "add";
         }
 
-        public static String getInStockItems(String storage) {
+        /**
+         * GET
+         * Create an url to obtain in stock items
+         * @param storage for which to get items
+         * @return a url to access all in stock items for given storage
+         */
+        public static String urlInStockItems(String storage) {
             return URL + MF_LIST + IN_STOCK + storage;
         }
 
-        public static String getMfDeclarationUrl(String mfId) {
+        /**
+         * GET
+         * Create an url to access the declaration for an In stock item
+         * @param mfId for which to obtain declaration
+         * @return
+         */
+        public static String urlMfDeclaration(String mfId) {
             return URL + MF_DECLARATION + mfId;
         }
 
-        public static String getAdditioalPhotoUrl() {
+        /**
+         * POST
+         * Create an url to send a request for additional photos
+         * @return url to request photos for a product
+         */
+        public static String urlAdditionalPhoto() {
             return URL + STORAGE;
         }
     }

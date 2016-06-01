@@ -66,11 +66,11 @@ public class InStockDetailed extends InStockItem {
         mDate = date;
     }
 
-    public String getWeight() {
+    public String getDetailedWeight() {
         return mWeight;
     }
 
-    public void setWeight(String weight) {
+    public void setDetailedWeight(String weight) {
         mWeight = weight;
     }
 
@@ -191,7 +191,7 @@ public class InStockDetailed extends InStockItem {
             itemDetailed.setPhotoUrls(mPhotoUrls);
             itemDetailed.setDate(mDate);
             itemDetailed.setPrice(mPrice);
-            itemDetailed.setWeight(mWeight);
+            itemDetailed.setDetailedWeight(mWeight);
             itemDetailed.setTrackingNumber(mTrackingNumber);
             itemDetailed.setName(mName);
             itemDetailed.setDeposit(mDeposit);

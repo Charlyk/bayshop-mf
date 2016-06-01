@@ -123,7 +123,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (mInStockItems.get(position) instanceof InForming) {
             InFormingViewHolder processingHolder = (InFormingViewHolder) holder;
             processingHolder.mProduct = (InForming) mInStockItems.get(position);
-            processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getId()));
+            processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
             processingHolder.mProductName.setText(processingHolder.mProduct.getName());
             processingHolder.mCreatedDate.setText(getFromattedDate(processingHolder.mProduct.getCreatedDate()));
             double kg = processingHolder.mProduct.getWeight() / 1000;

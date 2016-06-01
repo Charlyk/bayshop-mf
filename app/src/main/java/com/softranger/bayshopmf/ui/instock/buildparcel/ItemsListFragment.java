@@ -24,9 +24,9 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.FirstStepAdapter;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.model.PUSItem;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
-import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -53,6 +53,8 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     private ArrayList<InStockItem> mInStockItems;
     private RecyclerView mRecyclerView;
     private ArrayList<InStockItem> mInParcelItems;
+    private static int removedPos = -1;
+    private PUSItem mPUSItem;
 
     public ItemsListFragment() {
         // Required empty public constructor
@@ -104,12 +106,13 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         JSONArray boxesArray = new JSONArray();
         try {
             for (InStockItem item : mInStockItems) {
-                boxesArray.put(item.getParcelId());
+                boxesArray.put(item.getID());
             }
             RequestBody body = new FormBody.Builder()
                     .add("boxes", String.valueOf(boxesArray))
                     .build();
-            ApiClient.getInstance().sendRequest(body, Constants.Api.parcelStepUrl(1), mCreateHandler);
+            ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(1), mCreateHandler);
+            mActivity.toggleLoadingProgress(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -118,7 +121,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     private int getTotalWeight(ArrayList<InStockItem> inStockItems) {
         int totalWeight = 0;
         for (InStockItem item : inStockItems) {
-            totalWeight = totalWeight + 1;
+            totalWeight += item.getWeight();
         }
         return totalWeight;
     }
@@ -137,24 +140,33 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
             switch (msg.what) {
                 case Constants.ApiResponse.RESPONSE_OK: {
                     try {
-                        ArrayList<InStockItem> inStockItems = new ArrayList<>();
                         JSONObject response = new JSONObject((String) msg.obj);
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             JSONObject jsonData = response.getJSONObject("data");
                             JSONArray jsonBoxes = jsonData.getJSONArray("boxes");
+                            JSONObject jsoPus = jsonData.getJSONObject("packageRow");
+                            JSONObject jsonWieghts = jsonData.getJSONObject("weights");
                             for (int i = 0; i < jsonBoxes.length(); i++) {
                                 JSONObject jsonBox = jsonBoxes.getJSONObject(i);
+                                int packageId = jsonBox.getInt("id");
                                 InStockItem item = new InStockItem.Builder()
-                                        .id(jsonBox.getInt("id"))
+                                        .id(packageId)
                                         .parcelId(jsonBox.getString("uid"))
                                         .name(jsonBox.getString("title"))
                                         .price(jsonBox.getDouble("price"))
                                         .currency(jsonBox.getString("currency"))
+                                        .weight(jsonWieghts.getJSONObject(String.valueOf(packageId)).getInt("weight"))
                                         .build();
                                 mInParcelItems.add(item);
                             }
+                            mPUSItem = new PUSItem.Builder()
+                                    .id(jsoPus.getInt("id"))
+                                    .uid(jsoPus.getString("uid"))
+                                    .hasBattery(jsoPus.getInt("isBatteryLionExists"))
+                                    .items(mInParcelItems)
+                                    .build();
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }
@@ -167,8 +179,14 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
@@ -183,10 +201,8 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-
-                }
             }
+            mActivity.toggleLoadingProgress(false);
         }
     };
 
@@ -201,7 +217,14 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
-
+                            JSONObject data = response.getJSONObject("data");
+                            boolean hasParcels = data.getBoolean("isPackageHasMoreBoxes");
+                            if (!hasParcels) mActivity.onBackPressed();
+                            else if (removedPos > -1) {
+                                mAdapter.removeItem(removedPos);
+                                removedPos = -1;
+                                updateTotals();
+                            }
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }
@@ -227,10 +250,8 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-
-                }
             }
+            mActivity.toggleLoadingProgress(false);
         }
     };
 
@@ -269,11 +290,9 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onDeleteClick(InStockItem inStockItem, int position) {
-        mAdapter.removeItem(position);
-        if (mAdapter.getItemCount() == 0) {
-            mActivity.onBackPressed();
-        } else {
-            updateTotals();
-        }
+        removedPos = position;
+        ApiClient.getInstance().delete(Constants.Api.urlDeleteBoxFromParcel(String.valueOf(mPUSItem.getId()),
+                String.valueOf(inStockItem.getID())), mDeleteHandler);
+        mActivity.toggleLoadingProgress(true);
     }
 }

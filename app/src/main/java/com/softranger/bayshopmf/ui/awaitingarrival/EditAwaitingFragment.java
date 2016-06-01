@@ -151,7 +151,7 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
                 .add("url", product.getProductUrl())
                 .add("packagePrice", product.getProductPrice())
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.editWaitingMfItem(String.valueOf(product.getID())), mEdithandler);
+        ApiClient.getInstance().sendRequest(body, Constants.Api.urlEditWaitingArrivalItem(String.valueOf(product.getID())), mEdithandler);
         mActivity.toggleLoadingProgress(true);
     }
 
@@ -185,8 +185,14 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                     mActivity.toggleLoadingProgress(false);
                     break;
@@ -201,9 +207,6 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
                     }
                     Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                     break;
-                }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-                    mActivity.logOut();
                 }
             }
             mActivity.toggleLoadingProgress(false);

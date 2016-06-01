@@ -172,16 +172,19 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                    } finally {
-                        mActivity.toggleLoadingProgress(false);
                     }
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_ERROR: {
@@ -193,14 +196,10 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         message = exception.getMessage();
                     }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
                     break;
                 }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-                    mActivity.toggleLoadingProgress(false);
-                    mActivity.logOut();
-                }
             }
+            mActivity.toggleLoadingProgress(false);
         }
     };
 
@@ -250,7 +249,7 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                         JSONObject jsonItem = jsonData.getJSONObject(i);
                         InProcessing inProcessing = new InProcessing.Builder()
                                 .id(jsonItem.getInt("id"))
-                                .codeNumber(jsonItem.getString("codeNumber"))
+                                .codeNumber(jsonItem.optString("codeNumber", ""))
                                 .name(jsonItem.getString("name"))
                                 .weight(jsonItem.getInt("realWeight"))
                                 .progress(jsonItem.optInt("percent", 0))
@@ -264,8 +263,13 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            mAdapter.refreshList(mObjects);
-            mActivity.toggleLoadingProgress(false);
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.refreshList(mObjects);
+                    mActivity.toggleLoadingProgress(false);
+                }
+            });
         }
     }
 

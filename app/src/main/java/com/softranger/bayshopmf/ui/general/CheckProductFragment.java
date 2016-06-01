@@ -15,10 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.MainActivity;
-import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
@@ -102,7 +100,7 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
                             .add("request", Constants.Api.OPTION_CHECK)
                             .add("comments", String.valueOf(mCommentInput.getText()))
                             .build();
-                    ApiClient.getInstance().sendRequest(body, Constants.Api.getAdditioalPhotoUrl(), mHandler);
+                    ApiClient.getInstance().sendRequest(body, Constants.Api.urlAdditionalPhoto(), mHandler);
                     mActivity.toggleLoadingProgress(true);
                 } else {
                     Intent intent = new Intent(ACTION_CANCEL_CHECK_PRODUCT);
@@ -137,8 +135,14 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
@@ -152,9 +156,6 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
                     }
                     Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
                     break;
-                }
-                case Constants.ApiResponse.RESONSE_UNAUTHORIZED: {
-
                 }
             }
             mActivity.toggleLoadingProgress(false);

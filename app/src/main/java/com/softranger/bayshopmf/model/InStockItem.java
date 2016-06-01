@@ -11,6 +11,7 @@ public class InStockItem implements Parcelable {
     protected boolean isSelected;
     protected boolean hasDeclaration;
     protected double mPrice;
+    protected int mWeight;
     protected String mName;
     protected String mTrackingNumber;
     protected String mDeposit;
@@ -31,6 +32,7 @@ public class InStockItem implements Parcelable {
         mID = in.readInt();
         mPrice = in.readDouble();
         mCurrency = in.readString();
+        mWeight = in.readInt();
     }
 
     public static final Creator<InStockItem> CREATOR = new Creator<InStockItem>() {
@@ -117,6 +119,14 @@ public class InStockItem implements Parcelable {
         mCurrency = currency;
     }
 
+    public int getWeight() {
+        return mWeight;
+    }
+
+    public void setWeight(int weight) {
+        mWeight = weight;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -132,6 +142,7 @@ public class InStockItem implements Parcelable {
         parcel.writeInt(mID);
         parcel.writeDouble(mPrice);
         parcel.writeString(mCurrency);
+        parcel.writeDouble(mWeight);
     }
 
     public static class Builder {
@@ -144,6 +155,7 @@ public class InStockItem implements Parcelable {
         protected int mID;
         protected double mPrice;
         protected String mCurrency;
+        protected int mWeight;
 
         public Builder isSelected(boolean isSelected) {
             this.isSelected = isSelected;
@@ -190,6 +202,11 @@ public class InStockItem implements Parcelable {
             return this;
         }
 
+        public Builder weight(int weight) {
+            mWeight = weight;
+            return this;
+        }
+
         public InStockItem build() {
             InStockItem inStockItem = new InStockItem();
             inStockItem.setName(mName);
@@ -200,6 +217,7 @@ public class InStockItem implements Parcelable {
             inStockItem.mParcelId = this.mParcelId;
             inStockItem.mID = this.mID;
             inStockItem.mPrice = this.mPrice;
+            inStockItem.mWeight = this.mWeight;
             return inStockItem;
         }
     }
