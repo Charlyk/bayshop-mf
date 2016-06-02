@@ -112,7 +112,7 @@
     <string name="select_method">Select method</string>
     <string name="ok">OK</string>
     <string name="shipping_method">Shipping method</string>
-    <string name="please_select_parcels">Select at least two parcels to start combine them.</string>
+    <string name="please_select_parcels">Select at least one parcel to start.</string>
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, fermentum eros vivamus, turpis tempor facilisi libero. Fusce adipiscing ornare, lorem libero massa ipsum velit ac mauris, nec tristique odio, cras morbi augue. Orci porta semper varius ut vel, non purus tincidunt. Sollicitudin dui posuere facilisis posuere, semper mauris quisque, vitae nam lacus, aenean aliquam odio. Dolor diam fringilla molestie et dolor porta, vel nec maecenas sed. A in magna vehicula neque sed, lacus dolor cras malesuada suspendisse euismod. Pede vel curabitur, cras libero morbi sodales venenatis scelerisque
     </string>

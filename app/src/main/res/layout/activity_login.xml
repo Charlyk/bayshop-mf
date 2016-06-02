@@ -22,7 +22,6 @@
             android:id="@+id/logo_circle"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:transitionName="@string/transition_image_view"
             android:src="@drawable/logo_circle"/>
 
         <ImageView
@@ -30,7 +29,6 @@
             android:layout_height="60dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:transitionName="lettersTransitionName"
             android:src="@drawable/logo_letters"/>
     </LinearLayout>
 </RelativeLayout>

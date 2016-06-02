@@ -88,7 +88,7 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
         RequestBody body = new FormBody.Builder()
                 .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery()))
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(1, String.valueOf(mInForming.getId())), mAddressHandler);
+        ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mAddressHandler);
         return view;
     }
 
@@ -140,7 +140,7 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
                                         .build();
                                 mAddresses.add(address);
                             }
-                            mAdapter.refreshList(mAddresses);
+                            mAdapter.refreshList();
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }

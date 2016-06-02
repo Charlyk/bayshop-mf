@@ -31,6 +31,7 @@ import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.general.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.StorageHolderFragment;
+import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static SelectedFragment selectedFragment;
     private ProgressBar mProgressBar;
     private FrameLayout mFabBackground;
-    private ArrayList<InForming> mInFormingArrayList;
     private ArrayList<FloatingActionButton> mActionButtons;
 
     @Override
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        mInFormingArrayList = new ArrayList<>();
         mActionButtons = new ArrayList<>();
 
         // set listener to either show or hide white background
@@ -119,6 +118,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void toggleLoadingProgress(boolean show) {
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    public void removeActionButtons() {
+        for (FloatingActionButton button : mActionButtons) {
+            mActionMenu.removeButton(button);
+        }
+
+        mActionButtons.clear();
+    }
+
+    public void addActionButtons(ArrayList<InForming> inFormingItems) {
+        removeActionButtons();
+
+        for (final InForming inForming : inFormingItems) {
+            FloatingActionButton button = new FloatingActionButton(this);
+            button.setSize(FloatingActionButton.SIZE_MINI);
+            button.setColorNormal(getResources().getColor(R.color.colorGreenAction));
+            button.setTitle(inForming.getCodeNumber());
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ACTION_START_CREATING_PARCEL);
+                    intent.putExtra("inForming", inForming);
+                    intent.putExtra("deposit", inForming.getDeposit());
+                    sendBroadcast(intent);
+                }
+            });
+            mActionButtons.add(button);
+            mActionMenu.addButton(button);
+        }
     }
 
     public void addFragment(Fragment fragment, boolean showAnimation) {

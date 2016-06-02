@@ -40,9 +40,7 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
         });
     }
 
-    public void refreshList(ArrayList<Address> addresses) {
-        mAddresses.clear();
-        mAddresses.addAll(addresses);
+    public void refreshList() {
         sortListByName();
         notifyDataSetChanged();
     }

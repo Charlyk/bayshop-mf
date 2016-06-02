@@ -7,12 +7,9 @@ import java.io.File;
  */
 public class Constants {
 
-    public static final String USA = "usa";
-    public static final String UK = "uk";
+    public static final String USA = "us";
+    public static final String UK = "gb";
     public static final String DE = "de";
-
-    public static final String US = "us";
-    public static final String GB = "gb";
 
     public static Character[] ALPHABET = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 

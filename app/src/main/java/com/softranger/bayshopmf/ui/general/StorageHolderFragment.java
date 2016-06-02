@@ -57,35 +57,35 @@ public class StorageHolderFragment extends Fragment {
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_arrival), true);
                 break;
             case IN_PROCESSING:
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.IN_PROCESSING), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.IN_PROCESSING), Constants.GB),
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.USA, Constants.ParcelStatus.IN_PROCESSING), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.UK, Constants.ParcelStatus.IN_PROCESSING), Constants.UK),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.IN_PROCESSING), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_processing), true);
                 break;
             case IN_FORMING: {
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.LIVE), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.LIVE), Constants.GB),
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.USA, Constants.ParcelStatus.LIVE), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.UK, Constants.ParcelStatus.LIVE), Constants.UK),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.LIVE), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.in_forming), true);
                 break;
             }
             case AWAITING_SENDING: {
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.PACKED), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.PACKED), Constants.GB),
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.USA, Constants.ParcelStatus.PACKED), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.UK, Constants.ParcelStatus.PACKED), Constants.UK),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.PACKED), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.awaiting_sending), true);
                 break;
             }
             case SENT: {
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.SENT), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.SENT), Constants.GB),
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.USA, Constants.ParcelStatus.SENT), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.UK, Constants.ParcelStatus.SENT), Constants.UK),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.SENT), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.sent), true);
                 break;
             }
             case RECEIVED: {
-                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.RECEIVED), Constants.US),
-                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.RECEIVED), Constants.GB),
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.USA, Constants.ParcelStatus.RECEIVED), Constants.USA),
+                        StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.UK, Constants.ParcelStatus.RECEIVED), Constants.UK),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.RECEIVED), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.sent), true);
                 break;
