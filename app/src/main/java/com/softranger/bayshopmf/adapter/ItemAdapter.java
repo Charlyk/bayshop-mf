@@ -48,14 +48,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mOnItemClickListener = onItemClickListener;
     }
 
-    public void deleteItem(Object o) {
-        if (mInStockItems.contains(o)) {
-            final int index = mInStockItems.indexOf(o);
-            mInStockItems.remove(o);
-            notifyItemRemoved(index);
-        }
-    }
-
     @Override
     public int getItemViewType(int position) {
         if (mInStockItems.get(position) instanceof InStockItem) {
@@ -99,15 +91,13 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             InStockViewHolder inStockViewHolder = (InStockViewHolder) holder;
             inStockViewHolder.mInStockItem = (InStockItem) mInStockItems.get(position);
 
-            if (inStockViewHolder.mInStockItem.isSelected()) {
-                @ColorInt int color = mContext.getResources().getColor(R.color.colorSelection);
-                @DrawableRes int imageSelected = R.mipmap.parcel_selected;
-                inStockViewHolder.mImageView.setImageResource(imageSelected);
-                inStockViewHolder.mView.setBackgroundColor(color);
-            } else {
-                @DrawableRes int image = R.mipmap.parcel_active;
-                inStockViewHolder.mImageView.setImageResource(image);
+            @DrawableRes int image = inStockViewHolder.mInStockItem.isHasDeclaration() ? R.mipmap.parcel_active : R.mipmap.unactive_parcel;
+            inStockViewHolder.mImageView.setImageResource(image);
+
+            if (!inStockViewHolder.mInStockItem.isSelected()) {
+                inStockViewHolder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
             }
+
             inStockViewHolder.mUIDLabel.setText(inStockViewHolder.mInStockItem.getParcelId());
             inStockViewHolder.mProductName.setText(inStockViewHolder.mInStockItem.getName());
             inStockViewHolder.mTrackingLabel.setText(inStockViewHolder.mInStockItem.getTrackingNumber());

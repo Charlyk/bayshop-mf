@@ -8,6 +8,16 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
+    <ImageButton
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:id="@+id/secondStepDeleteAddressButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_clear_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"/>
+
     <TextView
         android:id="@+id/secondStepItemNameLabel"
         android:layout_width="wrap_content"
@@ -15,11 +25,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/secondStepDeleteAddressButton"
+        android:layout_toStartOf="@id/secondStepDeleteAddressButton"
         android:drawableLeft="@mipmap/ic_shipping_address"
         android:drawablePadding="15dp"
         android:drawableStart="@mipmap/ic_shipping_address"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:padding="16dp"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
         tools:text="Jora Cardan"/>
@@ -55,13 +69,27 @@
 
     <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:layout_below="@id/item_divider2"
         android:textColor="@color/colorGreenAction"
         android:textSize="17sp"
-        android:text="Select address"
+        android:text="@string/select_address"
         android:id="@+id/secondStepSelectBtn"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <Button
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:layout_below="@id/item_divider2"
+        android:textColor="@color/colorGreenAction"
+        android:textSize="17sp"
+        android:text="@string/edit_address"
+        android:id="@+id/secondStepEditAddressButton"
+        android:layout_toLeftOf="@id/secondStepSelectBtn"
+        android:layout_toStartOf="@id/secondStepSelectBtn"/>
 </RelativeLayout>

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -35,7 +34,6 @@ import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
 import com.softranger.bayshopmf.ui.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
-import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -60,7 +58,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     private RecyclerView mRecyclerView;
     private ArrayList<Object> mObjects;
     private ItemAdapter mAdapter;
-    private String mUrl;
+    private static String url;
     private TextView mNoValueText;
     private ArrayList<InForming> mInFormingItems;
 
@@ -110,10 +108,10 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
         // get the url and deposit id from arguments and make a request to the server with the passed
         // in arguments url
-        mUrl = getArguments().getString(URL_ARG);
+        url = getArguments().getString(URL_ARG);
         mDeposit = getArguments().getString(DEPOSIT_ARG);
-        if (mUrl != null) {
-            ApiClient.getInstance().sendRequest(mUrl, mStorageHandler);
+        if (url != null) {
+            ApiClient.getInstance().sendRequest(url, mStorageHandler);
             mActivity.toggleLoadingProgress(true);
         }
         return view;
@@ -142,8 +140,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                         public void run() {
                             if (mDeposit.equalsIgnoreCase(intent.getStringExtra("deposit"))) {
                                 mObjects.clear();
-                                mActivity.toggleLoadingProgress(true);
-                                ApiClient.getInstance().sendRequest(mUrl, mStorageHandler);
+                                ApiClient.getInstance().sendRequest(url, mStorageHandler);
                             }
                         }
                     }, 100);
@@ -222,7 +219,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                 case IN_STOCK: {
                     mInFormingItems = new ArrayList<>();
                     mObjects.add(new Object());
-                    JSONObject jsonData = response.getJSONObject("data");
+                     JSONObject jsonData = response.getJSONObject("data");
                     JSONArray inStockList = jsonData.getJSONArray("list");
                     JSONArray livePackages = jsonData.getJSONArray("livePackages");
                     for (int i = 0; i < inStockList.length(); i++) {
@@ -305,7 +302,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                 }
             }
         } catch (Exception e) {
-            Log.e("StorageItems", "URL: " + mUrl + "(" + String.valueOf(MainActivity.selectedFragment) + ")");
+            Log.e("StorageItems", "URL: " + url + "(" + String.valueOf(MainActivity.selectedFragment) + ")");
             e.printStackTrace();
         } finally {
             mActivity.runOnUiThread(new Runnable() {

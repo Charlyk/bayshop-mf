@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -43,6 +44,11 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
     public void refreshList() {
         sortListByName();
         notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        mAddresses.remove(position);
+        notifyItemRemoved(position);
     }
 
     public void setOnAddressClickListener(OnAddressClickListener onAddressClickListener) {
@@ -101,24 +107,50 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
         final TextView mClientName;
         final TextView mAddress;
         final Button mSelectButton;
+        final Button mEditButton;
+        final ImageButton mDeleteButton;
         Address mAddressObj;
         public ViewHolder(View itemView) {
             super(itemView);
             mClientName = (TextView) itemView.findViewById(R.id.secondStepItemNameLabel);
             mAddress = (TextView) itemView.findViewById(R.id.secondStepAddressText);
             mSelectButton = (Button) itemView.findViewById(R.id.secondStepSelectBtn);
+            mEditButton = (Button) itemView.findViewById(R.id.secondStepEditAddressButton);
+            mDeleteButton = (ImageButton) itemView.findViewById(R.id.secondStepDeleteAddressButton);
+            mEditButton.setOnClickListener(this);
+            mDeleteButton.setOnClickListener(this);
             mSelectButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if (mOnAddressClickListener != null) {
-                mOnAddressClickListener.onAddressClick(mAddressObj, getAdapterPosition());
+            switch (v.getId()) {
+                case R.id.secondStepSelectBtn: {
+                    if (mOnAddressClickListener != null) {
+                        mOnAddressClickListener.onSelectAddressClick(mAddressObj, getAdapterPosition());
+                    }
+                    break;
+                }
+                case R.id.secondStepEditAddressButton: {
+                    if (mOnAddressClickListener != null) {
+                        mOnAddressClickListener.onEditAddressClick(mAddressObj, getAdapterPosition());
+                    }
+                    break;
+                }
+                case R.id.secondStepDeleteAddressButton: {
+                    if (mOnAddressClickListener != null) {
+                        mOnAddressClickListener.onDeleteAddressClick(mAddressObj, getAdapterPosition());
+                    }
+                    break;
+                }
             }
+
         }
     }
 
     public interface OnAddressClickListener {
-        void onAddressClick(Address address, int position);
+        void onSelectAddressClick(Address address, int position);
+        void onDeleteAddressClick(Address address, int position);
+        void onEditAddressClick(Address address, int position);
     }
 }

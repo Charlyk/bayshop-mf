@@ -10,11 +10,16 @@ import android.os.Parcelable;
  */
 public class Address implements Parcelable {
     private String mClientName;
+    private String mFirstName;
+    private String mLastName;
+    private String mEmail;
     private String mStreet;
     private String mCity;
     private String mCountry;
     private String mPostalCode;
     private String mPhoneNumber;
+    private String mPhoneCode;
+    private int mCountryId;
     private int mId;
 
     private Address() {
@@ -23,11 +28,16 @@ public class Address implements Parcelable {
 
     protected Address(Parcel in) {
         mClientName = in.readString();
+        mFirstName = in.readString();
+        mLastName = in.readString();
+        mEmail = in.readString();
         mStreet = in.readString();
         mCity = in.readString();
         mCountry = in.readString();
         mPostalCode = in.readString();
         mPhoneNumber = in.readString();
+        mPhoneCode = in.readString();
+        mCountryId = in.readInt();
         mId = in.readInt();
     }
 
@@ -99,6 +109,46 @@ public class Address implements Parcelable {
         mId = id;
     }
 
+    public String getFirstName() {
+        return mFirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        mFirstName = firstName;
+    }
+
+    public String getLastName() {
+        return mLastName;
+    }
+
+    public void setLastName(String lastName) {
+        mLastName = lastName;
+    }
+
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public void setEmail(String email) {
+        mEmail = email;
+    }
+
+    public String getPhoneCode() {
+        return mPhoneCode;
+    }
+
+    public void setPhoneCode(String phoneCode) {
+        mPhoneCode = phoneCode;
+    }
+
+    public int getCountryId() {
+        return mCountryId;
+    }
+
+    public void setCountryId(int countryId) {
+        mCountryId = countryId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -107,25 +157,50 @@ public class Address implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mClientName);
+        dest.writeString(mFirstName);
+        dest.writeString(mLastName);
+        dest.writeString(mEmail);
         dest.writeString(mStreet);
         dest.writeString(mCity);
         dest.writeString(mCountry);
         dest.writeString(mPostalCode);
         dest.writeString(mPhoneNumber);
+        dest.writeString(mPhoneCode);
+        dest.writeInt(mCountryId);
         dest.writeInt(mId);
     }
 
     public static class Builder {
         private String mClientName;
+        private String mFirstName;
+        private String mLastName;
+        private String mEmail;
         private String mStreet;
         private String mCity;
         private String mCountry;
         private String mPostalCode;
         private String mPhoneNumber;
+        private String mPhoneCode;
+        private int mCountryId;
         private int mId;
 
         public Builder clientName(String clientName) {
             mClientName = clientName;
+            return this;
+        }
+
+        public Builder firstName(String firstName) {
+            mFirstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            mLastName = lastName;
+            return this;
+        }
+
+        public Builder email(String email) {
+            mEmail = email;
             return this;
         }
 
@@ -159,14 +234,29 @@ public class Address implements Parcelable {
             return this;
         }
 
+        public Builder phoneCode(String phoneCode) {
+            mPhoneCode = phoneCode;
+            return this;
+        }
+
+        public Builder countryId(int countryId) {
+            mCountryId = countryId;
+            return this;
+        }
+
         public Address build() {
             Address address = new Address();
             address.mClientName = this.mClientName;
+            address.mFirstName = this.mFirstName;
+            address.mLastName = this.mLastName;
+            address.mEmail = this.mEmail;
             address.mStreet = this.mStreet;
             address.mCity = this.mCity;
             address.mCountry = this.mCountry;
             address.mPostalCode = this.mPostalCode;
             address.mPhoneNumber = this.mPhoneNumber;
+            address.mPhoneCode = this.mPhoneCode;
+            address.mCountryId = this.mCountryId;
             address.mId = this.mId;
             return address;
         }

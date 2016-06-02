@@ -109,11 +109,6 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
         mActivity.unregisterReceiver(mTitleReceiver);
     }
 
-    @Override
-    public void onAddressClick(Address address, int position) {
-        mActivity.addFragment(new ShippingMethodFragment(), true);
-    }
-
     private Handler mAddressHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -170,4 +165,19 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
             mActivity.toggleLoadingProgress(false);
         }
     };
+
+    @Override
+    public void onSelectAddressClick(Address address, int position) {
+        mActivity.addFragment(new ShippingMethodFragment(), true);
+    }
+
+    @Override
+    public void onDeleteAddressClick(Address address, int position) {
+        mAdapter.removeItem(position);
+    }
+
+    @Override
+    public void onEditAddressClick(Address address, int position) {
+
+    }
 }
