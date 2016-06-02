@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,11 +76,8 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         Bundle args = new Bundle();
         args.putBoolean(ADD_ARG, add);
         args.putString(DEPOSIT_ARG, deposit);
-        if (add) {
-            args.putParcelableArrayList(IN_STOCK_ARG, inStockItems);
-        } else {
-            args.putParcelable(IN_FORMING_ARG, inForming);
-        }
+        args.putParcelableArrayList(IN_STOCK_ARG, inStockItems);
+        args.putParcelable(IN_FORMING_ARG, inForming);
         ItemsListFragment fragment = new ItemsListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -118,27 +116,32 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         boolean addNewBoxes = getArguments().getBoolean(ADD_ARG);
 
         if (addNewBoxes) {
+            mInForming = getArguments().getParcelable(IN_FORMING_ARG);
             mInStockItems = getArguments().getParcelableArrayList(IN_STOCK_ARG);
             updateTotals(mInStockItems);
-            sendPackagesToServer();
+            sendPackagesToServer(mInForming == null ? "" : String.valueOf(mInForming.getId()));
         } else {
             mInForming = getArguments().getParcelable(IN_FORMING_ARG);
-            ApiClient.getInstance().sendRequest(Constants.Api.urlBuildStep(1, String.valueOf(mInForming.getId())), mCreateHandler);
+            String url = Constants.Api.urlBuildStep(1, String.valueOf(mInForming.getId()));
+            Log.d("ItemsListFragment N", url);
+            ApiClient.getInstance().sendRequest(url, mCreateHandler);
         }
         mActivity.toggleLoadingProgress(true);
         return view;
     }
 
-    private void sendPackagesToServer() {
+    private void sendPackagesToServer(String packageId) {
         JSONArray boxesArray = new JSONArray();
         try {
             for (InStockItem item : mInStockItems) {
                 boxesArray.put(item.getID());
             }
-            RequestBody body = new FormBody.Builder()
-                    .add("boxes", String.valueOf(boxesArray))
-                    .build();
-            ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(1), mCreateHandler);
+            FormBody.Builder body = new FormBody.Builder();
+            body.add("boxes", String.valueOf(boxesArray));
+            if (!packageId.equals("")) body.add("packageId", packageId);
+            String url = Constants.Api.urlBuildStep(1);
+            Log.d("ItemsListFragment (S)", url);
+            ApiClient.getInstance().sendRequest(body.build(), url, mCreateHandler);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -233,6 +236,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                 }
             }
             mActivity.toggleLoadingProgress(false);
+            MainActivity.inStockItems.clear();
         }
     };
 

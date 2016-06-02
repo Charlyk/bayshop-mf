@@ -50,7 +50,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StorageItemsFragment<T extends Parcelable> extends Fragment implements ItemAdapter.OnItemClickListener {
+public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItemClickListener {
 
     public static final String ACTION_ITEM_CHANGED = "item was changed from a top fragment";
     private static final String URL_ARG = "URL to get information";
@@ -60,8 +60,7 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
     private RecyclerView mRecyclerView;
     private ArrayList<Object> mObjects;
     private ItemAdapter mAdapter;
-    private static String url;
-    private ArrayList<InStockItem> mDetailedList;
+    private String mUrl;
     private TextView mNoValueText;
     private ArrayList<InForming> mInFormingItems;
 
@@ -69,25 +68,11 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
         // Required empty public constructor
     }
 
-
-    // TODO: 5/26/16 trebuie ca receiveru sa se filtreze in dependenta de depositul curent al fragmentului
-
-
-    public static <T extends Parcelable> StorageItemsFragment newInstance(@NonNull ArrayList<T> items,
-                                                                          @NonNull String deposit) {
-        Bundle args = new Bundle();
-        args.putParcelableArrayList("items", items);
-        StorageItemsFragment<T> fragment = new StorageItemsFragment<>();
-        fragment.mDeposit = deposit;
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public static StorageItemsFragment newInstance(@NonNull String url, @NonNull String deposit) {
         Bundle args = new Bundle();
         args.putString(URL_ARG, url);
         args.putString(DEPOSIT_ARG, deposit);
-        StorageItemsFragment fragment = new StorageItemsFragment<>();
+        StorageItemsFragment fragment = new StorageItemsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -99,37 +84,54 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
         View view = inflater.inflate(R.layout.fragment_storage, container, false);
         mActivity = (MainActivity) getActivity();
 
+        // create an intent filter to get broadcast messages to update the list
         IntentFilter intentFilter = new IntentFilter(ACTION_ITEM_CHANGED);
-        intentFilter.addAction(MainActivity.ACTION_START_CREATING_PARCEL);
-        intentFilter.addAction(Application.TOKEN_READY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
+        // bind the recycler view which will hold all lists in this fragment
         mRecyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
         final LinearLayoutManager manager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(manager);
 
+        // bind a no value placeholder
         mNoValueText = (TextView) view.findViewById(R.id.storageItemsNoValueText);
 
-        mDetailedList = new ArrayList<>();
-
+        // initialize objects list which will hold all type of items and then will be passed to adapter
         mObjects = new ArrayList<>();
+
+        // initialize in forming items list which will be passed to activity and used to add floating
+        // buttons with corresponding parcels
         mInFormingItems = new ArrayList<>();
+
+        // Create the adapter for this fragment and pass it to recycler view
         mAdapter = new ItemAdapter(mActivity);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
-        url = getArguments().getString(URL_ARG);
+
+        // get the url and deposit id from arguments and make a request to the server with the passed
+        // in arguments url
+        mUrl = getArguments().getString(URL_ARG);
         mDeposit = getArguments().getString(DEPOSIT_ARG);
-        if (url != null) {
-            ApiClient.getInstance().sendRequest(url, mStorageHandler);
+        if (mUrl != null) {
+            ApiClient.getInstance().sendRequest(mUrl, mStorageHandler);
             mActivity.toggleLoadingProgress(true);
         }
         return view;
     }
 
+    /**
+     * Either show or hide the no value place holder text
+     * @param show
+     */
     private void showNoValueText(boolean show) {
         mNoValueText.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+
+    /**
+     * Broadcast used to update current list when user changes an item from an deeper fragment
+     * it is just making a new request to specified url to get the updated list from server
+     */
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, final Intent intent) {
@@ -141,40 +143,21 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                             if (mDeposit.equalsIgnoreCase(intent.getStringExtra("deposit"))) {
                                 mObjects.clear();
                                 mActivity.toggleLoadingProgress(true);
-                                ApiClient.getInstance().sendRequest(url, mStorageHandler);
+                                ApiClient.getInstance().sendRequest(mUrl, mStorageHandler);
                             }
                         }
                     }, 100);
-                    break;
-                case MainActivity.ACTION_START_CREATING_PARCEL:
-                    String deposit = mDeposit;
-                    if (intent.hasExtra("deposit")) deposit = intent.getExtras().getString("deposit");
-
-                    if (intent.hasExtra("inForming")) {
-                        InForming inForming = intent.getExtras().getParcelable("inForming");
-
-                        if (inForming != null && mDeposit.equals(inForming.getDeposit())) {
-                            ArrayList<InStockItem> inStockItems = new ArrayList<>();
-                            inStockItems.addAll(mDetailedList);
-                            boolean add = inStockItems.size() > 0;
-                            mActivity.addFragment(ItemsListFragment.newInstance(add ? inStockItems : null, add, inForming, mDeposit), false);
-                            mActivity.mActionMenu.collapse();
-                        }
-
-                    } else if (mDetailedList.size() == 0 && mDeposit.equals(deposit)) {
-                        Snackbar.make(mRecyclerView, getString(R.string.please_select_parcels), Snackbar.LENGTH_SHORT).show();
-                        mActivity.mActionMenu.collapse();
-                    } else if (mDeposit.equals(deposit)) {
-                        ArrayList<InStockItem> inStockItems = new ArrayList<>();
-                        inStockItems.addAll(mDetailedList);
-                        mActivity.addFragment(ItemsListFragment.newInstance(inStockItems, true, null, mDeposit), false);
-                        mActivity.mActionMenu.collapse();
-                    }
                     break;
             }
         }
     };
 
+    /**
+     * Handler used to obtain either server response or an error with a message about the occurred
+     * If an error occurs it will be shown to the user else the response will be passed to
+     * {@link StorageItemsFragment#buildItemsList(JSONObject)} and a list with corresponding items
+     * will be built and passed to adapter
+     */
     private Handler mStorageHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -227,6 +210,10 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
     };
 
 
+    /**
+     * Called to build the list and pass it to adapter
+     * @param response in json from server
+     */
     private void buildItemsList(JSONObject response) {
         try {
             mObjects.clear();
@@ -318,7 +305,7 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
                 }
             }
         } catch (Exception e) {
-            Log.e("StorageItems", "URL: " + url + "(" + String.valueOf(MainActivity.selectedFragment) + ")");
+            Log.e("StorageItems", "URL: " + mUrl + "(" + String.valueOf(MainActivity.selectedFragment) + ")");
             e.printStackTrace();
         } finally {
             mActivity.runOnUiThread(new Runnable() {
@@ -348,8 +335,8 @@ public class StorageItemsFragment<T extends Parcelable> extends Fragment impleme
 
     @Override
     public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
-        if (isSelected) mDetailedList.add(inStockItem);
-        else mDetailedList.remove(inStockItem);
+        if (isSelected) MainActivity.inStockItems.add(inStockItem);
+        else MainActivity.inStockItems.remove(inStockItem);
     }
 
     @Override

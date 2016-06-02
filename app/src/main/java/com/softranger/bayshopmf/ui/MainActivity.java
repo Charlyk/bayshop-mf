@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +28,7 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.InForming;
+import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.general.AddAwaitingFragment;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProgressBar mProgressBar;
     private FrameLayout mFabBackground;
     private ArrayList<FloatingActionButton> mActionButtons;
+    public static ArrayList<InStockItem> inStockItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         supportPostponeEnterTransition();
         supportStartPostponedEnterTransition();
+
+        inStockItems = new ArrayList<>();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -94,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ACTION_START_CREATING_PARCEL);
-                sendBroadcast(intent);
+                startBuildingPusParcel(false, null);
             }
         });
 
@@ -120,6 +124,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    public void startBuildingPusParcel(boolean continueBuilding, @Nullable InForming inForming) {
+        if (!continueBuilding && inStockItems.size() <= 0) {
+            Snackbar.make(mActionMenu, getString(R.string.please_select_parcels), Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (continueBuilding) {
+            boolean add = inStockItems.size() > 0;
+            addFragment(ItemsListFragment.newInstance(inStockItems, add, inForming, inForming.getDeposit()), false);
+            mActionMenu.collapse();
+        } else {
+            addFragment(ItemsListFragment.newInstance(inStockItems, true, null, inStockItems.get(0).getDeposit()), false);
+            mActionMenu.collapse();
+        }
+    }
+
     public void removeActionButtons() {
         for (FloatingActionButton button : mActionButtons) {
             mActionMenu.removeButton(button);
@@ -139,10 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(ACTION_START_CREATING_PARCEL);
-                    intent.putExtra("inForming", inForming);
-                    intent.putExtra("deposit", inForming.getDeposit());
-                    sendBroadcast(intent);
+                    startBuildingPusParcel(true, inForming);
                 }
             });
             mActionButtons.add(button);
