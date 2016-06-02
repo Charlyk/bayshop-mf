@@ -255,14 +255,14 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                             boolean hasParcels = data.getInt("isPackageHasMoreBoxes") == 1;
                             if (!hasParcels) {
                                 mActivity.onBackPressed();
-                                Intent refreshIntent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
-                                refreshIntent.putExtra("deposit", mDeposit);
-                                mActivity.sendBroadcast(refreshIntent);
                             } else if (removedPos > -1) {
                                 mAdapter.removeItem(removedPos);
                                 removedPos = -1;
                                 updateTotals(mInParcelItems);
                             }
+                            Intent refreshIntent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                            refreshIntent.putExtra("deposit", mDeposit);
+                            mActivity.sendBroadcast(refreshIntent);
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }

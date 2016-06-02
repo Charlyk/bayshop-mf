@@ -12,6 +12,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,7 +49,8 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItemClickListener {
+public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     public static final String ACTION_ITEM_CHANGED = "item was changed from a top fragment";
     private static final String URL_ARG = "URL to get information";
@@ -61,6 +63,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     private static String url;
     private TextView mNoValueText;
     private ArrayList<InForming> mInFormingItems;
+    private SwipeRefreshLayout mRefreshLayout;
 
     public StorageItemsFragment() {
         // Required empty public constructor
@@ -90,6 +93,11 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         mRecyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
         final LinearLayoutManager manager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(manager);
+
+        // bind refresh layout to be able to send a request again
+        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.storageItemsFragmentSwipeRefresh);
+        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 
         // bind a no value placeholder
         mNoValueText = (TextView) view.findViewById(R.id.storageItemsNoValueText);
@@ -219,7 +227,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                 case IN_STOCK: {
                     mInFormingItems = new ArrayList<>();
                     mObjects.add(new Object());
-                     JSONObject jsonData = response.getJSONObject("data");
+                    JSONObject jsonData = response.getJSONObject("data");
                     JSONArray inStockList = jsonData.getJSONArray("list");
                     JSONArray livePackages = jsonData.getJSONArray("livePackages");
                     for (int i = 0; i < inStockList.length(); i++) {
@@ -312,6 +320,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                     if (mObjects.size() <= 0) showNoValueText(true);
                     else showNoValueText(false);
                     mActivity.toggleLoadingProgress(false);
+                    mRefreshLayout.setRefreshing(false);
                 }
             });
         }
@@ -370,5 +379,11 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     public void onDetach() {
         super.onDetach();
         mActivity.unregisterReceiver(mBroadcastReceiver);
+    }
+
+    @Override
+    public void onRefresh() {
+        // TODO: 6/2/16 check to send the request only for current deposit
+        ApiClient.getInstance().sendRequest(url, mStorageHandler);
     }
 }

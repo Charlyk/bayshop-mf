@@ -4,11 +4,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.general.StorageItemsFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/storage_itemsList"
-        android:background="@color/button_material_light"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/storageItemsFragmentSwipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/storage_itemsList"
+            android:background="@color/button_material_light"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/storageItemsNoValueText"
