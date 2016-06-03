@@ -257,6 +257,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                             boolean hasParcels = data.getInt("isPackageHasMoreBoxes") == 1;
                             if (!hasParcels) {
                                 mActivity.onBackPressed();
+                                mActivity.removeActionButtons();
                             } else if (removedPos > -1) {
                                 mAdapter.removeItem(removedPos);
                                 removedPos = -1;
