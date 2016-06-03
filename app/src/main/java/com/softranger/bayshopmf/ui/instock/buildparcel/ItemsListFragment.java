@@ -66,6 +66,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     private static int removedPos = -1;
     private InForming mInForming;
     private String mCurrency;
+    private CheckBox mCheckBox;
 
     public ItemsListFragment() {
         // Required empty public constructor
@@ -107,8 +108,8 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         Button nextButton = (Button) view.findViewById(R.id.buildFirstStepNextButton);
         nextButton.setOnClickListener(this);
 
-        CheckBox hasBattery = (CheckBox) view.findViewById(R.id.buildFirstStepHasBattery);
-        hasBattery.setOnCheckedChangeListener(this);
+        mCheckBox = (CheckBox) view.findViewById(R.id.buildFirstStepHasBattery);
+        mCheckBox.setOnCheckedChangeListener(this);
 
         String listItems = getString(R.string.list_items);
         mActivity.setToolbarTitle(listItems, true);
@@ -197,6 +198,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                                     .hasBattery(jsoPus.getInt("isBatteryLionExists"))
                                     .items(mInParcelItems)
                                     .build();
+                            mCheckBox.setChecked(mInForming.isHasBattery());
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }

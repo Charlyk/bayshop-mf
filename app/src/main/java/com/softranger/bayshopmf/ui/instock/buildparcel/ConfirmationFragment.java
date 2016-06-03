@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.InForming;
 import com.softranger.bayshopmf.ui.MainActivity;
 
 /**
@@ -25,6 +26,7 @@ import com.softranger.bayshopmf.ui.MainActivity;
  */
 public class ConfirmationFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
+    private static final String IN_FORMING_ARG = "in forming item argument";
     private MainActivity mActivity;
     private TextView mGoodsPrice;
     private TextView mDeliveryPrice;
@@ -40,6 +42,13 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
         // Required empty public constructor
     }
 
+    public static ConfirmationFragment newInstance(InForming inForming) {
+        Bundle args = new Bundle();
+        args.putParcelable(IN_FORMING_ARG, inForming);
+        ConfirmationFragment fragment = new ConfirmationFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

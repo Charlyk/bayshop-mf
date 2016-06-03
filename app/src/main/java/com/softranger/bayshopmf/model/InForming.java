@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class InForming implements Parcelable {
     private int mId;
+    private String mGeneralDescription;
     private String mCodeNumber;
     private String mName;
     private int mWeight;
@@ -20,6 +21,9 @@ public class InForming implements Parcelable {
     private boolean mHasBattery;
     private ArrayList<InStockItem> mItems;
     private String mDeposit;
+    private Address mAddress;
+    private ShippingMethod mShippingMethod;
+    private ArrayList<Product> mProducts;
 
     private InForming() {
 
@@ -27,6 +31,7 @@ public class InForming implements Parcelable {
 
     protected InForming(Parcel in) {
         mId = in.readInt();
+        mGeneralDescription = in.readString();
         mCodeNumber = in.readString();
         mName = in.readString();
         mWeight = in.readInt();
@@ -35,6 +40,9 @@ public class InForming implements Parcelable {
         mHasBattery = in.readByte() != 0;
         mItems = in.createTypedArrayList(InStockItem.CREATOR);
         mDeposit = in.readString();
+        mAddress = in.readParcelable(Address.class.getClassLoader());
+        mShippingMethod = in.readParcelable(ShippingMethod.class.getClassLoader());
+        mProducts = in.createTypedArrayList(Product.CREATOR);
     }
 
     public static final Creator<InForming> CREATOR = new Creator<InForming>() {
@@ -55,6 +63,14 @@ public class InForming implements Parcelable {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public String getGeneralDescription() {
+        return mGeneralDescription;
+    }
+
+    public void setGeneralDescription(String generalDescription) {
+        mGeneralDescription = generalDescription;
     }
 
     public String getCodeNumber() {
@@ -121,6 +137,30 @@ public class InForming implements Parcelable {
         mDeposit = deposit;
     }
 
+    public void setAddress(Address address) {
+        mAddress = address;
+    }
+
+    public Address getAddress() {
+        return mAddress;
+    }
+
+    public ShippingMethod getShippingMethod() {
+        return mShippingMethod;
+    }
+
+    public void setShippingMethod(ShippingMethod shippingMethod) {
+        mShippingMethod = shippingMethod;
+    }
+
+    public ArrayList<Product> getProducts() {
+        return mProducts;
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        mProducts = products;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -129,6 +169,7 @@ public class InForming implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mId);
+        dest.writeString(mGeneralDescription);
         dest.writeString(mCodeNumber);
         dest.writeString(mName);
         dest.writeInt(mWeight);
@@ -137,10 +178,15 @@ public class InForming implements Parcelable {
         dest.writeByte((byte) (mHasBattery ? 1 : 0));
         dest.writeTypedList(mItems);
         dest.writeString(mDeposit);
+        dest.writeParcelable(mAddress, flags);
+        dest.writeParcelable(mShippingMethod, flags);
+        dest.writeTypedList(mProducts);
     }
+
 
     public static class Builder {
         private int mId;
+        private String mGeneralDescription;
         private String mCodeNumber;
         private String mName;
         private int mWeight;
@@ -149,9 +195,17 @@ public class InForming implements Parcelable {
         private boolean mHasBattery;
         private ArrayList<InStockItem> mItems;
         private String mDeposit;
+        private Address mAddress;
+        private ShippingMethod mShippingMethod;
+        private ArrayList<Product> mProducts;
 
         public Builder id(int id) {
             mId = id;
+            return this;
+        }
+
+        public Builder generalDescription(String generalDescription) {
+            mGeneralDescription = generalDescription;
             return this;
         }
 
@@ -195,9 +249,25 @@ public class InForming implements Parcelable {
             return this;
         }
 
+        public Builder address(Address address) {
+            mAddress = address;
+            return this;
+        }
+
+        public Builder shippingMethod(ShippingMethod method) {
+            mShippingMethod = method;
+            return this;
+        }
+
+        public Builder products(ArrayList<Product> products) {
+            mProducts = products;
+            return this;
+        }
+
         public InForming build() {
             InForming inForming = new InForming();
             inForming.mId = this.mId;
+            inForming.mGeneralDescription = this.mGeneralDescription;
             inForming.mCodeNumber = this.mCodeNumber;
             inForming.mName = this.mName;
             inForming.mWeight = this.mWeight;
@@ -206,6 +276,9 @@ public class InForming implements Parcelable {
             inForming.mHasBattery = this.mHasBattery;
             inForming.mItems = this.mItems;
             inForming.mDeposit = this.mDeposit;
+            inForming.mAddress = this.mAddress;
+            inForming.mShippingMethod = this.mShippingMethod;
+            inForming.mProducts = this.mProducts;
             return inForming;
         }
     }

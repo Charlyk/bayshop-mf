@@ -1,6 +1,7 @@
 package com.softranger.bayshopmf.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,10 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<ShippingMethodAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mShippingMethodObj = mShippingMethods.get(position);
         holder.mShippingMethod.setText(holder.mShippingMethodObj.getName());
-        String price = holder.mShippingMethodObj.getCurrency() + holder.mShippingMethodObj.getPrice();
+        String price = holder.mShippingMethodObj.getCurrency() + holder.mShippingMethodObj.getCalculatedPrice();
         holder.mMethodPrice.setText(price);
+        String description = Html.fromHtml(holder.mShippingMethodObj.getDescription()).toString();
+        holder.mDescription.setText(description);
     }
 
     @Override
@@ -49,9 +52,14 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<ShippingMethodAd
         return mShippingMethods.size();
     }
 
+    public void refreshList(ArrayList<ShippingMethod> methods) {
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mShippingMethod;
         final TextView mMethodPrice;
+        final TextView mDescription;
         final Button mDetailsButton;
         final Button mSelectButton;
         ShippingMethod mShippingMethodObj;
@@ -61,6 +69,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<ShippingMethodAd
             mMethodPrice = (TextView) itemView.findViewById(R.id.shippingMethodItemPriceLabel);
             mDetailsButton = (Button) itemView.findViewById(R.id.shippingMethodDetailsBtn);
             mSelectButton = (Button) itemView.findViewById(R.id.shippingMethodSelectBtn);
+            mDescription = (TextView) itemView.findViewById(R.id.shippingMethodDescriptionLabel);
             mDetailsButton.setOnClickListener(this);
             mSelectButton.setOnClickListener(this);
         }

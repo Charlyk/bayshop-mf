@@ -32,12 +32,18 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        holder.mProduct = mProducts.get(position);
+        holder.mDescription.setText(holder.mProduct.getProductName());
+        holder.mQuantity.setText(holder.mProduct.getProductQuantity());
+        int weight = Integer.parseInt(holder.mProduct.getWeight());
+        double w = weight / 1000;
+        holder.mWeight.setText(String.valueOf(w));
+        holder.mPrice.setText(holder.mProduct.getProductPrice());
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return mProducts.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -45,6 +51,7 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
         final TextView mQuantity;
         final TextView mWeight;
         final TextView mPrice;
+        Product mProduct;
         public ViewHolder(View itemView) {
             super(itemView);
             mDescription = (TextView) itemView.findViewById(R.id.packageContentProductDescriptionLabel);

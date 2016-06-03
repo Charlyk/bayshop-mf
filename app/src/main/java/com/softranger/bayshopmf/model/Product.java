@@ -21,6 +21,9 @@ public class Product implements Parcelable {
     private String mDate;
     private String mBarcode;
     private String mCurrency;
+    private String mOrderStorageId;
+    private String mWeight;
+    private String mDeclarationId;
     private int mID;
     private ArrayList<Photo> mImages;
 
@@ -37,6 +40,9 @@ public class Product implements Parcelable {
         mDate = in.readString();
         mBarcode = in.readString();
         mCurrency = in.readString();
+        mOrderStorageId = in.readString();
+        mWeight = in.readString();
+        mDeclarationId = in.readString();
         mID = in.readInt();
         in.readList(mImages, Integer.class.getClassLoader());
     }
@@ -149,6 +155,30 @@ public class Product implements Parcelable {
         mCurrency = currency;
     }
 
+    public String getOrderStorageId() {
+        return mOrderStorageId;
+    }
+
+    public void setOrderStorageId(String orderStorageId) {
+        mOrderStorageId = orderStorageId;
+    }
+
+    public String getWeight() {
+        return mWeight;
+    }
+
+    public void setWeight(String weight) {
+        mWeight = weight;
+    }
+
+    public String getDeclarationId() {
+        return mDeclarationId;
+    }
+
+    public void setDeclarationId(String declarationId) {
+        mDeclarationId = declarationId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -166,6 +196,9 @@ public class Product implements Parcelable {
         dest.writeString(mDate);
         dest.writeString(mBarcode);
         dest.writeString(mCurrency);
+        dest.writeString(mOrderStorageId);
+        dest.writeString(mWeight);
+        dest.writeString(mDeclarationId);
         dest.writeInt(mID);
         dest.writeList(mImages);
     }
@@ -181,6 +214,9 @@ public class Product implements Parcelable {
         private String mDate;
         private String mBarcode;
         private String mCurrency;
+        private String mOrderStorageId;
+        private String mWeight;
+        private String mDeclarationId;
         private int mID;
         private ArrayList<Photo> mImages;
 
@@ -244,6 +280,21 @@ public class Product implements Parcelable {
             return this;
         }
 
+        public Builder orderStorageId(String orderStorageId) {
+            mOrderStorageId = orderStorageId;
+            return this;
+        }
+
+        public Builder weight(String weight) {
+            mWeight = weight;
+            return this;
+        }
+
+        public Builder declarationId(String declarationId) {
+            mDeclarationId = declarationId;
+            return this;
+        }
+
         public Product build() {
             Product product = new Product();
             product.mProductId = this.mProductId;
@@ -258,6 +309,9 @@ public class Product implements Parcelable {
             product.mBarcode = this.mBarcode;
             product.mID = this.mID;
             product.mCurrency = this.mCurrency;
+            product.mOrderStorageId = this.mOrderStorageId;
+            product.mWeight = this.mWeight;
+            product.mDeclarationId = this.mDeclarationId;
             return product;
         }
     }

@@ -86,7 +86,7 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
         mRecyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
         fastScroller.setSectionIndicator(mIndicator);
         RequestBody body = new FormBody.Builder()
-                .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery()))
+                .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
                 .build();
         ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mAddressHandler);
         return view;
@@ -168,7 +168,8 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
 
     @Override
     public void onSelectAddressClick(Address address, int position) {
-        mActivity.addFragment(new ShippingMethodFragment(), true);
+        mInForming.setAddress(address);
+        mActivity.addFragment(ShippingMethodFragment.newInstance(mInForming), true);
     }
 
     @Override
