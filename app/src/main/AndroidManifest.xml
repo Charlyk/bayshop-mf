@@ -32,7 +32,7 @@
                   android:exported="true" />
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.general.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -59,6 +59,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.GalleryActivity"/>
+        <activity android:name=".ui.gallery.GalleryActivity"/>
     </application>
 </manifest>

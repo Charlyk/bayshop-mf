@@ -27,7 +27,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="$200"/>
+        tools:text="$200"/>
 
     <TextView
         android:id="@+id/confirmDeliveryPriceTitle"
@@ -50,7 +50,7 @@
         android:layout_alignEnd="@+id/confirmGoodsPriceLabel"
         android:layout_alignRight="@+id/confirmGoodsPriceLabel"
         android:layout_below="@+id/confirmGoodsPriceLabel"
-        android:text="$10"/>
+        tools:text="$10"/>
 
     <TextView
         android:id="@+id/confirmInsurancePriceTitle"
@@ -84,7 +84,7 @@
         android:textSize="17sp"
         android:textColor="@android:color/black"
         android:layout_below="@+id/confirmDeliveryPriceLabel"
-        android:text="$10"/>
+        tools:text="$10"/>
 
     <TextView
         android:id="@+id/confirmDeclarationPriceLabel"
@@ -96,7 +96,30 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/confirmInsurancePriceLabel"
-        android:text="$3"/>
+        tools:text="$3"/>
+
+    <TextView
+        android:id="@+id/confirmTotalPriceTitle"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="17sp"
+        android:layout_below="@+id/confirmDeclarationPriceTitle"
+        android:text="@string/total_shipping_price"/>
+
+    <TextView
+        android:id="@+id/confirmTotalPriceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textSize="17sp"
+        android:textColor="@android:color/black"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/confirmDeclarationPriceLabel"
+        tools:text="$3"/>
 
     <CheckBox
         android:id="@+id/confirmAdditionalPackagesCheckBox"
@@ -108,8 +131,8 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/confirmDeclarationPriceTitle"
-        android:text="Additional package"/>
+        android:layout_below="@+id/confirmTotalPriceTitle"
+        android:text="@string/additional_package"/>
 
     <CheckBox
         android:id="@+id/confirmLocalDeliveryCheckBox"
@@ -122,7 +145,20 @@
         android:textSize="17sp"
         android:textColor="@android:color/black"
         android:layout_below="@+id/confirmAdditionalPackagesCheckBox"
-        android:text="Local delivery"/>
+        android:text="@string/local_delivery"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/sent_on_user_alert"
+        android:textSize="17sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/confirmSentOnUserAlert"
+        android:layout_below="@+id/confirmLocalDeliveryCheckBox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
@@ -133,19 +169,18 @@
         android:text="Terms and conditions"
         android:id="@+id/confirmTermsAndConditionsBtn"
         android:textColor="#3fc2ff"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/confirmGoodsPriceTitle"
-        android:layout_toEndOf="@+id/confirmGoodsPriceTitle"/>
+        android:layout_below="@+id/confirmSentOnUserAlert"
+        android:layout_centerHorizontal="true"/>
 
     <CheckBox
         android:id="@+id/confirmAgreeTermsCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/confirmTermsAndConditionsBtn"
-        android:layout_centerHorizontal="true"
         android:textSize="17sp"
         android:textColor="@android:color/black"
-        android:text="Agree with terms and conditions"/>
+        android:text="Agree with terms and conditions"
+        android:layout_below="@id/confirmTermsAndConditionsBtn"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
@@ -158,4 +193,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/confirm"/>
+
+
 </RelativeLayout>

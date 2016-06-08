@@ -1,25 +1,39 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                tools:context=".ui.instock.buildparcel.InsuranceFragment">
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/fillDeclarationMethodsTabLayout"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+    <RadioGroup
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/insuranceSelector"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/fillDeclarationMethodsTabLayout"
-        android:background="#c3bebebe"/>
+        <RadioButton
+            android:id="@+id/insuranceTrueSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/lorem_ipsum"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/fillDeclarationMethodsHolder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/fillDeclarationMethodsTabLayout"/>
-</RelativeLayout>
+        <RadioButton
+            android:id="@+id/insuranceFalseSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/lorem_ipsum"/>
+
+        <Button
+            android:id="@+id/insuranceNextButton"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawableEnd="@mipmap/ic_navigate_next_black_24dp"
+            android:drawableRight="@mipmap/ic_navigate_next_black_24dp"
+            android:text="@string/next"
+            android:textSize="17sp"/>
+    </RadioGroup>
+</ScrollView>

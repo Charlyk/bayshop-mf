@@ -128,4 +128,8 @@
     <string name="you_don_t_have_any_item_yet">You don\'t have any item yet</string>
     <string name="select_address">Select address</string>
     <string name="edit_address">Edit address</string>
+    <string name="local_delivery">Local delivery</string>
+    <string name="additional_package">Additional package</string>
+    <string name="sent_on_user_alert">Sent on user alert</string>
+    <string name="total_shipping_price">Total shipping price:</string>
 </resources>

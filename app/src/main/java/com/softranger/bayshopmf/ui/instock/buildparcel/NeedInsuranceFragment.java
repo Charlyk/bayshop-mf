@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.

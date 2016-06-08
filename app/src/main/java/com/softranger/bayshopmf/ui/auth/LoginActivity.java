@@ -24,7 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.FacebookAuth;

@@ -17,15 +17,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PackageDetailsAdapter;
 import com.softranger.bayshopmf.model.InForming;
 import com.softranger.bayshopmf.model.Product;
-import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -51,6 +51,7 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
     private PackageDetailsAdapter mAdapter;
     private TextView mTotalPriceLabel;
     private TextView mTotalWeightLabel;
+    private EditText mGeneralDescriptionInput;
 
     public CheckDeclarationFragment() {
         // Required empty public constructor
@@ -76,6 +77,7 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
         mProducts = new ArrayList<>();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.buildFourthStepDeclarationList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+        mGeneralDescriptionInput = (EditText) view.findViewById(R.id.buildFourthStepGeneralDescription);
         mAdapter = new PackageDetailsAdapter(mProducts);
         mTotalPriceLabel = (TextView) view.findViewById(R.id.buildFourthFragmentTotalPriceLabel);
         mTotalWeightLabel = (TextView) view.findViewById(R.id.buildFourthFragmentTotalWeightLabel);
@@ -101,7 +103,12 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
-                            JSONArray jsonDec = response.getJSONObject("data").getJSONArray("declarationItems");
+                            JSONObject data = response.getJSONObject("data");
+                            // TODO: 6/8/16 chack this for null
+//                            if (data.get("declaration") != null) {
+//                                mInForming.setGeneralDescription(data.getJSONObject("declaration").optString("name", null));
+//                            }
+                            JSONArray jsonDec = data.getJSONArray("declarationItems");
                             for (int i = 0; i < jsonDec.length(); i++) {
                                 JSONObject jsonProd = jsonDec.getJSONObject(i);
                                 Product product = new Product.Builder()
@@ -117,6 +124,9 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
                                 mProducts.add(product);
                             }
                             mInForming.setProducts(mProducts);
+                            if (mInForming.getGeneralDescription() != null && !mInForming.getGeneralDescription().equals("")) {
+                                mGeneralDescriptionInput.setText(String.valueOf(mInForming.getGeneralDescription()));
+                            }
                             mAdapter.notifyDataSetChanged();
                             setTotals();
                         } else {
@@ -181,6 +191,12 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        mActivity.addFragment(new InsuranceFragment(), true);
+        String description = String.valueOf(mGeneralDescriptionInput.getText());
+        if (description.equals("")) {
+            Snackbar.make(mRecyclerView, "Please fill in the description of your parcel", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        mInForming.setGeneralDescription(description);
+        mActivity.addFragment(InsuranceFragment.newInstance(mInForming), true);
     }
 }

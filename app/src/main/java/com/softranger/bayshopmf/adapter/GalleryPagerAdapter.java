@@ -4,15 +4,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.davemorrissey.labs.subscaleview.ImageSource;
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-import com.softranger.bayshopmf.model.Photo;
-import com.softranger.bayshopmf.ui.GalleryImageFragment;
-import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
+import com.softranger.bayshopmf.ui.gallery.GalleryImageFragment;
 
 import java.util.ArrayList;
 import java.util.List;

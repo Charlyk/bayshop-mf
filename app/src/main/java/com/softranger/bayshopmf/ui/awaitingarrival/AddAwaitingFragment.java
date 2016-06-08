@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.general;
+package com.softranger.bayshopmf.ui.awaitingarrival;
 
 
 import android.app.Fragment;
@@ -20,7 +20,8 @@ import android.widget.RadioGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;

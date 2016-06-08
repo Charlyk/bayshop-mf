@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui;
+package com.softranger.bayshopmf.ui.gallery;
 
 
 import android.graphics.BitmapFactory;
@@ -16,7 +16,6 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Photo;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -13,9 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.MainActivity;
-import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.

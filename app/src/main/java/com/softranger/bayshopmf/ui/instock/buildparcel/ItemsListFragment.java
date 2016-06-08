@@ -28,11 +28,9 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.FirstStepAdapter;
 import com.softranger.bayshopmf.model.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.model.PUSItem;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.MainActivity;
-import com.softranger.bayshopmf.ui.general.StorageHolderFragment;
-import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -42,7 +40,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.FormBody;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**

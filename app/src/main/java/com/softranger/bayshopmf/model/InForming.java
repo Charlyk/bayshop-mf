@@ -24,6 +24,15 @@ public class InForming implements Parcelable {
     private Address mAddress;
     private ShippingMethod mShippingMethod;
     private ArrayList<Product> mProducts;
+    private boolean mNeedInsurance;
+    private double mGoodsPrice;
+    private double mTotalPrice;
+    private double mShippingPrice;
+    private double mInsurancePrice;
+    private double mDeclarationPrice;
+    private String mCurrency;
+    private boolean mAdditionalPackage;
+    private boolean mSentOnUserAlert;
 
     private InForming() {
 
@@ -43,6 +52,15 @@ public class InForming implements Parcelable {
         mAddress = in.readParcelable(Address.class.getClassLoader());
         mShippingMethod = in.readParcelable(ShippingMethod.class.getClassLoader());
         mProducts = in.createTypedArrayList(Product.CREATOR);
+        mNeedInsurance = in.readByte() != 0;
+        mGoodsPrice = in.readDouble();
+        mTotalPrice = in.readDouble();
+        mShippingPrice = in.readDouble();
+        mInsurancePrice = in.readDouble();
+        mDeclarationPrice = in.readDouble();
+        mCurrency = in.readString();
+        mAdditionalPackage = in.readByte() != 0;
+        mSentOnUserAlert = in.readByte() != 0;
     }
 
     public static final Creator<InForming> CREATOR = new Creator<InForming>() {
@@ -161,6 +179,78 @@ public class InForming implements Parcelable {
         mProducts = products;
     }
 
+    public boolean isNeedInsurance() {
+        return mNeedInsurance;
+    }
+
+    public void setNeedInsurance(boolean needInsurance) {
+        mNeedInsurance = needInsurance;
+    }
+
+    public double getGoodsPrice() {
+        return mGoodsPrice;
+    }
+
+    public void setGoodsPrice(double goodsPrice) {
+        mGoodsPrice = goodsPrice;
+    }
+
+    public double getTotalPrice() {
+        return mTotalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        mTotalPrice = totalPrice;
+    }
+
+    public double getShippingPrice() {
+        return mShippingPrice;
+    }
+
+    public void setShippingPrice(double shippingPrice) {
+        mShippingPrice = shippingPrice;
+    }
+
+    public double getInsurancePrice() {
+        return mInsurancePrice;
+    }
+
+    public void setInsurancePrice(double insurancePrice) {
+        mInsurancePrice = insurancePrice;
+    }
+
+    public double getDeclarationPrice() {
+        return mDeclarationPrice;
+    }
+
+    public void setDeclarationPrice(double declarationPrice) {
+        mDeclarationPrice = declarationPrice;
+    }
+
+    public String getCurrency() {
+        return mCurrency;
+    }
+
+    public void setCurrency(String currency) {
+        mCurrency = currency;
+    }
+
+    public boolean isAdditionalPackage() {
+        return mAdditionalPackage;
+    }
+
+    public void setAdditionalPackage(boolean additionalPackage) {
+        mAdditionalPackage = additionalPackage;
+    }
+
+    public boolean isSentOnUserAlert() {
+        return mSentOnUserAlert;
+    }
+
+    public void setSentOnUserAlert(boolean sentOnUserAlert) {
+        mSentOnUserAlert = sentOnUserAlert;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -181,6 +271,15 @@ public class InForming implements Parcelable {
         dest.writeParcelable(mAddress, flags);
         dest.writeParcelable(mShippingMethod, flags);
         dest.writeTypedList(mProducts);
+        dest.writeByte((byte) (mNeedInsurance ? 1 : 0));
+        dest.writeDouble(mGoodsPrice);
+        dest.writeDouble(mTotalPrice);
+        dest.writeDouble(mShippingPrice);
+        dest.writeDouble(mInsurancePrice);
+        dest.writeDouble(mDeclarationPrice);
+        dest.writeString(mCurrency);
+        dest.writeByte((byte) (mAdditionalPackage ? 1 : 0));
+        dest.writeByte((byte) (mSentOnUserAlert ? 1 : 0));
     }
 
 
@@ -198,6 +297,15 @@ public class InForming implements Parcelable {
         private Address mAddress;
         private ShippingMethod mShippingMethod;
         private ArrayList<Product> mProducts;
+        private boolean mNeedInsurance;
+        private double mGoodsPrice;
+        private double mTotalPrice;
+        private double mShippingPrice;
+        private double mInsurancePrice;
+        private double mDeclarationPrice;
+        private String mCurrency;
+        private boolean mAdditionalPackage;
+        private boolean mSentOnUserAlert;
 
         public Builder id(int id) {
             mId = id;
@@ -264,6 +372,51 @@ public class InForming implements Parcelable {
             return this;
         }
 
+        public Builder needInsurance(boolean needInsurance) {
+            mNeedInsurance = needInsurance;
+            return this;
+        }
+
+        public Builder goodsPrice(double goodsPrice) {
+            mGoodsPrice = goodsPrice;
+            return this;
+        }
+
+        public Builder totalPrice(double totalPrice) {
+            mTotalPrice = totalPrice;
+            return this;
+        }
+
+        public Builder shippingPrice(double shippingPrice) {
+            mShippingPrice = shippingPrice;
+            return this;
+        }
+
+        public Builder insurancePrice(double insurancePrice) {
+            mInsurancePrice = insurancePrice;
+            return this;
+        }
+
+        public Builder declarationPrice(double declarationPrice) {
+            mDeclarationPrice = declarationPrice;
+            return this;
+        }
+
+        public Builder currency(String currency) {
+            mCurrency = currency;
+            return this;
+        }
+
+        public Builder additionalPackage(boolean additionalPackage) {
+            mAdditionalPackage = additionalPackage;
+            return this;
+        }
+
+        public Builder sentOnUserAlert(boolean sentOnUserAlert) {
+            mSentOnUserAlert = sentOnUserAlert;
+            return this;
+        }
+
         public InForming build() {
             InForming inForming = new InForming();
             inForming.mId = this.mId;
@@ -279,6 +432,15 @@ public class InForming implements Parcelable {
             inForming.mAddress = this.mAddress;
             inForming.mShippingMethod = this.mShippingMethod;
             inForming.mProducts = this.mProducts;
+            inForming.mNeedInsurance = this.mNeedInsurance;
+            inForming.mGoodsPrice = this.mGoodsPrice;
+            inForming.mTotalPrice = this.mTotalPrice;
+            inForming.mShippingPrice = this.mShippingPrice;
+            inForming.mDeclarationPrice = this.mDeclarationPrice;
+            inForming.mInsurancePrice = this.mInsurancePrice;
+            inForming.mCurrency = this.mCurrency;
+            inForming.mAdditionalPackage = this.mAdditionalPackage;
+            inForming.mSentOnUserAlert = this.mSentOnUserAlert;
             return inForming;
         }
     }

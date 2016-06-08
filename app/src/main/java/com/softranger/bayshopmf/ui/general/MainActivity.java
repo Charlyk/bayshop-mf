@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui;
+package com.softranger.bayshopmf.ui.general;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -6,8 +6,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -29,17 +27,11 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
-import com.softranger.bayshopmf.ui.general.AddAwaitingFragment;
-import com.softranger.bayshopmf.ui.general.StorageHolderFragment;
-import com.softranger.bayshopmf.ui.general.StorageItemsFragment;
+import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
+import com.softranger.bayshopmf.ui.storages.StorageHolderFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.Constants;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -282,6 +274,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    public void setToolbarToInitialState() {
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        mDrawerToggle.syncState();
+    }
+
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -294,12 +295,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (getFragmentManager().getBackStackEntryCount() == 1) {
                 if (selectedFragment == SelectedFragment.IN_STOCK)
                     mActionMenu.setVisibility(View.VISIBLE);
-                mDrawerToggle.setDrawerIndicatorEnabled(true);
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                getSupportActionBar().setDisplayShowHomeEnabled(false);
-                getSupportActionBar().setHomeButtonEnabled(false);
-                mDrawerToggle.syncState();
+                setToolbarToInitialState();
                 switch (selectedFragment) {
                     case IN_STOCK:
                         setToolbarTitle(getString(R.string.in_stock), true);

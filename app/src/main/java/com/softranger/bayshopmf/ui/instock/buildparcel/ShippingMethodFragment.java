@@ -21,11 +21,10 @@ import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ShippingMethodAdapter;
-import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.InForming;
 import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;

@@ -20,10 +20,9 @@ import android.view.ViewGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.model.Address;
-import com.softranger.bayshopmf.model.AddressGroup;
 import com.softranger.bayshopmf.model.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
 import com.softranger.bayshopmf.util.Constants;
 

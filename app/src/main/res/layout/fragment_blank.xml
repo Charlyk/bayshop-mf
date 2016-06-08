@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="vertical"
-        tools:context=".ui.general.AddAwaitingFragment">
+        tools:context=".ui.awaitingarrival.AddAwaitingFragment">
 
         <TextView
             android:id="@+id/textView7"

@@ -17,8 +17,8 @@ import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.InProcessingParcel;
 import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.model.Product;
-import com.softranger.bayshopmf.ui.GalleryActivity;
-import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 
 import java.util.ArrayList;
 

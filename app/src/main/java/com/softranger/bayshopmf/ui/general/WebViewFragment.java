@@ -14,7 +14,6 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.ui.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.

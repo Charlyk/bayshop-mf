@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.general;
+package com.softranger.bayshopmf.ui.services;
 
 
 import android.app.Fragment;
@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.MainActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
@@ -30,29 +30,29 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AdditionalPhotoFragment extends Fragment implements View.OnClickListener {
+public class CheckProductFragment extends Fragment implements View.OnClickListener {
 
-    public static final String ACTION_PHOTO_IN_PROCESSING = "ACTION PHOTO IN PROCESSING";
-    public static final String ACTION_CANCEL_PHOTO_REQUEST = "ACTION CANCEL PHOTO REQUEST";
+    public static final String ACTION_CHECK_IN_PROCESSING = "ACTION CHECK IN PROCESSING";
+    public static final String ACTION_CANCEL_CHECK_PRODUCT = "ACTION CANCEL CHECK PRODUCT";
     private static final String ID_ARG = "id argument";
     private static final String STATUS_ARG = "status argument";
 
     private EditText mCommentInput;
     private Button mLeaveComment;
-    private Button mConfirmButton;
     private MainActivity mActivity;
     private String mId;
     private boolean mIsInprogress;
+    private Button mConfirmButton;
 
-    public AdditionalPhotoFragment() {
+    public CheckProductFragment() {
         // Required empty public constructor
     }
 
-    public static AdditionalPhotoFragment newInstance(String id, boolean isInProgress) {
+    public static CheckProductFragment newInstance(String id, boolean isInProgress) {
         Bundle args = new Bundle();
         args.putString(ID_ARG, id);
         args.putBoolean(STATUS_ARG, isInProgress);
-        AdditionalPhotoFragment fragment = new AdditionalPhotoFragment();
+        CheckProductFragment fragment = new CheckProductFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,7 +61,7 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_additional_photo, container, false);
+        View view = inflater.inflate(R.layout.fragment_check_product, container, false);
         mActivity = (MainActivity) getActivity();
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
         mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
@@ -97,18 +97,18 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                 if (!mIsInprogress) {
                     RequestBody body = new FormBody.Builder()
                             .add("id", mId)
-                            .add("request", Constants.Api.OPTION_PHOTO)
-                            .add("package", String.valueOf(10)) // 10 is photo quantity id, it may change in the future but now is 10
+                            .add("request", Constants.Api.OPTION_CHECK)
                             .add("comments", String.valueOf(mCommentInput.getText()))
                             .build();
                     ApiClient.getInstance().sendRequest(body, Constants.Api.urlAdditionalPhoto(), mHandler);
                     mActivity.toggleLoadingProgress(true);
                 } else {
-                    Intent intent = new Intent(ACTION_CANCEL_PHOTO_REQUEST);
+                    Intent intent = new Intent(ACTION_CANCEL_CHECK_PRODUCT);
                     mActivity.sendBroadcast(intent);
                     mActivity.onBackPressed();
                 }
                 break;
+
             }
         }
     }
@@ -125,7 +125,7 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                         if (error) {
                             Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
                         } else {
-                            Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
+                            Intent intent = new Intent(ACTION_CHECK_IN_PROCESSING);
                             mActivity.sendBroadcast(intent);
                             mActivity.onBackPressed();
                         }
