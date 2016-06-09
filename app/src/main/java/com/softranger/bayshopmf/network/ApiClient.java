@@ -51,7 +51,9 @@ public class ApiClient {
             HttpUrl httpUrl = HttpUrl.parse(Constants.Api.urlAuth());
 
             RequestBody authBody = new FormBody.Builder()
-                    .add(EMAIL_KEY, email).add(PASSWORD_KEY, password).build();
+                    .add(EMAIL_KEY, email)
+                    .add(PASSWORD_KEY, password)
+                    .build();
             Request request = new Request.Builder()
                     .post(authBody)
                     .url(httpUrl)
