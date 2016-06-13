@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.Auth;
@@ -165,7 +166,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     .build();
             ApiClient.getInstance().sendRequest(body, Constants.Api.urlAuth(), mAuthHandler);
         } else {
-
+            Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+            hideLoading();
         }
     }
 

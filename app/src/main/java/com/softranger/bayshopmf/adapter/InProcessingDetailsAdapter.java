@@ -107,7 +107,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         switch (storage) {
             case Constants.DE:
                 return R.mipmap.ic_de_flag;
-            case Constants.UK:
+            case Constants.GB:
                 return R.mipmap.ic_uk_flag;
             default:
                 return R.mipmap.ic_usa_flag;

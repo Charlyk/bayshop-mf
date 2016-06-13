@@ -71,10 +71,10 @@ public class EditAwaitingFragment extends Fragment implements View.OnClickListen
         mActivity.setToolbarTitle(product.getProductId(), true);
 
         switch (product.getDeposit()) {
-            case Constants.USA:
+            case Constants.US:
                 mUsaSelector.setChecked(true);
                 break;
-            case Constants.UK:
+            case Constants.GB:
                 mUkSelector.setChecked(true);
                 break;
             case Constants.DE:

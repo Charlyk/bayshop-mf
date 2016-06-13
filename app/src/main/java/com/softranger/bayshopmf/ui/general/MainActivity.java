@@ -229,38 +229,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.nav_inStock:
                 selectedFragment = SelectedFragment.IN_STOCK;
-                replaceFragment(StorageHolderFragment.newInstance());
-                mActionMenu.setVisibility(View.VISIBLE);
+                changeList(StorageHolderFragment.newInstance(), true);
                 break;
             case R.id.nav_waitingArrival:
                 selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
-                replaceFragment(StorageHolderFragment.newInstance());
-                mActionMenu.setVisibility(View.GONE);
+                changeList(StorageHolderFragment.newInstance(), false);
                 break;
             case R.id.nav_inProcessing:
                 selectedFragment = SelectedFragment.IN_PROCESSING;
-                replaceFragment(StorageHolderFragment.newInstance());
-                mActionMenu.setVisibility(View.GONE);
+                changeList(StorageHolderFragment.newInstance(), false);
                 break;
             case R.id.nav_inForming:
                 selectedFragment = SelectedFragment.IN_FORMING;
-                replaceFragment(StorageHolderFragment.newInstance());
-                mActionMenu.setVisibility(View.GONE);
+                changeList(StorageHolderFragment.newInstance(), false);
                 break;
             case R.id.nav_awaitingSending:
                 selectedFragment = SelectedFragment.AWAITING_SENDING;
-                replaceFragment(StorageHolderFragment.newInstance());
-                mActionMenu.setVisibility(View.GONE);
+                changeList(StorageHolderFragment.newInstance(), false);
                 break;
             case R.id.nav_sent:
                 selectedFragment = SelectedFragment.SENT;
-                replaceFragment(StorageHolderFragment.newInstance());
-                mActionMenu.setVisibility(View.GONE);
+                changeList(StorageHolderFragment.newInstance(), false);
                 break;
             case R.id.nav_received:
                 selectedFragment = SelectedFragment.RECEIVED;
-                replaceFragment(StorageHolderFragment.newInstance());
-                mActionMenu.setVisibility(View.GONE);
+                changeList(StorageHolderFragment.newInstance(), false);
+                break;
+            case R.id.nav_localDeposit:
+                selectedFragment = SelectedFragment.LOCAL_DEPO;
+                changeList(StorageHolderFragment.newInstance(), false);
+                break;
+            case R.id.nav_heldByCustoms:
+                selectedFragment = SelectedFragment.CUSTOMS_HELD;
+                changeList(StorageHolderFragment.newInstance(), false);
+                break;
+            case R.id.nav_takeToDelivery:
+                selectedFragment = SelectedFragment.TAKEN_TO_DELIVERY;
+                changeList(StorageHolderFragment.newInstance(), false);
                 break;
             case R.id.nav_logOut:
                 logOut();
@@ -272,6 +277,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mFabBackground.setVisibility(View.GONE);
         }
         return true;
+    }
+
+    private void changeList(Fragment fragment, boolean showFloatBtn) {
+        replaceFragment(fragment);
+        mActionMenu.setVisibility(showFloatBtn ? View.VISIBLE : View.GONE);
     }
 
     public void setToolbarToInitialState() {
@@ -318,6 +328,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case RECEIVED:
                         setToolbarTitle(getString(R.string.received), true);
                         break;
+                    case LOCAL_DEPO:
+
+                        break;
+                    case TAKEN_TO_DELIVERY:
+
+                        break;
+                    case CUSTOMS_HELD:
+
+                        break;
                 }
             } else {
                 Intent updateTitleIntent = new Intent(ACTION_UPDATE_TITLE);
@@ -342,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public enum SelectedFragment {
-        IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED
+        IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED,
+        LOCAL_DEPO, TAKEN_TO_DELIVERY, CUSTOMS_HELD
     }
 }

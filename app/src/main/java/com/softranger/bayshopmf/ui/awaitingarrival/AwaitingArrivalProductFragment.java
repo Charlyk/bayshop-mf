@@ -214,9 +214,9 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
 
     private int getStorageIcon(String storage) {
         switch (storage) {
-            case Constants.USA:
+            case Constants.US:
                 return R.mipmap.ic_usa_flag;
-            case Constants.UK:
+            case Constants.GB:
                 return R.mipmap.ic_uk_flag;
             case Constants.DE:
                 return R.mipmap.ic_de_flag;

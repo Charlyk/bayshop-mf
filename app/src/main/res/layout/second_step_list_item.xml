@@ -56,7 +56,7 @@
         android:padding="10dp"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        tools:text="Eduard Albu\nFloriolor 16/1 ap 106\nChisinau, Moldova\nMD-2001\n(79) 466 284"/>
+        tools:text="Floriolor 16/1 ap 106\nChisinau, Moldova\nMD-2001\n(79) 466 284"/>
 
     <View
         android:id="@+id/item_divider2"
@@ -92,4 +92,5 @@
         android:id="@+id/secondStepEditAddressButton"
         android:layout_toLeftOf="@id/secondStepSelectBtn"
         android:layout_toStartOf="@id/secondStepSelectBtn"/>
+
 </RelativeLayout>

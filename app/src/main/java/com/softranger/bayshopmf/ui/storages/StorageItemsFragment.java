@@ -288,6 +288,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                     if (mObjects.size() == 0) mActivity.removeActionButtons();
                     break;
                 }
+                case LOCAL_DEPO:
+                case TAKEN_TO_DELIVERY:
+                case CUSTOMS_HELD:
                 case RECEIVED:
                 case SENT:
                 case AWAITING_SENDING:
@@ -352,6 +355,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
     @Override
     public void onInProcessingProductClick(InProcessing inProcessingParcel, int position) {
+        // TODO: 6/13/16 make this action to open right fragment
         mActivity.addFragment(InProcessingDetails.newInstance(new InProcessingParcel.Builder().build()), true);
     }
 

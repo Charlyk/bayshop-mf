@@ -7,9 +7,12 @@ import java.io.File;
  */
 public class Constants {
 
-    public static final String USA = "us";
-    public static final String UK = "gb";
+    public static final String US = "us";
+    public static final String GB = "gb";
     public static final String DE = "de";
+
+    public static final String USA = "usa";
+    public static final String UK = "uk";
 
     public static Character[] ALPHABET = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
@@ -28,6 +31,9 @@ public class Constants {
         public static final String PACKED = "packed";
         public static final String SENT = "sent";
         public static final String RECEIVED = "received";
+        public static final String LOCAL_DEPO = "local-depo";
+        public static final String TAKEN_TO_DELIVERY = "taken-to-delivery";
+        public static final String CUSTOMS_HELD = "customs-held";
     }
 
     public static class Api {
@@ -43,6 +49,7 @@ public class Constants {
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";
         private static final String PARCELS = "parcels/";
+        private static final String VIEW = "view/";
         private static final String PARCEL_STEP = "parcel-step/";
         private static final String DELETE_BOX = "delete-box/";
 
@@ -181,6 +188,16 @@ public class Constants {
          */
         public static String urlAdditionalPhoto() {
             return URL + STORAGE;
+        }
+
+        /**
+         * GET
+         * Create an url to obtain a parcel details
+         * @param parcelId for which to get details
+         * @return url to access given parcel details from server
+         */
+        public static String urlViewParcelDetails(String parcelId) {
+            return URL + PARCELS + VIEW + parcelId;
         }
     }
 
