@@ -11,8 +11,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.adapter.StorageTabAdapter;
-import com.softranger.bayshopmf.model.InForming;
+import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;

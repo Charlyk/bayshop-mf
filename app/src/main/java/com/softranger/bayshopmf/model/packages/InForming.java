@@ -1,7 +1,12 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.packages;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.softranger.bayshopmf.model.Address;
+import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.ShippingMethod;
 
 import java.util.ArrayList;
 
@@ -10,7 +15,7 @@ import java.util.ArrayList;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class InForming implements Parcelable {
+public class InForming extends Package implements Parcelable {
     private int mId;
     private String mGeneralDescription;
     private String mCodeNumber;
@@ -39,6 +44,7 @@ public class InForming implements Parcelable {
     }
 
     protected InForming(Parcel in) {
+        super(in);
         mId = in.readInt();
         mGeneralDescription = in.readString();
         mCodeNumber = in.readString();
@@ -258,6 +264,7 @@ public class InForming implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeInt(mId);
         dest.writeString(mGeneralDescription);
         dest.writeString(mCodeNumber);

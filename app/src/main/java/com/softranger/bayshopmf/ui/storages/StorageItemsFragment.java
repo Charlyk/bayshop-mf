@@ -24,11 +24,11 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
-import com.softranger.bayshopmf.model.InForming;
-import com.softranger.bayshopmf.model.InProcessing;
-import com.softranger.bayshopmf.model.InProcessingParcel;
+import com.softranger.bayshopmf.model.packages.InForming;
+import com.softranger.bayshopmf.model.packages.InProcessingPackage;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.packages.Package;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
 import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
@@ -296,19 +296,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                 case AWAITING_SENDING:
                 case IN_PROCESSING: {
                     JSONArray jsonData = response.getJSONArray("data");
-                    for (int i = 0; i < jsonData.length(); i++) {
-                        JSONObject jsonItem = jsonData.getJSONObject(i);
-                        InProcessing inProcessing = new InProcessing.Builder()
-                                .id(jsonItem.getInt("id"))
-                                .codeNumber(jsonItem.optString("codeNumber", ""))
-                                .name(jsonItem.optString("name", ""))
-                                .weight(jsonItem.getInt("realWeight"))
-                                .progress(jsonItem.optInt("percent", 0))
-                                .createdDate(jsonItem.optString("created", ""))
-                                .desposit(mDeposit)
-                                .build();
-                        mObjects.add(inProcessing);
-                    }
+                    buildGeneralPackage(jsonData);
                     break;
                 }
             }
@@ -326,6 +314,26 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                     mRefreshLayout.setRefreshing(false);
                 }
             });
+        }
+    }
+
+    private void buildGeneralPackage(JSONArray jsonPackages) {
+        try {
+            for (int i = 0; i < jsonPackages.length(); i++) {
+                JSONObject jsonItem = jsonPackages.getJSONObject(i);
+                InProcessingPackage inProcessing = (InProcessingPackage) new InProcessingPackage.Builder()
+                        .createdDate(jsonItem.optString("created", ""))
+                        .percentage(jsonItem.optInt("percent", 0))
+                        .id(jsonItem.getInt("id"))
+                        .codeNumber(jsonItem.optString("codeNumber", ""))
+                        .name(jsonItem.optString("name", ""))
+                        .realWeight(jsonItem.getInt("realWeight"))
+                        .deposit(mDeposit)
+                        .build();
+                mObjects.add(inProcessing);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -354,9 +362,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     }
 
     @Override
-    public void onInProcessingProductClick(InProcessing inProcessingParcel, int position) {
+    public void onInProcessingProductClick(InProcessingPackage inProcessingPackage, int position) {
         // TODO: 6/13/16 make this action to open right fragment
-        mActivity.addFragment(InProcessingDetails.newInstance(new InProcessingParcel.Builder().build()), true);
+        mActivity.addFragment(InProcessingDetails.newInstance(inProcessingPackage), true);
     }
 
     @Override

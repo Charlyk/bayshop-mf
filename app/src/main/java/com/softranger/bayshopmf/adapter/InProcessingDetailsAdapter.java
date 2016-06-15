@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Address;
-import com.softranger.bayshopmf.model.InProcessingParcel;
+import com.softranger.bayshopmf.model.packages.InProcessingPackage;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -35,7 +35,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemViewType(int position) {
-        if (mItems.get(position) instanceof InProcessingParcel) {
+        if (mItems.get(position) instanceof InProcessingPackage) {
             return PARCEL;
         } else if (mItems.get(position) instanceof Product) {
             return PRODUCT;
@@ -65,9 +65,9 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.mProcessingParcel = (InProcessingParcel) mItems.get(position);
+            headerHolder.mProcessingParcel = (InProcessingPackage) mItems.get(position);
             headerHolder.mDepositIcon.setImageResource(getStorageIcon(headerHolder.mProcessingParcel.getDeposit()));
-            headerHolder.mParcelId.setText(headerHolder.mProcessingParcel.getParcelId());
+            headerHolder.mParcelId.setText(headerHolder.mProcessingParcel.getCodeNumber());
 
             Address address = headerHolder.mProcessingParcel.getAddress();
             String addressBuilder = address.getClientName() +
@@ -81,7 +81,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             headerHolder.mShippingPrice.setText(headerHolder.mProcessingParcel.getShippingPrice());
             headerHolder.mCustomsClearance.setText(headerHolder.mProcessingParcel.getCustomsClearance());
             headerHolder.mTotalPrice.setText(headerHolder.mProcessingParcel.getTotalPrice());
-            headerHolder.mShippingBy.setText(headerHolder.mProcessingParcel.getShippingBy());
+            headerHolder.mShippingBy.setText(headerHolder.mProcessingParcel.getShippingMethod().getName());
             headerHolder.mTrackingNumber.setText(headerHolder.mProcessingParcel.getTrackingNumber());
         } else if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
@@ -118,7 +118,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         final TextView mParcelId, mShippingAddress, mGoodsPrice, mCustomsClearance, mShippingPrice,
                 mTotalPrice, mShippingBy, mTrackingNumber;
         final ImageView mDepositIcon;
-        InProcessingParcel mProcessingParcel;
+        InProcessingPackage mProcessingParcel;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);

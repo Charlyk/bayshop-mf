@@ -12,10 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.softranger.bayshopmf.model.InForming;
-import com.softranger.bayshopmf.model.InProcessing;
+import com.softranger.bayshopmf.model.packages.InForming;
+import com.softranger.bayshopmf.model.packages.InProcessingPackage;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.packages.LivePackage;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.util.ViewAnimator;
 
@@ -54,9 +55,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return IN_STOCK_ITEM;
         } else if (mInStockItems.get(position) instanceof Product) {
             return PRODUCT;
-        } else if (mInStockItems.get(position) instanceof InProcessing) {
+        } else if (mInStockItems.get(position) instanceof InProcessingPackage) {
             return IN_PROCESSING;
-        } else if (mInStockItems.get(position) instanceof InForming) {
+        } else if (mInStockItems.get(position) instanceof LivePackage) {
             return IN_FORMING;
         }
         return HEADER;
@@ -107,16 +108,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             productHolder.mItemName.setText(productHolder.mProduct.getProductName());
             productHolder.mItemId.setText(productHolder.mProduct.getProductId());
             productHolder.mTrackingNumber.setText(productHolder.mProduct.getTrackingNumber());
-        } else if (mInStockItems.get(position) instanceof InProcessing) {
+        } else if (mInStockItems.get(position) instanceof InProcessingPackage) {
             InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
-            processingHolder.mProduct = (InProcessing) mInStockItems.get(position);
+            processingHolder.mProduct = (InProcessingPackage) mInStockItems.get(position);
             processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
             processingHolder.mProductName.setText(processingHolder.mProduct.getName());
             processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreatedDate()));
-            processingHolder.mProgress.setText(processingHolder.mProduct.getProgress() + "%");
-            double kg = processingHolder.mProduct.getWeight() / 1000;
+            processingHolder.mProgress.setText(processingHolder.mProduct.getPercentage() + "%");
+            double kg = processingHolder.mProduct.getRealWeght() / 1000;
             processingHolder.mWeight.setText(kg + "kg.");
-            processingHolder.mProcessingProgressBar.setProgress(processingHolder.mProduct.getProgress());
+            processingHolder.mProcessingProgressBar.setProgress(processingHolder.mProduct.getPercentage());
         } else if (mInStockItems.get(position) instanceof InForming) {
             InFormingViewHolder processingHolder = (InFormingViewHolder) holder;
             processingHolder.mProduct = (InForming) mInStockItems.get(position);
@@ -259,7 +260,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class InProcessingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle;
         final ProgressBar mProcessingProgressBar;
-        InProcessing mProduct;
+        InProcessingPackage mProduct;
 
         public InProcessingViewHolder(View itemView) {
             super(itemView);
@@ -353,7 +354,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onProductClick(Product product, int position);
 
-        void onInProcessingProductClick(InProcessing inProcessingParcel, int position);
+        void onInProcessingProductClick(InProcessingPackage processingPackage, int position);
 
         void onInFormingClick(InForming inForming, int position);
 

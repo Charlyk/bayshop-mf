@@ -239,4 +239,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
         ApiClient.getInstance().sendRequest(body, Constants.Api.urlAuth(), mAuthHandler);
     }
+
+    @Override
+    public void onCanceled() {
+        hideLoading();
+    }
 }

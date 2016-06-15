@@ -93,7 +93,8 @@
         android:clipToPadding="false"
         android:background="@color/colorDivider"
         android:layout_above="@id/declarationTotalsLayout"
-        android:layout_below="@+id/buildFourthStepGeneralDescription"/>
+        android:layout_below="@+id/buildFourthStepGeneralDescription"
+        tools:listitem="@layout/package_content_item"/>
 
     <View
         android:layout_width="match_parent"

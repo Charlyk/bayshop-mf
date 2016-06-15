@@ -51,12 +51,16 @@ public class FacebookAuth {
 
                     @Override
                     public void onCancel() {
-
+                        if (mResponseListener != null) {
+                            mResponseListener.onCanceled();
+                        }
                     }
 
                     @Override
                     public void onError(FacebookException error) {
-
+                        if (mResponseListener != null) {
+                            mResponseListener.onCanceled();
+                        }
                     }
                 });
 
@@ -70,10 +74,13 @@ public class FacebookAuth {
     public void getUserData() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         String token = accessToken.getToken();
-        mResponseListener.onLoginDataReady(token);
+        if (mResponseListener != null) {
+            mResponseListener.onLoginDataReady(token);
+        }
     }
 
     public interface OnLoginDataReadyListener {
         void onLoginDataReady(String facebookData);
+        void onCanceled();
     }
 }
