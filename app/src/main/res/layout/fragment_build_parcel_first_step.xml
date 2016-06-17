@@ -11,24 +11,10 @@
         android:id="@+id/buildFirstTotalLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:text="@string/has_li_ion_battery"
-            android:id="@+id/buildFirstStepHasBattery"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#e6e6e6"/>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,10 +22,25 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/totalPriceImageView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_weight_48dp"
+                android:contentDescription="@null"/>
+
+            <LinearLayout
+                android:id="@+id/totalPriceHolder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/totalPriceImageView"
+                android:layout_toEndOf="@id/totalPriceImageView"
+                android:layout_centerVertical="true"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -58,10 +59,25 @@
                     tools:text="$75"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/totalWeightImageView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_toRightOf="@id/totalPriceHolder"
+                android:layout_toEndOf="@id/totalPriceHolder"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_weight_48dp"
+                android:contentDescription="@null"/>
+
+            <LinearLayout
+                android:id="@+id/totalWeightHolder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/totalWeightImageView"
+                android:layout_toEndOf="@id/totalWeightImageView"
+                android:layout_centerVertical="true"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -80,20 +96,19 @@
                     tools:text="3kg"/>
             </LinearLayout>
 
-            <Button
+            <ImageButton
                 style="@style/Base.Widget.AppCompat.ActionButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
-                android:textSize="17sp"
-                android:text="@string/next"
-                android:drawableRight="@mipmap/ic_navigate_next_black_24dp"
-                android:drawableEnd="@mipmap/ic_navigate_next_black_24dp"
-                android:id="@+id/buildFirstStepNextButton"
-                android:layout_weight="1"/>
-        </LinearLayout>
+                android:textColor="@android:color/white"
+                android:src="@mipmap/ic_next_48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/buildFirstStepNextButton"/>
+        </RelativeLayout>
     </LinearLayout>
-
 
     <View
         android:id="@+id/total_divider"
@@ -109,6 +124,5 @@
         android:layout_above="@id/total_divider"
         android:background="@color/colorDivider"
         tools:listitem="@layout/build_parcel_first_step_list_item"/>
-
 
 </RelativeLayout>

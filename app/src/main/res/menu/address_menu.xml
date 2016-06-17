@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/addressSearch"
+        android:checked="true"
+        android:icon="@mipmap/ic_search_24dp"
+        android:title="@string/search_address"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+
+    <item
+        android:id="@+id/addressAdd"
+        android:icon="@mipmap/ic_add_24dpi"
+        android:title="@string/add_new_address"
+        app:showAsAction="ifRoom"/>
+</menu>

@@ -1,15 +1,24 @@
 package com.softranger.bayshopmf.util;
 
 import android.content.SharedPreferences;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.softranger.bayshopmf.R;
 
 /**
  * Created by eduard on 29.04.16.
- *
  */
 public class Application extends android.app.Application {
 

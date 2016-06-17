@@ -4,18 +4,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:layout_marginTop="10dp"
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
     <ImageButton
         style="@style/Base.Widget.AppCompat.ActionButton"
-        android:id="@+id/secondStepDeleteAddressButton"
+        android:id="@+id/secondStepAddToFavoritesAddressButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_clear_button"
+        android:background="?selectableItemBackground"
+        android:src="@mipmap/ic_star_silver_24dpi"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"/>
+
+    <ImageButton
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:id="@+id/secondStepEditAddressButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:layout_toLeftOf="@id/secondStepAddToFavoritesAddressButton"
+        android:layout_toStartOf="@id/secondStepAddToFavoritesAddressButton"
+        android:src="@mipmap/ic_edit_24dpi"
         android:layout_alignParentTop="true"/>
 
     <TextView
@@ -25,72 +38,149 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/secondStepDeleteAddressButton"
-        android:layout_toStartOf="@id/secondStepDeleteAddressButton"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_toLeftOf="@id/secondStepEditAddressButton"
+        android:layout_toStartOf="@id/secondStepEditAddressButton"
         android:drawableLeft="@mipmap/ic_shipping_address"
-        android:drawablePadding="15dp"
+        android:drawablePadding="5dp"
         android:drawableStart="@mipmap/ic_shipping_address"
         android:gravity="center_vertical"
-        android:padding="16dp"
         android:singleLine="true"
         android:ellipsize="end"
         android:textColor="@color/colorAccent"
-        android:textSize="20sp"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"
         tools:text="Jora Cardan"/>
 
-    <View
-        android:id="@+id/item_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/secondStepItemNameLabel"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:background="#ffbdbdbd"/>
-
+    <!-- Street name row -->
     <TextView
-        android:id="@+id/secondStepAddressText"
+        android:id="@+id/secondStepAddressTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_divider"
-        android:padding="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        tools:text="Floriolor 16/1 ap 106\nChisinau, Moldova\nMD-2001\n(79) 466 284"/>
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/secondStepItemNameLabel"
+        android:text="@string/street_name"/>
 
-    <View
-        android:id="@+id/item_divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/secondStepAddressText"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="5dp"
-        android:background="#ffbdbdbd"/>
+    <TextView
+        android:id="@+id/secondStepAddressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_below="@id/secondStepItemNameLabel"
+        android:layout_toRightOf="@id/secondStepAddressTitle"
+        android:layout_toEndOf="@id/secondStepAddressTitle"
+        android:textColor="@android:color/black"
+        tools:text="Floriolor 16/1 ap 106"/>
+
+    <!-- City row -->
+    <TextView
+        android:id="@+id/secondStepPhoneNumberTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/secondStepAddressTitle"
+        android:text="@string/phone_number"/>
+
+    <TextView
+        android:id="@+id/secondStepPhoneNumberLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_below="@id/secondStepAddressLabel"
+        android:layout_toRightOf="@id/secondStepPhoneNumberTitle"
+        android:layout_toEndOf="@id/secondStepPhoneNumberTitle"
+        android:textColor="@android:color/black"
+        tools:text="+37379466284"/>
+
+    <!-- Postal code row -->
+    <TextView
+        android:id="@+id/secondStepCityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/secondStepPhoneNumberLabel"
+        android:text="@string/city"/>
+
+    <TextView
+        android:id="@+id/secondStepCityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_below="@id/secondStepPhoneNumberLabel"
+        android:layout_toRightOf="@id/secondStepCityTitle"
+        android:layout_toEndOf="@id/secondStepCityTitle"
+        android:textColor="@android:color/black"
+        tools:text="Chisinau"/>
+
+    <!-- Country row -->
+    <TextView
+        android:id="@+id/secondStepCountryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/secondStepCityTitle"
+        android:text="@string/country"/>
+
+    <TextView
+        android:id="@+id/secondStepCountryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_below="@id/secondStepCityLabel"
+        android:layout_toRightOf="@id/secondStepCountryTitle"
+        android:layout_toEndOf="@id/secondStepCountryTitle"
+        android:textColor="@android:color/black"
+        tools:text="Moldova"/>
+
+    <!-- Country row -->
+    <TextView
+        android:id="@+id/secondStepPostalCodeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/secondStepCountryTitle"
+        android:text="@string/postal_code"/>
+
+    <TextView
+        android:id="@+id/secondStepPostalCodeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_below="@id/secondStepCountryLabel"
+        android:layout_toRightOf="@id/secondStepPostalCodeTitle"
+        android:layout_toEndOf="@id/secondStepPostalCodeTitle"
+        android:textColor="@android:color/black"
+        tools:text="Moldova"/>
 
     <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:layout_below="@id/item_divider2"
+        android:layout_below="@id/secondStepPostalCodeLabel"
         android:textColor="@color/colorGreenAction"
-        android:textSize="17sp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/select_address"
         android:id="@+id/secondStepSelectBtn"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
-    <Button
-        style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:layout_below="@id/item_divider2"
-        android:textColor="@color/colorGreenAction"
-        android:textSize="17sp"
-        android:text="@string/edit_address"
-        android:id="@+id/secondStepEditAddressButton"
-        android:layout_toLeftOf="@id/secondStepSelectBtn"
-        android:layout_toStartOf="@id/secondStepSelectBtn"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"
+        android:layout_below="@id/secondStepSelectBtn"/>
 </RelativeLayout>

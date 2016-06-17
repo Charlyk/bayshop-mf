@@ -30,9 +30,16 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
         mOnItemClickListener = onItemClickListener;
     }
 
-    public void removeItem(int position) {
+    public InStockItem removeItem(int position) {
+        InStockItem item = mInStockItems.get(position);
         mInStockItems.remove(position);
         notifyItemRemoved(position);
+        return item;
+    }
+
+    public void insertItem(int position, InStockItem inStockItem) {
+        mInStockItems.add(position, inStockItem);
+        notifyItemInserted(position);
     }
 
     public void addItems(ArrayList<InStockItem> items) {

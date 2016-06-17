@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -45,7 +47,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItemsListFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener,
+public class ItemsListFragment extends Fragment implements View.OnClickListener,
         FirstStepAdapter.OnItemClickListener {
 
     private static final String IN_STOCK_ARG = "in stock items argument";
@@ -63,7 +65,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     private static int removedPos = -1;
     private InForming mInForming;
     private String mCurrency;
-    private CheckBox mCheckBox;
+    private AlertDialog mBatteryDialog;
 
     public ItemsListFragment() {
         // Required empty public constructor
@@ -102,11 +104,8 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         mTotalWeight = (TextView) view.findViewById(R.id.buildFirstFragmentTotalWeightLabel);
 
 
-        Button nextButton = (Button) view.findViewById(R.id.buildFirstStepNextButton);
+        ImageButton nextButton = (ImageButton) view.findViewById(R.id.buildFirstStepNextButton);
         nextButton.setOnClickListener(this);
-
-        mCheckBox = (CheckBox) view.findViewById(R.id.buildFirstStepHasBattery);
-        mCheckBox.setOnCheckedChangeListener(this);
 
         String listItems = getString(R.string.list_items);
         mActivity.setToolbarTitle(listItems, true);
@@ -195,7 +194,6 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
                                     .hasBattery(jsoPus.getInt("isBatteryLionExists"))
                                     .items(mInParcelItems)
                                     .build();
-                            mCheckBox.setChecked(mInForming.isHasBattery());
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }
@@ -295,12 +293,23 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        mActivity.addFragment(SelectAddressFragment.newInstance(mInForming), true);
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mInForming.setHasBattery(isChecked);
+        mBatteryDialog = mActivity.getDialog(getString(R.string.li_ion), getString(R.string.has_li_ion_battery),
+                R.mipmap.ic_battery_24dpi, getString(R.string.yes), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mInForming.setHasBattery(true);
+                        mBatteryDialog.dismiss();
+                        mActivity.addFragment(SelectAddressFragment.newInstance(mInForming), true);
+                    }
+                }, getString(R.string.no), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mInForming.setHasBattery(false);
+                        mBatteryDialog.dismiss();
+                        mActivity.addFragment(SelectAddressFragment.newInstance(mInForming), true);
+                    }
+                });
+        mBatteryDialog.show();
     }
 
     private void updateTotals(ArrayList<InStockItem> items) {
@@ -326,10 +335,35 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onDeleteClick(InStockItem inStockItem, int position) {
-        removedPos = position;
+    public void onDeleteClick(InStockItem inStockItem, final int position) {
+        final InStockItem item = mAdapter.removeItem(position);
+        Snackbar.make(mRecyclerView, mActivity.getString(R.string.item_deleted), Snackbar.LENGTH_SHORT)
+                .setAction(mActivity.getString(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAdapter.insertItem(position, item);
+                    }
+                }).setActionTextColor(mActivity.getResources()
+                .getColor(R.color.colorGreenAction))
+                // add a callback to know when the Snackbar goes away
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        // check the event status and delete schedule from server if
+                        // the Snackbar was not dismissed by "Undo" button click
+                        switch (event) {
+                            case DISMISS_EVENT_TIMEOUT:
+                            case DISMISS_EVENT_CONSECUTIVE:
+                            case DISMISS_EVENT_MANUAL:
+                                deleteItem(item);
+                                break;
+                        }
+                    }
+                }).show();
+    }
+
+    private void deleteItem(InStockItem inStockItem) {
         ApiClient.getInstance().delete(Constants.Api.urlDeleteBoxFromParcel(String.valueOf(mInForming.getId()),
                 String.valueOf(inStockItem.getID())), mDeleteHandler);
-        mActivity.toggleLoadingProgress(true);
     }
 }

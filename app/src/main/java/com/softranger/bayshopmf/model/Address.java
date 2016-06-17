@@ -20,7 +20,8 @@ public class Address implements Parcelable {
     private String mPhoneNumber;
     private String mPhoneCode;
     private int mCountryId;
-    private int mId;
+    private int mId = -1;
+    private boolean mIsInFavorites;
 
     private Address() {
 
@@ -39,6 +40,7 @@ public class Address implements Parcelable {
         mPhoneCode = in.readString();
         mCountryId = in.readInt();
         mId = in.readInt();
+        mIsInFavorites = in.readByte() != 0;
     }
 
     public static final Creator<Address> CREATOR = new Creator<Address>() {
@@ -149,6 +151,14 @@ public class Address implements Parcelable {
         mCountryId = countryId;
     }
 
+    public boolean isInFavorites() {
+        return mIsInFavorites;
+    }
+
+    public void setInFavorites(boolean inFavorites) {
+        mIsInFavorites = inFavorites;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -168,6 +178,7 @@ public class Address implements Parcelable {
         dest.writeString(mPhoneCode);
         dest.writeInt(mCountryId);
         dest.writeInt(mId);
+        dest.writeByte((byte) (mIsInFavorites ? 1 : 0));
     }
 
     public static class Builder {
@@ -182,7 +193,8 @@ public class Address implements Parcelable {
         private String mPhoneNumber;
         private String mPhoneCode;
         private int mCountryId;
-        private int mId;
+        private int mId = -1;
+        private boolean mIsInFavorites;
 
         public Builder clientName(String clientName) {
             mClientName = clientName;
@@ -244,6 +256,11 @@ public class Address implements Parcelable {
             return this;
         }
 
+        public Builder isInFavorites(boolean isInFavorites) {
+            mIsInFavorites = isInFavorites;
+            return this;
+        }
+
         public Address build() {
             Address address = new Address();
             address.mClientName = this.mClientName;
@@ -258,6 +275,7 @@ public class Address implements Parcelable {
             address.mPhoneCode = this.mPhoneCode;
             address.mCountryId = this.mCountryId;
             address.mId = this.mId;
+            address.mIsInFavorites = this.mIsInFavorites;
             return address;
         }
     }

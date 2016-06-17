@@ -46,6 +46,11 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
         notifyDataSetChanged();
     }
 
+    public void replaceList(ArrayList<Address> addresses) {
+        mAddresses = addresses;
+        notifyDataSetChanged();
+    }
+
     public void removeItem(int position) {
         mAddresses.remove(position);
         notifyItemRemoved(position);
@@ -64,11 +69,11 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mAddressObj = mAddresses.get(position);
-        String addressBUilder = holder.mAddressObj.getStreet() + " " +
-                holder.mAddressObj.getCity() + "\n" +
-                holder.mAddressObj.getCountry() + "\n" +
-                holder.mAddressObj.getPostalCode();
-        holder.mAddress.setText(addressBUilder);
+        holder.mStreet.setText(holder.mAddressObj.getStreet());
+        holder.mPhoneNumber.setText(holder.mAddressObj.getPhoneNumber());
+        holder.mCity.setText(holder.mAddressObj.getCity());
+        holder.mCountry.setText(holder.mAddressObj.getCountry());
+        holder.mPostalCode.setText(holder.mAddressObj.getPostalCode());
         holder.mClientName.setText(holder.mAddressObj.getClientName());
     }
 
@@ -105,20 +110,24 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mClientName;
-        final TextView mAddress;
+        final TextView mStreet, mPhoneNumber, mCity, mCountry, mPostalCode;
         final Button mSelectButton;
-        final Button mEditButton;
-        final ImageButton mDeleteButton;
+        final ImageButton mEditButton;
+        final ImageButton mAddToFavorite;
         Address mAddressObj;
         public ViewHolder(View itemView) {
             super(itemView);
             mClientName = (TextView) itemView.findViewById(R.id.secondStepItemNameLabel);
-            mAddress = (TextView) itemView.findViewById(R.id.secondStepAddressText);
+            mStreet = (TextView) itemView.findViewById(R.id.secondStepAddressLabel);
+            mPhoneNumber = (TextView) itemView.findViewById(R.id.secondStepPhoneNumberLabel);
+            mCity = (TextView) itemView.findViewById(R.id.secondStepCityLabel);
+            mCountry = (TextView) itemView.findViewById(R.id.secondStepCountryLabel);
+            mPostalCode = (TextView) itemView.findViewById(R.id.secondStepPostalCodeLabel);
             mSelectButton = (Button) itemView.findViewById(R.id.secondStepSelectBtn);
-            mEditButton = (Button) itemView.findViewById(R.id.secondStepEditAddressButton);
-            mDeleteButton = (ImageButton) itemView.findViewById(R.id.secondStepDeleteAddressButton);
+            mEditButton = (ImageButton) itemView.findViewById(R.id.secondStepEditAddressButton);
+            mAddToFavorite = (ImageButton) itemView.findViewById(R.id.secondStepAddToFavoritesAddressButton);
             mEditButton.setOnClickListener(this);
-            mDeleteButton.setOnClickListener(this);
+            mAddToFavorite.setOnClickListener(this);
             mSelectButton.setOnClickListener(this);
         }
 
@@ -137,9 +146,9 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
                     }
                     break;
                 }
-                case R.id.secondStepDeleteAddressButton: {
+                case R.id.secondStepAddToFavoritesAddressButton: {
                     if (mOnAddressClickListener != null) {
-                        mOnAddressClickListener.onDeleteAddressClick(mAddressObj, getAdapterPosition());
+                        mOnAddressClickListener.onAddToFavoritesClick(mAddressObj, getAdapterPosition(), mAddToFavorite);
                     }
                     break;
                 }
@@ -150,7 +159,7 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
 
     public interface OnAddressClickListener {
         void onSelectAddressClick(Address address, int position);
-        void onDeleteAddressClick(Address address, int position);
+        void onAddToFavoritesClick(Address address, int position, ImageButton button);
         void onEditAddressClick(Address address, int position);
     }
 }

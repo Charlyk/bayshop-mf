@@ -57,7 +57,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return PRODUCT;
         } else if (mInStockItems.get(position) instanceof InProcessingPackage) {
             return IN_PROCESSING;
-        } else if (mInStockItems.get(position) instanceof LivePackage) {
+        } else if (mInStockItems.get(position) instanceof InForming) {
             return IN_FORMING;
         }
         return HEADER;

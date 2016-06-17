@@ -30,6 +30,7 @@ import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.ui.general.WebViewFragment;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
@@ -284,6 +285,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                 mActivity.addFragment(EditAwaitingFragment.newInstance(mProduct), true);
                 break;
             case R.id.awaitingDetailsDeleteButton:
+
                 deleteItem(mProduct);
                 break;
             case R.id.awaitingDetailsCheckProductBtn:
@@ -296,29 +298,25 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                 break;
         }
     }
-
+    AlertDialog dialog = null;
     private void deleteItem(final Product product) {
-        View deleteDialog = LayoutInflater.from(mActivity).inflate(R.layout.delete_dialog, null, false);
-        Button cancel = (Button) deleteDialog.findViewById(R.id.dialog_cancel_buttonn);
-        Button delete = (Button) deleteDialog.findViewById(R.id.dialog_delete_button);
-        final AlertDialog dialog = new AlertDialog.Builder(mActivity).setView(deleteDialog).create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(String.valueOf(product.getID())), mDeleteHandler);
-                mActivity.toggleLoadingProgress(true);
-                dialog.dismiss();
-            }
-        });
+        dialog = mActivity.getDialog("Delete", getString(R.string.confirm_deleting) + " "
+                + mProduct.getProductName() + "?", R.mipmap.ic_delete_box_24dpi,
+                "Yes", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(
+                                String.valueOf(product.getID())), mDeleteHandler);
+                        mActivity.toggleLoadingProgress(true);
+                        dialog.dismiss();
+                    }
+                }, "No", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dialog != null) dialog.dismiss();
+                    }
+                });
+        if (dialog != null) dialog.show();
     }
 
     @Override

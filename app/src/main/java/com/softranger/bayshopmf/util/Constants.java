@@ -1,5 +1,7 @@
 package com.softranger.bayshopmf.util;
 
+import android.support.annotation.Nullable;
+
 import java.io.File;
 
 /**
@@ -52,6 +54,8 @@ public class Constants {
         private static final String VIEW = "view/";
         private static final String PARCEL_STEP = "parcel-step/";
         private static final String DELETE_BOX = "delete-box/";
+        private static final String MEMBER_ADDRESS = "member-address/";
+        private static final String MEMBER_ADDRESS_ADD = "member-address-add/";
 
         /**
          * POST
@@ -198,6 +202,18 @@ public class Constants {
          */
         public static String urlViewParcelDetails(String parcelId) {
             return URL + PARCELS + VIEW + parcelId;
+        }
+
+        public static String urlAddNewAddress(@Nullable String addressId) {
+            if (addressId == null) {
+                return URL + MEMBER_ADDRESS_ADD;
+            } else {
+                return URL + MEMBER_ADDRESS_ADD + addressId;
+            }
+        }
+
+        public static String urlGetAddress(String addressId) {
+            return URL + MEMBER_ADDRESS + addressId;
         }
     }
 

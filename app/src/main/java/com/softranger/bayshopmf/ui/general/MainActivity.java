@@ -3,19 +3,26 @@ package com.softranger.bayshopmf.ui.general;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -357,6 +364,63 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Create an alert dialog with BayShop design
+     * @param title which will be shown in the dialog header
+     * @param message will be shown in dialog body
+     * @param imageResource will be shown at the left of title
+     * @param positiveButtonText text for right side button
+     * @param onPositiveButtonClickListener click listener for positive button(can be null)
+     * @param negativeButtonText text for left side button
+     * @param onNegativeButtonClickListener click listener for negative button(can be null)
+     * @return an Alert Dialog with specified data to be shown on the screen
+     */
+    public AlertDialog getDialog(@NonNull String title, @NonNull String message, @DrawableRes int imageResource,
+                                 @Nullable String positiveButtonText,
+                                 @Nullable View.OnClickListener onPositiveButtonClickListener,
+                                 @Nullable String negativeButtonText, @Nullable View.OnClickListener onNegativeButtonClickListener) {
+        // inflate dialog layout and bind all views
+        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.alert_dialog_layout, null, false);
+        ImageView dialogImage = (ImageView) dialogLayout.findViewById(R.id.alertDialogImageLabel);
+        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.alertDialogTitleLabel);
+        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.alertDialogMessageLabel);
+        Button negativeButton = (Button) dialogLayout.findViewById(R.id.alertDialogNegativeButton);
+        Button positiveButton = (Button) dialogLayout.findViewById(R.id.alertDialogPositiveButton);
+
+        // set not null data, as text and image for dialog
+        dialogTitle.setText(title);
+        dialogMessage.setText(message);
+        dialogImage.setImageResource(imageResource);
+
+        // check and set buttons either text and listener or visibility to GONE
+        if (positiveButtonText != null) {
+            positiveButton.setText(positiveButtonText);
+            positiveButton.setOnClickListener(onPositiveButtonClickListener);
+        } else {
+            positiveButton.setVisibility(View.GONE);
+        }
+
+        if (negativeButtonText != null) {
+            negativeButton.setText(negativeButtonText);
+            negativeButton.setOnClickListener(onNegativeButtonClickListener);
+        } else {
+            negativeButton.setVisibility(View.GONE);
+        }
+
+        // Create the dialog with the given layout and return it
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
+                .setView(dialogLayout);
+        return dialogBuilder.create();
+    }
+
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 

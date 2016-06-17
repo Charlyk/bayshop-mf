@@ -211,6 +211,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                     break;
                 }
             }
+            mRefreshLayout.setRefreshing(false);
         }
     };
 

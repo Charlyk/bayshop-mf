@@ -75,6 +75,7 @@ public class ApiClient {
                     .url(httpUrl)
                     .addHeader("Bearer", Application.currentToken)
                     .addHeader("DeviceId", deviceId)
+                    .addHeader("language", "ru")
                     .delete()
                     .build();
             execute(request, handler);
