@@ -11,13 +11,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -41,7 +44,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CheckDeclarationFragment extends Fragment implements View.OnClickListener {
+public class CheckDeclarationFragment extends Fragment implements View.OnClickListener, PackageDetailsAdapter.OnEditClickListener {
 
     private static final String IN_FORMING_ARG = "in forming object argument";
     private MainActivity mActivity;
@@ -52,6 +55,7 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
     private TextView mTotalPriceLabel;
     private TextView mTotalWeightLabel;
     private EditText mGeneralDescriptionInput;
+    private AlertDialog mEditPriceDialog;
 
     public CheckDeclarationFragment() {
         // Required empty public constructor
@@ -79,11 +83,12 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mGeneralDescriptionInput = (EditText) view.findViewById(R.id.buildFourthStepGeneralDescription);
         mAdapter = new PackageDetailsAdapter(mProducts);
+        mAdapter.setOnEditClickListener(this);
         mTotalPriceLabel = (TextView) view.findViewById(R.id.buildFourthFragmentTotalPriceLabel);
         mTotalWeightLabel = (TextView) view.findViewById(R.id.buildFourthFragmentTotalWeightLabel);
         mRecyclerView.setAdapter(mAdapter);
         mInForming = getArguments().getParcelable(IN_FORMING_ARG);
-        Button next = (Button) view.findViewById(R.id.buildFourthStepNextButton);
+        ImageButton next = (ImageButton) view.findViewById(R.id.buildFourthStepNextButton);
         next.setOnClickListener(this);
         mActivity.toggleLoadingProgress(true);
         RequestBody body = new FormBody.Builder()
@@ -193,10 +198,31 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
     public void onClick(View v) {
         String description = String.valueOf(mGeneralDescriptionInput.getText());
         if (description.equals("")) {
-            Snackbar.make(mRecyclerView, "Please fill in the description of your parcel", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(mRecyclerView, getString(R.string.fill_general_description), Snackbar.LENGTH_SHORT).show();
+            mGeneralDescriptionInput.setError(getString(R.string.fill_general_description));
             return;
         }
         mInForming.setGeneralDescription(description);
         mActivity.addFragment(InsuranceFragment.newInstance(mInForming), true);
+    }
+
+    @Override
+    public void onEditClicked(final Product product, final int position) {
+        mEditPriceDialog = mActivity.getEditDialog(getString(R.string.price_edit), product.getProductPrice(), R.mipmap.ic_cash_24dpi,
+                getString(R.string.save), getString(R.string.cancel), InputType.TYPE_NUMBER_FLAG_DECIMAL, new MainActivity.OnEditDialogClickListener() {
+                    @Override
+                    public void onPositiveClick(String newInput) {
+                        product.setProductPrice(newInput);
+                        setTotals();
+                        mEditPriceDialog.dismiss();
+                        mAdapter.notifyItemChanged(position);
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+                        mEditPriceDialog.dismiss();
+                    }
+                });
+        mEditPriceDialog.show();
     }
 }

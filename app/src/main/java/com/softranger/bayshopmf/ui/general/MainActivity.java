@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.ui.general;
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -18,11 +19,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -414,6 +417,73 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
                 .setView(dialogLayout);
         return dialogBuilder.create();
+    }
+
+    public AlertDialog getEditDialog(@NonNull String title, @NonNull String message, @DrawableRes int imageResource,
+                                     @Nullable String positiveButtonText,
+                                     @Nullable String negativeButtonText, int inputType,
+                                     @Nullable final OnEditDialogClickListener onEditDialogClickListener) {
+        // inflate dialog layout and bind all views
+        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.edit_text_dialog, null, false);
+        ImageView dialogImage = (ImageView) dialogLayout.findViewById(R.id.editDialogImageLabel);
+        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.editDialogTitleLabel);
+        final EditText dialogMessage = (EditText) dialogLayout.findViewById(R.id.editDialogInput);
+        Button negativeButton = (Button) dialogLayout.findViewById(R.id.editDialogNegativeButton);
+        Button positiveButton = (Button) dialogLayout.findViewById(R.id.editDialogPositiveButton);
+
+        // set not null data, as text and image for dialog
+        dialogTitle.setText(title);
+        dialogMessage.setText(message);
+        dialogImage.setImageResource(imageResource);
+
+        // check and set buttons either text and listener or visibility to GONE
+        if (positiveButtonText != null) {
+            positiveButton.setText(positiveButtonText);
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onEditDialogClickListener != null) {
+                        onEditDialogClickListener.onPositiveClick(String.valueOf(dialogMessage.getText()));
+                    }
+                }
+            });
+        } else {
+            positiveButton.setVisibility(View.GONE);
+        }
+
+        if (negativeButtonText != null) {
+            negativeButton.setText(negativeButtonText);
+            negativeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onEditDialogClickListener != null) {
+                        onEditDialogClickListener.onNegativeClick();
+                    }
+                }
+            });
+        } else {
+            negativeButton.setVisibility(View.GONE);
+        }
+
+        // Create the dialog with the given layout and return it
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
+                .setView(dialogLayout);
+        return dialogBuilder.create();
+    }
+
+    public void expandTextView(TextView tv) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(tv, "maxLines", 300);
+        animation.setDuration(200).start();
+    }
+
+    public void collapseTextView(TextView tv, int numLines) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(tv, "maxLines", numLines);
+        animation.setDuration(200).start();
+    }
+
+    public interface OnEditDialogClickListener {
+        void onPositiveClick(String newInput);
+        void onNegativeClick();
     }
 
     public void hideKeyboard() {

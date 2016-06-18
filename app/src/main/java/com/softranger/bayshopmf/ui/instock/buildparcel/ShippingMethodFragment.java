@@ -1,6 +1,7 @@
 package com.softranger.bayshopmf.ui.instock.buildparcel;
 
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ShippingMethodAdapter;
@@ -159,14 +162,14 @@ public class ShippingMethodFragment extends Fragment implements ShippingMethodAd
     };
 
     @Override
-    public void onDetailsClick(ShippingMethod shippingMethod, int position) {
-        String description = Html.fromHtml(shippingMethod.getDescription()).toString();
-        AlertDialog alertDialog = new AlertDialog.Builder(mActivity)
-                .setTitle(shippingMethod.getName())
-                .setMessage(description)
-                .setPositiveButton(getString(R.string.ok), null)
-                .create();
-        alertDialog.show();
+    public void onDetailsClick(ShippingMethod shippingMethod, int position, TextView detailsTextView, Button detailsButton) {
+        if (detailsTextView.getLineCount() == 4) {
+            mActivity.expandTextView(detailsTextView);
+            detailsButton.setText(getString(R.string.hide_details));
+        } else {
+            mActivity.collapseTextView(detailsTextView, 4);
+            detailsButton.setText(getString(R.string.details));
+        }
     }
 
     @Override
@@ -191,4 +194,6 @@ public class ShippingMethodFragment extends Fragment implements ShippingMethodAd
         super.onDestroyView();
         mActivity.unregisterReceiver(mTitleReceiver);
     }
+
+
 }

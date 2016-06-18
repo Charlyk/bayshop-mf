@@ -3,37 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
-    <RadioGroup
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/insuranceSelector"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/insuranceTrueSelector"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/lorem_ipsum"/>
+        <include layout="@layout/select_insurance_layout"/>
 
-        <RadioButton
-            android:id="@+id/insuranceFalseSelector"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/lorem_ipsum"/>
+        <include layout="@layout/no_insurance_layout"/>
 
         <Button
-            android:id="@+id/insuranceNextButton"
-            style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:drawableEnd="@mipmap/ic_navigate_next_black_24dp"
-            android:drawableRight="@mipmap/ic_navigate_next_black_24dp"
-            android:text="@string/next"
-            android:textSize="17sp"/>
-    </RadioGroup>
+            android:layout_gravity="end"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:textColor="@color/colorAccent"
+            android:text="@string/confirm"
+            android:id="@+id/insuranceConfirmButton"/>
+    </LinearLayout>
 </ScrollView>

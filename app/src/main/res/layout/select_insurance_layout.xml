@@ -1,0 +1,178 @@
+<RelativeLayout
+    android:id="@+id/insuranceSelector"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Goaranteed text -->
+    <TextView
+        android:id="@+id/insuranceGuaranteeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guaranteed_protection_of_your_parcel_by_bayshop"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_margin="16dp"/>
+
+    <!-- Separator -->
+    <View
+        android:id="@+id/insuranceGuaranteeSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"
+        android:layout_below="@id/insuranceGuaranteeText"/>
+
+    <!-- Want insurance selector -->
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/insuranceRadioButton"
+        android:clickable="false"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:checked="true"
+        android:layout_alignBottom="@+id/textView17"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <!-- Shield image view -->
+    <ImageView
+        android:id="@+id/insuranceShieldImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/insuranceGuaranteeSeparator"
+        android:src="@mipmap/ic_edit_24dpi"/>
+
+    <!-- Want insurance title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/i_want_to_insure_parcel"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:textColor="@android:color/black"
+        android:layout_alignBottom="@id/insuranceShieldImage"
+        android:layout_toRightOf="@+id/insuranceShieldImage"
+        android:layout_toEndOf="@+id/insuranceShieldImage"
+        android:layout_toLeftOf="@+id/insuranceRadioButton"
+        android:layout_toStartOf="@+id/insuranceRadioButton"
+        android:id="@+id/textView17"/>
+
+    <!-- Products cost title and label -->
+    <TextView
+        android:id="@+id/insuranceProductsCostTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/products_cost"
+        android:layout_below="@id/insuranceShieldImage"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/insuranceProductsCostLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/insuranceProductsCostTitle"
+        tools:text="$30"
+        android:layout_toRightOf="@id/insuranceProductsCostTitle"
+        android:layout_toEndOf="@id/insuranceProductsCostTitle"
+        android:textColor="@android:color/black"/>
+
+    <!-- Shipping cost title and label -->
+    <TextView
+        android:id="@+id/insuranceShippingCostTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shipping_price"
+        android:layout_below="@id/insuranceProductsCostTitle"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/insuranceShippingCostLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/insuranceShippingCostTitle"
+        tools:text="$10"
+        android:layout_toRightOf="@id/insuranceShippingCostTitle"
+        android:layout_toEndOf="@id/insuranceShippingCostTitle"
+        android:textColor="@android:color/black"/>
+
+    <!-- Insurance cost title and label -->
+    <TextView
+        android:id="@+id/insuranceInsuranceCostTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/insurance_price"
+        android:layout_alignBottom="@id/insuranceProductsCostLabel"
+        android:layout_toRightOf="@id/insuranceProductsCostLabel"
+        android:layout_toEndOf="@id/insuranceProductsCostLabel"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/insuranceInsuranceCostLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/insuranceInsuranceCostTitle"
+        tools:text="$10"
+        android:layout_toRightOf="@id/insuranceInsuranceCostTitle"
+        android:layout_toEndOf="@id/insuranceInsuranceCostTitle"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"/>
+
+    <!-- Insurance descritpion -->
+    <TextView
+        android:id="@+id/insuranceDescriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:maxLines="4"
+        android:ellipsize="end"
+        android:layout_marginTop="5dp"
+        android:text="@string/lorem_ipsum"
+        android:layout_below="@id/insuranceShippingCostTitle"/>
+
+    <!-- Details button-->
+    <Button
+        android:id="@+id/insuranceDetailsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="?selectableItemBackground"
+        android:text="@string/details"
+        android:textColor="@color/colorGreenAction"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_below="@id/insuranceDescriptionLabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"
+        android:layout_below="@id/insuranceDetailsButton"/>
+</RelativeLayout>

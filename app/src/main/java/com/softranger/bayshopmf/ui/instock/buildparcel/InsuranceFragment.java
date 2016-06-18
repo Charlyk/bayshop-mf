@@ -17,8 +17,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.Insurance;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
@@ -38,13 +41,23 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InsuranceFragment extends Fragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+public class InsuranceFragment extends Fragment implements View.OnClickListener {
 
     private static final String IN_FORMING_ARG = "in forming item arg";
     private MainActivity mActivity;
     private InForming mInForming;
     private View mRootView;
     private static boolean needInsurance;
+
+    private RadioButton mNeedInSurance;
+    private RadioButton mRefuseInsurance;
+    private TextView mNeedInsuranceDescription;
+    private TextView mRefuseInsuranceDescription;
+    private TextView mProductsPriceLabel;
+    private TextView mShippingPriceLabel;
+    private TextView mInsurancePriceLabel;
+    private Button mNeedInsuranceDetails;
+    private Button mRefuseInsuranceDetails;
 
     public InsuranceFragment() {
         // Required empty public constructor
@@ -69,13 +82,25 @@ public class InsuranceFragment extends Fragment implements RadioGroup.OnCheckedC
         mActivity.setToolbarTitle(getString(R.string.fill_declaration), true);
 
         needInsurance = true;
-        RadioGroup radioGroup = (RadioGroup) mRootView.findViewById(R.id.insuranceSelector);
-        radioGroup.setOnCheckedChangeListener(this);
-        RadioButton button = (RadioButton) mRootView.findViewById(R.id.insuranceTrueSelector);
-        button.setChecked(needInsurance);
 
-        Button next = (Button) mRootView.findViewById(R.id.insuranceNextButton);
+        mNeedInsuranceDetails = (Button) mRootView.findViewById(R.id.insuranceDetailsButton);
+        mRefuseInsuranceDetails = (Button) mRootView.findViewById(R.id.noInsuranceDetailsButton);
+        mNeedInSurance = (RadioButton) mRootView.findViewById(R.id.insuranceRadioButton);
+        mRefuseInsurance = (RadioButton) mRootView.findViewById(R.id.noInsuranceRadioButton);
+        RelativeLayout needInsuranceLayout = (RelativeLayout) mRootView.findViewById(R.id.insuranceSelector);
+        RelativeLayout refuseInsuranceLayout = (RelativeLayout) mRootView.findViewById(R.id.noInsuranceSelector);
+        needInsuranceLayout.setOnClickListener(this);
+        refuseInsuranceLayout.setOnClickListener(this);
+        mNeedInsuranceDetails.setOnClickListener(this);
+        mRefuseInsuranceDetails.setOnClickListener(this);
+        Button next = (Button) mRootView.findViewById(R.id.insuranceConfirmButton);
         next.setOnClickListener(this);
+
+        mNeedInsuranceDescription = (TextView) mRootView.findViewById(R.id.insuranceDescriptionLabel);
+        mRefuseInsuranceDescription = (TextView) mRootView.findViewById(R.id.noInsuranceDescriptionLabel);
+        mProductsPriceLabel = (TextView) mRootView.findViewById(R.id.insuranceProductsCostLabel);
+        mShippingPriceLabel = (TextView) mRootView.findViewById(R.id.insuranceShippingCostLabel);
+        mInsurancePriceLabel = (TextView) mRootView.findViewById(R.id.insuranceInsuranceCostLabel);
 
         mInForming = getArguments().getParcelable(IN_FORMING_ARG);
 
@@ -116,7 +141,20 @@ public class InsuranceFragment extends Fragment implements RadioGroup.OnCheckedC
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
-                            // TODO: 6/8/16 handle server response
+                            JSONObject data = response.getJSONObject("data");
+                            Insurance insurance = new Insurance.Builder()
+                                    .currency(data.getString("currency"))
+                                    .commission(data.getDouble("commission"))
+                                    .shippingCost(data.getDouble("shippingCost"))
+                                    .totalPriceBoxes(data.getDouble("totalPriceBoxes"))
+                                    .isInsuranceSelected(data.getBoolean("insuranceSelected"))
+                                    .isInsuranceAvailable(data.getBoolean("insuranceAvailable"))
+                                    .declarationTotalPrice(data.getDouble("declarationTotalPrice"))
+                                    .build();
+
+                            mProductsPriceLabel.setText(insurance.getCurrency() + insurance.getTotalPriceBoxes());
+                            mShippingPriceLabel.setText(insurance.getCurrency() + insurance.getShippingCost());
+                            mInsurancePriceLabel.setText(insurance.getCurrency() + insurance.getCommission());
                         } else {
                             Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                         }
@@ -165,20 +203,40 @@ public class InsuranceFragment extends Fragment implements RadioGroup.OnCheckedC
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.insuranceTrueSelector:
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.insuranceSelector:
                 needInsurance = true;
+                mNeedInSurance.setChecked(true);
+                mRefuseInsurance.setChecked(false);
                 break;
-            case R.id.insuranceFalseSelector:
+            case R.id.noInsuranceSelector:
                 needInsurance = false;
+                mNeedInSurance.setChecked(false);
+                mRefuseInsurance.setChecked(true);
+                break;
+            case R.id.insuranceConfirmButton:
+                mInForming.setNeedInsurance(needInsurance);
+                mActivity.addFragment(ConfirmationFragment.newInstance(mInForming), true);
+                break;
+            case R.id.insuranceDetailsButton:
+                if (mNeedInsuranceDescription.getLineCount() == 4) {
+                    mActivity.expandTextView(mNeedInsuranceDescription);
+                    mNeedInsuranceDetails.setText(getString(R.string.hide_details));
+                } else {
+                    mActivity.collapseTextView(mNeedInsuranceDescription, 4);
+                    mNeedInsuranceDetails.setText(getString(R.string.details));
+                }
+                break;
+            case R.id.noInsuranceDetailsButton:
+                if (mRefuseInsuranceDescription.getLineCount() == 4) {
+                    mActivity.expandTextView(mRefuseInsuranceDescription);
+                    mRefuseInsuranceDetails.setText(getString(R.string.hide_details));
+                } else {
+                    mActivity.collapseTextView(mRefuseInsuranceDescription, 4);
+                    mRefuseInsuranceDetails.setText(getString(R.string.details));
+                }
                 break;
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        mInForming.setNeedInsurance(needInsurance);
-        mActivity.addFragment(ConfirmationFragment.newInstance(mInForming), true);
     }
 }

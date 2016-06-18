@@ -3,7 +3,6 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
@@ -13,8 +12,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:textStyle="bold"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="5dp"
         android:layout_alignParentTop="true"
-        android:padding="16dp"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
         tools:text="By plane"/>
@@ -26,30 +29,26 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:padding="18sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         tools:text="$10"/>
-
-    <View
-        android:id="@+id/item_divider3"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/shippingMethodItemPriceLabel"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="5dp"
-        android:background="#ffbdbdbd"/>
     
     <TextView
         android:id="@+id/shippingMethodDescriptionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textColor="@android:color/black"
-        android:textSize="17sp"
         android:maxLines="4"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         tools:text="@string/lorem_ipsum"
-        android:layout_below="@id/item_divider3"/>
+        android:layout_below="@id/shippingMethodItemNameLabel"/>
 
     <Button
         android:id="@+id/shippingMethodSelectBtn"
@@ -59,10 +58,11 @@
         android:layout_below="@+id/shippingMethodDescriptionLabel"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:background="?selectableItemBackground"
         android:text="@string/select_method"
-        android:textColor="@color/colorGreenAction"
-        android:textSize="17sp"/>
+        android:textColor="@color/colorGreenAction"/>
 
     <Button
         android:id="@+id/shippingMethodDetailsBtn"
@@ -76,6 +76,11 @@
         android:layout_toStartOf="@+id/shippingMethodSelectBtn"
         android:background="?selectableItemBackground"
         android:text="@string/details"
-        android:textColor="@color/colorGreenAction"
-        android:textSize="17sp"/>
+        android:textColor="@color/colorGreenAction"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"
+        android:layout_below="@id/shippingMethodDetailsBtn"/>
 </RelativeLayout>

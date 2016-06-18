@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -19,9 +20,14 @@ import java.util.ArrayList;
 public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAdapter.ViewHolder> {
 
     private ArrayList<Product> mProducts;
+    private OnEditClickListener mOnEditClickListener;
 
     public PackageDetailsAdapter(ArrayList<Product> products) {
         mProducts = products;
+    }
+
+    public void setOnEditClickListener(OnEditClickListener onEditClickListener) {
+        mOnEditClickListener = onEditClickListener;
     }
 
     @Override
@@ -46,11 +52,12 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
         return mProducts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mDescription;
         final TextView mQuantity;
         final TextView mWeight;
         final TextView mPrice;
+        final LinearLayout mPriceLayout;
         Product mProduct;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -58,6 +65,19 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
             mQuantity = (TextView) itemView.findViewById(R.id.packageCOntentUnitsQuantityLabel);
             mWeight = (TextView) itemView.findViewById(R.id.packageContentWeightLabel);
             mPrice = (TextView) itemView.findViewById(R.id.packageContentPriceLabel);
+            mPriceLayout = (LinearLayout) itemView.findViewById(R.id.checkDeclarationPriceItemLayout);
+            mPriceLayout.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if (mOnEditClickListener != null) {
+                mOnEditClickListener.onEditClicked(mProduct, getAdapterPosition());
+            }
+        }
+    }
+
+    public interface OnEditClickListener {
+        void onEditClicked(Product product, int position);
     }
 }

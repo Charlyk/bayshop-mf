@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="#f1f1f1"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -110,19 +111,12 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <View
-        android:id="@+id/total_divider"
-        android:layout_width="match_parent"
-        android:layout_above="@id/buildFirstTotalLayout"
-        android:layout_height="1dp"
-        android:background="#e6e6e6"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/buildFirstStepItemsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/total_divider"
         android:background="@color/colorDivider"
-        tools:listitem="@layout/build_parcel_first_step_list_item"/>
+        tools:listitem="@layout/build_parcel_first_step_list_item"
+        android:layout_above="@id/buildFirstTotalLayout"/>
 
 </RelativeLayout>

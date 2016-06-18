@@ -159,4 +159,15 @@
     <string name="phone_code">Phone code:</string>
     <string name="_373">+373</string>
     <string name="moldova">Moldova</string>
+    <string name="hide_details">Hide details</string>
+    <string name="delivery_warning">Delivery price is aproximate it will be fixed after packing</string>
+    <string name="fill_general_description">Please enter a general description</string>
+    <string name="_150_4">$150.4</string>
+    <string name="enter_a_new_price">Enter a new price:</string>
+    <string name="price_edit">Price edit</string>
+    <string name="guaranteed_protection_of_your_parcel_by_bayshop">Guaranteed protection of your parcel by BayShop</string>
+    <string name="i_want_to_insure_parcel">I want to insure parcel</string>
+    <string name="products_cost">Products cost:</string>
+    <string name="insurance_price">Insurance price:</string>
+    <string name="i_refuse_the_insurance">I refuse the insurance</string>
 </resources>

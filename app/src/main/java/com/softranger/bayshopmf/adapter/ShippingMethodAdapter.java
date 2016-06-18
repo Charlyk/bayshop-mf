@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class ShippingMethodAdapter extends RecyclerView.Adapter<ShippingMethodAdapter.ViewHolder> {
+public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<ShippingMethod> mShippingMethods;
     private OnShippingClickListener mOnShippingClickListener;
@@ -32,28 +32,55 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<ShippingMethodAd
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shipping_method_item, parent, false);
-        return new ViewHolder(view);
+    public int getItemViewType(int position) {
+        switch (position) {
+            case 0:
+                return 0;
+            default:
+                return 1;
+        }
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mShippingMethodObj = mShippingMethods.get(position);
-        holder.mShippingMethod.setText(holder.mShippingMethodObj.getName());
-        String price = holder.mShippingMethodObj.getCurrency() + holder.mShippingMethodObj.getCalculatedPrice();
-        holder.mMethodPrice.setText(price);
-        String description = Html.fromHtml(holder.mShippingMethodObj.getDescription()).toString();
-        holder.mDescription.setText(description);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = null;
+        switch (viewType) {
+            case 0:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.warning_item, parent, false);
+                return new WarningHolder(view);
+            default:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shipping_method_item, parent, false);
+                return new ViewHolder(view);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ViewHolder) {
+            ViewHolder itemHolder = (ViewHolder) holder;
+            itemHolder.mShippingMethodObj = mShippingMethods.get(position - 1);
+            itemHolder.mShippingMethod.setText(itemHolder.mShippingMethodObj.getName());
+            String price = itemHolder.mShippingMethodObj.getCurrency() + itemHolder.mShippingMethodObj.getCalculatedPrice();
+            itemHolder.mMethodPrice.setText(price);
+            String description = Html.fromHtml(itemHolder.mShippingMethodObj.getDescription()).toString();
+            itemHolder.mDescription.setText(description);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mShippingMethods.size();
+        return mShippingMethods.size() + 1;
     }
 
     public void refreshList(ArrayList<ShippingMethod> methods) {
         notifyDataSetChanged();
+    }
+
+    public class WarningHolder extends RecyclerView.ViewHolder {
+
+        public WarningHolder(View itemView) {
+            super(itemView);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -79,12 +106,12 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<ShippingMethodAd
             switch (v.getId()) {
                 case R.id.shippingMethodDetailsBtn:
                     if (mOnShippingClickListener != null) {
-                        mOnShippingClickListener.onDetailsClick(mShippingMethodObj, getAdapterPosition());
+                        mOnShippingClickListener.onDetailsClick(mShippingMethodObj, getAdapterPosition() - 1, mDescription, mDetailsButton);
                     }
                     break;
                 case R.id.shippingMethodSelectBtn:
                     if (mOnShippingClickListener != null) {
-                        mOnShippingClickListener.onSelectClick(mShippingMethodObj, getAdapterPosition());
+                        mOnShippingClickListener.onSelectClick(mShippingMethodObj, getAdapterPosition() - 1);
                     }
                     break;
             }
@@ -92,7 +119,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<ShippingMethodAd
     }
 
     public interface OnShippingClickListener {
-        void onDetailsClick(ShippingMethod shippingMethod, int position);
+        void onDetailsClick(ShippingMethod shippingMethod, int position, TextView detailsTextView, Button detailsButton);
         void onSelectClick(ShippingMethod shippingMethod, int position);
     }
 }

@@ -10,95 +10,133 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:background="#f1f1f1"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:paddingBottom="10dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/buildFourthFragmentTotalPriceTitle"
+            <ImageView
+                android:id="@+id/totalPriceImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="@string/total_price"/>
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_weight_48dp"
+                android:contentDescription="@null"/>
 
-            <TextView
-                android:id="@+id/buildFourthFragmentTotalPriceLabel"
+            <LinearLayout
+                android:id="@+id/totalPriceHolder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:text="$75"/>
-        </LinearLayout>
+                android:layout_toRightOf="@id/totalPriceImageView"
+                android:layout_toEndOf="@id/totalPriceImageView"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+                <TextView
+                    android:id="@+id/buildFourthFragmentTotalPriceTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/total_price"/>
 
-            <TextView
-                android:id="@+id/buildFourthFragmentTotalWeightTitle"
+                <TextView
+                    android:id="@+id/buildFourthFragmentTotalPriceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    tools:text="$75"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/totalWeightImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="@string/total_weight"/>
+                android:layout_toRightOf="@id/totalPriceHolder"
+                android:layout_toEndOf="@id/totalPriceHolder"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_weight_48dp"
+                android:contentDescription="@null"/>
 
-            <TextView
-                android:id="@+id/buildFourthFragmentTotalWeightLabel"
+            <LinearLayout
+                android:id="@+id/totalWeightHolder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:text="3kg"/>
-        </LinearLayout>
+                android:layout_toRightOf="@id/totalWeightImageView"
+                android:layout_toEndOf="@id/totalWeightImageView"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buildFourthStepNextButton"
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="?selectableItemBackground"
-            android:drawableEnd="@mipmap/ic_navigate_next_black_24dp"
-            android:drawableRight="@mipmap/ic_navigate_next_black_24dp"
-            android:text="@string/next"
-            android:textSize="17sp"/>
+                <TextView
+                    android:id="@+id/buildFourthFragmentTotalWeightTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/total_weight"/>
+
+                <TextView
+                    android:id="@+id/buildFourthFragmentTotalWeightLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    tools:text="3kg"/>
+            </LinearLayout>
+
+            <ImageButton
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:src="@mipmap/ic_next_48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/buildFourthStepNextButton"/>
+        </RelativeLayout>
     </LinearLayout>
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?actionBarSize"
+        android:background="@android:color/white"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:singleLine="true"
+        android:textColor="@color/colorAccent"
         android:id="@+id/buildFourthStepGeneralDescription"
         android:hint="@string/general_description"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
+    <View
+        android:id="@+id/generalDescriptionSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"
+        android:layout_below="@id/buildFourthStepGeneralDescription"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/buildFourthStepDeclarationList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="5dp"
         android:clipToPadding="false"
         android:background="@color/colorDivider"
         android:layout_above="@id/declarationTotalsLayout"
-        android:layout_below="@+id/buildFourthStepGeneralDescription"
+        android:layout_below="@+id/generalDescriptionSeparator"
         tools:listitem="@layout/package_content_item"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_above="@id/declarationTotalsLayout"
-        android:background="#bfcbcbcb"/>
 </RelativeLayout>
