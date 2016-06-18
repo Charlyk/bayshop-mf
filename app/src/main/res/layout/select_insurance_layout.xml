@@ -48,7 +48,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_below="@id/insuranceGuaranteeSeparator"
-        android:src="@mipmap/ic_edit_24dpi"/>
+        android:src="@mipmap/ic_shield_24dpi"/>
 
     <!-- Want insurance title -->
     <TextView

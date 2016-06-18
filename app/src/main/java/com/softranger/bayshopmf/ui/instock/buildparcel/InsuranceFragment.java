@@ -79,7 +79,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
-        mActivity.setToolbarTitle(getString(R.string.fill_declaration), true);
+        mActivity.setToolbarTitle(getString(R.string.select_insurance), true);
 
         needInsurance = true;
 
@@ -190,7 +190,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.fill_declaration), true);
+                    mActivity.setToolbarTitle(getString(R.string.select_insurance), true);
                     break;
             }
         }

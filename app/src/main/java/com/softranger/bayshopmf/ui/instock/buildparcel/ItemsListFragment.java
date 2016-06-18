@@ -294,7 +294,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         mBatteryDialog = mActivity.getDialog(getString(R.string.li_ion), getString(R.string.has_li_ion_battery),
-                R.mipmap.ic_battery_24dp, getString(R.string.yes), new View.OnClickListener() {
+                R.mipmap.ic_battery_full_24dp, getString(R.string.yes), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mInForming.setHasBattery(true);
