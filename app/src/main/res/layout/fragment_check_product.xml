@@ -76,6 +76,7 @@
             android:layout_marginTop="16dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:layout_gravity="end"
             android:background="@drawable/additional_btns_bg"
             android:text="@string/confirm"
             android:textColor="@android:color/white"/>

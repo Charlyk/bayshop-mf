@@ -41,7 +41,7 @@
     <string name="additional_photo_description">We provide 2 product photos for free. BayShop staff will take them, when the parcel is delivered to the warehouse.\n\nYou can order 8 additional photos if needed.</string>
     <string name="leave_comment">Leave comment</string>
     <string name="confirm">Confirm</string>
-    <string name="warehouse">Warehouse</string>
+    <string name="warehouse">Warehouse:</string>
     <string name="haveAnAccountText">Don\'t have an account?</string>
     <string name="signup">Signup</string>
     <string name="facebook">Facebook</string>
@@ -51,7 +51,7 @@
     <string name="password">Password</string>
     <string name="total_price">Total price:</string>
     <string name="units_quantity">Units quantity</string>
-    <string name="product_name">Product name</string>
+    <string name="product_name">Product name:</string>
     <string name="url_to_the_product">Url to the product</string>
 
     <string name="declaration_alert">It\'s important to fill in all the declaration fields by authentic information for each product</string>
@@ -66,8 +66,8 @@
     <string name="delete">Delete</string>
     <string name="state_description">You\'ve ordered the extra photos of this incoming package. You\'ll be notified when the photos of a package will be made</string>
     <string name="ipad_mini">iPad mini</string>
-    <string name="tracking_number">Tracking number</string>
-    <string name="link_to_the_product_ordered_by_you">Link to the product ordered by you</string>
+    <string name="tracking_number">Tracking number:</string>
+    <string name="link_to_the_product_ordered_by_you">Link to the product ordered by you:</string>
     <string name="held_by_prohibition">Held by prohibition</string>
     <string name="created_on">"Created on: "</string>
     <string name="complete">" complete"</string>

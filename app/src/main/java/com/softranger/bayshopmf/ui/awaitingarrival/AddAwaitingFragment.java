@@ -57,7 +57,7 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_blank, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_add_awaiting, container, false);
         mActivity = (MainActivity) getActivity();
         mProductUrlInput = (EditText) mRootView.findViewById(R.id.addAwaitingLinkToProductInput);
         mProductTrackingNumInput = (EditText) mRootView.findViewById(R.id.addAwaitingTrackingInput);

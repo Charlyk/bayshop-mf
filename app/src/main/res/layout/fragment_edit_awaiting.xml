@@ -8,14 +8,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             android:orientation="horizontal">
 
             <TextView
@@ -59,87 +61,130 @@
                     android:background="@drawable/de_storage_selection"
                     android:button="@null"/>
             </RadioGroup>
-
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             android:text="@string/product_name"/>
 
         <EditText
             android:id="@+id/editAwaitingNameInput"
             android:layout_width="match_parent"
             android:singleLine="true"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/edit_text_rectangle_bg"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/white"
             android:hint="@string/ipad_mini"
             android:padding="3dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
 
         <TextView
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             android:text="@string/tracking_number"/>
 
         <EditText
             android:id="@+id/editAwaitingTrackingInput"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="10dp"
             android:singleLine="true"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/edit_text_rectangle_bg"
+            android:background="@android:color/white"
             android:hint="12345678901234567890"
             android:padding="3dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
 
         <TextView
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             android:text="@string/link_to_the_product_ordered_by_you"/>
 
         <EditText
             android:id="@+id/editAwaitingUrlInput"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="10dp"
             android:singleLine="true"
             android:inputType="textUri"
-            android:background="@drawable/edit_text_rectangle_bg"
+            android:background="@android:color/white"
             android:hint="http://example-shop.com/example-product"
             android:padding="3dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             android:text="@string/price"/>
 
         <EditText
             android:id="@+id/editAwaitingPriceInput"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="10dp"
             android:singleLine="true"
-            android:background="@drawable/edit_text_rectangle_bg"
+            android:background="@android:color/white"
             android:ems="10"
             android:hint="23.5"
             android:inputType="numberDecimal"
             android:padding="3dp"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
         <Button
             android:id="@+id/editAwaitingSaveButton"
             style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_gravity="end"
+            android:layout_margin="16dp"
             android:text="@string/save"
-            android:textColor="@color/colorGreenAction"
+            android:background="@drawable/green_button_bg"
+            android:textColor="@android:color/white"
             android:textSize="18sp"/>
     </LinearLayout>
 </ScrollView>
