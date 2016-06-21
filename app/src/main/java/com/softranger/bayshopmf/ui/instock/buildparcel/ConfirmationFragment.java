@@ -12,12 +12,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -34,10 +36,8 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ConfirmationFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+
+public class ConfirmationFragment extends Fragment implements View.OnClickListener {
 
     private static final String IN_FORMING_ARG = "in forming item argument";
     private MainActivity mActivity;
@@ -48,6 +48,9 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
     private TextView mTotalPrice;
     private Button mFinishAndSend;
     private CheckBox mAgreeTerms;
+    private CheckBox mAdditionalPackage;
+    private CheckBox mLocalDelivery;
+    private CheckBox mSendOnAlert;
     private View mRootView;
     private InForming mInForming;
 
@@ -89,19 +92,31 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
         mDeclarationPrice = (TextView) view.findViewById(R.id.confirmDeclarationPriceLabel);
         mTotalPrice = (TextView) view.findViewById(R.id.confirmTotalPriceLabel);
 
-        Button termsAndConditions = (Button) view.findViewById(R.id.confirmTermsAndConditionsBtn);
-        termsAndConditions.setOnClickListener(this);
+        RelativeLayout additionalPack = (RelativeLayout) view.findViewById(R.id.confirmAdditionalPackageButton);
+        additionalPack.setOnClickListener(this);
+        RelativeLayout localDelivery = (RelativeLayout) view.findViewById(R.id.confirmLocalDeliveryButton);
+        localDelivery.setOnClickListener(this);
+        RelativeLayout onUserAlert = (RelativeLayout) view.findViewById(R.id.confirmSentOnUserAlertButton);
+        onUserAlert.setOnClickListener(this);
+        RelativeLayout agreeTerms = (RelativeLayout) view.findViewById(R.id.confirmAgreeTermsButton);
+        agreeTerms.setOnClickListener(this);
+
+        ImageView additionalDetails = (ImageView) view.findViewById(R.id.confirmAdditionalPackageDetails);
+        additionalDetails.setOnClickListener(this);
+        ImageView localDetails = (ImageView) view.findViewById(R.id.confirmLocalDeliveryDetails);
+        localDetails.setOnClickListener(this);
+        ImageView onAlertDetails = (ImageView) view.findViewById(R.id.confirmSentOnUserAlertDetails);
+        onAlertDetails.setOnClickListener(this);
+        ImageView confirmDetails = (ImageView) view.findViewById(R.id.confirmAgreeTermsDetails);
+        confirmDetails.setOnClickListener(this);
+
         mFinishAndSend = (Button) view.findViewById(R.id.confirmFinishAndSendBtn);
         mFinishAndSend.setOnClickListener(this);
 
-        CheckBox additionalPackages = (CheckBox) view.findViewById(R.id.confirmAdditionalPackagesCheckBox);
-        additionalPackages.setOnCheckedChangeListener(this);
-        CheckBox localDelivery = (CheckBox) view.findViewById(R.id.confirmLocalDeliveryCheckBox);
-        localDelivery.setOnCheckedChangeListener(this);
-        CheckBox sentOnUserAlert = (CheckBox) view.findViewById(R.id.confirmSentOnUserAlert);
-        sentOnUserAlert.setOnCheckedChangeListener(this);
+        mAdditionalPackage = (CheckBox) view.findViewById(R.id.confirmAdditionalPackagesCheckBox);
+        mLocalDelivery = (CheckBox) view.findViewById(R.id.confirmLocalDeliveryCheckBox);
+        mSendOnAlert = (CheckBox) view.findViewById(R.id.confirmSentOnUserAlert);
         mAgreeTerms = (CheckBox) view.findViewById(R.id.confirmAgreeTermsCheckBox);
-        mAgreeTerms.setOnCheckedChangeListener(this);
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -177,11 +192,24 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
         mActivity.unregisterReceiver(mTitleReceiver);
     }
 
+    AlertDialog mAlertDialog;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.confirmTermsAndConditionsBtn:
-
+            case R.id.confirmAdditionalPackageButton:
+                mAdditionalPackage.setChecked(!mAdditionalPackage.isChecked());
+                mInForming.setAdditionalPackage(mAdditionalPackage.isChecked());
+                break;
+            case R.id.confirmLocalDeliveryButton:
+                mLocalDelivery.setChecked(!mLocalDelivery.isChecked());
+                mInForming.setLocalDelivery(mLocalDelivery.isChecked());
+                break;
+            case R.id.confirmSentOnUserAlertButton:
+                mSendOnAlert.setChecked(!mSendOnAlert.isChecked());
+                mInForming.setSentOnUserAlert(mSendOnAlert.isChecked());
+                break;
+            case R.id.confirmAgreeTermsButton:
+                mAgreeTerms.setChecked(!mAgreeTerms.isChecked());
                 break;
             case R.id.confirmFinishAndSendBtn:
                 if (!mAgreeTerms.isChecked()) {
@@ -194,6 +222,50 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
                         .add("sentOnUserAlert", String.valueOf(mInForming.isSentOnUserAlert() ? 1 : 0))
                         .build();
                 ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(7, String.valueOf(mInForming.getId())), mFinishHandler);
+                break;
+            case R.id.confirmAdditionalPackageDetails:
+                mAlertDialog = mActivity.getDialog("Additional package", "Here will be the details of this element, " +
+                                "this text will be replaced with actual details", R.mipmap.ic_arrow_back_white, "OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                            }
+                        }, null, null);
+                mAlertDialog.show();
+                break;
+            case R.id.confirmLocalDeliveryDetails:
+                mAlertDialog = mActivity.getDialog("Local delivery", "Here will be the details of this element, " +
+                                "this text will be replaced with actual details", R.mipmap.ic_arrow_back_white, "OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                            }
+                        }, null, null);
+                mAlertDialog.show();
+                break;
+            case R.id.confirmSentOnUserAlertDetails:
+                mAlertDialog = mActivity.getDialog("Sent on user alert", "Here will be the details of this element, " +
+                                "this text will be replaced with actual details", R.mipmap.ic_arrow_back_white, "OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                            }
+                        }, null, null);
+                mAlertDialog.show();
+                break;
+            case R.id.confirmAgreeTermsDetails:
+                mAlertDialog = mActivity.getDialog("Agree terms", "Here will be the details of this element, " +
+                                "this text will be replaced with actual details", R.mipmap.ic_arrow_back_white, "OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                            }
+                        }, null, null);
+                mAlertDialog.show();
                 break;
         }
     }
@@ -245,16 +317,4 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
             mActivity.toggleLoadingProgress(false);
         }
     };
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-            case R.id.confirmAdditionalPackagesCheckBox:
-                mInForming.setAdditionalPackage(isChecked);
-                break;
-            case R.id.confirmSentOnUserAlert:
-                mInForming.setSentOnUserAlert(isChecked);
-                break;
-        }
-    }
 }

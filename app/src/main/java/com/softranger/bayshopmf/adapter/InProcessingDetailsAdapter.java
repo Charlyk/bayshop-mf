@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,12 +72,13 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             headerHolder.mParcelId.setText(headerHolder.mProcessingParcel.getCodeNumber());
 
             Address address = headerHolder.mProcessingParcel.getAddress();
-            String addressBuilder = address.getClientName() +
-                    "\n" + address.getStreet() + " " +
-                    "\n" + address.getCity() + ", " + address.getCountry() +
-                    "\n" + address.getPostalCode() +
-                    "\n" + address.getPhoneNumber();
-            headerHolder.mShippingAddress.setText(addressBuilder);
+
+            headerHolder.mStreet.setText(address.getStreet());
+            headerHolder.mPhoneNumber.setText(address.getPhoneNumber());
+            headerHolder.mCity.setText(address.getCity());
+            headerHolder.mCountry.setText(address.getCountry());
+            headerHolder.mPostalCode.setText(address.getPostalCode());
+            headerHolder.mClientName.setText(address.getClientName());
 
             headerHolder.mGoodsPrice.setText(headerHolder.mProcessingParcel.getGoodsPrice());
             headerHolder.mShippingPrice.setText(headerHolder.mProcessingParcel.getShippingPrice());
@@ -115,15 +118,28 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
-        final TextView mParcelId, mShippingAddress, mGoodsPrice, mCustomsClearance, mShippingPrice,
+        final TextView mParcelId, mGoodsPrice, mCustomsClearance, mShippingPrice,
                 mTotalPrice, mShippingBy, mTrackingNumber;
         final ImageView mDepositIcon;
+        final TextView mClientName;
+        final TextView mStreet, mPhoneNumber, mCity, mCountry, mPostalCode;
+        final Button mSelectButton;
+        final ImageButton mEditButton;
+        final ImageButton mAddToFavorite;
         InProcessingPackage mProcessingParcel;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
+            mClientName = (TextView) itemView.findViewById(R.id.secondStepItemNameLabel);
+            mStreet = (TextView) itemView.findViewById(R.id.secondStepAddressLabel);
+            mPhoneNumber = (TextView) itemView.findViewById(R.id.secondStepPhoneNumberLabel);
+            mCity = (TextView) itemView.findViewById(R.id.secondStepCityLabel);
+            mCountry = (TextView) itemView.findViewById(R.id.secondStepCountryLabel);
+            mPostalCode = (TextView) itemView.findViewById(R.id.secondStepPostalCodeLabel);
+            mSelectButton = (Button) itemView.findViewById(R.id.secondStepSelectBtn);
+            mEditButton = (ImageButton) itemView.findViewById(R.id.secondStepEditAddressButton);
+            mAddToFavorite = (ImageButton) itemView.findViewById(R.id.secondStepAddToFavoritesAddressButton);
             mParcelId = (TextView) itemView.findViewById(R.id.inProcessingDetailsParcelIdLabel);
-            mShippingAddress = (TextView) itemView.findViewById(R.id.inProcessingDetailsShippingAddressLabel);
             mGoodsPrice = (TextView) itemView.findViewById(R.id.inProcessingDetailsGoodsPriceLabel);
             mCustomsClearance = (TextView) itemView.findViewById(R.id.inProcessingDetailsCustomsClearanceLabel);
             mShippingPrice = (TextView) itemView.findViewById(R.id.inProcessingDetailsShippingPriceLabel);
@@ -131,6 +147,10 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             mShippingBy = (TextView) itemView.findViewById(R.id.inProcessingDetailsShippingByLabel);
             mTrackingNumber = (TextView) itemView.findViewById(R.id.inProcessingDetailsShippingByTracking);
             mDepositIcon = (ImageView) itemView.findViewById(R.id.inProcessingDetailsStorageIcon);
+
+            mEditButton.setVisibility(View.GONE);
+            mAddToFavorite.setVisibility(View.GONE);
+            mSelectButton.setVisibility(View.GONE);
         }
     }
 

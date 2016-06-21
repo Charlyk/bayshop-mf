@@ -29,7 +29,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_edit_24dpi"/>
+        android:src="@mipmap/ic_warning_24dpi"/>
 
     <!-- Want insurance title -->
     <TextView

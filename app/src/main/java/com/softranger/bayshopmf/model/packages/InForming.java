@@ -38,6 +38,7 @@ public class InForming extends Package implements Parcelable {
     private String mCurrency;
     private boolean mAdditionalPackage;
     private boolean mSentOnUserAlert;
+    private boolean mLocalDelivery;
 
     private InForming() {
 
@@ -67,6 +68,7 @@ public class InForming extends Package implements Parcelable {
         mCurrency = in.readString();
         mAdditionalPackage = in.readByte() != 0;
         mSentOnUserAlert = in.readByte() != 0;
+        mLocalDelivery = in.readByte() != 0;
     }
 
     public static final Creator<InForming> CREATOR = new Creator<InForming>() {
@@ -257,6 +259,14 @@ public class InForming extends Package implements Parcelable {
         mSentOnUserAlert = sentOnUserAlert;
     }
 
+    public boolean isLocalDelivery() {
+        return mLocalDelivery;
+    }
+
+    public void setLocalDelivery(boolean localDelivery) {
+        mLocalDelivery = localDelivery;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -287,6 +297,7 @@ public class InForming extends Package implements Parcelable {
         dest.writeString(mCurrency);
         dest.writeByte((byte) (mAdditionalPackage ? 1 : 0));
         dest.writeByte((byte) (mSentOnUserAlert ? 1 : 0));
+        dest.writeByte((byte) (mLocalDelivery? 1 : 0));
     }
 
 
@@ -313,6 +324,7 @@ public class InForming extends Package implements Parcelable {
         private String mCurrency;
         private boolean mAdditionalPackage;
         private boolean mSentOnUserAlert;
+        private boolean mLocalDelivery;
 
         public Builder id(int id) {
             mId = id;
@@ -424,6 +436,11 @@ public class InForming extends Package implements Parcelable {
             return this;
         }
 
+        public Builder localDelivery(boolean localDelivery) {
+            mLocalDelivery = localDelivery;
+            return this;
+        }
+
         public InForming build() {
             InForming inForming = new InForming();
             inForming.mId = this.mId;
@@ -448,6 +465,7 @@ public class InForming extends Package implements Parcelable {
             inForming.mCurrency = this.mCurrency;
             inForming.mAdditionalPackage = this.mAdditionalPackage;
             inForming.mSentOnUserAlert = this.mSentOnUserAlert;
+            inForming.mLocalDelivery = this.mLocalDelivery;
             return inForming;
         }
     }

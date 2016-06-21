@@ -140,8 +140,14 @@ public class ShippingMethodFragment extends Fragment implements ShippingMethodAd
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }

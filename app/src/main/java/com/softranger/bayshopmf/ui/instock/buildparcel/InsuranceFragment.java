@@ -1,11 +1,14 @@
 package com.softranger.bayshopmf.ui.instock.buildparcel;
 
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -58,6 +61,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
     private TextView mInsurancePriceLabel;
     private Button mNeedInsuranceDetails;
     private Button mRefuseInsuranceDetails;
+    private Button mConfirmBtn;
 
     public InsuranceFragment() {
         // Required empty public constructor
@@ -93,8 +97,8 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
         refuseInsuranceLayout.setOnClickListener(this);
         mNeedInsuranceDetails.setOnClickListener(this);
         mRefuseInsuranceDetails.setOnClickListener(this);
-        Button next = (Button) mRootView.findViewById(R.id.insuranceConfirmButton);
-        next.setOnClickListener(this);
+        mConfirmBtn = (Button) mRootView.findViewById(R.id.insuranceConfirmButton);
+        mConfirmBtn.setOnClickListener(this);
 
         mNeedInsuranceDescription = (TextView) mRootView.findViewById(R.id.insuranceDescriptionLabel);
         mRefuseInsuranceDescription = (TextView) mRootView.findViewById(R.id.noInsuranceDescriptionLabel);
@@ -202,6 +206,23 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
         mActivity.unregisterReceiver(mTitleReceiver);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void changeButtonBackground(boolean needInsurance) {
+        Drawable signalBG;
+        if (needInsurance) {
+            signalBG = mActivity.getResources().getDrawable(R.drawable.green_button_bg);
+        } else {
+            signalBG = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
+        }
+
+        final int sdk = android.os.Build.VERSION.SDK_INT;
+        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            mConfirmBtn.setBackgroundDrawable(signalBG);
+        } else {
+            mConfirmBtn.setBackground(signalBG);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -209,11 +230,13 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
                 needInsurance = true;
                 mNeedInSurance.setChecked(true);
                 mRefuseInsurance.setChecked(false);
+                changeButtonBackground(needInsurance);
                 break;
             case R.id.noInsuranceSelector:
                 needInsurance = false;
                 mNeedInSurance.setChecked(false);
                 mRefuseInsurance.setChecked(true);
+                changeButtonBackground(needInsurance);
                 break;
             case R.id.insuranceConfirmButton:
                 mInForming.setNeedInsurance(needInsurance);

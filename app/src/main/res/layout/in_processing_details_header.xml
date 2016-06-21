@@ -51,25 +51,7 @@
                 android:layout_marginTop="5dp"
                 android:background="#ffbdbdbd"/>
 
-            <TextView
-                android:id="@+id/inProcessingDetailsShippingAddressTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:drawableLeft="@mipmap/ic_shipping_address"
-                android:drawableStart="@mipmap/ic_shipping_address"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:text="@string/shipping_address"/>
-
-            <TextView
-                android:id="@+id/inProcessingDetailsShippingAddressLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                tools:text="Eduard Albu\nFloriolor 16/1 ap 106\nChisinau, Moldova\nMD-2001\n(79) 466 284"/>
+            <include layout="@layout/second_step_list_item"/>
 
             <View
                 android:layout_width="match_parent"

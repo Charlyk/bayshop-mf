@@ -14,12 +14,14 @@
         <include layout="@layout/no_insurance_layout"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_gravity="end"
+            android:textSize="17sp"
+            android:background="@drawable/green_button_bg"
             style="@style/Base.Widget.AppCompat.ActionButton"
-            android:textColor="@color/colorAccent"
+            android:textColor="@android:color/white"
             android:text="@string/confirm"
             android:id="@+id/insuranceConfirmButton"/>
     </LinearLayout>

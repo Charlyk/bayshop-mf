@@ -143,8 +143,14 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
                     Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                     break;
                 }
@@ -204,6 +210,7 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
         }
         mInForming.setGeneralDescription(description);
         mActivity.addFragment(InsuranceFragment.newInstance(mInForming), true);
+        mActivity.hideKeyboard();
     }
 
     @Override

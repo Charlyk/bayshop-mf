@@ -124,12 +124,12 @@
     <string name="message_example">Esti uveren in ceea ce faci? Asa iti poti pierde tot ce ai adunat o viata, gindestete ghini…</string>
     <string name="delivery_price">Delivery price:</string>
     <string name="insurance">Insurance</string>
-    <string name="declaration">Declaration</string>
+    <string name="declaration">Declaration filling:</string>
     <string name="you_don_t_have_any_item_yet">You don\'t have any item yet</string>
     <string name="select_address">Select address</string>
     <string name="edit_address">Edit address</string>
     <string name="local_delivery">Local delivery</string>
-    <string name="additional_package">Additional package</string>
+    <string name="additional_package">Use additional packaging material($10)</string>
     <string name="sent_on_user_alert">Sent on user alert</string>
     <string name="total_shipping_price">Total shipping price:</string>
     <string name="undo">UNDO</string>
@@ -171,4 +171,7 @@
     <string name="insurance_price">Insurance price:</string>
     <string name="i_refuse_the_insurance">I refuse the insurance</string>
     <string name="select_insurance">Select insurance</string>
+    <string name="please_check_the_details_and_confirm_parcel_creation">Please check the details and confirm parcel creation.</string>
+    <string name="total_products_cost">Total products cost:</string>
+    <string name="accepte_terms_and_conditions">Accepte terms and conditions:</string>
 </resources>
