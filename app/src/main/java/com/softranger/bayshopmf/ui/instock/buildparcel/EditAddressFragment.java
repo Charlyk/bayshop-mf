@@ -63,6 +63,10 @@ import okhttp3.Response;
 public class EditAddressFragment extends Fragment implements View.OnClickListener,
         CodesSpinnerAdapter.OnCountryClickListener, CountrySpinnerAdapter.OnCountryClickListener {
 
+    public static final String ADD_NEW = "add new address";
+    public static final String EDIT = "edit an address";
+    private static final String ACTION = "action";
+
     private static final String ADDRESS_ARG = "address argument";
     public static final String ACTION_REFRESH_ADDRESS = "REFRESH ADDRESSES LIST";
     private MainActivity mActivity;
@@ -72,6 +76,8 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
     private ArrayList<Country> mCountries;
     private CodesSpinnerAdapter mSpinnerAdapter;
     private CountrySpinnerAdapter mCountrySpinnerAdapter;
+
+    private static String action;
 
     private TextInputEditText mFirstNameInput, mLastNameInput, mStreetNameInput,
             mPhoneInput, mCityInput, mPostalCodeInput, mEmailInput;
@@ -87,6 +93,9 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
         Bundle args = new Bundle();
         if (address != null) {
             args.putParcelable(ADDRESS_ARG, address);
+            args.putString(ACTION, EDIT);
+        } else {
+            args.putString(ACTION, ADD_NEW);
         }
         EditAddressFragment fragment = new EditAddressFragment();
         fragment.setArguments(args);
@@ -108,8 +117,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_edit_address, container, false);
         mActivity = (MainActivity) getActivity();
@@ -120,6 +128,8 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
 
         bindAddressInputs(mRootView);
 
+        action = getArguments().getString(ACTION);
+
         if (getArguments().containsKey(ADDRESS_ARG)) {
             mAddress = getArguments().getParcelable(ADDRESS_ARG);
             addressId = mAddress.getId();
@@ -127,8 +137,9 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
             setDataOnPosition(mAddress);
             ApiClient.getInstance().sendRequest(Constants.Api.urlGetAddress(String.valueOf(addressId)), mHandler);
         } else {
+            mAddress = new Address.Builder().build();
             mActivity.setToolbarTitle(getString(R.string.add_new_address), true);
-            ApiClient.getInstance().sendRequest(Constants.Api.urlGetAddress(""), mHandler);
+            ApiClient.getInstance().sendRequest(Constants.Api.urlGetPhoneCodes(), mHandler);
         }
 
         Button saveButton = (Button) mRootView.findViewById(R.id.addAddressSaveAddressButton);
@@ -143,6 +154,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
     private void setDataOnPosition(Address address) {
         mFirstNameInput.setText(address.getFirstName());
         mLastNameInput.setText(address.getLastName());
+        mEmailInput.setText(address.getEmail());
         mStreetNameInput.setText(address.getStreet());
         mPhoneInput.setText(address.getPhoneNumber());
         mCityInput.setText(address.getCity());
@@ -261,8 +273,13 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                         .add("countryId", String.valueOf(mAddress.getCountryId()))
                         .build();
 
-                ApiClient.getInstance().sendRequest(requestBody,
-                        Constants.Api.urlAddNewAddress(String.valueOf(addressId)), mSaveAddressHandler);
+                String url;
+                if (action.equals(ADD_NEW)) {
+                    url = Constants.Api.urlAddNewAddress(null);
+                } else {
+                    url = Constants.Api.urlAddNewAddress(String.valueOf(addressId));
+                }
+                ApiClient.getInstance().sendRequest(requestBody, url, mSaveAddressHandler);
                 mActivity.toggleLoadingProgress(true);
                 break;
         }
@@ -279,25 +296,13 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
-                            JSONObject a = data.getJSONObject("address");
-                            String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
                             buildCountryCodes(data.getJSONArray("maskFormatsAll"));
                             buildCountries(data.getJSONObject("countries"));
-                            mAddress = new Address.Builder()
-                                    .id(addressId)
-                                    .clientName(name)
-                                    .firstName(a.getString("shipping_first_name"))
-                                    .lastName(a.getString("shipping_last_name"))
-                                    .email(a.optString("shipping_email", ""))
-                                    .street(a.getString("shipping_address"))
-                                    .city(a.getString("shipping_city"))
-                                    .country(a.optString("shipping_state", ""))
-                                    .postalCode(a.getString("shipping_zip"))
-                                    .phoneNumber(a.optString("shipping_phone", ""))
-                                    .phoneCode(a.optString("shipping_phone_code", ""))
-                                    .countryId(a.optInt("countryId", -1))
-                                    .build();
-                            setDataOnPosition(mAddress);
+                            if (action.equals(EDIT)) {
+                                JSONObject a = data.getJSONObject("address");
+                                mAddress = buildAddress(a);
+                                setDataOnPosition(mAddress);
+                            }
                         } else {
                             Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                         }
@@ -363,6 +368,29 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
         mCountriesSpinner.setAdapter(mCountrySpinnerAdapter);
     }
 
+    private Address buildAddress(JSONObject a) {
+        try {
+            String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
+            return new Address.Builder()
+                    .id(a.getInt("id"))
+                    .clientName(name)
+                    .firstName(a.getString("shipping_first_name"))
+                    .lastName(a.getString("shipping_last_name"))
+                    .email(a.optString("shipping_email", ""))
+                    .street(a.getString("shipping_address"))
+                    .city(a.getString("shipping_city"))
+                    .country(a.optString("shipping_state", ""))
+                    .postalCode(a.getString("shipping_zip"))
+                    .phoneNumber(a.optString("shipping_phone", ""))
+                    .phoneCode(a.optString("shipping_phone_code", ""))
+                    .countryId(a.optInt("countryId", 0))
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private Handler mSaveAddressHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -375,21 +403,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
                             JSONObject a = data.getJSONObject("address");
-                            String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
-                            mAddress = new Address.Builder()
-                                    .id(a.getInt("id"))
-                                    .clientName(name)
-                                    .firstName(a.getString("shipping_first_name"))
-                                    .lastName(a.getString("shipping_last_name"))
-                                    .email(a.optString("shipping_email", ""))
-                                    .street(a.getString("shipping_address"))
-                                    .city(a.getString("shipping_city"))
-                                    .country(a.optString("shipping_state", ""))
-                                    .postalCode(a.getString("shipping_zip"))
-                                    .phoneNumber(a.optString("shipping_phone", ""))
-                                    .phoneCode(a.optString("shipping_phone_code", ""))
-                                    .countryId(a.optInt("countryId", 0))
-                                    .build();
+                            mAddress = buildAddress(a);
                             mActivity.sendBroadcast(new Intent(ACTION_REFRESH_ADDRESS));
                             mActivity.onBackPressed();
                         } else {

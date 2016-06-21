@@ -56,6 +56,7 @@ public class Constants {
         private static final String DELETE_BOX = "delete-box/";
         private static final String MEMBER_ADDRESS = "member-address/";
         private static final String MEMBER_ADDRESS_ADD = "member-address-add/";
+        private static final String PHONE_CODES = "phone-formats";
 
         /**
          * POST
@@ -204,6 +205,12 @@ public class Constants {
             return URL + PARCELS + VIEW + parcelId;
         }
 
+        /**
+         * POST
+         * Create an url used to either add new or edit address
+         * @param addressId for address you want to edit or null if you need to add new address
+         * @return url to edit or add a new address
+         */
         public static String urlAddNewAddress(@Nullable String addressId) {
             if (addressId == null) {
                 return URL + MEMBER_ADDRESS_ADD;
@@ -212,8 +219,23 @@ public class Constants {
             }
         }
 
+        /**
+         * GET
+         * Create an url to get an address details
+         * @param addressId for which you need details
+         * @return url to get address details
+         */
         public static String urlGetAddress(String addressId) {
             return URL + MEMBER_ADDRESS + addressId;
+        }
+
+        /**
+         * GET
+         * Create an url to obtain phonecode and countries ids
+         * @return url to access phone codes from server
+         */
+        public static String urlGetPhoneCodes() {
+            return URL + MEMBER_ADDRESS + PHONE_CODES;
         }
     }
 

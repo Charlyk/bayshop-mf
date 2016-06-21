@@ -21,6 +21,7 @@ import okhttp3.Response;
 
 /**
  * Created by eduard on 29.04.16.
+ *
  */
 public class ApiClient {
 
