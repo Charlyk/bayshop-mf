@@ -104,6 +104,7 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
         View view = inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
+        intentFilter.addAction(EditAddressFragment.ACTION_REFRESH_ADDRESS);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
         ColorGroupSectionTitleIndicator indicator = (ColorGroupSectionTitleIndicator)
                 view.findViewById(R.id.buildSecondStepFastScrollerSectionIndicator);
@@ -120,11 +121,15 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
         fastScroller.setRecyclerView(mRecyclerView);
         mRecyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
         fastScroller.setSectionIndicator(indicator);
+        getAddressesList();
+        return view;
+    }
+
+    private void getAddressesList() {
         RequestBody body = new FormBody.Builder()
                 .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
                 .build();
         ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mAddressHandler);
-        return view;
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -133,6 +138,9 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
             switch (intent.getAction()) {
                 case MainActivity.ACTION_UPDATE_TITLE:
                     mActivity.setToolbarTitle(getString(R.string.addresses_list), true);
+                    break;
+                case EditAddressFragment.ACTION_REFRESH_ADDRESS:
+                    getAddressesList();
                     break;
             }
         }
@@ -154,6 +162,7 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
+                            mAddresses.clear();
                             JSONObject data = response.getJSONObject("data");
                             JSONArray addressesJSON = data.getJSONArray("addresses");
                             for (int i = 0; i < addressesJSON.length(); i++) {

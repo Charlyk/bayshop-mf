@@ -64,6 +64,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
         CodesSpinnerAdapter.OnCountryClickListener, CountrySpinnerAdapter.OnCountryClickListener {
 
     private static final String ADDRESS_ARG = "address argument";
+    public static final String ACTION_REFRESH_ADDRESS = "REFRESH ADDRESSES LIST";
     private MainActivity mActivity;
     private Address mAddress;
     private View mRootView;
@@ -127,6 +128,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
             ApiClient.getInstance().sendRequest(Constants.Api.urlGetAddress(String.valueOf(addressId)), mHandler);
         } else {
             mActivity.setToolbarTitle(getString(R.string.add_new_address), true);
+            ApiClient.getInstance().sendRequest(Constants.Api.urlGetAddress(""), mHandler);
         }
 
         Button saveButton = (Button) mRootView.findViewById(R.id.addAddressSaveAddressButton);
@@ -261,6 +263,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
 
                 ApiClient.getInstance().sendRequest(requestBody,
                         Constants.Api.urlAddNewAddress(String.valueOf(addressId)), mSaveAddressHandler);
+                mActivity.toggleLoadingProgress(true);
                 break;
         }
     }
@@ -370,7 +373,8 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
-                            JSONObject a = response.getJSONObject("data");
+                            JSONObject data = response.getJSONObject("data");
+                            JSONObject a = data.getJSONObject("address");
                             String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
                             mAddress = new Address.Builder()
                                     .id(a.getInt("id"))
@@ -386,6 +390,8 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                                     .phoneCode(a.optString("shipping_phone_code", ""))
                                     .countryId(a.optInt("countryId", 0))
                                     .build();
+                            mActivity.sendBroadcast(new Intent(ACTION_REFRESH_ADDRESS));
+                            mActivity.onBackPressed();
                         } else {
                             Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
                         }

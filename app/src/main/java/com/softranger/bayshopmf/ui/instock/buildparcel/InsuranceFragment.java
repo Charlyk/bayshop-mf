@@ -106,7 +106,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
 
         mActivity.toggleLoadingProgress(true);
         RequestBody body = new FormBody.Builder()
-                .add("autocomplete", String.valueOf(0))
+                .add("autocomplete", String.valueOf(1)) // 1 = false, 0 = true
                 .add("declarationName", mInForming.getGeneralDescription())
                 .add("declarations", String.valueOf(buildProductsArray(mInForming.getProducts())))
                 .build();
@@ -152,7 +152,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
                                     .declarationTotalPrice(data.getDouble("declarationTotalPrice"))
                                     .build();
 
-                            mProductsPriceLabel.setText(insurance.getCurrency() + insurance.getTotalPriceBoxes());
+                            mProductsPriceLabel.setText(insurance.getCurrency() + insurance.getDeclarationTotalPrice());
                             mShippingPriceLabel.setText(insurance.getCurrency() + insurance.getShippingCost());
                             mInsurancePriceLabel.setText(insurance.getCurrency() + insurance.getCommission());
                         } else {
