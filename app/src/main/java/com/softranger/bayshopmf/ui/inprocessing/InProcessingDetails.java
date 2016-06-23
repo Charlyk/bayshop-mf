@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +18,8 @@ import android.view.ViewGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
-import com.softranger.bayshopmf.model.Address;
-import com.softranger.bayshopmf.model.packages.InProcessingPackage;
 import com.softranger.bayshopmf.model.Photo;
-import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.packages.Package;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -48,7 +47,7 @@ public class InProcessingDetails extends Fragment implements ImagesAdapter.OnIma
         // Required empty public constructor
     }
 
-    public static InProcessingDetails newInstance(InProcessingPackage product) {
+    public static InProcessingDetails newInstance(@NonNull Package product) {
         Bundle args = new Bundle();
         args.putParcelable(PRODUCT_ARG, product);
         InProcessingDetails fragment = new InProcessingDetails();
@@ -62,14 +61,14 @@ public class InProcessingDetails extends Fragment implements ImagesAdapter.OnIma
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_in_processing_details, container, false);
         mActivity = (MainActivity) getActivity();
-        InProcessingPackage processingParcel = getArguments().getParcelable(PRODUCT_ARG);
+        Package aPackage = getArguments().getParcelable(PRODUCT_ARG);
         mObjects = new ArrayList<>();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inProcessingDetailsList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         InProcessingDetailsAdapter adapter = new InProcessingDetailsAdapter(mObjects, this);
         mRecyclerView.setAdapter(adapter);
         ApiClient.getInstance().sendRequest(Constants.Api.urlViewParcelDetails(String
-                .valueOf(processingParcel.getId())), mDetailsHandler);
+                .valueOf(aPackage.getId())), mDetailsHandler);
         return view;
     }
 

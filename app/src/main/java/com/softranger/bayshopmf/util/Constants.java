@@ -238,14 +238,4 @@ public class Constants {
             return URL + MEMBER_ADDRESS + PHONE_CODES;
         }
     }
-
-    public static class ListToShow {
-        public static final String IN_STOCK = "in stock items";
-        public static final String AWAITING_ARRIVAL = "awaiting arrival";
-        public static final String IN_PROCESSING = "in processing";
-        public static final String IN_FORMING = "in forming";
-        public static final String AWAITING_SENDING = "awaiting sending";
-        public static final String SENT = "sent";
-        public static final String RECEIVED = "received";
-    }
 }
