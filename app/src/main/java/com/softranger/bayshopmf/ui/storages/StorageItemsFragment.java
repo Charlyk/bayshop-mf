@@ -233,11 +233,13 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                     JSONArray livePackages = jsonData.getJSONArray("livePackages");
                     for (int i = 0; i < inStockList.length(); i++) {
                         JSONObject jsonItem = inStockList.getJSONObject(i);
+                        String parcelName = jsonItem.getString("title");
+                        if (parcelName == null || parcelName.equals("null")) parcelName = "";
                         InStockItem inStockItem = new InStockItem.Builder()
                                 .deposit(mDeposit)
                                 .id(jsonItem.getInt("id"))
                                 .trackingNumber(jsonItem.optString("tracking", ""))
-                                .name(jsonItem.optString("title", ""))
+                                .name(parcelName)
                                 .parcelId(jsonItem.optString("uid", ""))
                                 .hasDeclaration(jsonItem.getInt("isDeclarationFilled") == 1)
                                 .build();

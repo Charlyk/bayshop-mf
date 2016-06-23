@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.network.ApiClient;
@@ -65,6 +66,8 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
         mActivity = (MainActivity) getActivity();
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
         mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
+        ImageButton details = (ImageButton) view.findViewById(R.id.checkProductDetailsButton);
+        details.setOnClickListener(this);
         mConfirmButton = (Button) view.findViewById(R.id.check_product_confirmBtn);
         mId = getArguments().getString(ID_ARG);
         mIsInprogress = getArguments().getBoolean(STATUS_ARG);
@@ -108,7 +111,10 @@ public class CheckProductFragment extends Fragment implements View.OnClickListen
                     mActivity.onBackPressed();
                 }
                 break;
+            }
+            case R.id.checkProductDetailsButton: {
 
+                break;
             }
         }
     }

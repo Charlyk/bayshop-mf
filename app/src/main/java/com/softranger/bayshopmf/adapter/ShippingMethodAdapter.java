@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -87,14 +88,14 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         final TextView mShippingMethod;
         final TextView mMethodPrice;
         final TextView mDescription;
-        final Button mDetailsButton;
+        final ImageButton mDetailsButton;
         final Button mSelectButton;
         ShippingMethod mShippingMethodObj;
         public ViewHolder(View itemView) {
             super(itemView);
             mShippingMethod = (TextView) itemView.findViewById(R.id.shippingMethodItemNameLabel);
             mMethodPrice = (TextView) itemView.findViewById(R.id.shippingMethodItemPriceLabel);
-            mDetailsButton = (Button) itemView.findViewById(R.id.shippingMethodDetailsBtn);
+            mDetailsButton = (ImageButton) itemView.findViewById(R.id.shippingMethodDetailsBtn);
             mSelectButton = (Button) itemView.findViewById(R.id.shippingMethodSelectBtn);
             mDescription = (TextView) itemView.findViewById(R.id.shippingMethodDescriptionLabel);
             mDetailsButton.setOnClickListener(this);
@@ -119,7 +120,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public interface OnShippingClickListener {
-        void onDetailsClick(ShippingMethod shippingMethod, int position, TextView detailsTextView, Button detailsButton);
+        void onDetailsClick(ShippingMethod shippingMethod, int position, TextView detailsTextView, ImageButton detailsButton);
         void onSelectClick(ShippingMethod shippingMethod, int position);
     }
 }

@@ -62,7 +62,7 @@
         android:text="@string/lorem_ipsum"/>
 
     <!-- Details button-->
-    <Button
+    <ImageButton
         android:id="@+id/noInsuranceDetailsButton"
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
@@ -74,8 +74,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="?selectableItemBackground"
-        android:text="@string/details"
-        android:textColor="@color/colorGreenAction"/>
+        android:src="@mipmap/ic_detail_24dp"/>
 
     <View
         android:layout_width="match_parent"

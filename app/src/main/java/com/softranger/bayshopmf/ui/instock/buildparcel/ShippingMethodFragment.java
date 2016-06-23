@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -168,13 +169,11 @@ public class ShippingMethodFragment extends Fragment implements ShippingMethodAd
     };
 
     @Override
-    public void onDetailsClick(ShippingMethod shippingMethod, int position, TextView detailsTextView, Button detailsButton) {
+    public void onDetailsClick(ShippingMethod shippingMethod, int position, TextView detailsTextView, ImageButton detailsButton) {
         if (detailsTextView.getLineCount() == 4) {
             mActivity.expandTextView(detailsTextView);
-            detailsButton.setText(getString(R.string.hide_details));
         } else {
             mActivity.collapseTextView(detailsTextView, 4);
-            detailsButton.setText(getString(R.string.details));
         }
     }
 

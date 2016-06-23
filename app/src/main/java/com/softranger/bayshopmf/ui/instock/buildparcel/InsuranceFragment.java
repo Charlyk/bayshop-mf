@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -59,8 +60,8 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
     private TextView mProductsPriceLabel;
     private TextView mShippingPriceLabel;
     private TextView mInsurancePriceLabel;
-    private Button mNeedInsuranceDetails;
-    private Button mRefuseInsuranceDetails;
+    private ImageButton mNeedInsuranceDetails;
+    private ImageButton mRefuseInsuranceDetails;
     private Button mConfirmBtn;
 
     public InsuranceFragment() {
@@ -87,8 +88,8 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
 
         needInsurance = true;
 
-        mNeedInsuranceDetails = (Button) mRootView.findViewById(R.id.insuranceDetailsButton);
-        mRefuseInsuranceDetails = (Button) mRootView.findViewById(R.id.noInsuranceDetailsButton);
+        mNeedInsuranceDetails = (ImageButton) mRootView.findViewById(R.id.insuranceDetailsButton);
+        mRefuseInsuranceDetails = (ImageButton) mRootView.findViewById(R.id.noInsuranceDetailsButton);
         mNeedInSurance = (RadioButton) mRootView.findViewById(R.id.insuranceRadioButton);
         mRefuseInsurance = (RadioButton) mRootView.findViewById(R.id.noInsuranceRadioButton);
         RelativeLayout needInsuranceLayout = (RelativeLayout) mRootView.findViewById(R.id.insuranceSelector);
@@ -245,19 +246,15 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
             case R.id.insuranceDetailsButton:
                 if (mNeedInsuranceDescription.getLineCount() == 4) {
                     mActivity.expandTextView(mNeedInsuranceDescription);
-                    mNeedInsuranceDetails.setText(getString(R.string.hide_details));
                 } else {
                     mActivity.collapseTextView(mNeedInsuranceDescription, 4);
-                    mNeedInsuranceDetails.setText(getString(R.string.details));
                 }
                 break;
             case R.id.noInsuranceDetailsButton:
                 if (mRefuseInsuranceDescription.getLineCount() == 4) {
                     mActivity.expandTextView(mRefuseInsuranceDescription);
-                    mRefuseInsuranceDetails.setText(getString(R.string.hide_details));
                 } else {
                     mActivity.collapseTextView(mRefuseInsuranceDescription, 4);
-                    mRefuseInsuranceDetails.setText(getString(R.string.details));
                 }
                 break;
         }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.network.ApiClient;
@@ -64,7 +65,9 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_additional_photo, container, false);
         mActivity = (MainActivity) getActivity();
         mCommentInput = (EditText) view.findViewById(R.id.check_product_commentInput);
-        mLeaveComment = (Button) view.findViewById(R.id.check_product_leaveCommentBtn);
+        mLeaveComment = (Button) view.findViewById(R.id.additionalPhotoleaveCommentBtn);
+        ImageButton details = (ImageButton) view.findViewById(R.id.additionalPhotoDetailsButton);
+        details.setOnClickListener(this);
         mConfirmButton = (Button) view.findViewById(R.id.check_product_confirmBtn);
         mId = getArguments().getString(ID_ARG);
         mIsInprogress = getArguments().getBoolean(STATUS_ARG);
@@ -108,6 +111,10 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
                     mActivity.sendBroadcast(intent);
                     mActivity.onBackPressed();
                 }
+                break;
+            }
+            case R.id.additionalPhotoDetailsButton: {
+
                 break;
             }
         }

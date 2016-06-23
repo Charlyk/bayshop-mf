@@ -43,9 +43,7 @@
         android:layout_height="wrap_content"
         android:maxLines="4"
         android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         tools:text="@string/lorem_ipsum"
         android:layout_below="@id/shippingMethodItemNameLabel"/>
@@ -64,7 +62,7 @@
         android:text="@string/select_method"
         android:textColor="@color/colorGreenAction"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/shippingMethodDetailsBtn"
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
@@ -75,8 +73,8 @@
         android:layout_toLeftOf="@+id/shippingMethodSelectBtn"
         android:layout_toStartOf="@+id/shippingMethodSelectBtn"
         android:background="?selectableItemBackground"
-        android:text="@string/details"
-        android:textColor="@color/colorGreenAction"/>
+        android:src="@mipmap/ic_detail_24dp"
+        android:contentDescription="@string/details"/>
 
     <View
         android:layout_width="match_parent"
