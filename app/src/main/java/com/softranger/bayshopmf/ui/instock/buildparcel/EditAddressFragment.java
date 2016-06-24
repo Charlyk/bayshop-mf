@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -33,33 +31,22 @@ import com.softranger.bayshopmf.adapter.CountrySpinnerAdapter;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.Country;
 import com.softranger.bayshopmf.model.CountryCode;
-import com.softranger.bayshopmf.model.Photo;
-import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class EditAddressFragment extends Fragment implements View.OnClickListener,
         CodesSpinnerAdapter.OnCountryClickListener, CountrySpinnerAdapter.OnCountryClickListener {
 
@@ -75,7 +62,6 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
     private ArrayList<CountryCode> mCountryCodes;
     private ArrayList<Country> mCountries;
     private CodesSpinnerAdapter mSpinnerAdapter;
-    private CountrySpinnerAdapter mCountrySpinnerAdapter;
 
     private static String action;
 
@@ -353,7 +339,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                     .build();
             mCountryCodes.add(countryCode);
         }
-        new DownloadThread(mCountryCodes).start();
+        new ImageDownloadThread<>(mCountryCodes, mDownloadHandler, mActivity).start();
         mSpinnerAdapter = new CodesSpinnerAdapter(mActivity, R.layout.spinner_list_item, mCountryCodes);
         mSpinnerAdapter.setOnCountryClickListener(this);
         mCodeSpinner.setAdapter(mSpinnerAdapter);
@@ -369,9 +355,9 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                     .build();
             mCountries.add(country);
         }
-        mCountrySpinnerAdapter = new CountrySpinnerAdapter(mActivity, R.layout.country_spinner_item, mCountries);
-        mCountrySpinnerAdapter.setOnCountryClickListener(this);
-        mCountriesSpinner.setAdapter(mCountrySpinnerAdapter);
+        CountrySpinnerAdapter countrySpinnerAdapter = new CountrySpinnerAdapter(mActivity, R.layout.country_spinner_item, mCountries);
+        countrySpinnerAdapter.setOnCountryClickListener(this);
+        mCountriesSpinner.setAdapter(countrySpinnerAdapter);
     }
 
     private Address buildAddress(JSONObject a) {
@@ -396,6 +382,15 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
         }
         return null;
     }
+
+    private Handler mDownloadHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == ImageDownloadThread.FINISHED) {
+                mSpinnerAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     private Handler mSaveAddressHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -460,45 +455,5 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
         mAddress.setCountry(country.getName());
         mAddress.setCountryId(Integer.parseInt(country.getId()));
         mCountryLabel.setText(country.getName());
-    }
-
-    class DownloadThread extends Thread {
-
-        private ArrayList<CountryCode> mCountryCodes;
-
-        public DownloadThread(ArrayList<CountryCode> photos) {
-            mCountryCodes = photos;
-        }
-
-        @Override
-        public void run() {
-            for (CountryCode countryCode : mCountryCodes) {
-                try {
-                    String url = countryCode.getFlagUrl();
-                    URL biImageUlr = new URL(url);
-                    File image = new File(mActivity.getCacheDir(), urlToFileName(url));
-                    if (!image.exists()) {
-                        image.createNewFile();
-                        BufferedInputStream inputStream = new BufferedInputStream(biImageUlr.openStream());
-                        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(image));
-                        byte[] buffer = new byte[1024];
-                        int byteCount = 0;
-                        while ((byteCount = inputStream.read(buffer)) != -1) {
-                            outputStream.write(buffer, 0, byteCount);
-                        }
-                        inputStream.close();
-                        outputStream.flush();
-                        outputStream.close();
-                    }
-                    countryCode.setFlagImage(BitmapFactory.decodeFile(image.getAbsolutePath()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        private String urlToFileName(String url) {
-            return url.replace("/", "").replace(".", "") + ".png";
-        }
     }
 }

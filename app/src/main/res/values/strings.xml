@@ -174,4 +174,6 @@
     <string name="please_check_the_details_and_confirm_parcel_creation">Please check the details and confirm parcel creation.</string>
     <string name="total_products_cost">Total products cost:</string>
     <string name="accepte_terms_and_conditions">Accepte terms and conditions:</string>
+    <string name="upload_document">Upload document</string>
+    <string name="take_photo">Take photo</string>
 </resources>

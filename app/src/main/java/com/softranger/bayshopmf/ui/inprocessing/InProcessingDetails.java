@@ -76,6 +76,7 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ApiClient.getInstance().sendRequest(Constants.Api.urlViewParcelDetails(String
                 .valueOf(mPackage.getId())), mDetailsHandler);
+        mActivity.toggleLoadingProgress(true);
         return view;
     }
 
@@ -153,7 +154,7 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
                     .totalPrice(data.getDouble("totalPrice"))
                     .deliveryPrice(data.getDouble("deliveryPrice"))
                     .name(data.getString("generalDescription"))
-                    .insuranceCommission(data.getDouble("insuranceCommission"))
+                    .insuranceCommission(data.optDouble("insuranceCommission", 0))
                     .status(data.getString("status"))
                     .address(address)
                     .shippingMethod(shippingMethod)
@@ -199,6 +200,8 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
     }
 
     private Address buildAddress(JSONObject jsonAddress) throws Exception {
+        String clientName = jsonAddress.getString("first_name") + " "
+                + jsonAddress.getString("last_name");
         return new Address.Builder()
                 .postalCode(jsonAddress.getString("zip"))
                 .city(jsonAddress.getString("city"))
@@ -208,6 +211,7 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
                 .street(jsonAddress.getString("address"))
                 .lastName(jsonAddress.getString("last_name"))
                 .firstName(jsonAddress.getString("first_name"))
+                .clientName(clientName)
                 .build();
     }
 
@@ -244,6 +248,7 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
             JSONObject object = jsonImages.getJSONObject(i);
             Photo photo = new Photo.Builder()
                     .bigImage(object.getString("photo"))
+                    .bigImage("")
                     .smallImage(object.getString("photoThumbnail"))
                     .build();
             photos.add(photo);

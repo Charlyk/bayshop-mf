@@ -4,12 +4,14 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.softranger.bayshopmf.util.Imageble;
+
 /**
  * Created by Eduard Albu on 5/18/16, 05, 2016
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class Photo implements Parcelable {
+public class Photo implements Parcelable, Imageble {
     private String mSmallImage;
     private String mBigImage;
     private Bitmap mSmallBitmap;
@@ -77,6 +79,21 @@ public class Photo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mSmallImage);
         dest.writeString(mBigImage);
+    }
+
+    @Override
+    public void setImage(Bitmap bitmap) {
+        mBigBitmap = bitmap;
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return mBigBitmap;
+    }
+
+    @Override
+    public String getImageUrl() {
+        return mBigImage;
     }
 
     public static class Builder {

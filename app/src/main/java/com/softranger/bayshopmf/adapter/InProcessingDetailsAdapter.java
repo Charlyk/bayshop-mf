@@ -96,13 +96,17 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         } else if (mItems.get(position) instanceof Product) {
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
             itemHolder.mProduct = (Product) mItems.get(position);
-            itemHolder.mProductId.setText(itemHolder.mProduct.getProductId());
+            itemHolder.mProductId.setText(itemHolder.mProduct.getBarcode());
             itemHolder.mProductName.setText(itemHolder.mProduct.getProductName());
             itemHolder.mPrice.setText(itemHolder.mProduct.getProductPrice());
             itemHolder.mItemCount.setText(itemHolder.mProduct.getProductQuantity());
-            ImagesAdapter imagesAdapter = new ImagesAdapter(itemHolder.mProduct.getImages(), R.layout.product_image_list_item);
-            imagesAdapter.setOnImageClickListener(mOnImageClickListener);
-            itemHolder.mPhotosList.setAdapter(imagesAdapter);
+            if (itemHolder.mProduct.getImages().size() > 0) {
+                ImagesAdapter imagesAdapter = new ImagesAdapter(itemHolder.mProduct.getImages(), R.layout.product_image_list_item);
+                imagesAdapter.setOnImageClickListener(mOnImageClickListener);
+                itemHolder.mPhotosList.setAdapter(imagesAdapter);
+            } else {
+                itemHolder.mPhotosList.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -121,6 +125,13 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                 return R.mipmap.ic_uk_flag;
             default:
                 return R.mipmap.ic_usa_flag;
+        }
+    }
+
+    class ProhibitionHolder extends RecyclerView.ViewHolder {
+
+        public ProhibitionHolder(View itemView) {
+            super(itemView);
         }
     }
 

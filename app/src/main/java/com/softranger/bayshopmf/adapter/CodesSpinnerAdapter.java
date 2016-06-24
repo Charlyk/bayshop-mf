@@ -66,7 +66,7 @@ public class CodesSpinnerAdapter extends ArrayAdapter<CountryCode> {
         TextView name = (TextView) row.findViewById(R.id.spinnerCountryLabel);
         name.setText(countryCode.getName());
         ImageView icon = (ImageView)row.findViewById(R.id.spinnerFlagLabel);
-        icon.setImageBitmap(countryCode.getFlagImage());
+        icon.setImageBitmap(countryCode.getImage());
         return row;
     }
 

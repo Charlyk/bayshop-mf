@@ -1,5 +1,9 @@
 package com.softranger.bayshopmf.adapter;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +13,8 @@ import android.widget.ImageView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.network.ImageDownloadThread;
+import com.softranger.bayshopmf.util.Application;
 
 import java.util.ArrayList;
 
@@ -29,10 +35,28 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     public ImagesAdapter(ArrayList<Photo> images, @LayoutRes int layoutId) {
         mImages = images;
         mLayoutId = layoutId;
+        downloadImages();
+    }
+
+    public ImagesAdapter(@LayoutRes int layoutId) {
+        mImages = new ArrayList<>();
+        mLayoutId = layoutId;
     }
 
     public void setOnImageClickListener(OnImageClickListener onImageClickListener) {
         mOnImageClickListener = onImageClickListener;
+    }
+
+    public void addImage(Photo photo) {
+        mImages.add(photo);
+        notifyItemInserted(mImages.indexOf(photo));
+        downloadImages();
+    }
+
+    public void addImages(ArrayList<Photo> photos) {
+        mImages.addAll(photos);
+        notifyDataSetChanged();
+        downloadImages();
     }
 
     @Override
@@ -68,6 +92,20 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
             }
         }
     }
+
+    private void downloadImages() {
+        new ImageDownloadThread<>(mImages, mHandler, Application.getInstance().getApplicationContext()).start();
+    }
+
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.obj instanceof Photo) {
+                final int position = mImages.indexOf(msg.obj);
+                notifyItemChanged(position);
+            }
+        }
+    };
 
     public interface OnImageClickListener {
         void onImageClick(ArrayList<Photo> images, int position);

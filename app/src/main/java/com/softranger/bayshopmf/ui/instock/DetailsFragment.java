@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -27,10 +28,12 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -61,6 +64,8 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
     private InStockDetailed mInStockDetailed;
     private InStockItem mInStockItem;
     private View mRootView;
+    private ImagesAdapter mImagesAdapter;
+    private LinearLayout mHolderLayout;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -80,15 +85,21 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_details, container, false);
         mActivity = (MainActivity) getActivity(); // used as context to create views programmatically
+        mHolderLayout = (LinearLayout) mRootView.findViewById(R.id.inStockDetailsHolderLayout);
+        mHolderLayout.setVisibility(View.GONE);
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
+        intentFilter.addAction(StorageItemsFragment.ACTION_ITEM_CHANGED);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.inStockDetailsImageList);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false));
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mInStockItem = getArguments().getParcelable(ITEM_ARG);
+        mImagesAdapter = new ImagesAdapter(R.layout.in_stock_detailed_image);
+        mImagesAdapter.setOnImageClickListener(this);
+        mRecyclerView.setAdapter(mImagesAdapter);
         ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mDetailsHandler);
         mActivity.toggleLoadingProgress(true);
         return mRootView;
@@ -113,6 +124,11 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                 case CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT:
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
+                    break;
+                case StorageItemsFragment.ACTION_ITEM_CHANGED:
+                    mHolderLayout.setVisibility(View.GONE);
+                    ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mDetailsHandler);
+                    mActivity.toggleLoadingProgress(true);
                     break;
             }
         }
@@ -162,22 +178,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         mFillDeclaration.setOnClickListener(this);
         mCheckProduct.setOnClickListener(this);
         mAdditionalPhoto.setOnClickListener(this);
-        loadImages(detailed.getPhotoUrls());
-    }
-
-    /**
-     * This method will add images to the grid layout starting from third row
-     * (first two rows are in use by additional buttons and parcel details)
-     */
-    private void loadImages(final ArrayList<Photo> images) {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ImagesAdapter adapter = new ImagesAdapter(images, R.layout.in_stock_detailed_image);
-                adapter.setOnImageClickListener(DetailsFragment.this);
-                mRecyclerView.setAdapter(adapter);
-            }
-        });
     }
 
     private Handler mDetailsHandler = new Handler(Looper.getMainLooper()) {
@@ -216,7 +216,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                             }
                             mInStockDetailed.setPhotoUrls(photos);
                             showDetails(mRootView, mInStockDetailed);
-                            new DownloadThread(mInStockDetailed.getPhotoUrls()).start();
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }
@@ -249,6 +248,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                     break;
                 }
             }
+            mHolderLayout.setVisibility(View.VISIBLE);
             mActivity.toggleLoadingProgress(false);
         }
     };
@@ -285,28 +285,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
             mActivity.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    class DownloadThread extends Thread {
-
-        private ArrayList<Photo> mPhotos;
-
-        public DownloadThread(ArrayList<Photo> photos) {
-            mPhotos = photos;
-        }
-
-        @Override
-        public void run() {
-            for (Photo photo : mPhotos) {
-                try {
-                    URL biImageUlr = new URL(photo.getBigImage());
-                    photo.setBigBitmap(BitmapFactory.decodeStream(biImageUlr.openStream()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            loadImages(mPhotos);
         }
     }
 }

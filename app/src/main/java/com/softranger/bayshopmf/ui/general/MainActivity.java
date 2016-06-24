@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final int PERMISSION_REQUEST_CODE = 1535;
     public static final String ACTION_UPDATE_TITLE = "update toolbar title";
-    public static final String ACTION_START_CREATING_PARCEL = "start creating a new parcel";
     public ActionBarDrawerToggle mDrawerToggle;
     public DrawerLayout mDrawerLayout;
     public Toolbar mToolbar;
@@ -144,6 +143,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerToggle.syncState();
 
         mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
+
+
+        if (!Application.getInstance().isLoggedIn()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

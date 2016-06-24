@@ -4,10 +4,12 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.softranger.bayshopmf.util.Imageble;
+
 /**
  * Created by macbook on 6/17/16.
  */
-public class CountryCode implements Parcelable {
+public class CountryCode implements Parcelable, Imageble {
     private int mId;
     private int mCountryId;
     private String mCode;
@@ -76,10 +78,6 @@ public class CountryCode implements Parcelable {
         mFormat = format;
     }
 
-    public String getFlagUrl() {
-        return mFlagUrl;
-    }
-
     public void setFlagUrl(String flagUrl) {
         mFlagUrl = "http://md.bay-dev.tk" + flagUrl;;
     }
@@ -100,14 +98,6 @@ public class CountryCode implements Parcelable {
         mName = name;
     }
 
-    public Bitmap getFlagImage() {
-        return mFlagImage;
-    }
-
-    public void setFlagImage(Bitmap flagImage) {
-        mFlagImage = flagImage;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -123,6 +113,21 @@ public class CountryCode implements Parcelable {
         dest.writeString(mCountryCode);
         dest.writeString(mName);
         dest.writeParcelable(mFlagImage, flags);
+    }
+
+    @Override
+    public void setImage(Bitmap bitmap) {
+        mFlagImage = bitmap;
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return mFlagImage;
+    }
+
+    @Override
+    public String getImageUrl() {
+        return mFlagUrl;
     }
 
     public static class Builder {

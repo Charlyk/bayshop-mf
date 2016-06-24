@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.ui.instock;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,6 +20,7 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -140,6 +142,8 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
+                            Intent update = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                            mActivity.sendBroadcast(update);
                             mActivity.onBackPressed();
                             Snackbar.make(mRecyclerView, getString(R.string.declaration_saved), Snackbar.LENGTH_SHORT).show();
                         } else {
