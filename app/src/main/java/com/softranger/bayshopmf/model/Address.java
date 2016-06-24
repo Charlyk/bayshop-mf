@@ -19,6 +19,7 @@ public class Address implements Parcelable {
     private String mPostalCode;
     private String mPhoneNumber;
     private String mPhoneCode;
+    private String mState;
     private int mCountryId;
     private int mId = -1;
     private boolean mIsInFavorites;
@@ -39,6 +40,7 @@ public class Address implements Parcelable {
         mPhoneNumber = in.readString();
         mPhoneCode = in.readString();
         mCountryId = in.readInt();
+        mState = in.readString();
         mId = in.readInt();
         mIsInFavorites = in.readByte() != 0;
     }
@@ -159,6 +161,14 @@ public class Address implements Parcelable {
         mIsInFavorites = inFavorites;
     }
 
+    public String getState() {
+        return mState;
+    }
+
+    public void setState(String state) {
+        mState = state;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -177,6 +187,7 @@ public class Address implements Parcelable {
         dest.writeString(mPhoneNumber);
         dest.writeString(mPhoneCode);
         dest.writeInt(mCountryId);
+        dest.writeString(mState);
         dest.writeInt(mId);
         dest.writeByte((byte) (mIsInFavorites ? 1 : 0));
     }
@@ -195,6 +206,7 @@ public class Address implements Parcelable {
         private int mCountryId;
         private int mId = -1;
         private boolean mIsInFavorites;
+        private String mState;
 
         public Builder clientName(String clientName) {
             mClientName = clientName;
@@ -261,6 +273,11 @@ public class Address implements Parcelable {
             return this;
         }
 
+        public Builder state(String state) {
+            mState = state;
+            return this;
+        }
+
         public Address build() {
             Address address = new Address();
             address.mClientName = this.mClientName;
@@ -276,6 +293,7 @@ public class Address implements Parcelable {
             address.mCountryId = this.mCountryId;
             address.mId = this.mId;
             address.mIsInFavorites = this.mIsInFavorites;
+            address.mState = this.mState;
             return address;
         }
     }

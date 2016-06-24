@@ -36,6 +36,8 @@ public class Constants {
         public static final String LOCAL_DEPO = "local-depo";
         public static final String TAKEN_TO_DELIVERY = "taken-to-delivery";
         public static final String CUSTOMS_HELD = "customs-held";
+        public static final String DEPT = "dept";
+        public static final String HELD_BY_PROHIBITION = "held-by-prohibition";
     }
 
     public static class Api {

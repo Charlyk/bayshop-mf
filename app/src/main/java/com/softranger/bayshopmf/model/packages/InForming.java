@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class InForming extends Package implements Parcelable {
+public class InForming extends PUSParcel implements Parcelable {
     private int mId;
     private String mGeneralDescription;
     private String mCodeNumber;

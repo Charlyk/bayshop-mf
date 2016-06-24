@@ -13,10 +13,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.model.packages.InForming;
-import com.softranger.bayshopmf.model.packages.InProcessingPackage;
+import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.packages.LivePackage;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.util.ViewAnimator;
 
@@ -55,7 +54,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return IN_STOCK_ITEM;
         } else if (mInStockItems.get(position) instanceof Product) {
             return PRODUCT;
-        } else if (mInStockItems.get(position) instanceof InProcessingPackage) {
+        } else if (mInStockItems.get(position) instanceof InProcessing) {
             return IN_PROCESSING;
         } else if (mInStockItems.get(position) instanceof InForming) {
             return IN_FORMING;
@@ -108,12 +107,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             productHolder.mItemName.setText(productHolder.mProduct.getProductName());
             productHolder.mItemId.setText(productHolder.mProduct.getProductId());
             productHolder.mTrackingNumber.setText(productHolder.mProduct.getTrackingNumber());
-        } else if (mInStockItems.get(position) instanceof InProcessingPackage) {
+        } else if (mInStockItems.get(position) instanceof InProcessing) {
             InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
-            processingHolder.mProduct = (InProcessingPackage) mInStockItems.get(position);
+            processingHolder.mProduct = (InProcessing) mInStockItems.get(position);
             processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
             processingHolder.mProductName.setText(processingHolder.mProduct.getName());
-            processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreatedDate()));
+            processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreated()));
             processingHolder.mProgress.setText(processingHolder.mProduct.getPercentage() + "%");
             double kg = processingHolder.mProduct.getRealWeght() / 1000;
             processingHolder.mWeight.setText(kg + "kg.");
@@ -260,7 +259,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class InProcessingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle;
         final ProgressBar mProcessingProgressBar;
-        InProcessingPackage mProduct;
+        InProcessing mProduct;
 
         public InProcessingViewHolder(View itemView) {
             super(itemView);
@@ -354,7 +353,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onProductClick(Product product, int position);
 
-        void onInProcessingProductClick(InProcessingPackage processingPackage, int position);
+        void onInProcessingProductClick(InProcessing processingPackage, int position);
 
         void onInFormingClick(InForming inForming, int position);
 

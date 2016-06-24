@@ -25,10 +25,10 @@ import android.widget.Toast;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.model.packages.InForming;
-import com.softranger.bayshopmf.model.packages.InProcessingPackage;
+import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
-import com.softranger.bayshopmf.model.packages.Package;
+import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
 import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
@@ -324,8 +324,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         try {
             for (int i = 0; i < jsonPackages.length(); i++) {
                 JSONObject jsonItem = jsonPackages.getJSONObject(i);
-                InProcessingPackage inProcessing = (InProcessingPackage) new InProcessingPackage.Builder()
-                        .createdDate(jsonItem.optString("created", ""))
+                InProcessing inProcessing = new InProcessing();
+                inProcessing = new PUSParcel.Builder<>(inProcessing)
+                        .created(jsonItem.optString("created", ""))
                         .percentage(jsonItem.optInt("percent", 0))
                         .id(jsonItem.getInt("id"))
                         .codeNumber(jsonItem.optString("codeNumber", ""))
@@ -365,9 +366,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     }
 
     @Override
-    public void onInProcessingProductClick(InProcessingPackage inProcessingPackage, int position) {
+    public void onInProcessingProductClick(InProcessing inProcessing, int position) {
         // TODO: 6/13/16 make this action to open right fragment
-        mActivity.addFragment(InProcessingDetails.newInstance(inProcessingPackage), true);
+        mActivity.addFragment(InProcessingDetails.newInstance(inProcessing), true);
     }
 
     @Override
