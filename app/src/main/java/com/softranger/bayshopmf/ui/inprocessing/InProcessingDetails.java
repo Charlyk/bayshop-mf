@@ -248,7 +248,6 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
             JSONObject object = jsonImages.getJSONObject(i);
             Photo photo = new Photo.Builder()
                     .bigImage(object.getString("photo"))
-                    .bigImage("")
                     .smallImage(object.getString("photoThumbnail"))
                     .build();
             photos.add(photo);
