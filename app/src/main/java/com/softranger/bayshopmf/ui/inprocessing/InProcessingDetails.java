@@ -45,11 +45,8 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
 
     private MainActivity mActivity;
     private RecyclerView mRecyclerView;
-    private ArrayList<Object> mObjects;
-    private PUSParcel mDetailedPUSParcel;
     private String mDeposit;
     private T mPackage;
-    private InProcessingDetailsAdapter<T> mAdapter;
 
     public InProcessingDetails() {
         // Required empty public constructor
@@ -71,7 +68,6 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
         mActivity = (MainActivity) getActivity();
         mPackage = getArguments().getParcelable(PRODUCT_ARG);
         mDeposit = mPackage.getDeposit();
-        mObjects = new ArrayList<>();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inProcessingDetailsList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ApiClient.getInstance().sendRequest(Constants.Api.urlViewParcelDetails(String
@@ -100,8 +96,8 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
                             mPackage = buildParcelDetails(data);
-                            mAdapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
-                            mRecyclerView.setAdapter(mAdapter);
+                            InProcessingDetailsAdapter<T> adapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
+                            mRecyclerView.setAdapter(adapter);
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
                         }

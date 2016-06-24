@@ -16,6 +16,7 @@ import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
+import com.softranger.bayshopmf.model.packages.Prohibited;
 import com.softranger.bayshopmf.util.Constants;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  */
 public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int PARCEL = 0, PRODUCT = 1;
+    private static final int PARCEL = 0, PRODUCT = 1, PROHIBITED = 2;
     private ArrayList<Object> mItems;
     private ImagesAdapter.OnImageClickListener mOnImageClickListener;
 
@@ -40,7 +41,9 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
 
     @Override
     public int getItemViewType(int position) {
-        if (mItems.get(position) instanceof PUSParcel) {
+        if (mItems.get(position) instanceof Prohibited) {
+            return PROHIBITED;
+        } else if (mItems.get(position) instanceof PUSParcel) {
             return PARCEL;
         } else if (mItems.get(position) instanceof Product) {
             return PRODUCT;
