@@ -7,7 +7,7 @@ import android.os.Parcel;
  */
 public class CustomsHeld extends PUSParcel {
 
-    private CustomsHeld() {
+    public CustomsHeld() {
 
     }
 

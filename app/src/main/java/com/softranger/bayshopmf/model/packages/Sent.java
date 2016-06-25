@@ -9,7 +9,7 @@ import java.lang.*;
  */
 public class Sent extends PUSParcel {
 
-    private Sent() {
+    public Sent() {
 
     }
 

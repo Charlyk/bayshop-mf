@@ -9,7 +9,7 @@ import java.lang.*;
  */
 public class Packed extends PUSParcel {
 
-    private Packed() {
+    public Packed() {
 
     }
 

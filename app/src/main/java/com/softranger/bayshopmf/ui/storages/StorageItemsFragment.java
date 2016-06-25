@@ -24,11 +24,17 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
+import com.softranger.bayshopmf.model.packages.CustomsHeld;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
+import com.softranger.bayshopmf.model.packages.Packed;
+import com.softranger.bayshopmf.model.packages.Received;
+import com.softranger.bayshopmf.model.packages.Sent;
+import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
 import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
@@ -127,6 +133,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
     /**
      * Either show or hide the no value place holder text
+     *
      * @param show
      */
     private void showNoValueText(boolean show) {
@@ -218,89 +225,128 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
     /**
      * Called to build the list and pass it to adapter
+     *
      * @param response in json from server
      */
     private void buildItemsList(JSONObject response) {
         try {
             mObjects.clear();
             mInFormingItems.clear();
-            switch (MainActivity.selectedFragment) {
-                case IN_STOCK: {
-                    mInFormingItems = new ArrayList<>();
-                    mObjects.add(new Object());
-                    JSONObject jsonData = response.getJSONObject("data");
-                    JSONArray inStockList = jsonData.getJSONArray("list");
-                    JSONArray livePackages = jsonData.getJSONArray("livePackages");
-                    for (int i = 0; i < inStockList.length(); i++) {
-                        JSONObject jsonItem = inStockList.getJSONObject(i);
-                        String parcelName = jsonItem.getString("title");
-                        if (parcelName == null || parcelName.equals("null")) parcelName = "";
-                        InStockItem inStockItem = new InStockItem.Builder()
-                                .deposit(mDeposit)
-                                .id(jsonItem.getInt("id"))
-                                .trackingNumber(jsonItem.optString("tracking", ""))
-                                .name(parcelName)
-                                .parcelId(jsonItem.optString("uid", ""))
-                                .hasDeclaration(jsonItem.getInt("isDeclarationFilled") == 1)
-                                .build();
-                        mObjects.add(inStockItem);
-                    }
+            if (MainActivity.selectedFragment == MainActivity.SelectedFragment.IN_STOCK) {
+                mInFormingItems = new ArrayList<>();
+                mObjects.add(new Object());
+                JSONObject jsonData = response.getJSONObject("data");
+                JSONArray inStockList = jsonData.getJSONArray("list");
+                JSONArray livePackages = jsonData.getJSONArray("livePackages");
+                for (int i = 0; i < inStockList.length(); i++) {
+                    JSONObject jsonItem = inStockList.getJSONObject(i);
+                    String parcelName = jsonItem.getString("title");
+                    if (parcelName == null || parcelName.equals("null")) parcelName = "";
+                    InStockItem inStockItem = new InStockItem.Builder()
+                            .deposit(mDeposit)
+                            .id(jsonItem.getInt("id"))
+                            .trackingNumber(jsonItem.optString("tracking", ""))
+                            .name(parcelName)
+                            .parcelId(jsonItem.optString("uid", ""))
+                            .hasDeclaration(jsonItem.getInt("isDeclarationFilled") == 1)
+                            .build();
+                    mObjects.add(inStockItem);
+                }
 
-                    for (int i = 0; i < livePackages.length(); i++) {
-                        JSONObject pack = livePackages.getJSONObject(i);
-                        InForming inForming = new InForming.Builder()
-                                .codeNumber(pack.getString("codeNumber"))
-                                .id(pack.getInt("id"))
-                                .deposit(mDeposit)
-                                .build();
-                        mInFormingItems.add(inForming);
-                    }
-                    if (mInFormingItems.size() > 0)
-                        mActivity.addActionButtons(mInFormingItems);
-                    break;
+                for (int i = 0; i < livePackages.length(); i++) {
+                    JSONObject pack = livePackages.getJSONObject(i);
+                    InForming inForming = new InForming.Builder()
+                            .codeNumber(pack.getString("codeNumber"))
+                            .id(pack.getInt("id"))
+                            .deposit(mDeposit)
+                            .build();
+                    mInFormingItems.add(inForming);
                 }
-                case AWAITING_ARRIVAL: {
-                    JSONArray jsonData = response.getJSONArray("data");
-                    for (int i = 0; i < jsonData.length(); i++) {
-                        JSONObject jsonItem = jsonData.getJSONObject(i);
-                        Product inStockItem = new Product.Builder()
-                                .deposit(mDeposit)
-                                .id(jsonItem.getInt("id"))
-                                .trackingNumber(jsonItem.getString("tracking"))
-                                .productName(jsonItem.optString("title", ""))
-                                .productId(jsonItem.getString("uid"))
-                                .build();
-                        mObjects.add(inStockItem);
+                if (mInFormingItems.size() > 0)
+                    mActivity.addActionButtons(mInFormingItems);
+            } else {
+                JSONArray arrayData = response.getJSONArray("data");
+                switch (MainActivity.selectedFragment) {
+                    case AWAITING_ARRIVAL: {
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject jsonItem = arrayData.getJSONObject(i);
+                            Product inStockItem = new Product.Builder()
+                                    .deposit(mDeposit)
+                                    .id(jsonItem.getInt("id"))
+                                    .trackingNumber(jsonItem.getString("tracking"))
+                                    .productName(jsonItem.optString("title", ""))
+                                    .productId(jsonItem.getString("uid"))
+                                    .build();
+                            mObjects.add(inStockItem);
+                        }
+                        break;
                     }
-                    break;
-                }
-                case IN_FORMING: {
-                    JSONArray jsonData = response.getJSONArray("data");
-                    for (int i = 0; i < jsonData.length(); i++) {
-                        JSONObject o = jsonData.getJSONObject(i);
-                        InForming inForming = new InForming.Builder()
-                                .id(o.getInt("id"))
-                                .codeNumber(o.optString("codeNumber", ""))
-                                .createdDate(o.optString("created", ""))
-                                .weight(o.getInt("realWeight"))
-                                .name(o.optString("name", ""))
-                                .deposit(mDeposit)
-                                .build();
-                        mObjects.add(inForming);
+                    case IN_FORMING: {
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject o = arrayData.getJSONObject(i);
+                            InForming inForming = new InForming.Builder()
+                                    .id(o.getInt("id"))
+                                    .codeNumber(o.optString("codeNumber", ""))
+                                    .createdDate(o.optString("created", ""))
+                                    .weight(o.getInt("realWeight"))
+                                    .name(o.optString("name", ""))
+                                    .deposit(mDeposit)
+                                    .build();
+                            mObjects.add(inForming);
+                        }
+                        if (mObjects.size() == 0) mActivity.removeActionButtons();
+                        break;
                     }
-                    if (mObjects.size() == 0) mActivity.removeActionButtons();
-                    break;
-                }
-                case LOCAL_DEPO:
-                case TAKEN_TO_DELIVERY:
-                case CUSTOMS_HELD:
-                case RECEIVED:
-                case SENT:
-                case AWAITING_SENDING:
-                case IN_PROCESSING: {
-                    JSONArray jsonData = response.getJSONArray("data");
-                    buildGeneralPackage(jsonData);
-                    break;
+                    case LOCAL_DEPO:
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject object = arrayData.getJSONObject(i);
+                            LocalDepot localDepot = new LocalDepot();
+                            mObjects.add(buildGeneralPackage(object, localDepot));
+                        }
+                        break;
+                    case TAKEN_TO_DELIVERY:
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject object = arrayData.getJSONObject(i);
+                            ToDelivery toDelivery = new ToDelivery();
+                            mObjects.add(buildGeneralPackage(object, toDelivery));
+                        }
+                        break;
+                    case CUSTOMS_HELD:
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject object = arrayData.getJSONObject(i);
+                            CustomsHeld customsHeld = new CustomsHeld();
+                            mObjects.add(buildGeneralPackage(object, customsHeld));
+                        }
+                        break;
+                    case RECEIVED:
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject object = arrayData.getJSONObject(i);
+                            Received received = new Received();
+                            mObjects.add(buildGeneralPackage(object, received));
+                        }
+                        break;
+                    case SENT:
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject object = arrayData.getJSONObject(i);
+                            Sent sent = new Sent();
+                            mObjects.add(buildGeneralPackage(object, sent));
+                        }
+                        break;
+                    case AWAITING_SENDING:
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject object = arrayData.getJSONObject(i);
+                            Packed packed = new Packed();
+                            mObjects.add(buildGeneralPackage(object, packed));
+                        }
+                        break;
+                    case IN_PROCESSING: {
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject object = arrayData.getJSONObject(i);
+                            InProcessing inProcessing = new InProcessing();
+                            mObjects.add(buildGeneralPackage(object, inProcessing));
+                        }
+                        break;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -320,25 +366,17 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         }
     }
 
-    private void buildGeneralPackage(JSONArray jsonPackages) {
-        try {
-            for (int i = 0; i < jsonPackages.length(); i++) {
-                JSONObject jsonItem = jsonPackages.getJSONObject(i);
-                InProcessing inProcessing = new InProcessing();
-                inProcessing = new PUSParcel.Builder<>(inProcessing)
-                        .created(jsonItem.optString("created", ""))
-                        .percentage(jsonItem.optInt("percent", 0))
-                        .id(jsonItem.getInt("id"))
-                        .codeNumber(jsonItem.optString("codeNumber", ""))
-                        .name(jsonItem.optString("name", ""))
-                        .realWeight(jsonItem.getInt("realWeight"))
-                        .deposit(mDeposit)
-                        .build();
-                mObjects.add(inProcessing);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private <T extends PUSParcel> T buildGeneralPackage(JSONObject jsonItem, T parcel) throws Exception {
+        parcel = new T.Builder<>(parcel)
+                .created(jsonItem.optString("created", ""))
+                .percentage(jsonItem.optInt("percent", 0))
+                .id(jsonItem.getInt("id"))
+                .codeNumber(jsonItem.optString("codeNumber", ""))
+                .name(jsonItem.optString("name", ""))
+                .realWeight(jsonItem.getInt("realWeight"))
+                .deposit(mDeposit)
+                .build();
+        return parcel;
     }
 
     @Override
@@ -366,9 +404,8 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     }
 
     @Override
-    public void onInProcessingProductClick(InProcessing inProcessing, int position) {
-        // TODO: 6/13/16 make this action to open right fragment
-        mActivity.addFragment(InProcessingDetails.newInstance(inProcessing), true);
+    public <T extends PUSParcel> void onInProcessingProductClick(T processingPackage, int position) {
+        mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
     }
 
     @Override

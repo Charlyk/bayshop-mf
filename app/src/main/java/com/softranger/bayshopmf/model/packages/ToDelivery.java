@@ -9,7 +9,7 @@ import java.lang.*;
  */
 public class ToDelivery extends PUSParcel {
 
-    private ToDelivery() {
+    public ToDelivery() {
 
     }
 

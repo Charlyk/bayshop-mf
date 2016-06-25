@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class InForming extends PUSParcel implements Parcelable {
+public class InForming implements Parcelable {
     private int mId;
     private String mGeneralDescription;
     private String mCodeNumber;
@@ -45,7 +45,6 @@ public class InForming extends PUSParcel implements Parcelable {
     }
 
     protected InForming(Parcel in) {
-        super(in);
         mId = in.readInt();
         mGeneralDescription = in.readString();
         mCodeNumber = in.readString();
@@ -274,7 +273,6 @@ public class InForming extends PUSParcel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
         dest.writeInt(mId);
         dest.writeString(mGeneralDescription);
         dest.writeString(mCodeNumber);

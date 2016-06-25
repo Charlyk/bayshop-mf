@@ -54,7 +54,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
@@ -65,14 +65,17 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:max="100"
             android:progress="34"/>
 
         <LinearLayout
+            android:id="@+id/inProcessingItemCompletionLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_centerInParent="true"
             android:orientation="horizontal">
 
             <TextView
@@ -90,11 +93,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/inProcessingIntemWeightLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
             android:orientation="horizontal">
 
             <TextView
@@ -110,5 +114,5 @@
                 android:layout_height="wrap_content"
                 tools:text="2.44kg"/>
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

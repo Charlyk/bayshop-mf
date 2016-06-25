@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Address;
+import com.softranger.bayshopmf.model.packages.CustomsHeld;
 import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
@@ -31,12 +33,17 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
     private static final int PARCEL = 0, PRODUCT = 1, PROHIBITED = 2;
     private ArrayList<Object> mItems;
     private ImagesAdapter.OnImageClickListener mOnImageClickListener;
+    private OnItemClickListener mOnItemClickListener;
 
     public InProcessingDetailsAdapter(T parcel, ImagesAdapter.OnImageClickListener onImageClickListener) {
         mItems = new ArrayList<>();
         mItems.add(parcel);
         mItems.addAll(parcel.getProducts());
         mOnImageClickListener = onImageClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -73,7 +80,12 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mItems.get(position) instanceof PUSParcel) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.mProcessingParcel = (InProcessing) mItems.get(position);
+
+            if (!(mItems.get(position) instanceof CustomsHeld)) {
+                headerHolder.mUploadLayout.setVisibility(View.GONE);
+            }
+
+            headerHolder.mProcessingParcel = (T) mItems.get(position);
             headerHolder.mDepositIcon.setImageResource(getStorageIcon(headerHolder.mProcessingParcel.getDeposit()));
             headerHolder.mParcelId.setText(headerHolder.mProcessingParcel.getCodeNumber());
 
@@ -138,7 +150,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         }
     }
 
-    class HeaderViewHolder extends RecyclerView.ViewHolder {
+    class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mParcelId, mGoodsPrice, mCustomsClearance, mShippingPrice,
                 mTotalPrice, mShippingBy, mTrackingNumber;
         final ImageView mDepositIcon;
@@ -147,7 +159,10 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final Button mSelectButton;
         final ImageButton mEditButton;
         final ImageButton mAddToFavorite;
-        InProcessing mProcessingParcel;
+        final Button mUploadDocument;
+        final Button mTakePicture;
+        final LinearLayout mUploadLayout;
+        T mProcessingParcel;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
@@ -168,10 +183,28 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mShippingBy = (TextView) itemView.findViewById(R.id.inProcessingDetailsShippingByLabel);
             mTrackingNumber = (TextView) itemView.findViewById(R.id.inProcessingDetailsShippingByTracking);
             mDepositIcon = (ImageView) itemView.findViewById(R.id.inProcessingDetailsStorageIcon);
+            mUploadLayout = (LinearLayout) itemView.findViewById(R.id.uploadDocumentLayout);
+            mTakePicture = (Button) itemView.findViewById(R.id.prohibitionHeldTakePhotoBtn);
+            mUploadDocument = (Button) itemView.findViewById(R.id.prohibitionHeldUploadDocumentBtn);
 
+            mTakePicture.setOnClickListener(this);
+            mUploadDocument.setOnClickListener(this);
             mEditButton.setVisibility(View.GONE);
             mAddToFavorite.setVisibility(View.GONE);
             mSelectButton.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mOnItemClickListener == null) return;
+            switch (v.getId()) {
+                case R.id.prohibitionHeldTakePhotoBtn:
+                    mOnItemClickListener.onTakePictureClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.prohibitionHeldUploadDocumentBtn:
+                    mOnItemClickListener.onUploadDocumentClick(mProcessingParcel, getAdapterPosition());
+                    break;
+            }
         }
     }
 
@@ -194,5 +227,10 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         public EmptyViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public interface OnItemClickListener {
+        <T extends PUSParcel> void onUploadDocumentClick(T item, int position);
+        <T extends PUSParcel> void onTakePictureClick(T item, int position);
     }
 }

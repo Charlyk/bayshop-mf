@@ -7,7 +7,7 @@ import android.os.Parcel;
  */
 public class LocalDepot extends PUSParcel {
 
-    private LocalDepot() {
+    public LocalDepot() {
 
     }
 

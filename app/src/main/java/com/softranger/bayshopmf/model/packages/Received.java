@@ -9,7 +9,7 @@ import java.lang.*;
  */
 public class Received extends PUSParcel {
 
-    private Received() {
+    public Received() {
 
     }
 
