@@ -107,6 +107,7 @@ public class ApiClient {
     }
 
     private void execute(Request request, final Handler handler) {
+        if (handler == null) return;
         final Message message = handler.obtainMessage();
         httpClient.newCall(request).enqueue(new Callback() {
             @Override

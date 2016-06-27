@@ -62,6 +62,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
     private ArrayList<CountryCode> mCountryCodes;
     private ArrayList<Country> mCountries;
     private CodesSpinnerAdapter mSpinnerAdapter;
+    private LinearLayout mHolderLayout;
 
     private static String action;
 
@@ -116,6 +117,9 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
 
         action = getArguments().getString(ACTION);
 
+        mHolderLayout.setVisibility(View.GONE);
+        mActivity.toggleLoadingProgress(true);
+
         if (getArguments().containsKey(ADDRESS_ARG)) {
             mAddress = getArguments().getParcelable(ADDRESS_ARG);
             addressId = mAddress.getId();
@@ -162,6 +166,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
         mCodeSpinner = (Spinner) view.findViewById(R.id.phoneCodeSpinner);
         mCountryLabel = (TextView) view.findViewById(R.id.addAddressCountrylabel);
         mCountriesSpinner = (Spinner) view.findViewById(R.id.countrySpinner);
+        mHolderLayout = (LinearLayout) view.findViewById(R.id.editAddressLayoutHolder);
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -321,6 +326,7 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                     break;
                 }
             }
+            mHolderLayout.setVisibility(View.VISIBLE);
             mActivity.toggleLoadingProgress(false);
         }
     };

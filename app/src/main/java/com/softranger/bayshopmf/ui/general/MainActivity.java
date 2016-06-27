@@ -13,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -47,14 +50,22 @@ import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.storages.StorageHolderFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
+import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.CustomExceptionHandler;
 
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+    public static final String ACTION_ITEM_DELETED = "ITEM_DELETED";
     private static final int PERMISSION_REQUEST_CODE = 1535;
     public static final String ACTION_UPDATE_TITLE = "update toolbar title";
     public ActionBarDrawerToggle mDrawerToggle;
@@ -549,6 +560,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    public Handler mDeleteHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        String message = response.optString("message");
+                        boolean error = !message.equalsIgnoreCase("ok");
+                        if (!error) {
+                            JSONObject data = response.getJSONObject("data");
+                            boolean hasParcels = data.getInt("isPackageHasMoreBoxes") == 1;
+
+                            if (!hasParcels) {
+                                removeActionButtons();
+                            }
+                            Intent refreshIntent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                            Intent deleteIntent = new Intent(ACTION_ITEM_DELETED);
+                            deleteIntent.putExtra("hasMoreItems", hasParcels);
+                            refreshIntent.putExtra("deposit", "us"); // TODO: 6/27/16 set with the actual selected storage
+                            sendBroadcast(refreshIntent);
+                            sendBroadcast(deleteIntent);
+                        } else {
+                            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+            toggleLoadingProgress(false);
+        }
+    };
 
     public enum SelectedFragment {
         IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED,

@@ -21,7 +21,7 @@ public class InStockDetailed extends InStockItem {
     private int mPhotoInProgress;
     private int mCheckInProgress;
 
-    private InStockDetailed() {
+    public InStockDetailed() {
 
     }
 

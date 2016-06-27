@@ -21,10 +21,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PackageDetailsAdapter;
+import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
@@ -44,13 +46,15 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CheckDeclarationFragment extends Fragment implements View.OnClickListener, PackageDetailsAdapter.OnEditClickListener {
+public class CheckDeclarationFragment extends Fragment implements View.OnClickListener,
+        PackageDetailsAdapter.OnEditClickListener, RadioGroup.OnCheckedChangeListener {
 
     private static final String IN_FORMING_ARG = "in forming object argument";
     private MainActivity mActivity;
     private RecyclerView mRecyclerView;
     private InForming mInForming;
     private ArrayList<Product> mProducts;
+    private ArrayList<InStockDetailed> mInStock;
     private PackageDetailsAdapter mAdapter;
     private TextView mTotalPriceLabel;
     private TextView mTotalWeightLabel;
@@ -79,16 +83,20 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
         mActivity.setToolbarTitle(getString(R.string.check_list), true);
         mProducts = new ArrayList<>();
+        mInStock = new ArrayList<>();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.buildFourthStepDeclarationList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mGeneralDescriptionInput = (EditText) view.findViewById(R.id.buildFourthStepGeneralDescription);
-        mAdapter = new PackageDetailsAdapter(mProducts);
+        mAdapter = new PackageDetailsAdapter(mInStock);
         mAdapter.setOnEditClickListener(this);
-        mTotalPriceLabel = (TextView) view.findViewById(R.id.buildFourthFragmentTotalPriceLabel);
-        mTotalWeightLabel = (TextView) view.findViewById(R.id.buildFourthFragmentTotalWeightLabel);
+        mTotalPriceLabel = (TextView) view.findViewById(R.id.buildFirstFragmentTotalPriceLabel);
+        mTotalWeightLabel = (TextView) view.findViewById(R.id.buildFirstFragmentTotalWeightLabel);
+        RadioGroup declarationSelector = (RadioGroup) view.findViewById(R.id.checkDeclarationMethodSelector);
+        declarationSelector.setOnCheckedChangeListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mInForming = getArguments().getParcelable(IN_FORMING_ARG);
-        ImageButton next = (ImageButton) view.findViewById(R.id.buildFourthStepNextButton);
+        mInForming.setAutoFilling(true);
+        ImageButton next = (ImageButton) view.findViewById(R.id.buildFirstStepNextButton);
         next.setOnClickListener(this);
         mActivity.toggleLoadingProgress(true);
         RequestBody body = new FormBody.Builder()
@@ -113,26 +121,45 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
 //                            if (data.get("declaration") != null) {
 //                                mInForming.setGeneralDescription(data.getJSONObject("declaration").optString("name", null));
 //                            }
+
+                            JSONArray jsonBoxes = data.getJSONArray("boxes");
+                            for (int i = 0; i < jsonBoxes.length(); i++) {
+                                JSONObject box = jsonBoxes.getJSONObject(i);
+                                InStockDetailed detailed = new InStockDetailed();
+                                detailed.setID(box.getInt("id"));
+                                detailed.setParcelId(box.getString("uid"));
+                                mInStock.add(detailed);
+                            }
+
                             JSONArray jsonDec = data.getJSONArray("declarationItems");
-                            for (int i = 0; i < jsonDec.length(); i++) {
-                                JSONObject jsonProd = jsonDec.getJSONObject(i);
-                                Product product = new Product.Builder()
-                                        .id(jsonProd.getInt("id"))
-                                        .productName(jsonProd.getString("title"))
-                                        .productQuantity(jsonProd.getString("quantity"))
-                                        .productPrice(jsonProd.getString("price"))
-                                        .productUrl(jsonProd.getString("url"))
-                                        .orderStorageId(jsonProd.getString("orderStorageId"))
-                                        .weight(jsonProd.getString("weight"))
-                                        .declarationId(jsonProd.getString("declarationId"))
-                                        .build();
-                                mProducts.add(product);
+                            for (InStockDetailed detailed : mInStock) {
+                                ArrayList<Product> products = new ArrayList<>();
+                                for (int i = 0; i < jsonDec.length(); i++) {
+                                    JSONObject jsonProd = jsonDec.getJSONObject(i);
+                                    Product product = new Product.Builder()
+                                            .id(jsonProd.getInt("id"))
+                                            .productName(jsonProd.getString("title"))
+                                            .productQuantity(jsonProd.getString("quantity"))
+                                            .productPrice(jsonProd.getString("price"))
+                                            .productUrl(jsonProd.getString("url"))
+                                            .orderStorageId(jsonProd.getString("orderStorageId"))
+                                            .weight(jsonProd.getString("weight"))
+                                            .declarationId(jsonProd.getString("declarationId"))
+                                            .build();
+                                    final int boxId = Integer.parseInt(product.getOrderStorageId());
+                                    if (boxId == detailed.getID()) {
+                                        products.add(product);
+                                    }
+
+                                }
+                                detailed.setProducts(products);
+                                mProducts.addAll(products);
                             }
                             mInForming.setProducts(mProducts);
                             if (mInForming.getGeneralDescription() != null && !mInForming.getGeneralDescription().equals("")) {
                                 mGeneralDescriptionInput.setText(String.valueOf(mInForming.getGeneralDescription()));
                             }
-                            mAdapter.notifyDataSetChanged();
+                            mAdapter.addItems(mInStock);
                             setTotals();
                         } else {
                             Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
@@ -203,11 +230,12 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         String description = String.valueOf(mGeneralDescriptionInput.getText());
-        if (description.equals("")) {
+        if (description.equals("") && !mInForming.isAutoFilling()) {
             Snackbar.make(mRecyclerView, getString(R.string.fill_general_description), Snackbar.LENGTH_SHORT).show();
             mGeneralDescriptionInput.setError(getString(R.string.fill_general_description));
             return;
         }
+        if (mInForming.isAutoFilling()) description = "";
         mInForming.setGeneralDescription(description);
         mActivity.addFragment(InsuranceFragment.newInstance(mInForming), true);
         mActivity.hideKeyboard();
@@ -231,5 +259,21 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
                     }
                 });
         mEditPriceDialog.show();
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.checkDeclarationAutoFillingSelector:
+                mInForming.setAutoFilling(true);
+                mGeneralDescriptionInput.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.GONE);
+                break;
+            case R.id.checkDeclarationManualFillingSelector:
+                mGeneralDescriptionInput.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mInForming.setAutoFilling(true);
+                break;
+        }
     }
 }

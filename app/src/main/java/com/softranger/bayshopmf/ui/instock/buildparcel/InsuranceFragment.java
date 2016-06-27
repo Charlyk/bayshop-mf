@@ -111,7 +111,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
 
         mActivity.toggleLoadingProgress(true);
         RequestBody body = new FormBody.Builder()
-                .add("autocomplete", String.valueOf(1)) // 1 = false, 0 = true
+                .add("autocomplete", String.valueOf(mInForming.isAutoFilling() ? 0 : 1)) // 1 = false, 0 = true
                 .add("declarationName", mInForming.getGeneralDescription())
                 .add("declarations", String.valueOf(buildProductsArray(mInForming.getProducts())))
                 .build();

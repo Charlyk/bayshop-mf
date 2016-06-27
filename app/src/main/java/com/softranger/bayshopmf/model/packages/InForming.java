@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.softranger.bayshopmf.model.Address;
+import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.ShippingMethod;
@@ -24,7 +25,7 @@ public class InForming implements Parcelable {
     private String mCreatedDate;
     private String mUid;
     private boolean mHasBattery;
-    private ArrayList<InStockItem> mItems;
+    private ArrayList<InStockDetailed> mItems;
     private String mDeposit;
     private Address mAddress;
     private ShippingMethod mShippingMethod;
@@ -39,6 +40,7 @@ public class InForming implements Parcelable {
     private boolean mAdditionalPackage;
     private boolean mSentOnUserAlert;
     private boolean mLocalDelivery;
+    private boolean mAutoFilling;
 
     private InForming() {
 
@@ -53,7 +55,7 @@ public class InForming implements Parcelable {
         mCreatedDate = in.readString();
         mUid = in.readString();
         mHasBattery = in.readByte() != 0;
-        mItems = in.createTypedArrayList(InStockItem.CREATOR);
+        mItems = in.createTypedArrayList(InStockDetailed.CREATOR);
         mDeposit = in.readString();
         mAddress = in.readParcelable(Address.class.getClassLoader());
         mShippingMethod = in.readParcelable(ShippingMethod.class.getClassLoader());
@@ -68,6 +70,7 @@ public class InForming implements Parcelable {
         mAdditionalPackage = in.readByte() != 0;
         mSentOnUserAlert = in.readByte() != 0;
         mLocalDelivery = in.readByte() != 0;
+        mAutoFilling = in.readByte() != 0;
     }
 
     public static final Creator<InForming> CREATOR = new Creator<InForming>() {
@@ -146,11 +149,11 @@ public class InForming implements Parcelable {
         mHasBattery = hasBattery;
     }
 
-    public ArrayList<InStockItem> getItems() {
+    public ArrayList<InStockDetailed> getItems() {
         return mItems;
     }
 
-    public void setItems(ArrayList<InStockItem> items) {
+    public void setItems(ArrayList<InStockDetailed> items) {
         mItems = items;
     }
 
@@ -266,6 +269,14 @@ public class InForming implements Parcelable {
         mLocalDelivery = localDelivery;
     }
 
+    public boolean isAutoFilling() {
+        return mAutoFilling;
+    }
+
+    public void setAutoFilling(boolean autoFilling) {
+        mAutoFilling = autoFilling;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -296,6 +307,7 @@ public class InForming implements Parcelable {
         dest.writeByte((byte) (mAdditionalPackage ? 1 : 0));
         dest.writeByte((byte) (mSentOnUserAlert ? 1 : 0));
         dest.writeByte((byte) (mLocalDelivery? 1 : 0));
+        dest.writeByte((byte) (mAutoFilling? 1 : 0));
     }
 
 
@@ -308,7 +320,7 @@ public class InForming implements Parcelable {
         private String mCreatedDate;
         private String mUid;
         private boolean mHasBattery;
-        private ArrayList<InStockItem> mItems;
+        private ArrayList<InStockDetailed> mItems;
         private String mDeposit;
         private Address mAddress;
         private ShippingMethod mShippingMethod;
@@ -323,6 +335,7 @@ public class InForming implements Parcelable {
         private boolean mAdditionalPackage;
         private boolean mSentOnUserAlert;
         private boolean mLocalDelivery;
+        private boolean mAutoFilling;
 
         public Builder id(int id) {
             mId = id;
@@ -364,7 +377,7 @@ public class InForming implements Parcelable {
             return this;
         }
 
-        public Builder items(ArrayList<InStockItem> items) {
+        public Builder items(ArrayList<InStockDetailed> items) {
             mItems = items;
             return this;
         }
@@ -439,6 +452,11 @@ public class InForming implements Parcelable {
             return this;
         }
 
+        public Builder autoFilling(boolean autoFilling) {
+            mAutoFilling = autoFilling;
+            return this;
+        }
+
         public InForming build() {
             InForming inForming = new InForming();
             inForming.mId = this.mId;
@@ -464,6 +482,7 @@ public class InForming implements Parcelable {
             inForming.mAdditionalPackage = this.mAdditionalPackage;
             inForming.mSentOnUserAlert = this.mSentOnUserAlert;
             inForming.mLocalDelivery = this.mLocalDelivery;
+            inForming.mAutoFilling = this.mAutoFilling;
             return inForming;
         }
     }

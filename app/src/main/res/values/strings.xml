@@ -176,4 +176,6 @@
     <string name="accepte_terms_and_conditions">Accepte terms and conditions:</string>
     <string name="upload_document">Upload document</string>
     <string name="take_photo">Take photo</string>
+    <string name="declaration_filling_by_bayshop_3">Declaration filling by BayShop ($3)</string>
+    <string name="fill_declaration_manualy">Fill declaration manualy</string>
 </resources>

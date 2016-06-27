@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.Product;
 
 import java.util.ArrayList;
@@ -17,13 +18,26 @@ import java.util.ArrayList;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAdapter.ViewHolder> {
+public class PackageDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Product> mProducts;
+    private ArrayList<Object> mProducts;
     private OnEditClickListener mOnEditClickListener;
+    private static final int SEPARATOR = 0, ITEM = 1;
 
-    public PackageDetailsAdapter(ArrayList<Product> products) {
-        mProducts = products;
+    public PackageDetailsAdapter(ArrayList<InStockDetailed> products) {
+        mProducts = new ArrayList<>();
+        for (InStockDetailed detailed : products) {
+            mProducts.add(detailed);
+            mProducts.addAll(detailed.getProducts());
+        }
+    }
+
+    public void addItems(ArrayList<InStockDetailed> detailedList) {
+        for (InStockDetailed detailed : detailedList) {
+            mProducts.add(detailed);
+            mProducts.addAll(detailed.getProducts());
+        }
+        notifyDataSetChanged();
     }
 
     public void setOnEditClickListener(OnEditClickListener onEditClickListener) {
@@ -31,20 +45,43 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.package_content_item, parent, false);
-        return new ViewHolder(view);
+    public int getItemViewType(int position) {
+        if (mProducts.get(position) instanceof InStockDetailed) {
+            return SEPARATOR;
+        } else {
+            return ITEM;
+        }
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mProduct = mProducts.get(position);
-        holder.mDescription.setText(holder.mProduct.getProductName());
-        holder.mQuantity.setText(holder.mProduct.getProductQuantity());
-        int weight = Integer.parseInt(holder.mProduct.getWeight());
-        double w = weight / 1000;
-        holder.mWeight.setText(String.valueOf(w));
-        holder.mPrice.setText(holder.mProduct.getProductPrice());
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        switch (viewType) {
+            case SEPARATOR:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.check_declaration_separator, parent, false);
+                return new SeparatorHolder(view);
+            default:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.package_content_item, parent, false);
+                return new ItemHolder(view);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ItemHolder) {
+            ItemHolder itemHolder = (ItemHolder) holder;
+            itemHolder.mProduct = (Product) mProducts.get(position);
+            itemHolder.mDescription.setText(itemHolder.mProduct.getProductName());
+            itemHolder.mQuantity.setText(itemHolder.mProduct.getProductQuantity());
+            int weight = Integer.parseInt(itemHolder.mProduct.getWeight());
+            double w = weight / 1000;
+            itemHolder.mWeight.setText(String.valueOf(w));
+            itemHolder.mPrice.setText(itemHolder.mProduct.getProductPrice());
+        } else if (holder instanceof SeparatorHolder) {
+            SeparatorHolder separatorHolder = (SeparatorHolder) holder;
+            separatorHolder.mDetailed = (InStockDetailed) mProducts.get(position);
+            separatorHolder.mBoxUID.setText(separatorHolder.mDetailed.getParcelId());
+        }
     }
 
     @Override
@@ -52,14 +89,25 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
         return mProducts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class SeparatorHolder extends RecyclerView.ViewHolder {
+        final TextView mBoxUID;
+        InStockDetailed mDetailed;
+
+        public SeparatorHolder(View itemView) {
+            super(itemView);
+            mBoxUID = (TextView) itemView.findViewById(R.id.checkDeclarationSeparatorTitleLabel);
+        }
+    }
+
+    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mDescription;
         final TextView mQuantity;
         final TextView mWeight;
         final TextView mPrice;
         final LinearLayout mPriceLayout;
         Product mProduct;
-        public ViewHolder(View itemView) {
+
+        public ItemHolder(View itemView) {
             super(itemView);
             mDescription = (TextView) itemView.findViewById(R.id.packageContentProductDescriptionLabel);
             mQuantity = (TextView) itemView.findViewById(R.id.packageCOntentUnitsQuantityLabel);

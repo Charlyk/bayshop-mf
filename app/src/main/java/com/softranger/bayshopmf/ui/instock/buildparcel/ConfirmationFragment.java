@@ -54,6 +54,9 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
     private View mRootView;
     private InForming mInForming;
 
+    private RelativeLayout mDeclarationPriceLayout;
+    private RelativeLayout mInsurancePriceLayout;
+
     public ConfirmationFragment() {
         // Required empty public constructor
     }
@@ -78,6 +81,10 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
         bindViews(mRootView);
         mInForming = getArguments().getParcelable(IN_FORMING_ARG);
         mActivity.toggleLoadingProgress(true);
+
+        if (!mInForming.isAutoFilling()) mDeclarationPriceLayout.setVisibility(View.GONE);
+        if (!mInForming.isNeedInsurance()) mInsurancePriceLayout.setVisibility(View.GONE);
+
         RequestBody body = new FormBody.Builder()
                 .add("insuranceAddressId", String.valueOf(mInForming.isNeedInsurance() ? 1 : 0))
                 .build();
@@ -86,6 +93,10 @@ public class ConfirmationFragment extends Fragment implements View.OnClickListen
     }
 
     private void bindViews(View view) {
+
+        mDeclarationPriceLayout = (RelativeLayout) view.findViewById(R.id.confirmDeclarationPriceLayout);
+        mInsurancePriceLayout = (RelativeLayout) view.findViewById(R.id.confirmInsurancePriceLayout);
+
         mGoodsPrice = (TextView) view.findViewById(R.id.confirmGoodsPriceLabel);
         mDeliveryPrice = (TextView) view.findViewById(R.id.confirmDeliveryPriceLabel);
         mInsurancePrice = (TextView) view.findViewById(R.id.confirmInsurancePriceLabel);
