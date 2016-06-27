@@ -102,7 +102,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/inProcessingWeightTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/weight"/>
@@ -114,5 +114,14 @@
                 android:layout_height="wrap_content"
                 tools:text="2.44kg"/>
         </LinearLayout>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/inProcessingLocalDepositCheckBox"
+            android:visibility="gone"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 </LinearLayout>

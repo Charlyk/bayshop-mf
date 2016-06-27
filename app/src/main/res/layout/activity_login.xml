@@ -5,30 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="30dp"
     android:orientation="vertical"
     tools:context=".ui.auth.LoginActivity">
 
-    <include layout="@layout/login_layout"/>
-
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/loginActivityContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/logo_circle"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/logo_circle"/>
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/logo_letters"/>
-    </LinearLayout>
+        android:layout_height="match_parent"/>
 </RelativeLayout>

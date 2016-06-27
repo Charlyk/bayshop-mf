@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
@@ -43,19 +46,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         OnLoginDataReadyListener {
 
     private static final int RC_SIGN_IN = 1537;
-    private EditText mEmailInput;
-    private EditText mPasswordInput;
-    private Button mLoginButton;
-    private ProgressBar mLoginProgressBar;
     public static LoginActivity instance;
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
+    private LoginFragment mLoginFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         instance = this;
+
+        mLoginFragment = new LoginFragment();
+        addFragment(mLoginFragment, false);
+
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(Scopes.PLUS_ME), new Scope(Scopes.EMAIL))
                 .requestServerAuthCode(getString(R.string.server_client_id), false)
@@ -64,83 +68,52 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, options)
                 .build();
-        initializeViews();
         mCallbackManager = CallbackManager.Factory.create();
     }
 
-    /**
-     * Bind all needed views from this activity
-     */
-    private void initializeViews() {
-        mEmailInput = (EditText) findViewById(R.id.loginEmailInput);
-        mPasswordInput = (EditText) findViewById(R.id.loginPasswordInput);
-        mLoginProgressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
-        mLoginButton = (Button) findViewById(R.id.loginButton);
-        Button signUpButton = (Button) findViewById(R.id.signUpButton);
-        String actionColor = "#e64d50";
-        String questionText = getColoredSpanned(getString(R.string.haveAnAccountText), actionColor);
-        String blackColor = "#000000";
-        String signUpText = getColoredSpanned(getString(R.string.signup), blackColor);
-        String underlinedText = "<u>" + signUpText + "</u>";
-        signUpButton.setText(Html.fromHtml(questionText + " " + underlinedText));
-    }
-
-    private String getColoredSpanned(String text, String color) {
+    public String getColoredSpanned(String text, String color) {
         return "<font color=" + color + ">" + text + "</font>";
     }
 
     /**
-     * Hides login button and shows a progressbar
-     */
-    private void showLoading() {
-        mLoginButton.setVisibility(View.GONE);
-        mLoginProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Hides progress bar and shwos login button
-     */
-    private void hideLoading() {
-        mLoginProgressBar.setVisibility(View.GONE);
-        mLoginButton.setVisibility(View.VISIBLE);
-    }
-
-    /**
      * Called when facebook button is clicked
+     *
      * @param view facebook button
      */
     public void loginWithFacebook(View view) {
         FacebookAuth.getInstance().facebookLogin(this, this, mCallbackManager);
-        showLoading();
+        mLoginFragment.showLoading();
     }
 
     /**
      * Called when google button is clicked
+     *
      * @param view google button
      */
     public void loginWithGoogle(View view) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-        showLoading();
+        mLoginFragment.showLoading();
     }
 
     /**
      * Called when log in button is clicked
+     *
      * @param view login button
      */
     public void loginWithBayApi(View view) {
-        String email = String.valueOf(mEmailInput.getText());
-        String password = String.valueOf(mPasswordInput.getText());
+        String email = String.valueOf(mLoginFragment.mEmailInput.getText());
+        String password = String.valueOf(mLoginFragment.mPasswordInput.getText());
         if (!Application.isValidEmail(email)) {
-            mEmailInput.setError(getString(R.string.enter_valid_email));
+            mLoginFragment.mEmailInput.setError(getString(R.string.enter_valid_email));
             return;
         }
         if (password == null || password.equals("")) {
-            mPasswordInput.setError(getString(R.string.enter_valid_password));
+            mLoginFragment.mPasswordInput.setError(getString(R.string.enter_valid_password));
             return;
         }
         ApiClient.getInstance().logIn(email, password, mAuthHandler);
-        showLoading();
+        mLoginFragment.showLoading();
     }
 
     @Override
@@ -167,16 +140,27 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             ApiClient.getInstance().sendRequest(body, Constants.Api.urlAuth(), mAuthHandler);
         } else {
             Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            hideLoading();
+            mLoginFragment.hideLoading();
         }
+    }
+
+    public void addFragment(Fragment fragment, boolean addToBackStack) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.loginActivityContainer, fragment, fragment.getClass().getSimpleName());
+        if (addToBackStack)
+            transaction.addToBackStack(fragment.getClass().getSimpleName());
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
     }
 
     /**
      * Called when sign up is clicked
+     *
      * @param view sign up button
      */
     public void signUpToBayShop(View view) {
-
+        addFragment(new RegisterFragment(), true);
     }
 
     private Handler mAuthHandler = new Handler(Looper.getMainLooper()) {
@@ -197,11 +181,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             finish();
                         } else {
                             message = response.optString("message", getString(R.string.unknown_error));
-                            Snackbar.make(mLoginButton, message, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Snackbar.make(mLoginButton, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     break;
                 }
@@ -214,21 +198,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         Exception exception = (Exception) msg.obj;
                         message = exception.getMessage();
                     }
-                    Snackbar.make(mLoginButton, message, Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     break;
                 case Constants.ApiResponse.RESPONSE_FAILED: {
                     IOException exception = (IOException) msg.obj;
-                    Snackbar.make(mLoginButton, exception.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     break;
                 }
             }
-            hideLoading();
+            mLoginFragment.hideLoading();
         }
     };
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    public void forgotPassword(View view) {
+        addFragment(new ForogtPasswordFragment(), true);
     }
 
     @Override
@@ -242,6 +230,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onCanceled() {
-        hideLoading();
+        mLoginFragment.hideLoading();
     }
 }

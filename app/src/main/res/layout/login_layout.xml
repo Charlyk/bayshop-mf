@@ -83,6 +83,18 @@
         android:visibility="gone"/>
 
     <Button
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot your password?"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorAccent"
+        android:onClick="forgotPassword"
+        android:background="?selectableItemBackgroundBorderless"
+        android:id="@+id/loginFragmentForgotPassBtn"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
         android:id="@+id/signUpButton"
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -90,7 +102,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         tools:text="Don't have an account? Signup"
-        android:layout_marginTop="30dp"
         android:onClick="signUpToBayShop"
-        android:textSize="18sp"/>
+        android:textSize="16sp"/>
+
+
 </LinearLayout>

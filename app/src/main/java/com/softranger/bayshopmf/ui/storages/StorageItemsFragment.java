@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
+import com.softranger.bayshopmf.ui.instock.buildparcel.SelectAddressFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -56,7 +58,7 @@ import okhttp3.Response;
  * A simple {@link Fragment} subclass.
  */
 public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     public static final String ACTION_ITEM_CHANGED = "item was changed from a top fragment";
     private static final String URL_ARG = "URL to get information";
@@ -69,7 +71,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     private static String url;
     private TextView mNoValueText;
     private ArrayList<InForming> mInFormingItems;
+    private ArrayList<LocalDepot> mSelectedForDelivery;
     private SwipeRefreshLayout mRefreshLayout;
+    private Button mOrderDeliveryBtn;
 
     public StorageItemsFragment() {
         // Required empty public constructor
@@ -94,6 +98,10 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         // create an intent filter to get broadcast messages to update the list
         IntentFilter intentFilter = new IntentFilter(ACTION_ITEM_CHANGED);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
+        mSelectedForDelivery = new ArrayList<>();
+        mOrderDeliveryBtn = (Button) view.findViewById(R.id.storageItemsOrderDeliveryBtn);
+        mOrderDeliveryBtn.setOnClickListener(this);
 
         // bind the recycler view which will hold all lists in this fragment
         mRecyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
@@ -409,6 +417,20 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     }
 
     @Override
+    public <T extends PUSParcel> void onLocalDepoItemSelected(T localDepotItem, int position, boolean isChecked) {
+        if (isChecked) {
+            mSelectedForDelivery.add((LocalDepot) localDepotItem);
+        } else {
+            mSelectedForDelivery.remove(localDepotItem);
+        }
+        if (mSelectedForDelivery.size() > 0) {
+            mOrderDeliveryBtn.setVisibility(View.VISIBLE);
+        } else {
+            mOrderDeliveryBtn.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void onInFormingClick(InForming inForming, int position) {
         mActivity.addFragment(ItemsListFragment.newInstance(null, false, inForming, mDeposit), true);
     }
@@ -438,5 +460,14 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     public void onRefresh() {
         // TODO: 6/2/16 check to send the request only for current deposit
         ApiClient.getInstance().sendRequest(url, mStorageHandler);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.storageItemsOrderDeliveryBtn:
+                mActivity.addFragment(SelectAddressFragment.newInstance(mSelectedForDelivery), false);
+                break;
+        }
     }
 }

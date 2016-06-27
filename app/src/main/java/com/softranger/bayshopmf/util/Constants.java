@@ -49,7 +49,7 @@ public class Constants {
         private static final String MF_DECLARATION = "mf-storage-declaration/";
         private static final String WAITING_MF = "waiting-mf/";
         private static final String EDIT = "edit/";
-        private static final String AUTH = "auth";
+        private static final String AUTH = "auth/";
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";
         private static final String PARCELS = "parcels/";
@@ -59,6 +59,7 @@ public class Constants {
         private static final String MEMBER_ADDRESS = "member-address/";
         private static final String MEMBER_ADDRESS_ADD = "member-address-add/";
         private static final String PHONE_CODES = "phone-formats";
+        private static final String REGISTER = "register/";
 
         /**
          * POST
@@ -66,6 +67,16 @@ public class Constants {
          */
         public static String urlAuth() {
             return URL + AUTH;
+        }
+
+
+        /**
+         * POST
+         * Create an url used to register a user in Bay data base
+         * @return url which will receive registration data
+         */
+        public static String urlRegister() {
+            return URL + AUTH + REGISTER;
         }
 
         /**

@@ -28,6 +28,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.packages.InForming;
+import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
@@ -50,16 +51,35 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 public class SelectAddressFragment extends Fragment implements SecondStepAdapter.OnAddressClickListener,
         MenuItemCompat.OnActionExpandListener, SearchView.OnQueryTextListener, MenuItem.OnMenuItemClickListener {
 
+    private static final String TO_DELIVER = "TO_DELIVER_ARG";
     private static final String IN_FORMING_ARG = "in forming argument";
     private MainActivity mActivity;
     private SecondStepAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private InForming mInForming;
     private ArrayList<Address> mAddresses;
+    private ArrayList<LocalDepot> mToDeliverLIst;
 
 
     public SelectAddressFragment() {
         // Required empty public constructor
+    }
+
+    public static SelectAddressFragment newInstance(ArrayList<LocalDepot> toDeliveryItems) {
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(TO_DELIVER, toDeliveryItems);
+        SelectAddressFragment fragment = new SelectAddressFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    public static SelectAddressFragment newInstance(InForming inForming) {
+        Bundle args = new Bundle();
+        args.putParcelable(IN_FORMING_ARG, inForming);
+        SelectAddressFragment fragment = new SelectAddressFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -70,7 +90,6 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.address_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.addressSearch);
@@ -87,14 +106,6 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
             searchView.setSearchableInfo(searchManager.getSearchableInfo(mActivity.getComponentName()));
             searchView.setOnQueryTextListener(this);
         }
-    }
-
-    public static SelectAddressFragment newInstance(InForming inForming) {
-        Bundle args = new Bundle();
-        args.putParcelable(IN_FORMING_ARG, inForming);
-        SelectAddressFragment fragment = new SelectAddressFragment();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -115,7 +126,13 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
         mAddresses = new ArrayList<>();
         mAdapter = new SecondStepAdapter(mAddresses);
         mAdapter.setOnAddressClickListener(this);
-        mInForming = getArguments().getParcelable(IN_FORMING_ARG);
+
+        if (getArguments().containsKey(IN_FORMING_ARG)) {
+            mInForming = getArguments().getParcelable(IN_FORMING_ARG);
+        } else if (getArguments().containsKey(TO_DELIVER)) {
+            mToDeliverLIst = getArguments().getParcelableArrayList(TO_DELIVER);
+        }
+
         mRecyclerView.setAdapter(mAdapter);
         VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) view.findViewById(R.id.buildSecondStepFastScroller);
         fastScroller.setRecyclerView(mRecyclerView);
@@ -221,8 +238,12 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
 
     @Override
     public void onSelectAddressClick(Address address, int position) {
-        mInForming.setAddress(address);
-        mActivity.addFragment(ShippingMethodFragment.newInstance(mInForming), true);
+        if (mInForming != null) {
+            mInForming.setAddress(address);
+            mActivity.addFragment(ShippingMethodFragment.newInstance(mInForming), true);
+        } else if (mToDeliverLIst != null) {
+            // TODO: 6/27/16 do something with the list
+        }
     }
 
     @Override

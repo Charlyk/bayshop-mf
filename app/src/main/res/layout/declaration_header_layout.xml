@@ -6,19 +6,20 @@
     android:background="@android:color/white"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_marginBottom="5dp"
-    app:elevation="4dp">
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:padding="10dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView7"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:textSize="18sp"
             android:text="@string/declaration_alert"
             android:textColor="@color/colorAccent"/>
@@ -28,6 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             tools:text="USA"/>
@@ -36,6 +39,8 @@
             android:id="@+id/trackingNumberTitle"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_width="wrap_content"
             android:text="@string/tracking"/>
 
@@ -43,24 +48,35 @@
             android:id="@+id/trackingNumberLabel"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:textColor="@android:color/black"
             tools:text="213124714612876312673"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#b1b1b1"/>
+
         <TextView
             android:id="@+id/generalDescriptionTitle"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:text="@string/general_description"/>
 
         <EditText
             android:id="@+id/generalDescriptionLabel"
-            android:background="@drawable/input_background"
+            android:background="@android:color/white"
             android:hint="@string/general_description"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_height="30dp"
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:padding="2dp"
             android:layout_marginBottom="10dp"/>

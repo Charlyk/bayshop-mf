@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -19,6 +20,8 @@ import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.model.packages.Prohibited;
+import com.softranger.bayshopmf.model.packages.Sent;
+import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.util.Constants;
 
 import java.util.ArrayList;
@@ -30,7 +33,7 @@ import java.util.ArrayList;
  */
 public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int PARCEL = 0, PRODUCT = 1, PROHIBITED = 2;
+    private static final int PARCEL = 0, PRODUCT = 1, PROHIBITED = 2, CUSTOMS_HELD = 3;
     private ArrayList<Object> mItems;
     private ImagesAdapter.OnImageClickListener mOnImageClickListener;
     private OnItemClickListener mOnItemClickListener;
@@ -48,9 +51,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
 
     @Override
     public int getItemViewType(int position) {
-        if (mItems.get(position) instanceof Prohibited) {
-            return PROHIBITED;
-        } else if (mItems.get(position) instanceof PUSParcel) {
+        if (mItems.get(position) instanceof PUSParcel) {
             return PARCEL;
         } else if (mItems.get(position) instanceof Product) {
             return PRODUCT;
@@ -81,8 +82,18 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         if (mItems.get(position) instanceof PUSParcel) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
 
+            if (!(mItems.get(position) instanceof Sent) && !(mItems.get(position) instanceof ToDelivery)) {
+                headerHolder.mSentParcelLayout.setVisibility(View.GONE);
+            } else if (mItems.get(position) instanceof Sent || mItems.get(position) instanceof ToDelivery) {
+                headerHolder.mSentParcelTrack.setText(headerHolder.mProcessingParcel.getTrackingNumber());
+            }
+
             if (!(mItems.get(position) instanceof CustomsHeld)) {
                 headerHolder.mUploadLayout.setVisibility(View.GONE);
+            }
+
+            if (!(mItems.get(position) instanceof Prohibited)) {
+                headerHolder.mProhibitionLayout.setVisibility(View.GONE);
             }
 
             headerHolder.mProcessingParcel = (T) mItems.get(position);
@@ -162,6 +173,11 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final Button mUploadDocument;
         final Button mTakePicture;
         final LinearLayout mUploadLayout;
+        final LinearLayout mProhibitionLayout;
+        final RelativeLayout mSentParcelLayout;
+        final TextView mSentParcelTrack;
+        final RelativeLayout mReturnButton;
+        final RelativeLayout mConfirmAddressButton;
         T mProcessingParcel;
 
         public HeaderViewHolder(View itemView) {
@@ -186,6 +202,14 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mUploadLayout = (LinearLayout) itemView.findViewById(R.id.uploadDocumentLayout);
             mTakePicture = (Button) itemView.findViewById(R.id.prohibitionHeldTakePhotoBtn);
             mUploadDocument = (Button) itemView.findViewById(R.id.prohibitionHeldUploadDocumentBtn);
+            mProhibitionLayout = (LinearLayout) itemView.findViewById(R.id.heldByProhibitionHeaderLayout);
+            mReturnButton = (RelativeLayout) itemView.findViewById(R.id.heldByProhibitionReturnBtn);
+            mConfirmAddressButton = (RelativeLayout) itemView.findViewById(R.id.heldByProhibitionConfirmAddressBtn);
+            mSentParcelLayout = (RelativeLayout) itemView.findViewById(R.id.sentParcelHeaderLayout);
+            mSentParcelTrack = (TextView) itemView.findViewById(R.id.sentParcelTrackingNumberLabel);
+
+            mReturnButton.setOnClickListener(this);
+            mConfirmAddressButton.setOnClickListener(this);
 
             mTakePicture.setOnClickListener(this);
             mUploadDocument.setOnClickListener(this);
@@ -203,6 +227,12 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                     break;
                 case R.id.prohibitionHeldUploadDocumentBtn:
                     mOnItemClickListener.onUploadDocumentClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.heldByProhibitionReturnBtn:
+                    mOnItemClickListener.onReturnToSenderClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.heldByProhibitionConfirmAddressBtn:
+                    mOnItemClickListener.onConfirmAddressClick(mProcessingParcel, getAdapterPosition());
                     break;
             }
         }
@@ -232,5 +262,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
     public interface OnItemClickListener {
         <T extends PUSParcel> void onUploadDocumentClick(T item, int position);
         <T extends PUSParcel> void onTakePictureClick(T item, int position);
+        <T extends PUSParcel> void onReturnToSenderClick(T item, int position);
+        <T extends PUSParcel> void onConfirmAddressClick(T item, int position);
     }
 }

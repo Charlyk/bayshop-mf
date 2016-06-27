@@ -178,4 +178,26 @@
     <string name="take_photo">Take photo</string>
     <string name="declaration_filling_by_bayshop_3">Declaration filling by BayShop ($3)</string>
     <string name="fill_declaration_manualy">Fill declaration manualy</string>
+    <string name="example_product">Example product</string>
+    <string name="http_example_com_example_product">http://example.com/example-product</string>
+    <string name="packed_time">Packed time</string>
+    <string name="order">Order</string>
+    <string name="address_confirmation">Address confirmation</string>
+    <string name="return_to_seller_s_address">Return to seller\'s address</string>
+    <string name="name">Name:</string>
+    <string name="enter_your_first_name">Enter your first name</string>
+    <string name="enter_your_last_name">Enter your last name</string>
+    <string name="enter_your_email_address">Enter your email address</string>
+    <string name="enter_a_new_password">Enter a new password</string>
+    <string name="confirm_password">Confirm password:</string>
+    <string name="please_repeat_your_password">Please repeat your password</string>
+    <string name="register">Register</string>
+    <string name="passwords_does_not_match">Passwords does\'t match</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="enter_your_email_address_and_we_will_send_a_link_to_restor_your_password">Enter your email address and we will send a link to restor your password.</string>
+    <string name="restore">Restore</string>
+    <string name="restore_password">Restore password</string>
+    <string name="email_has_been_sent">Email has been sent.</string>
+    <string name="reset_your_password">When you receive your sign in information, follow the directions in the email to reset yout password</string>
+    <string name="done">Done</string>
 </resources>

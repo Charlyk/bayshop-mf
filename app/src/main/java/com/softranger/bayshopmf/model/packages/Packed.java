@@ -45,6 +45,14 @@ public class Packed extends PUSParcel {
         mPercentage = percentage;
     }
 
+    public boolean isSelected() {
+        return mIsSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        mIsSelected = isSelected;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);

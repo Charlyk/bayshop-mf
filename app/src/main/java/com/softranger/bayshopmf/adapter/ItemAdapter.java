@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,6 +19,7 @@ import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.model.packages.Packed;
 import com.softranger.bayshopmf.util.ViewAnimator;
@@ -37,7 +40,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private SimpleDateFormat output = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
 
-    private static final int HEADER = -1, IN_STOCK_ITEM = 0, PRODUCT = 1, IN_PROCESSING = 2, IN_FORMING = 3;
+    private static final int HEADER = -1, IN_STOCK_ITEM = 0, PRODUCT = 1, PUS_PARCEL = 2, IN_FORMING = 3;
 
     public ItemAdapter(Context context) {
         mContext = context;
@@ -57,7 +60,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (mInStockItems.get(position) instanceof Product) {
             return PRODUCT;
         } else if (mInStockItems.get(position) instanceof PUSParcel) {
-            return IN_PROCESSING;
+            return PUS_PARCEL;
         } else if (mInStockItems.get(position) instanceof InForming) {
             return IN_FORMING;
         }
@@ -75,7 +78,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case PRODUCT:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.arrival_list_item, parent, false);
                 return new ProductViewHolder(view);
-            case IN_PROCESSING:
+            case PUS_PARCEL:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_procesing_list_item, parent, false);
                 return new InProcessingViewHolder(view);
             case IN_FORMING:
@@ -112,6 +115,22 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (mInStockItems.get(position) instanceof PUSParcel) {
             InProcessingViewHolder<PUSParcel> processingHolder = (InProcessingViewHolder) holder;
 
+            // check if item is an instance of local depot object
+            // and if it's true then we need to show the checkbox used to select multiple items
+            // to order a home delivery otherwise hide that check box
+            if (mInStockItems.get(position) instanceof LocalDepot) {
+                processingHolder.mLocalDepositCheckBox.setVisibility(View.VISIBLE);
+                processingHolder.mWeightTitle.setText(mContext.getString(R.string.packed_time));
+                processingHolder.mLocalDepositCheckBox.setChecked(processingHolder.mProduct.isSelected());
+            } else {
+                processingHolder.mLocalDepositCheckBox.setVisibility(View.GONE);
+                processingHolder.mWeightTitle.setText(mContext.getString(R.string.weight));
+            }
+
+            // check if the item is an instance of either InProcessing or packed object
+            // if true we need to show the progress bar and percentage text which shows
+            // how much time it needs to finish packing, other wise hide the progressbar and
+            // percentage text
             if (mInStockItems.get(position) instanceof InProcessing) {
                 InProcessing inProcessing = (InProcessing) mInStockItems.get(position);
                 processingHolder.mProgress.setText(inProcessing.getPercentage() + "%");
@@ -129,11 +148,13 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 processingHolder.mProcessingProgressBar.setVisibility(View.GONE);
             }
 
+            // set name id and date in position
             processingHolder.mProduct = (PUSParcel) mInStockItems.get(position);
             processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
             processingHolder.mProductName.setText(processingHolder.mProduct.getName());
             processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreated()));
 
+            // compute kilos from grams and set the result in weight label
             double kg = processingHolder.mProduct.getRealWeght() / 1000;
             processingHolder.mWeight.setText(kg + "kg.");
 
@@ -276,10 +297,13 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    class InProcessingViewHolder<T extends PUSParcel> extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle;
+    class InProcessingViewHolder<T extends PUSParcel> extends RecyclerView.ViewHolder implements View.OnClickListener,
+            CompoundButton.OnCheckedChangeListener {
+
+        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle, mWeightTitle;
         final ProgressBar mProcessingProgressBar;
         final LinearLayout mProgressLayout;
+        final CheckBox mLocalDepositCheckBox;
         T mProduct;
 
         public InProcessingViewHolder(View itemView) {
@@ -293,12 +317,23 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mProgressTitle = (TextView) itemView.findViewById(R.id.inProcessingProgressTitle);
             mProcessingProgressBar = (ProgressBar) itemView.findViewById(R.id.inProcessingProgressBar);
             mProgressLayout = (LinearLayout) itemView.findViewById(R.id.inProcessingItemCompletionLayout);
+            mWeightTitle = (TextView) itemView.findViewById(R.id.inProcessingWeightTitle);
+            mLocalDepositCheckBox = (CheckBox) itemView.findViewById(R.id.inProcessingLocalDepositCheckBox);
+            mLocalDepositCheckBox.setOnCheckedChangeListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
                 mOnItemClickListener.onInProcessingProductClick(mProduct, getAdapterPosition());
+            }
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            mProduct.setSelected(isChecked);
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onLocalDepoItemSelected(mProduct, getAdapterPosition(), isChecked);
             }
         }
     }
@@ -376,6 +411,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onProductClick(Product product, int position);
 
         <T extends PUSParcel> void onInProcessingProductClick(T processingPackage, int position);
+
+        <T extends PUSParcel> void onLocalDepoItemSelected(T localDepotItem, int position, boolean isChecked);
 
         void onInFormingClick(InForming inForming, int position);
 
