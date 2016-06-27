@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="130dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
@@ -23,26 +23,18 @@
             android:layout_marginTop="16dp"
             android:src="@drawable/logo_200x200"/>
 
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/first_name"/>
-
         <EditText
             android:id="@+id/registerNameInput"
             android:layout_width="match_parent"
             android:nextFocusDown="@+id/registerLastNameInput"
+            android:layout_marginTop="50dp"
             android:layout_height="30dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:singleLine="true"
             android:background="@android:color/white"
             android:ems="10"
-            android:hint="@string/enter_your_first_name"
+            android:hint="@string/first_name"
             android:inputType="textPersonName"/>
 
         <View
@@ -51,14 +43,6 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:background="#b1b1b1"/>
-
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/last_name"/>
 
         <EditText
             android:id="@+id/registerLastNameInput"
@@ -70,7 +54,7 @@
             android:layout_marginRight="16dp"
             android:background="@android:color/white"
             android:ems="10"
-            android:hint="@string/enter_your_last_name"
+            android:hint="@string/last_name"
             android:inputType="textPersonName"/>
 
         <View
@@ -79,14 +63,6 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:background="#b1b1b1"/>
-
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/email"/>
 
         <EditText
             android:id="@+id/registerEmailInput"
@@ -98,7 +74,7 @@
             android:singleLine="true"
             android:background="@android:color/white"
             android:ems="10"
-            android:hint="@string/enter_your_email_address"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"/>
 
         <View
@@ -107,14 +83,6 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:background="#b1b1b1"/>
-
-        <TextView
-            android:id="@+id/textView24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/password"/>
 
         <EditText
             android:id="@+id/registerPasswordInput"
@@ -126,7 +94,7 @@
             android:singleLine="true"
             android:background="@android:color/white"
             android:ems="10"
-            android:hint="@string/enter_a_new_password"
+            android:hint="@string/password"
             android:inputType="textPassword"/>
 
         <View
@@ -136,14 +104,6 @@
             android:layout_marginTop="10dp"
             android:background="#b1b1b1"/>
 
-        <TextView
-            android:id="@+id/textView25"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/confirm_password"/>
-
         <EditText
             android:id="@+id/registerConfirmPassword"
             android:layout_width="match_parent"
@@ -152,7 +112,7 @@
             android:singleLine="true"
             android:layout_marginRight="16dp"
             android:background="@android:color/white"
-            android:hint="@string/please_repeat_your_password"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword"/>
 
         <View
