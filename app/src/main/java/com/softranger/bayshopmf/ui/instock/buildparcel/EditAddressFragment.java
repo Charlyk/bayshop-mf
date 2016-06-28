@@ -384,6 +384,7 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+        mHolderLayout.setVisibility(View.VISIBLE);
         isSaveClicked = false;
     }
 }

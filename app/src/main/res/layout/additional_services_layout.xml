@@ -12,7 +12,7 @@
         android:textColor="@color/colorAccent"
         android:padding="16dp"
         android:gravity="center"
-        android:text="@string/remember_that_we_have_three_awesome_services_for_each_parcel_you_are_going_to_receive"
+        android:text="@string/three_services"
         android:id="@+id/textView15"
         android:layout_gravity="center_horizontal"/>
 

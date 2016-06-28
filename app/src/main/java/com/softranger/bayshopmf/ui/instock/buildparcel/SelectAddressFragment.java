@@ -32,6 +32,7 @@ import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.settings.SettingsActivity;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -66,9 +67,8 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
         // Required empty public constructor
     }
 
-    public static SelectAddressFragment newInstance(ArrayList<LocalDepot> toDeliveryItems) {
+    public static SelectAddressFragment newInstance() {
         Bundle args = new Bundle();
-        args.putParcelableArrayList(TO_DELIVER, toDeliveryItems);
         SelectAddressFragment fragment = new SelectAddressFragment();
         fragment.setArguments(args);
         return fragment;
@@ -114,7 +114,10 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
-        mActivity = (MainActivity) getActivity();
+        if (getActivity() instanceof MainActivity) {
+            mActivity = (MainActivity) getActivity();
+        }
+
         IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
         intentFilter.addAction(EditAddressFragment.ACTION_REFRESH_ADDRESS);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
@@ -130,8 +133,6 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
 
         if (getArguments().containsKey(IN_FORMING_ARG)) {
             mInForming = getArguments().getParcelable(IN_FORMING_ARG);
-        } else if (getArguments().containsKey(TO_DELIVER)) {
-            mToDeliverLIst = getArguments().getParcelableArrayList(TO_DELIVER);
         }
 
         mRecyclerView.setAdapter(mAdapter);
@@ -139,7 +140,9 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
         fastScroller.setRecyclerView(mRecyclerView);
         mRecyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
         fastScroller.setSectionIndicator(indicator);
-        getAddressesList();
+        if (mInForming != null) {
+            getAddressesList();
+        }
         return view;
     }
 

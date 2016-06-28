@@ -18,11 +18,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_gravity="end"
-            android:textSize="17sp"
-            android:background="@drawable/green_button_bg"
+            android:textSize="16sp"
             style="@style/Base.Widget.AppCompat.ActionButton"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorGreenAction"
             android:text="@string/confirm"
+            android:background="?selectableItemBackground"
             android:id="@+id/insuranceConfirmButton"/>
     </LinearLayout>
 </ScrollView>

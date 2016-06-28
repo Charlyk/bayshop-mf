@@ -80,15 +80,13 @@
     <string name="parcel_components">Parcel components</string>
     <string name="item">Item:</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_parcel">Add parcel</string>
     <string name="add_awaiting_alert">It\'s important to enter the tracking number, there is no use in parcel processing without it. That\'s alright if you don\'t know the tracking number, your parcel won\'t be lost.</string>
     <string name="add_awaiting_package">Add awaiting package</string>
     <string name="enter_valid_email">Please specify a valid email address</string>
     <string name="enter_valid_password">Please enter your password</string>
     <string name="unknown_error">Something went wrong</string>
-    <string name="remember_that_we_have_three_awesome_services_for_each_parcel_you_are_going_to_receive">Remember that we have three awesome services for each parcel you are going to receive</string>
+    <string name="three_services">Remember that we have three awesome services for each parcel you are going to receive</string>
     <string name="you_can_combine_several_parcels_in_one">You can combine several parcels in one</string>
     <string name="you_can_order_product_checking">You can order product checking</string>
     <string name="and_receive_the_additional_photos">And receive the additional photos</string>
@@ -160,7 +158,7 @@
     <string name="_373">+373</string>
     <string name="moldova">Moldova</string>
     <string name="hide_details">Hide details</string>
-    <string name="delivery_warning">Delivery price is aproximate it will be fixed after packing</string>
+    <string name="delivery_warning">Delivery price is approximate it will be fixed after packing</string>
     <string name="fill_general_description">Please enter a general description</string>
     <string name="_150_4">$150.4</string>
     <string name="enter_a_new_price">Enter a new price:</string>
@@ -188,17 +186,23 @@
     <string name="enter_your_first_name">Enter your first name</string>
     <string name="enter_your_last_name">Enter your last name</string>
     <string name="enter_your_email_address">Enter your email address</string>
-    <string name="enter_a_new_password">Enter a new password</string>
+    <string name="enter_a_new_password">New password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="please_repeat_your_password">Please repeat your password</string>
     <string name="register">Register</string>
     <string name="passwords_does_not_match">Passwords does\'t match</string>
     <string name="forgot_your_password">Forgot your password?</string>
-    <string name="enter_your_email_address_and_we_will_send_a_link_to_restor_your_password">Enter your email address and we will send a link to restor your password.</string>
+    <string name="restore_explain">Enter your email address and we will send a link to restor your password.</string>
     <string name="restore">Restore</string>
     <string name="restore_password">Restore password</string>
     <string name="email_has_been_sent">Email has been sent.</string>
     <string name="reset_your_password">When you receive your sign in information, follow the directions in the email to reset yout password</string>
     <string name="done">Done</string>
     <string name="insurance_agreement">Insurance agreement</string>
+    <string name="_400">$ 400</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="current_password">Current password</string>
+    <string name="must_contain">Password must contain at least 6 characters</string>
 </resources>

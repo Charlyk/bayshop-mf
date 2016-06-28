@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="settings_list">
+        <item>User data</item>
+        <item>Addresses</item>
+        <item>Change password</item>
+        <item>Regional settings</item>
+        <item>Auto packaging</item>
+        <item>Notifications</item>
+        <item>Subscribe</item>
+        <item>Log out</item>
+    </array>
+</resources>

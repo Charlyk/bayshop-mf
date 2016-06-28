@@ -86,7 +86,7 @@ public class StorageHolderFragment extends Fragment {
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.RECEIVED), Constants.US),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.RECEIVED), Constants.GB),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.RECEIVED), Constants.DE));
-                mActivity.setToolbarTitle(mActivity.getString(R.string.sent), true);
+                mActivity.setToolbarTitle(mActivity.getString(R.string.received), true);
                 break;
             }
             case LOCAL_DEPO: {
@@ -94,6 +94,7 @@ public class StorageHolderFragment extends Fragment {
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.GB, Constants.ParcelStatus.LOCAL_DEPO), Constants.GB),
                         StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.DE, Constants.ParcelStatus.LOCAL_DEPO), Constants.DE));
                 mActivity.setToolbarTitle(mActivity.getString(R.string.local_deposit), true);
+                break;
             }
             case TAKEN_TO_DELIVERY: {
                 initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.TAKEN_TO_DELIVERY), Constants.US),

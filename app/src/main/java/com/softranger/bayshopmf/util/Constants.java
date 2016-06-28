@@ -61,6 +61,8 @@ public class Constants {
         private static final String PHONE_CODES = "phone-formats";
         private static final String REGISTER = "register/";
         private static final String RESTORE = "restore/";
+        private static final String MEMBER = "member/";
+        private static final String PERSONAL_DATA = "personal-data/";
 
         /**
          * POST
@@ -68,6 +70,15 @@ public class Constants {
          */
         public static String urlAuth() {
             return URL + AUTH;
+        }
+
+
+        /**
+         *
+         * @return
+         */
+        public static String urlPersonalData() {
+            return URL + MEMBER + PERSONAL_DATA;
         }
 
 

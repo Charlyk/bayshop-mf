@@ -58,7 +58,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StorageItemsFragment extends ParentFragment implements ItemAdapter.OnItemClickListener,
+public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     public static final String ACTION_ITEM_CHANGED = "item was changed from a top fragment";
@@ -66,13 +66,11 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     private static final String DEPOSIT_ARG = "deposit argument";
     private MainActivity mActivity;
     public String mDeposit;
-    private RecyclerView mRecyclerView;
     private ArrayList<Object> mObjects;
     private ItemAdapter mAdapter;
     private static String url;
     private TextView mNoValueText;
     private ArrayList<InForming> mInFormingItems;
-    private ArrayList<LocalDepot> mSelectedForDelivery;
     private SwipeRefreshLayout mRefreshLayout;
     private Button mOrderDeliveryBtn;
 
@@ -100,14 +98,13 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
         IntentFilter intentFilter = new IntentFilter(ACTION_ITEM_CHANGED);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
-        mSelectedForDelivery = new ArrayList<>();
         mOrderDeliveryBtn = (Button) view.findViewById(R.id.storageItemsOrderDeliveryBtn);
         mOrderDeliveryBtn.setOnClickListener(this);
 
         // bind the recycler view which will hold all lists in this fragment
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
         final LinearLayoutManager manager = new LinearLayoutManager(mActivity);
-        mRecyclerView.setLayoutManager(manager);
+        recyclerView.setLayoutManager(manager);
 
         // bind refresh layout to be able to send a request again
         mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.storageItemsFragmentSwipeRefresh);
@@ -127,7 +124,7 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
         // Create the adapter for this fragment and pass it to recycler view
         mAdapter = new ItemAdapter(mActivity);
         mAdapter.setOnItemClickListener(this);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
 
         // get the url and deposit id from arguments and make a request to the server with the passed
         // in arguments url
@@ -399,16 +396,16 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
      */
     @Override
     public <T extends PUSParcel> void onLocalDepoItemSelected(T localDepotItem, int position, boolean isChecked) {
-        if (isChecked) {
-            mSelectedForDelivery.add((LocalDepot) localDepotItem);
-        } else {
-            mSelectedForDelivery.remove(localDepotItem);
-        }
-        if (mSelectedForDelivery.size() > 0) {
-            mOrderDeliveryBtn.setVisibility(View.VISIBLE);
-        } else {
-            mOrderDeliveryBtn.setVisibility(View.GONE);
-        }
+//        if (isChecked) {
+//            mSelectedForDelivery.add((LocalDepot) localDepotItem);
+//        } else {
+//            mSelectedForDelivery.remove(localDepotItem);
+//        }
+//        if (mSelectedForDelivery.size() > 0) {
+//            mOrderDeliveryBtn.setVisibility(View.VISIBLE);
+//        } else {
+//            mOrderDeliveryBtn.setVisibility(View.GONE);
+//        }
     }
 
     /**
@@ -461,23 +458,57 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.storageItemsOrderDeliveryBtn:
-                mActivity.addFragment(SelectAddressFragment.newInstance(mSelectedForDelivery), false);
+                mActivity.addFragment(SelectAddressFragment.newInstance(), false);
                 break;
         }
     }
 
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-        buildItemsList(response);
-    }
-
-    @Override
-    public void onServerError(String message) {
-        mActivity.toggleLoadingProgress(false);
-    }
-
-    @Override
-    public void onHandleMessageEnd() {
-        mRefreshLayout.setRefreshing(false);
-    }
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
+                        if (!error) {
+                            buildItemsList(response);
+                        } else {
+                            Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+                    mActivity.toggleLoadingProgress(false);
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = mActivity.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
+        }
+    };
 }

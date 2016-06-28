@@ -48,6 +48,7 @@ import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
+import com.softranger.bayshopmf.ui.settings.SettingsActivity;
 import com.softranger.bayshopmf.ui.storages.StorageHolderFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
@@ -347,6 +348,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_logOut:
                 logOut();
                 break;
+            case R.id.nav_profileSettings:
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivity(settings);
+                break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         if (mActionMenu.isExpanded()) {
@@ -406,13 +411,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         setToolbarTitle(getString(R.string.received), true);
                         break;
                     case LOCAL_DEPO:
-
+                        setToolbarTitle(getString(R.string.local_deposit), true);
                         break;
                     case TAKEN_TO_DELIVERY:
-
+                        setToolbarTitle(getString(R.string.take_to_delivery), true);
                         break;
                     case CUSTOMS_HELD:
-
+                        setToolbarTitle(getString(R.string.held_by_customs), true);
                         break;
                 }
             } else {

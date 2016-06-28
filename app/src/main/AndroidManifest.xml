@@ -17,21 +17,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
         <activity
             android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1448296545440676"
-                  android:name="com.facebook.FacebookContentProvider"
-                  android:exported="true" />
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1448296545440676"
+            android:exported="true"/>
 
         <activity
             android:name=".ui.general.MainActivity"
@@ -49,20 +48,28 @@
             android:name=".ui.auth.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoToolbar">
-
         </activity>
 
         <activity
             android:name=".ui.auth.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="@string/fb_login_protocol_scheme" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="@string/fb_login_protocol_scheme"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.gallery.GalleryActivity"/>
+        <activity
+            android:name=".ui.gallery.GalleryActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:screenOrientation="portrait"/>
     </application>
+
 </manifest>

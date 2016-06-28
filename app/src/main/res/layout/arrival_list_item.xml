@@ -7,11 +7,6 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

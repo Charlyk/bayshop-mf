@@ -426,9 +426,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_gravity="end"
-            android:background="@drawable/green_button_bg"
             android:text="@string/confirm"
-            android:textColor="@android:color/white"
-            android:textSize="17sp"/>
+            android:background="?selectableItemBackground"
+            android:textColor="@color/colorGreenAction"
+            android:textSize="16sp"/>
     </LinearLayout>
 </ScrollView>

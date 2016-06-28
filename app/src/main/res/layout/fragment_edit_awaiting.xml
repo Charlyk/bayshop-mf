@@ -182,9 +182,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_margin="16dp"
+            android:background="?selectableItemBackground"
             android:text="@string/save"
-            android:background="@drawable/green_button_bg"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"/>
+            android:textColor="@color/colorGreenAction"
+            android:textSize="16sp"/>
     </LinearLayout>
 </ScrollView>
