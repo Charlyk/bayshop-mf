@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
@@ -35,7 +36,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddAwaitingFragment extends Fragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+public class AddAwaitingFragment extends ParentFragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
     private EditText mProductUrlInput;
     private EditText mProductTrackingNumInput;
@@ -128,58 +129,21 @@ public class AddAwaitingFragment extends Fragment implements RadioGroup.OnChecke
                     .add("url", mProduct.getProductUrl())
                     .add("packagePrice", mProduct.getProductPrice())
                     .build();
-            ApiClient.getInstance().sendRequest(body, Constants.Api.urlAddWaitingArrivalItem(), mEdithandler);
+            ApiClient.getInstance().sendRequest(body, Constants.Api.urlAddWaitingArrivalItem(), mHandler);
             mActivity.toggleLoadingProgress(true);
         }
     }
 
-    private Handler mEdithandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
-                            intent.putExtra("deposit", mProduct.getDeposit());
-                            mActivity.sendBroadcast(intent);
-                            mActivity.onBackPressed();
-                        } else {
-                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+        intent.putExtra("deposit", mProduct.getDeposit());
+        mActivity.sendBroadcast(intent);
+        mActivity.onBackPressed();
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
+    }
 }

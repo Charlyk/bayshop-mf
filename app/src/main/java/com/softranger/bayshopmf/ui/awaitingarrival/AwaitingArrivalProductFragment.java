@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
@@ -45,7 +46,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AwaitingArrivalProductFragment extends Fragment implements View.OnClickListener {
+public class AwaitingArrivalProductFragment extends ParentFragment implements View.OnClickListener {
 
     private static final String PRODUCT_ARG = "product";
 
@@ -56,6 +57,8 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
     private MainActivity mActivity;
     private Product mProduct;
     private View mRootView;
+
+    private static boolean isDeleteClicked;
 
     public AwaitingArrivalProductFragment() {
         // Required empty public constructor
@@ -90,7 +93,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
         mProductPrice.setText(mProduct.getProductPrice());
         mStorageIcon.setImageResource(getStorageIcon(mProduct.getDeposit()));
         mActivity.toggleLoadingProgress(true);
-        ApiClient.getInstance().sendRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mProduct.getID())), mAwaitingListHandler);
+        ApiClient.getInstance().sendRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mProduct.getID())), mHandler);
         return mRootView;
     }
 
@@ -115,101 +118,6 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
             }
-        }
-    };
-
-    private Handler mDeleteHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equals("Ok");
-                        if (error) {
-                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            mActivity.toggleLoadingProgress(false);
-                            Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
-                            intent.putExtra("deposit", mProduct.getDeposit());
-                            mActivity.sendBroadcast(intent);
-                            mActivity.onBackPressed();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
-
-    private Handler mAwaitingListHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            mProduct.setDate(data.getString("createdDate"));
-                            mProduct.setCurrency(data.getString("currency"));
-                            mProduct.setProductPrice(data.getString("price"));
-                            mProduct.setProductUrl(data.getString("productUrl"));
-                            setDataInPlace(mProduct);
-                        } else {
-                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
         }
     };
 
@@ -285,7 +193,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                 mActivity.addFragment(EditAwaitingFragment.newInstance(mProduct), true);
                 break;
             case R.id.awaitingDetailsDeleteButton:
-
+                isDeleteClicked = true;
                 deleteItem(mProduct);
                 break;
             case R.id.awaitingDetailsCheckProductBtn:
@@ -306,7 +214,7 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
                     @Override
                     public void onClick(View v) {
                         ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(
-                                String.valueOf(product.getID())), mDeleteHandler);
+                                String.valueOf(product.getID())), mHandler);
                         mActivity.toggleLoadingProgress(true);
                         dialog.dismiss();
                     }
@@ -323,5 +231,29 @@ public class AwaitingArrivalProductFragment extends Fragment implements View.OnC
     public void onDetach() {
         super.onDetach();
         mActivity.unregisterReceiver(mStatusReceiver);
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        if (isDeleteClicked) {
+            mActivity.toggleLoadingProgress(false);
+            Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+            intent.putExtra("deposit", mProduct.getDeposit());
+            mActivity.sendBroadcast(intent);
+            mActivity.onBackPressed();
+        } else {
+            JSONObject data = response.getJSONObject("data");
+            mProduct.setDate(data.getString("createdDate"));
+            mProduct.setCurrency(data.getString("currency"));
+            mProduct.setProductPrice(data.getString("price"));
+            mProduct.setProductUrl(data.getString("productUrl"));
+            setDataInPlace(mProduct);
+        }
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        isDeleteClicked = false;
+        mActivity.toggleLoadingProgress(false);
     }
 }

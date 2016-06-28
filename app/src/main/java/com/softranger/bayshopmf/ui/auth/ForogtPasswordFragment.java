@@ -7,14 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
+import com.softranger.bayshopmf.util.Constants;
+
+import org.json.JSONObject;
+
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ForogtPasswordFragment extends Fragment implements View.OnClickListener {
+public class ForogtPasswordFragment extends ParentFragment implements View.OnClickListener {
 
+    private EditText mEmailInput;
+    private ProgressBar mProgressBar;
+    private Button mRestoreBtn;
     private LoginActivity mActivity;
 
     public ForogtPasswordFragment() {
@@ -28,13 +41,38 @@ public class ForogtPasswordFragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_forogt_password, container, false);
         mActivity = (LoginActivity) getActivity();
-        Button restore = (Button) view.findViewById(R.id.forgotRestoreButton);
-        restore.setOnClickListener(this);
+        mRestoreBtn = (Button) view.findViewById(R.id.forgotRestoreButton);
+        mRestoreBtn.setOnClickListener(this);
+        mEmailInput = (EditText) view.findViewById(R.id.restorePasswordEmailInput);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.restorePasswordProgressBar);
         return view;
     }
 
     @Override
     public void onClick(View v) {
+        String email = String.valueOf(mEmailInput.getText());
+        if (email.equals("") && !email.contains("@")) {
+            mEmailInput.setError(getString(R.string.enter_valid_email));
+            return;
+        }
+
+        mRestoreBtn.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        RequestBody body = new FormBody.Builder()
+                .add("email", email)
+                .build();
+        ApiClient.getInstance().sendRequest(body, Constants.Api.urlRestorePassword(), mHandler);
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) {
         mActivity.addFragment(new ForgotResultFragment(), true);
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mProgressBar.setVisibility(View.GONE);
+        mRestoreBtn.setVisibility(View.VISIBLE);
     }
 }

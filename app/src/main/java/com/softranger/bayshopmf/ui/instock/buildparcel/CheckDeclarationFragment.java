@@ -30,6 +30,7 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -46,7 +47,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CheckDeclarationFragment extends Fragment implements View.OnClickListener,
+public class CheckDeclarationFragment extends ParentFragment implements View.OnClickListener,
         PackageDetailsAdapter.OnEditClickListener, RadioGroup.OnCheckedChangeListener {
 
     private static final String IN_FORMING_ARG = "in forming object argument";
@@ -106,97 +107,6 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
         return view;
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            // TODO: 6/8/16 chack this for null
-//                            if (data.get("declaration") != null) {
-//                                mInForming.setGeneralDescription(data.getJSONObject("declaration").optString("name", null));
-//                            }
-
-                            JSONArray jsonBoxes = data.getJSONArray("boxes");
-                            for (int i = 0; i < jsonBoxes.length(); i++) {
-                                JSONObject box = jsonBoxes.getJSONObject(i);
-                                InStockDetailed detailed = new InStockDetailed();
-                                detailed.setID(box.getInt("id"));
-                                detailed.setParcelId(box.getString("uid"));
-                                mInStock.add(detailed);
-                            }
-
-                            JSONArray jsonDec = data.getJSONArray("declarationItems");
-                            for (InStockDetailed detailed : mInStock) {
-                                ArrayList<Product> products = new ArrayList<>();
-                                for (int i = 0; i < jsonDec.length(); i++) {
-                                    JSONObject jsonProd = jsonDec.getJSONObject(i);
-                                    Product product = new Product.Builder()
-                                            .id(jsonProd.getInt("id"))
-                                            .productName(jsonProd.getString("title"))
-                                            .productQuantity(jsonProd.getString("quantity"))
-                                            .productPrice(jsonProd.getString("price"))
-                                            .productUrl(jsonProd.getString("url"))
-                                            .orderStorageId(jsonProd.getString("orderStorageId"))
-                                            .weight(jsonProd.getString("weight"))
-                                            .declarationId(jsonProd.getString("declarationId"))
-                                            .build();
-                                    final int boxId = Integer.parseInt(product.getOrderStorageId());
-                                    if (boxId == detailed.getID()) {
-                                        products.add(product);
-                                    }
-
-                                }
-                                detailed.setProducts(products);
-                                mProducts.addAll(products);
-                            }
-                            mInForming.setProducts(mProducts);
-                            if (mInForming.getGeneralDescription() != null && !mInForming.getGeneralDescription().equals("")) {
-                                mGeneralDescriptionInput.setText(String.valueOf(mInForming.getGeneralDescription()));
-                            }
-                            mAdapter.addItems(mInStock);
-                            setTotals();
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
-
     private void setTotals() {
         int weight = 0;
         double price = 0;
@@ -207,7 +117,7 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
         }
 
         mTotalPriceLabel.setText("$" + String.valueOf(price));
-        mTotalWeightLabel.setText(String.valueOf(((float) (weight/1000))) + "kg.");
+        mTotalWeightLabel.setText(String.valueOf(((float) (weight / 1000))) + "kg.");
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -275,5 +185,61 @@ public class CheckDeclarationFragment extends Fragment implements View.OnClickLi
                 mInForming.setAutoFilling(true);
                 break;
         }
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        JSONObject data = response.getJSONObject("data");
+
+        // TODO: 6/8/16 chack this for null
+//         if (data.get("declaration") != null) {
+//             mInForming.setGeneralDescription(data.getJSONObject("declaration").optString("name", null));
+//         }
+
+        JSONArray jsonBoxes = data.getJSONArray("boxes");
+        for (int i = 0; i < jsonBoxes.length(); i++) {
+            JSONObject box = jsonBoxes.getJSONObject(i);
+            InStockDetailed detailed = new InStockDetailed();
+            detailed.setID(box.getInt("id"));
+            detailed.setParcelId(box.getString("uid"));
+            mInStock.add(detailed);
+        }
+
+        JSONArray jsonDec = data.getJSONArray("declarationItems");
+        for (InStockDetailed detailed : mInStock) {
+            ArrayList<Product> products = new ArrayList<>();
+            for (int i = 0; i < jsonDec.length(); i++) {
+                JSONObject jsonProd = jsonDec.getJSONObject(i);
+                Product product = new Product.Builder()
+                        .id(jsonProd.getInt("id"))
+                        .productName(jsonProd.getString("title"))
+                        .productQuantity(jsonProd.getString("quantity"))
+                        .productPrice(jsonProd.getString("price"))
+                        .productUrl(jsonProd.getString("url"))
+                        .orderStorageId(jsonProd.getString("orderStorageId"))
+                        .weight(jsonProd.getString("weight"))
+                        .declarationId(jsonProd.getString("declarationId"))
+                        .build();
+                final int boxId = Integer.parseInt(product.getOrderStorageId());
+                if (boxId == detailed.getID()) {
+                    products.add(product);
+                }
+
+            }
+            detailed.setProducts(products);
+            mProducts.addAll(products);
+        }
+        mInForming.setProducts(mProducts);
+        if (mInForming.getGeneralDescription() != null && !mInForming.getGeneralDescription().equals("")) {
+            mGeneralDescriptionInput.setText(String.valueOf(mInForming.getGeneralDescription()));
+        }
+        mAdapter.addItems(mInStock);
+        setTotals();
+        mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public void onServerError(String message) {
+        mActivity.toggleLoadingProgress(false);
     }
 }

@@ -30,6 +30,7 @@ import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
 import com.softranger.bayshopmf.util.Constants;
@@ -48,7 +49,7 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SelectAddressFragment extends Fragment implements SecondStepAdapter.OnAddressClickListener,
+public class SelectAddressFragment extends ParentFragment implements SecondStepAdapter.OnAddressClickListener,
         MenuItemCompat.OnActionExpandListener, SearchView.OnQueryTextListener, MenuItem.OnMenuItemClickListener {
 
     private static final String TO_DELIVER = "TO_DELIVER_ARG";
@@ -146,7 +147,7 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
         RequestBody body = new FormBody.Builder()
                 .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mAddressHandler);
+        ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mHandler);
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -168,73 +169,6 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
         super.onDestroyView();
         mActivity.unregisterReceiver(mTitleReceiver);
     }
-
-    private Handler mAddressHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            mAddresses.clear();
-                            JSONObject data = response.getJSONObject("data");
-                            JSONArray addressesJSON = data.getJSONArray("addresses");
-                            for (int i = 0; i < addressesJSON.length(); i++) {
-                                JSONObject a = addressesJSON.getJSONObject(i);
-                                String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
-                                Address address = new Address.Builder()
-                                        .id(a.getInt("id"))
-                                        .clientName(name)
-                                        .firstName(a.getString("shipping_first_name"))
-                                        .lastName(a.getString("shipping_last_name"))
-                                        .street(a.getString("shipping_address"))
-                                        .city(a.getString("shipping_city"))
-                                        .country(a.getString("countryTitle"))
-                                        .postalCode(a.getString("shipping_zip"))
-                                        .phoneNumber(a.optString("phone", ""))
-                                        .phoneCode(a.optString("shipping_phone_code", ""))
-                                        .build();
-                                mAddresses.add(address);
-                            }
-                            mAdapter.refreshList();
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
 
     @Override
     public void onSelectAddressClick(Address address, int position) {
@@ -308,5 +242,35 @@ public class SelectAddressFragment extends Fragment implements SecondStepAdapter
     public boolean onMenuItemClick(MenuItem item) {
         mActivity.addFragment(EditAddressFragment.newInstance(null), false);
         return true;
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        mAddresses.clear();
+        JSONObject data = response.getJSONObject("data");
+        JSONArray addressesJSON = data.getJSONArray("addresses");
+        for (int i = 0; i < addressesJSON.length(); i++) {
+            JSONObject a = addressesJSON.getJSONObject(i);
+            String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
+            Address address = new Address.Builder()
+                    .id(a.getInt("id"))
+                    .clientName(name)
+                    .firstName(a.getString("shipping_first_name"))
+                    .lastName(a.getString("shipping_last_name"))
+                    .street(a.getString("shipping_address"))
+                    .city(a.getString("shipping_city"))
+                    .country(a.getString("countryTitle"))
+                    .postalCode(a.getString("shipping_zip"))
+                    .phoneNumber(a.optString("phone", ""))
+                    .phoneCode(a.optString("shipping_phone_code", ""))
+                    .build();
+            mAddresses.add(address);
+        }
+        mAdapter.refreshList();
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
     }
 }

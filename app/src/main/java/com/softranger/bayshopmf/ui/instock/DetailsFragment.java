@@ -29,6 +29,7 @@ import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
@@ -52,7 +53,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailsFragment extends Fragment implements View.OnClickListener, ImagesAdapter.OnImageClickListener {
+public class DetailsFragment extends ParentFragment implements View.OnClickListener, ImagesAdapter.OnImageClickListener {
 
 
     private static final String ITEM_ARG = "ITEM ARGUMENT";
@@ -100,7 +101,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         mImagesAdapter = new ImagesAdapter(R.layout.in_stock_detailed_image);
         mImagesAdapter.setOnImageClickListener(this);
         mRecyclerView.setAdapter(mImagesAdapter);
-        ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mDetailsHandler);
+        ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);
         mActivity.toggleLoadingProgress(true);
         return mRootView;
     }
@@ -127,7 +128,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
                     break;
                 case StorageItemsFragment.ACTION_ITEM_CHANGED:
                     mHolderLayout.setVisibility(View.GONE);
-                    ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mDetailsHandler);
+                    ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);
                     mActivity.toggleLoadingProgress(true);
                     break;
             }
@@ -180,79 +181,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         mAdditionalPhoto.setOnClickListener(this);
     }
 
-    private Handler mDetailsHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            mInStockDetailed = (InStockDetailed) new InStockDetailed.Builder()
-                                    .date(data.getString("createdDate"))
-                                    .price(data.getString("price"))
-                                    .photoInProgress(data.getInt("photosInProgress"))
-                                    .checkInProgress(data.getBoolean("checkProductInProgress") ? 1 : 0)
-                                    .curency(data.getString("currency"))
-                                    .weight(data.getString("weight"))
-                                    .deposit(mInStockItem.getDeposit())
-                                    .trackingNumber(data.getString("trackingNumber"))
-                                    .hasDeclaration(data.getBoolean("declarationFilled"))
-                                    .parcelId(data.getString("uid"))
-                                    .id(Integer.parseInt(data.getString("id")))
-                                    .build();
-                            JSONArray jsonPhotos = data.getJSONArray("photos");
-                            ArrayList<Photo> photos = new ArrayList<>();
-                            for (int i = 0; i < jsonPhotos.length(); i++) {
-                                JSONObject o = jsonPhotos.getJSONObject(i);
-                                Photo photo = new Photo.Builder()
-                                        .smallImage(o.getString("photoThumbnail"))
-                                        .bigImage(o.getString("photo"))
-                                        .build();
-                                photos.add(photo);
-                            }
-                            mInStockDetailed.setPhotoUrls(photos);
-                            showDetails(mRootView, mInStockDetailed);
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mHolderLayout.setVisibility(View.VISIBLE);
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -286,5 +214,41 @@ public class DetailsFragment extends Fragment implements View.OnClickListener, I
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        JSONObject data = response.getJSONObject("data");
+        mInStockDetailed = (InStockDetailed) new InStockDetailed.Builder()
+                .date(data.getString("createdDate"))
+                .price(data.getString("price"))
+                .photoInProgress(data.getInt("photosInProgress"))
+                .checkInProgress(data.getBoolean("checkProductInProgress") ? 1 : 0)
+                .curency(data.getString("currency"))
+                .weight(data.getString("weight"))
+                .deposit(mInStockItem.getDeposit())
+                .trackingNumber(data.getString("trackingNumber"))
+                .hasDeclaration(data.getBoolean("declarationFilled"))
+                .parcelId(data.getString("uid"))
+                .id(Integer.parseInt(data.getString("id")))
+                .build();
+        JSONArray jsonPhotos = data.getJSONArray("photos");
+        ArrayList<Photo> photos = new ArrayList<>();
+        for (int i = 0; i < jsonPhotos.length(); i++) {
+            JSONObject o = jsonPhotos.getJSONObject(i);
+            Photo photo = new Photo.Builder()
+                    .smallImage(o.getString("photoThumbnail"))
+                    .bigImage(o.getString("photo"))
+                    .build();
+            photos.add(photo);
+        }
+        mInStockDetailed.setPhotoUrls(photos);
+        showDetails(mRootView, mInStockDetailed);
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mHolderLayout.setVisibility(View.VISIBLE);
+        mActivity.toggleLoadingProgress(false);
     }
 }

@@ -200,4 +200,5 @@
     <string name="email_has_been_sent">Email has been sent.</string>
     <string name="reset_your_password">When you receive your sign in information, follow the directions in the email to reset yout password</string>
     <string name="done">Done</string>
+    <string name="insurance_agreement">Insurance agreement</string>
 </resources>

@@ -19,6 +19,7 @@ import com.softranger.bayshopmf.adapter.DeclarationListAdapter;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
@@ -36,7 +37,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DeclarationFragment extends Fragment implements DeclarationListAdapter.OnActionButtonsClick {
+public class DeclarationFragment extends ParentFragment implements DeclarationListAdapter.OnActionButtonsClick {
 
     private static final String IN_STOCK_ARG = "in stock argument";
 
@@ -44,6 +45,7 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
     private DeclarationListAdapter mDeclarationAdapter;
     private RecyclerView mRecyclerView;
     private InStockDetailed mInStockDetailed;
+    private static boolean isSaveClicked;
 
     public DeclarationFragment() {
         // Required empty public constructor
@@ -70,7 +72,7 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
         mDeclarationAdapter = new DeclarationListAdapter(mInStockDetailed);
         mDeclarationAdapter.setOnActionButtonsClickListener(this);
         mRecyclerView.setAdapter(mDeclarationAdapter);
-        ApiClient.getInstance().sendRequest(Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mDeclarationHandler);
+        ApiClient.getInstance().sendRequest(Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
         return view;
     }
 
@@ -101,9 +103,10 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
             Snackbar.make(mRecyclerView, getString(R.string.please_enter_description), Snackbar.LENGTH_SHORT).show();
             return;
         }
+        isSaveClicked = true;
         RequestBody body = new FormBody.Builder().add("title", inStockDetailed.getDescription())
                 .add("declarationItems", String.valueOf(buildProductsArray(products))).build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mEditDeclarationHandler);
+        ApiClient.getInstance().sendRequest(body, Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
     }
 
     private JSONArray buildProductsArray(ArrayList<Product> products) {
@@ -132,112 +135,31 @@ public class DeclarationFragment extends Fragment implements DeclarationListAdap
                 && !product.getProductQuantity().equals("0") && !product.getProductPrice().equals("0");
     }
 
-    private Handler mEditDeclarationHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            Intent update = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
-                            mActivity.sendBroadcast(update);
-                            mActivity.onBackPressed();
-                            Snackbar.make(mRecyclerView, getString(R.string.declaration_saved), Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        if (isSaveClicked) {
+            Intent update = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+            mActivity.sendBroadcast(update);
+            mActivity.onBackPressed();
+            Snackbar.make(mRecyclerView, getString(R.string.declaration_saved), Snackbar.LENGTH_SHORT).show();
+        } else {
+            JSONObject data = response.getJSONObject("data");
+            mInStockDetailed.setDescription(data.getString("title"));
+            mDeclarationAdapter.notifyItemChanged(0);
+            JSONArray products = data.getJSONArray("declarationItems");
+            for (int i = 0; i < products.length(); i++) {
+                JSONObject p = products.getJSONObject(i);
+                Product product = new Product.Builder()
+                        .productName(p.getString("title"))
+                        .productQuantity(p.getString("quantity"))
+                        .productPrice(p.getString("price"))
+                        .productUrl(p.getString("url"))
+                        .productId("declarationItemId")
+                        .build();
+                mDeclarationAdapter.addItem(product);
             }
         }
-    };
 
-    private Handler mDeclarationHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            mInStockDetailed.setDescription(data.getString("title"));
-                            mDeclarationAdapter.notifyItemChanged(0);
-                            JSONArray products = data.getJSONArray("declarationItems");
-                            for (int i = 0; i < products.length(); i++) {
-                                JSONObject p = products.getJSONObject(i);
-                                Product product = new Product.Builder()
-                                        .productName(p.getString("title"))
-                                        .productQuantity(p.getString("quantity"))
-                                        .productPrice(p.getString("price"))
-                                        .productUrl(p.getString("url"))
-                                        .productId("declarationItemId")
-                                        .build();
-                                mDeclarationAdapter.addItem(product);
-                            }
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-        }
-    };
+        isSaveClicked = false;
+    }
 }

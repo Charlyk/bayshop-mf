@@ -29,6 +29,7 @@ import com.softranger.bayshopmf.model.Insurance;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -45,7 +46,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InsuranceFragment extends Fragment implements View.OnClickListener {
+public class InsuranceFragment extends ParentFragment implements View.OnClickListener {
 
     private static final String IN_FORMING_ARG = "in forming item arg";
     private MainActivity mActivity;
@@ -60,7 +61,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
     private TextView mProductsPriceLabel;
     private TextView mShippingPriceLabel;
     private TextView mInsurancePriceLabel;
-    private ImageButton mNeedInsuranceDetails;
+    private Button mNeedInsuranceDetails;
     private ImageButton mRefuseInsuranceDetails;
     private Button mConfirmBtn;
 
@@ -88,7 +89,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
 
         needInsurance = true;
 
-        mNeedInsuranceDetails = (ImageButton) mRootView.findViewById(R.id.insuranceDetailsButton);
+        mNeedInsuranceDetails = (Button) mRootView.findViewById(R.id.insuranceDetailsButton);
         mRefuseInsuranceDetails = (ImageButton) mRootView.findViewById(R.id.noInsuranceDetailsButton);
         mNeedInSurance = (RadioButton) mRootView.findViewById(R.id.insuranceRadioButton);
         mRefuseInsurance = (RadioButton) mRootView.findViewById(R.id.noInsuranceRadioButton);
@@ -135,60 +136,6 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
         }
         return productsJSON;
     }
-
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            Insurance insurance = new Insurance.Builder()
-                                    .currency(data.getString("currency"))
-                                    .commission(data.getDouble("commission"))
-                                    .shippingCost(data.getDouble("shippingCost"))
-                                    .totalPriceBoxes(data.getDouble("totalPriceBoxes"))
-                                    .isInsuranceSelected(data.getBoolean("insuranceSelected"))
-                                    .isInsuranceAvailable(data.getBoolean("insuranceAvailable"))
-                                    .declarationTotalPrice(data.getDouble("declarationTotalPrice"))
-                                    .build();
-
-                            mProductsPriceLabel.setText(insurance.getCurrency() + insurance.getDeclarationTotalPrice());
-                            mShippingPriceLabel.setText(insurance.getCurrency() + insurance.getShippingCost());
-                            mInsurancePriceLabel.setText(insurance.getCurrency() + insurance.getCommission());
-                        } else {
-                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRootView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    Response response = (Response) msg.obj;
-                    String message = response.message();
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
         @Override
@@ -244,11 +191,7 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
                 mActivity.addFragment(ConfirmationFragment.newInstance(mInForming), true);
                 break;
             case R.id.insuranceDetailsButton:
-                if (mNeedInsuranceDescription.getLineCount() == 4) {
-                    mActivity.expandTextView(mNeedInsuranceDescription);
-                } else {
-                    mActivity.collapseTextView(mNeedInsuranceDescription, 4);
-                }
+                mActivity.addFragment(InsuranceAgreementFragment.newInstance(getString(R.string.lorem_ipsum)), true);
                 break;
             case R.id.noInsuranceDetailsButton:
                 if (mRefuseInsuranceDescription.getLineCount() == 4) {
@@ -258,5 +201,28 @@ public class InsuranceFragment extends Fragment implements View.OnClickListener 
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        JSONObject data = response.getJSONObject("data");
+        Insurance insurance = new Insurance.Builder()
+                .currency(data.getString("currency"))
+                .commission(data.getDouble("commission"))
+                .shippingCost(data.getDouble("shippingCost"))
+                .totalPriceBoxes(data.getDouble("totalPriceBoxes"))
+                .isInsuranceSelected(data.getBoolean("insuranceSelected"))
+                .isInsuranceAvailable(data.getBoolean("insuranceAvailable"))
+                .declarationTotalPrice(data.getDouble("declarationTotalPrice"))
+                .build();
+
+        mProductsPriceLabel.setText(insurance.getCurrency() + insurance.getDeclarationTotalPrice());
+        mShippingPriceLabel.setText(insurance.getCurrency() + insurance.getShippingCost());
+        mInsurancePriceLabel.setText(insurance.getCurrency() + insurance.getCommission());
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
     }
 }

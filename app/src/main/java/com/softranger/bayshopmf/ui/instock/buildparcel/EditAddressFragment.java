@@ -33,6 +33,7 @@ import com.softranger.bayshopmf.model.Country;
 import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -47,7 +48,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class EditAddressFragment extends Fragment implements View.OnClickListener,
+public class EditAddressFragment extends ParentFragment implements View.OnClickListener,
         CodesSpinnerAdapter.OnCountryClickListener, CountrySpinnerAdapter.OnCountryClickListener {
 
     public static final String ADD_NEW = "add new address";
@@ -63,6 +64,8 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
     private ArrayList<Country> mCountries;
     private CodesSpinnerAdapter mSpinnerAdapter;
     private LinearLayout mHolderLayout;
+
+    private static boolean isSaveClicked;
 
     private static String action;
 
@@ -270,66 +273,12 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
                 } else {
                     url = Constants.Api.urlAddNewAddress(String.valueOf(addressId));
                 }
-                ApiClient.getInstance().sendRequest(requestBody, url, mSaveAddressHandler);
+                isSaveClicked = true;
+                ApiClient.getInstance().sendRequest(requestBody, url, mHandler);
                 mActivity.toggleLoadingProgress(true);
                 break;
         }
     }
-
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            buildCountryCodes(data.getJSONArray("maskFormatsAll"));
-                            buildCountries(data.getJSONObject("countries"));
-                            if (action.equals(EDIT)) {
-                                JSONObject a = data.getJSONObject("address");
-                                mAddress = buildAddress(a);
-                                setDataOnPosition(mAddress);
-                            }
-                        } else {
-                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRootView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mHolderLayout.setVisibility(View.VISIBLE);
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
 
     private void buildCountryCodes(JSONArray countryCodes) throws Exception {
         for (int i = 0; i < countryCodes.length(); i++) {
@@ -398,57 +347,6 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
         }
     };
 
-    private Handler mSaveAddressHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            JSONObject a = data.getJSONObject("address");
-                            mAddress = buildAddress(a);
-                            mActivity.sendBroadcast(new Intent(ACTION_REFRESH_ADDRESS));
-                            mActivity.onBackPressed();
-                        } else {
-                            Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRootView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
-
     @Override
     public void onCountryClick(CountryCode countryCode, int position) {
         String code = countryCode.getCode();
@@ -461,5 +359,31 @@ public class EditAddressFragment extends Fragment implements View.OnClickListene
         mAddress.setCountry(country.getName());
         mAddress.setCountryId(Integer.parseInt(country.getId()));
         mCountryLabel.setText(country.getName());
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        if (isSaveClicked) {
+            JSONObject data = response.getJSONObject("data");
+            JSONObject a = data.getJSONObject("address");
+            mAddress = buildAddress(a);
+            mActivity.sendBroadcast(new Intent(ACTION_REFRESH_ADDRESS));
+            mActivity.onBackPressed();
+        } else {
+            JSONObject data = response.getJSONObject("data");
+            buildCountryCodes(data.getJSONArray("maskFormatsAll"));
+            buildCountries(data.getJSONObject("countries"));
+            if (action.equals(EDIT)) {
+                JSONObject a = data.getJSONObject("address");
+                mAddress = buildAddress(a);
+                setDataOnPosition(mAddress);
+            }
+        }
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
+        isSaveClicked = false;
     }
 }

@@ -157,13 +157,16 @@
         android:layout_below="@id/insuranceInsuranceCostTitle"/>
 
     <!-- Details button-->
-    <ImageButton
+    <Button
         android:id="@+id/insuranceDetailsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="10dp"
+        android:text="@string/insurance_agreement"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorGreenAction"
         android:background="?selectableItemBackground"
         android:src="@mipmap/ic_detail_24dp"
         style="@style/Base.Widget.AppCompat.ActionButton"

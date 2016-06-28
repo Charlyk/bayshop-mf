@@ -24,6 +24,7 @@ import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -39,7 +40,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InProcessingDetails<T extends PUSParcel> extends Fragment implements ImagesAdapter.OnImageClickListener {
+public class InProcessingDetails<T extends PUSParcel> extends ParentFragment implements ImagesAdapter.OnImageClickListener {
 
     private static final String PRODUCT_ARG = "in processing arguments";
 
@@ -71,7 +72,7 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inProcessingDetailsList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ApiClient.getInstance().sendRequest(Constants.Api.urlViewParcelDetails(String
-                .valueOf(mPackage.getId())), mDetailsHandler);
+                .valueOf(mPackage.getId())), mHandler);
         mActivity.toggleLoadingProgress(true);
         return view;
     }
@@ -83,56 +84,6 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
         intent.putExtra("position", position);
         mActivity.startActivity(intent);
     }
-
-    private Handler mDetailsHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            mPackage = buildParcelDetails(data);
-                            InProcessingDetailsAdapter<T> adapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
-                            mRecyclerView.setAdapter(adapter);
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
 
     private T buildParcelDetails(JSONObject data) {
         try {
@@ -249,5 +200,18 @@ public class InProcessingDetails<T extends PUSParcel> extends Fragment implement
             photos.add(photo);
         }
         return photos;
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        JSONObject data = response.getJSONObject("data");
+        mPackage = buildParcelDetails(data);
+        InProcessingDetailsAdapter<T> adapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
     }
 }

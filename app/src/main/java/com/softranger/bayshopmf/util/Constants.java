@@ -60,6 +60,7 @@ public class Constants {
         private static final String MEMBER_ADDRESS_ADD = "member-address-add/";
         private static final String PHONE_CODES = "phone-formats";
         private static final String REGISTER = "register/";
+        private static final String RESTORE = "restore/";
 
         /**
          * POST
@@ -77,6 +78,16 @@ public class Constants {
          */
         public static String urlRegister() {
             return URL + AUTH + REGISTER;
+        }
+
+
+        /**
+         * POST
+         * Create an url used to restore user password
+         * @return url which receives user email and send a restore password request
+         */
+        public static String urlRestorePassword() {
+            return URL + AUTH + RESTORE;
         }
 
         /**

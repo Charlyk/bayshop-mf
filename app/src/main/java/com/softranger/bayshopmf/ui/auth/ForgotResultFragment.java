@@ -2,8 +2,8 @@ package com.softranger.bayshopmf.ui.auth;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +36,7 @@ public class ForgotResultFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        FragmentManager fm = mActivity.getSupportFragmentManager();
+        FragmentManager fm = mActivity.getFragmentManager();
         for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
             fm.popBackStack();
         }

@@ -30,6 +30,7 @@ import com.softranger.bayshopmf.adapter.ShippingMethodAdapter;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -46,7 +47,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShippingMethodFragment extends Fragment implements ShippingMethodAdapter.OnShippingClickListener {
+public class ShippingMethodFragment extends ParentFragment implements ShippingMethodAdapter.OnShippingClickListener {
 
     private static final String IN_FORMING_ARG = "in forming object arg";
     private MainActivity mActivity;
@@ -105,69 +106,6 @@ public class ShippingMethodFragment extends Fragment implements ShippingMethodAd
         return view;
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            mMethods.clear();
-                            JSONArray methodsArray = response.getJSONObject("data").getJSONArray("shippingList");
-                            for (int i = 0; i < methodsArray.length(); i++) {
-                                JSONObject jsonMethod = methodsArray.getJSONObject(i);
-                                ShippingMethod method = new ShippingMethod.Builder()
-                                        .id(jsonMethod.getInt("id"))
-                                        .name(jsonMethod.getString("title"))
-                                        .mEstimatedTime(jsonMethod.getString("estimateTime"))
-                                        .maxWeight(jsonMethod.getDouble("maxWeight"))
-                                        .description(jsonMethod.getString("description"))
-                                        .calculatedPrice(jsonMethod.getDouble("calculatedPrice"))
-                                        .rank(jsonMethod.getInt("rank"))
-                                        .currency(jsonMethod.getString("currency"))
-                                        .build();
-                                mMethods.add(method);
-                            }
-                            mAdapter.refreshList(mMethods);
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
-
     @Override
     public void onDetailsClick(ShippingMethod shippingMethod, int position, TextView detailsTextView, ImageButton detailsButton) {
         if (detailsTextView.getLineCount() == 4) {
@@ -201,4 +139,29 @@ public class ShippingMethodFragment extends Fragment implements ShippingMethodAd
     }
 
 
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        mMethods.clear();
+        JSONArray methodsArray = response.getJSONObject("data").getJSONArray("shippingList");
+        for (int i = 0; i < methodsArray.length(); i++) {
+            JSONObject jsonMethod = methodsArray.getJSONObject(i);
+            ShippingMethod method = new ShippingMethod.Builder()
+                    .id(jsonMethod.getInt("id"))
+                    .name(jsonMethod.getString("title"))
+                    .mEstimatedTime(jsonMethod.getString("estimateTime"))
+                    .maxWeight(jsonMethod.getDouble("maxWeight"))
+                    .description(jsonMethod.getString("description"))
+                    .calculatedPrice(jsonMethod.getDouble("calculatedPrice"))
+                    .rank(jsonMethod.getInt("rank"))
+                    .currency(jsonMethod.getString("currency"))
+                    .build();
+            mMethods.add(method);
+        }
+        mAdapter.refreshList(mMethods);
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
+    }
 }

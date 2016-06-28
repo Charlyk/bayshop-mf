@@ -33,6 +33,7 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;
@@ -49,7 +50,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItemsListFragment extends Fragment implements View.OnClickListener,
+public class ItemsListFragment extends ParentFragment implements View.OnClickListener,
         FirstStepAdapter.OnItemClickListener {
 
     private static final String IN_STOCK_ARG = "in stock items argument";
@@ -123,7 +124,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         } else {
             mInForming = getArguments().getParcelable(IN_FORMING_ARG);
             String url = Constants.Api.urlBuildStep(1, String.valueOf(mInForming.getId()));
-            ApiClient.getInstance().sendRequest(url, mCreateHandler);
+            ApiClient.getInstance().sendRequest(url, mHandler);
         }
         mActivity.toggleLoadingProgress(true);
         return view;
@@ -139,7 +140,7 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
             body.add("boxes", String.valueOf(boxesArray));
             if (!packageId.equals("")) body.add("packageId", packageId);
             String url = Constants.Api.urlBuildStep(1);
-            ApiClient.getInstance().sendRequest(body.build(), url, mCreateHandler);
+            ApiClient.getInstance().sendRequest(body.build(), url, mHandler);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -160,87 +161,6 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
         }
         return totalPrice;
     }
-
-    private Handler mCreateHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject jsonData = response.getJSONObject("data");
-                            JSONArray jsonBoxes = jsonData.getJSONArray("boxes");
-                            JSONObject jsoPus = jsonData.getJSONObject("packageRow");
-                            JSONObject jsonWieghts = jsonData.getJSONObject("weights");
-                            ArrayList<InStockDetailed> detailedList = new ArrayList<>();
-                            for (int i = 0; i < jsonBoxes.length(); i++) {
-                                JSONObject jsonBox = jsonBoxes.getJSONObject(i);
-                                int packageId = jsonBox.getInt("id");
-                                mCurrency = jsonBox.getString("currency");
-                                InStockDetailed item = new InStockDetailed();
-                                        item.setID(packageId);
-                                        item.setParcelId(jsonBox.getString("uid"));
-                                        item.setName(jsonBox.getString("title"));
-                                        item.setPrice(jsonBox.getDouble("price"));
-                                        item.setCurrency(mCurrency);
-                                        item.setWeight(jsonWieghts.getJSONObject(String.valueOf(packageId)).getInt("weight"));
-                                mInParcelItems.add(item);
-                                detailedList.add(item);
-                            }
-                            mInForming = new InForming.Builder()
-                                    .id(jsoPus.getInt("id"))
-                                    .uid(jsoPus.getString("uid"))
-                                    .hasBattery(jsoPus.getInt("isBatteryLionExists"))
-                                    .items(detailedList)
-                                    .build();
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    } finally {
-                        Intent refreshIntent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
-                        refreshIntent.putExtra("deposit", mDeposit);
-                        mActivity.sendBroadcast(refreshIntent);
-                        mAdapter.notifyDataSetChanged();
-                        updateTotals(mInParcelItems);
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-            MainActivity.inStockItems.clear();
-        }
-    };
-
-
-
 
     @Override
     public void onClick(View v) {
@@ -326,5 +246,49 @@ public class ItemsListFragment extends Fragment implements View.OnClickListener,
     private void deleteItem(InStockItem inStockItem) {
         ApiClient.getInstance().delete(Constants.Api.urlDeleteBoxFromParcel(String.valueOf(mInForming.getId()),
                 String.valueOf(inStockItem.getID())), mActivity.mDeleteHandler);
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        JSONObject jsonData = response.getJSONObject("data");
+        JSONArray jsonBoxes = jsonData.getJSONArray("boxes");
+        JSONObject jsoPus = jsonData.getJSONObject("packageRow");
+        JSONObject jsonWieghts = jsonData.getJSONObject("weights");
+        ArrayList<InStockDetailed> detailedList = new ArrayList<>();
+        for (int i = 0; i < jsonBoxes.length(); i++) {
+            JSONObject jsonBox = jsonBoxes.getJSONObject(i);
+            int packageId = jsonBox.getInt("id");
+            mCurrency = jsonBox.getString("currency");
+            InStockDetailed item = new InStockDetailed();
+            item.setID(packageId);
+            item.setParcelId(jsonBox.getString("uid"));
+            item.setName(jsonBox.getString("title"));
+            item.setPrice(jsonBox.getDouble("price"));
+            item.setCurrency(mCurrency);
+            item.setWeight(jsonWieghts.getJSONObject(String.valueOf(packageId)).getInt("weight"));
+            mInParcelItems.add(item);
+            detailedList.add(item);
+        }
+        mInForming = new InForming.Builder()
+                .id(jsoPus.getInt("id"))
+                .uid(jsoPus.getString("uid"))
+                .hasBattery(jsoPus.getInt("isBatteryLionExists"))
+                .items(detailedList)
+                .build();
+    }
+
+    @Override
+    public void finallyMethod() {
+        Intent refreshIntent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+        refreshIntent.putExtra("deposit", mDeposit);
+        mActivity.sendBroadcast(refreshIntent);
+        mAdapter.notifyDataSetChanged();
+        updateTotals(mInParcelItems);
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
+        MainActivity.inStockItems.clear();
     }
 }

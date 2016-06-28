@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -31,7 +32,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AdditionalPhotoFragment extends Fragment implements View.OnClickListener {
+public class AdditionalPhotoFragment extends ParentFragment implements View.OnClickListener {
 
     public static final String ACTION_PHOTO_IN_PROCESSING = "ACTION PHOTO IN PROCESSING";
     public static final String ACTION_CANCEL_PHOTO_REQUEST = "ACTION CANCEL PHOTO REQUEST";
@@ -120,52 +121,15 @@ public class AdditionalPhotoFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (error) {
-                            Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
-                            mActivity.sendBroadcast(intent);
-                            mActivity.onBackPressed();
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(mConfirmButton, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mConfirmButton, message, Snackbar.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
+        mActivity.sendBroadcast(intent);
+        mActivity.onBackPressed();
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
+    }
 }

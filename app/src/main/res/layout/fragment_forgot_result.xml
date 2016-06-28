@@ -51,11 +51,11 @@
     <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/green_button_bg"
+        android:textSize="16sp"
         android:text="@string/done"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorGreenAction"
         android:id="@+id/registerResultDoneButton"
         android:layout_gravity="center_horizontal"/>
 

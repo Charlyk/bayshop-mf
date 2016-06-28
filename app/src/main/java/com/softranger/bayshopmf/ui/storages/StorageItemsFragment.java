@@ -37,6 +37,7 @@ import com.softranger.bayshopmf.model.packages.Received;
 import com.softranger.bayshopmf.model.packages.Sent;
 import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
 import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -57,7 +58,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItemClickListener,
+public class StorageItemsFragment extends ParentFragment implements ItemAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     public static final String ACTION_ITEM_CHANGED = "item was changed from a top fragment";
@@ -133,7 +134,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         url = getArguments().getString(URL_ARG);
         mDeposit = getArguments().getString(DEPOSIT_ARG);
         if (url != null) {
-            ApiClient.getInstance().sendRequest(url, mStorageHandler);
+            ApiClient.getInstance().sendRequest(url, mHandler);
             mActivity.toggleLoadingProgress(true);
         }
         return view;
@@ -163,70 +164,12 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                         public void run() {
                             if (mDeposit.equalsIgnoreCase(intent.getStringExtra("deposit"))) {
                                 mObjects.clear();
-                                ApiClient.getInstance().sendRequest(url, mStorageHandler);
+                                ApiClient.getInstance().sendRequest(url, mHandler);
                             }
                         }
                     }, 100);
                     break;
             }
-        }
-    };
-
-    /**
-     * Handler used to obtain either server response or an error with a message about the occurred
-     * If an error occurs it will be shown to the user else the response will be passed to
-     * {@link StorageItemsFragment#buildItemsList(JSONObject)} and a list with corresponding items
-     * will be built and passed to adapter
-     */
-    private Handler mStorageHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", mActivity.getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            buildItemsList(response);
-                        } else {
-                            Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                            mActivity.toggleLoadingProgress(false);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Snackbar.make(mRecyclerView, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                        mActivity.toggleLoadingProgress(false);
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Snackbar.make(mRecyclerView, message, Snackbar.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-            }
-            mRefreshLayout.setRefreshing(false);
         }
     };
 
@@ -374,6 +317,12 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         }
     }
 
+    /**
+     * Build a general pus parcel item
+     * @param jsonItem parcel in json format
+     * @param parcel you want to build (Must extend {@link PUSParcel})
+     * @throws Exception usually JSONException
+     */
     private <T extends PUSParcel> T buildGeneralPackage(JSONObject jsonItem, T parcel) throws Exception {
         parcel = new T.Builder<>(parcel)
                 .created(jsonItem.optString("created", ""))
@@ -387,12 +336,22 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         return parcel;
     }
 
+    /**
+     * Called for {@link InStockItem} item click
+     * @param inStockItem which was clicked within the adapter
+     * @param position in the list for clicked item
+     */
     @Override
     public void onRowClick(final InStockItem inStockItem, int position) {
         mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
         mActivity.setToolbarTitle(inStockItem.getName(), true);
     }
 
+    /**
+     * Called if an item without declaration was selected
+     * @param inStockItem which was selected
+     * @param position in the list for selected item
+     */
     @Override
     public void onNoDeclarationItemSelected(final InStockItem inStockItem, int position) {
         mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
@@ -400,22 +359,44 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         mActivity.setToolbarTitle(inStockItem.getName(), true);
     }
 
+    /**
+     * Called if InStock item icon was clicked
+     * @param inStockItem which icon was clicked
+     * @param isSelected shows if item was either selected or deselected
+     * @param position for the item in the list
+     */
     @Override
     public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
         if (isSelected) MainActivity.inStockItems.add(inStockItem);
         else MainActivity.inStockItems.remove(inStockItem);
     }
 
+    /**
+     * Called if an awaiting arrival item was clicked
+     * @param product which was clicked
+     * @param position within the adapter for clicked item
+     */
     @Override
     public void onProductClick(Product product, int position) {
         mActivity.addFragment(AwaitingArrivalProductFragment.newInstance(product), true);
     }
 
+    /**
+     * Called when any child of {@link PUSParcel} is clicked
+     * @param processingPackage which was clicked
+     * @param position within the adapter for the clicked item
+     */
     @Override
     public <T extends PUSParcel> void onInProcessingProductClick(T processingPackage, int position) {
         mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
     }
 
+    /**
+     * Called when checkbox of an {@link LocalDepot} item was clicked
+     * @param localDepotItem which state was changed
+     * @param position within the adapter for clicked item
+     * @param isChecked show if either item is selected or deselected
+     */
     @Override
     public <T extends PUSParcel> void onLocalDepoItemSelected(T localDepotItem, int position, boolean isChecked) {
         if (isChecked) {
@@ -430,21 +411,35 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         }
     }
 
+    /**
+     * Called when an {@link InForming} item is clicked
+     * @param inForming which was clicked
+     * @param position within the adapter
+     */
     @Override
     public void onInFormingClick(InForming inForming, int position) {
         mActivity.addFragment(ItemsListFragment.newInstance(null, false, inForming, mDeposit), true);
     }
 
+    /**
+     * Called when Combine button within In Stock list header is clicked
+     */
     @Override
     public void onCombineClick() {
 
     }
 
+    /**
+     * Called when order check button within In Stock list header is clicked
+     */
     @Override
     public void onCheckOrderClick() {
 
     }
 
+    /**
+     * Called when order photos button within In Stock list header is clicked
+     */
     @Override
     public void onAdditionalPhotosClick() {
 
@@ -459,7 +454,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     @Override
     public void onRefresh() {
         // TODO: 6/2/16 check to send the request only for current deposit
-        ApiClient.getInstance().sendRequest(url, mStorageHandler);
+        ApiClient.getInstance().sendRequest(url, mHandler);
     }
 
     @Override
@@ -469,5 +464,20 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                 mActivity.addFragment(SelectAddressFragment.newInstance(mSelectedForDelivery), false);
                 break;
         }
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        buildItemsList(response);
+    }
+
+    @Override
+    public void onServerError(String message) {
+        mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mRefreshLayout.setRefreshing(false);
     }
 }
