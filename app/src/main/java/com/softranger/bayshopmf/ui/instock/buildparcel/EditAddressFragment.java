@@ -1,7 +1,6 @@
 package com.softranger.bayshopmf.ui.instock.buildparcel;
 
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
@@ -27,7 +25,7 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.CodesSpinnerAdapter;
-import com.softranger.bayshopmf.adapter.CountrySpinnerAdapter;
+import com.softranger.bayshopmf.adapter.SpinnerAdapter;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.Country;
 import com.softranger.bayshopmf.model.CountryCode;
@@ -36,20 +34,19 @@ import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.SpinnerObj;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class EditAddressFragment extends ParentFragment implements View.OnClickListener,
-        CodesSpinnerAdapter.OnCountryClickListener, CountrySpinnerAdapter.OnCountryClickListener {
+        CodesSpinnerAdapter.OnCountryClickListener, SpinnerAdapter.OnCountryClickListener {
 
     public static final String ADD_NEW = "add new address";
     public static final String EDIT = "edit an address";
@@ -305,14 +302,14 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
         while (keys.hasNext()) {
             String key = keys.next();
             Country country = new Country.Builder()
-                    .id(key)
+                    .id(Integer.parseInt(key))
                     .name(countries.getString(key))
                     .build();
             mCountries.add(country);
         }
-        CountrySpinnerAdapter countrySpinnerAdapter = new CountrySpinnerAdapter(mActivity, R.layout.country_spinner_item, mCountries);
-        countrySpinnerAdapter.setOnCountryClickListener(this);
-        mCountriesSpinner.setAdapter(countrySpinnerAdapter);
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(mActivity, R.layout.country_spinner_item, mCountries);
+        spinnerAdapter.setOnCountryClickListener(this);
+        mCountriesSpinner.setAdapter(spinnerAdapter);
     }
 
     private Address buildAddress(JSONObject a) {
@@ -355,13 +352,6 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
     }
 
     @Override
-    public void onCountryClick(Country country, int position) {
-        mAddress.setCountry(country.getName());
-        mAddress.setCountryId(Integer.parseInt(country.getId()));
-        mCountryLabel.setText(country.getName());
-    }
-
-    @Override
     public void onServerResponse(JSONObject response) throws Exception {
         if (isSaveClicked) {
             JSONObject data = response.getJSONObject("data");
@@ -386,5 +376,15 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
         mActivity.toggleLoadingProgress(false);
         mHolderLayout.setVisibility(View.VISIBLE);
         isSaveClicked = false;
+    }
+
+    @Override
+    public <T extends SpinnerObj> void onCountryClick(T object, int position) {
+        if (object instanceof Country) {
+            Country country = (Country) object;
+            mAddress.setCountry(country.getName());
+            mAddress.setCountryId(country.getId());
+            mCountryLabel.setText(country.getName());
+        }
     }
 }

@@ -86,7 +86,7 @@ public abstract class ParentFragment extends Fragment {
     public abstract void onServerResponse(JSONObject response) throws Exception;
 
     public void onServerError(String message) {
-
+//        mActivity.onBackPressed();
     }
 
     public void finallyMethod() {

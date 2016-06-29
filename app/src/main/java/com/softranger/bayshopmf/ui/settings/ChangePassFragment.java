@@ -85,4 +85,10 @@ public class ChangePassFragment extends ParentFragment implements View.OnClickLi
     public void onServerResponse(JSONObject response) throws Exception {
         mActivity.onBackPressed();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mActivity.changeToolbarTitle(mActivity.getString(R.string.settings));
+    }
 }

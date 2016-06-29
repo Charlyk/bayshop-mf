@@ -63,6 +63,7 @@ public class Constants {
         private static final String RESTORE = "restore/";
         private static final String MEMBER = "member/";
         private static final String PERSONAL_DATA = "personal-data/";
+        private static final String MAIL_OPTIONS = "mail-options/";
 
         /**
          * POST
@@ -74,13 +75,22 @@ public class Constants {
 
 
         /**
-         *
-         * @return
+         * GET/POST
+         * Create an url used to retreive or update user data
+         * @return string url to access or change user data
          */
         public static String urlPersonalData() {
             return URL + MEMBER + PERSONAL_DATA;
         }
 
+        /**
+         * GET/POST
+         * Create an url used to access user mail settings
+         * @return string url to access or update user mail options
+         */
+        public static String urlMailOptions() {
+            return URL + MEMBER + MAIL_OPTIONS;
+        }
 
         /**
          * POST

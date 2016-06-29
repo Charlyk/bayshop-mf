@@ -6,8 +6,10 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -109,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         supportPostponeEnterTransition();
         supportStartPostponedEnterTransition();
 
+        IntentFilter intentFilter = new IntentFilter(SettingsActivity.ACTION_LOG_OUT);
+        registerReceiver(mBroadcastReceiver, intentFilter);
+
         inStockItems = new ArrayList<>();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -156,17 +161,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
 
-
-        if (!Application.getInstance().isLoggedIn()) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        LinearLayout addAwaiting = (LinearLayout) navigationView.getHeaderView(0).findViewById(R.id.add_packageButtonIcon);
+        View navHeaderView = navigationView.getHeaderView(0);
+        TextView userNameLabel = (TextView) navHeaderView.findViewById(R.id.navHeaderUserNameLabel);
+        TextView userIdLabel = (TextView) navHeaderView.findViewById(R.id.navHeaderUserIdLabel);
+        if (Application.user != null) {
+            String fullName = Application.user.getFirstName() + " " + Application.user.getLastName();
+            userNameLabel.setText(fullName);
+        }
+        LinearLayout addAwaiting = (LinearLayout) navHeaderView.findViewById(R.id.add_packageButtonIcon);
         addAwaiting.setOnClickListener(this);
 
         selectedFragment = SelectedFragment.IN_STOCK;
@@ -224,7 +228,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         for (final InForming inForming : inFormingItems) {
             FloatingActionButton button = new FloatingActionButton(this);
             button.setSize(FloatingActionButton.SIZE_MINI);
+            button.setIcon(R.mipmap.ic_parcel_24dp);
             button.setColorNormal(getResources().getColor(R.color.colorGreenAction));
+            button.setColorPressed(getResources().getColor(R.color.colorGreenActionDark));
             button.setTitle(inForming.getCodeNumber());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -344,9 +350,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_takeToDelivery:
                 selectedFragment = SelectedFragment.TAKEN_TO_DELIVERY;
                 changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_logOut:
-                logOut();
                 break;
             case R.id.nav_profileSettings:
                 Intent settings = new Intent(this, SettingsActivity.class);
@@ -623,6 +626,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             toggleLoadingProgress(false);
         }
     };
+
+    public BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(SettingsActivity.ACTION_LOG_OUT)) {
+                logOut();
+            }
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+    }
 
     public enum SelectedFragment {
         IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED,

@@ -3,11 +3,13 @@ package com.softranger.bayshopmf.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.softranger.bayshopmf.util.SpinnerObj;
+
 /**
  * Created by macbook on 6/17/16.
  */
-public class Country implements Parcelable {
-    private String mId;
+public class Country implements Parcelable, SpinnerObj {
+    private int mId;
     private String mName;
 
     private Country() {
@@ -15,7 +17,7 @@ public class Country implements Parcelable {
     }
 
     protected Country(Parcel in) {
-        mId = in.readString();
+        mId = in.readInt();
         mName = in.readString();
     }
 
@@ -31,14 +33,16 @@ public class Country implements Parcelable {
         }
     };
 
-    public String getId() {
+    @Override
+    public int getId() {
         return mId;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         mId = id;
     }
 
+    @Override
     public String getName() {
         return mName;
     }
@@ -55,15 +59,15 @@ public class Country implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
+        dest.writeInt(mId);
         dest.writeString(mName);
     }
 
     public static class Builder {
-        private String mId;
+        private int mId;
         private String mName;
 
-        public Builder id(String id) {
+        public Builder id(int id) {
             mId = id;
             return this;
         }

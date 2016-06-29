@@ -4,6 +4,8 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:background="@android:color/white"
+              android:paddingTop="16dp"
+              android:clickable="true"
               tools:context="com.softranger.bayshopmf.ui.settings.ChangePassFragment">
 
     <android.support.design.widget.TextInputLayout
@@ -16,6 +18,9 @@
             android:id="@+id/changePassWordCurrentPassInput"
             android:inputType="textPassword"
             android:layout_width="match_parent"
+            android:drawableLeft="@mipmap/ic_change_password_36dp"
+            android:drawableStart="@mipmap/ic_change_password_36dp"
+            android:drawablePadding="16dp"
             android:layout_height="40dp"
             android:nextFocusDown="@+id/changePassWordNewPassInput"
             android:background="@android:color/white"
@@ -29,6 +34,7 @@
         android:background="#b1b1b1"/>
 
     <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -38,6 +44,9 @@
             android:id="@+id/changePassWordNewPassInput"
             android:inputType="textPassword"
             android:layout_width="match_parent"
+            android:drawableLeft="@mipmap/ic_change_password_open_36dp"
+            android:drawableStart="@mipmap/ic_change_password_open_36dp"
+            android:drawablePadding="16dp"
             android:nextFocusDown="@+id/changePassWordConfirmPassInput"
             android:layout_height="40dp"
             android:background="@android:color/white"
@@ -52,6 +61,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
@@ -60,6 +70,9 @@
             android:id="@+id/changePassWordConfirmPassInput"
             android:inputType="textPassword"
             android:layout_width="match_parent"
+            android:drawableLeft="@mipmap/ic_change_password_open_36dp"
+            android:drawableStart="@mipmap/ic_change_password_open_36dp"
+            android:drawablePadding="16dp"
             android:layout_height="40dp"
             android:background="@android:color/white"
             android:hint="@string/confirm_password"/>
@@ -74,7 +87,7 @@
     <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="16dp"
         android:textSize="16sp"
         android:text="@string/save"

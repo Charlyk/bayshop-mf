@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +16,8 @@ import com.softranger.bayshopmf.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private SettingsFragment mSettingsFragment;
+    public static final String ACTION_LOG_OUT = "action log out";
+
     private TextView mToolbarTitle;
 
     @Override
@@ -22,15 +25,30 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.settingsActivityToolbar);
+        toolbar.setNavigationIcon(R.mipmap.ic_back_24dp);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         mToolbarTitle = (TextView) findViewById(R.id.settingsActivityToolbarTitle);
-        mSettingsFragment = new SettingsFragment();
-        replaceFragment(mSettingsFragment);
+        SettingsFragment settingsFragment = new SettingsFragment();
+        replaceFragment(settingsFragment);
     }
 
-    public void changeToolbarTitle(String newTitle) {
-        mToolbarTitle.setText(newTitle);
+    public void changeToolbarTitle(final String newTitle) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mToolbarTitle.setText(newTitle);
+            }
+        }, 200);
     }
 
     public void addFragment(Fragment fragment, boolean showAnimation) {
@@ -50,10 +68,5 @@ public class SettingsActivity extends AppCompatActivity {
         transaction.replace(R.id.settingsActivityContainer, fragment);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

@@ -22,6 +22,7 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.User;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
@@ -172,8 +173,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Application.currentToken = data.optString("access_token");
                             Application.getInstance().setLoginStatus(true);
                             Application.getInstance().setAuthToken(Application.currentToken);
-                            LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
+                            ApiClient.getInstance().sendRequest(Constants.Api.urlPersonalData(), mHandler);
+//                            LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                            finish();
                         } else {
                             message = response.optString("message", getString(R.string.unknown_error));
                             Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -198,6 +200,62 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 case Constants.ApiResponse.RESPONSE_FAILED: {
                     IOException exception = (IOException) msg.obj;
                     Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+        }
+    };
+
+    protected Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
+                        if (!error) {
+                            JSONObject data = response.getJSONObject("data");
+                            Application.user = new User.Builder()
+                                    .firstName(data.getString("name"))
+                                    .lastName(data.getString("surname"))
+                                    .countryId(data.getInt("countryId"))
+                                    .phoneCode(data.getString("phoneCode"))
+                                    .phoneNumber(data.getString("phone"))
+                                    .languageId(data.getInt("languageId"))
+                                    .build();
+                            LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = LoginActivity.this.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     break;
                 }
             }

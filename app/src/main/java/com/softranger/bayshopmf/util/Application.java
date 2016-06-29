@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.User;
 
 /**
  * Created by eduard on 29.04.16.
@@ -28,6 +29,7 @@ public class Application extends android.app.Application {
     private static Application instance;
     private static SharedPreferences preferences;
     public static String currentToken;
+    public static User user;
 
     public static Application getInstance() {
         return instance;

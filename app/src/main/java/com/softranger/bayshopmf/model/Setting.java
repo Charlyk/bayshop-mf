@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 
+import com.softranger.bayshopmf.R;
+
 /**
  * Created by macbook on 6/28/16.
  */
@@ -13,9 +15,8 @@ public class Setting implements Parcelable {
     private SettingType mSettingType;
 
 
-    public Setting(String title, int iconId) {
+    public Setting(String title) {
         mTitle = title;
-        mIconId = iconId;
     }
 
     protected Setting(Parcel in) {
@@ -41,6 +42,10 @@ public class Setting implements Parcelable {
 
     public int getIconId() {
         return mIconId;
+    }
+
+    public void setIconId(int iconId) {
+        mIconId = iconId;
     }
 
     public SettingType getSettingType() {
@@ -76,6 +81,20 @@ public class Setting implements Parcelable {
                 case 5: return NOTIFICATIONS;
                 case 6: return SUBSCRIBE;
                 default: return LOG_OUT;
+            }
+        }
+
+        @DrawableRes
+        public static int getSettingImage(SettingType settingType) {
+            switch (settingType) {
+                case USER_DATA: return R.mipmap.ic_user_data_36dp;
+                case ADDRESSES: return R.mipmap.ic_address_36dp;
+                case CHANGE_PASSWORD: return R.mipmap.ic_change_password_36dp;
+                case REGIONAL_SETTINGS: return R.mipmap.ic_regional_settings_36dp;
+                case AUTO_PACKAGING: return R.mipmap.ic_auto_packaging_36dp;
+                case NOTIFICATIONS: return R.mipmap.ic_notifications_36dp;
+                case SUBSCRIBE: return R.mipmap.ic_subscribe_36dp;
+                default: return R.mipmap.ic_logout_36dp;
             }
         }
     }

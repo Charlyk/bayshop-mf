@@ -1,0 +1,230 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:clickable="true"
+              android:background="@android:color/white"
+              tools:context="com.softranger.bayshopmf.ui.settings.NotificationsFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <RelativeLayout
+        android:id="@+id/notificationsInternalMailButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/notificationsInternalMailSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:clickable="false"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/notificationsInternalMailImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_internal_mail_36dp"/>
+
+        <TextView
+            android:id="@+id/notificationsInternalMailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:text="@string/internal_mail"
+            android:layout_toLeftOf="@+id/notificationsInternalMailSwitch"
+            android:layout_toStartOf="@+id/notificationsInternalMailSwitch"
+            android:layout_toRightOf="@+id/notificationsInternalMailImage"
+            android:layout_toEndOf="@+id/notificationsInternalMailImage"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <RelativeLayout
+        android:id="@+id/notificationsSmsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/notificationsSmsSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:clickable="false"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/notificationsSmsImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_sms_36dp"/>
+
+        <TextView
+            android:id="@+id/notificationsSmsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:layout_toLeftOf="@id/notificationsSmsSwitch"
+            android:layout_toStartOf="@+id/notificationsSmsSwitch"
+            android:layout_toEndOf="@+id/notificationsSmsImage"
+            android:layout_centerVertical="true"
+            android:text="@string/sms"
+            android:layout_toRightOf="@+id/notificationsSmsImage"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <RelativeLayout
+        android:id="@+id/notificationsPushNotifButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/notificationsPushNotifSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:clickable="false"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/notificationsPushNotifImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_notifications_36dp"/>
+
+        <TextView
+            android:id="@+id/notificationsPushNotifTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:layout_toLeftOf="@id/notificationsPushNotifSwitch"
+            android:layout_toStartOf="@+id/notificationsPushNotifSwitch"
+            android:layout_centerVertical="true"
+            android:text="@string/notifications"
+            android:layout_toRightOf="@+id/notificationsPushNotifImage"
+            android:layout_toEndOf="@+id/notificationsPushNotifImage"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <RelativeLayout
+        android:id="@+id/notificationsEmailsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/notificationsEmailsSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:clickable="false"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/notificationsEmailsImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_emails_36dp"/>
+
+        <TextView
+            android:id="@+id/notificationsEmailsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:text="@string/emails"
+            android:layout_toLeftOf="@+id/notificationsEmailsSwitch"
+            android:layout_toStartOf="@+id/notificationsEmailsSwitch"
+            android:layout_toRightOf="@+id/notificationsEmailsImage"
+            android:layout_toEndOf="@+id/notificationsEmailsImage"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <Button
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="@string/save"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/green_button_bg"
+        android:id="@+id/notificationsSaveButton"
+        android:layout_margin="16dp"
+        android:layout_gravity="end"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:id="@+id/notificationsProgressBar"
+        android:layout_gravity="end"/>
+</LinearLayout>

@@ -205,4 +205,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="current_password">Current password</string>
     <string name="must_contain">Password must contain at least 6 characters</string>
+    <string name="language">Language</string>
+    <string name="use_autopacking">Use autopacking</string>
+    <string name="internal_mail">Internal mail</string>
+    <string name="sms">Sms</string>
+    <string name="notifications">Notifications</string>
+    <string name="emails">Emails</string>
+    <string name="user_data">User data</string>
+    <string name="change_password">Change password</string>
+    <string name="regional">Regional settings</string>
+    <string name="autopacking">Autopacking</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="english">English</string>
 </resources>

@@ -56,6 +56,7 @@
         app:fab_expandDirection="up"
         fab:fab_labelStyle="@style/menu_labels_style"
         fab:fab_addButtonColorNormal="@color/colorAccent"
+        app:fab_addButtonColorPressed="@color/colorAccentDark"
         android:layout_margin="@dimen/fab_margin">
 
         <com.getbase.floatingactionbutton.FloatingActionButton

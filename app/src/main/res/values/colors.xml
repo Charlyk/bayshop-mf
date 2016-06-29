@@ -3,8 +3,10 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#757575</color>
     <color name="colorAccent">#e64d50</color>
+    <color name="colorAccentDark">#FFAA393B</color>
     <color name="colorInactive">#f2a6a7</color>
     <color name="colorGreenAction">#9ccc65</color>
+    <color name="colorGreenActionDark">#FF84AC55</color>
     <color name="colorProcessing">#ffc13d</color>
     <color name="colorSelection">#f5f5f5</color>
     <color name="colorDivider">#dedede</color>
