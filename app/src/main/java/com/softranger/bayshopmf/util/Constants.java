@@ -52,6 +52,7 @@ public class Constants {
         private static final String AUTH = "auth/";
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";
+        public static final String OPTION_PERIOD = "?period=";
         private static final String PARCELS = "parcels/";
         private static final String VIEW = "view/";
         private static final String PARCEL_STEP = "parcel-step/";
@@ -64,6 +65,7 @@ public class Constants {
         private static final String MEMBER = "member/";
         private static final String PERSONAL_DATA = "personal-data/";
         private static final String MAIL_OPTIONS = "mail-options/";
+        private static final String BALANCE = "balance/";
 
         /**
          * POST
@@ -283,5 +285,27 @@ public class Constants {
             return URL + MEMBER_ADDRESS + PHONE_CODES;
         }
 
+        public static String urlUserBalance(Period period) {
+            return URL + BALANCE + OPTION_PERIOD + period.getPeriod();
+        }
+
+    }
+
+    public enum  Period {
+
+        one, all, week, month;
+
+        public String getPeriod() {
+            switch (this) {
+                case one: return ONE;
+                case month: return MONTH;
+                case week: return WEEK;
+                default: return ALL;
+            }
+        }
+        public final String ONE = "one";
+        public final String ALL = "all";
+        public final String WEEK = "6";
+        public final String MONTH = "1";
     }
 }

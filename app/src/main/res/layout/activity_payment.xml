@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.softranger.bayshopmf.ui.payment.PaymentActivity">
 
+    <RelativeLayout
+        android:id="@+id/paymentActivityToolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/paymentActivityToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="@mipmap/ic_back_24dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <TextView
+                android:id="@+id/paymentActivityToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/payment_history"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"/>
+        </android.support.v7.widget.Toolbar>
+
+        <ImageButton
+            android:id="@+id/çCurrencySelectorBtn"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_change_password_36dp"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/paymentFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/paymentActivityToolbarLayout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@id/paymentActivityToolbarLayout"
+        android:background="@drawable/drop_shadow"/>
 </RelativeLayout>

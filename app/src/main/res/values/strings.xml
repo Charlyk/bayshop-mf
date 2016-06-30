@@ -222,4 +222,8 @@
     <string name="usd">USD</string>
     <string name="euro">Euro</string>
     <string name="punds">Pund</string>
+    <string name="today">Today</string>
+    <string name="last_week">Week</string>
+    <string name="last_month">Month</string>
+    <string name="all">All</string>
 </resources>
