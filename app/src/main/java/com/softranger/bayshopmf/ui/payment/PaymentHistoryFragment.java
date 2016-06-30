@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.HistoryAdapter;
+import com.softranger.bayshopmf.model.Currency;
 import com.softranger.bayshopmf.model.History;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.ParentFragment;
@@ -43,6 +44,7 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
     private ArrayList<History> mAllHistories;
     private HistoryAdapter mAdapter;
     private static Constants.Period period;
+    private static com.softranger.bayshopmf.model.Currency.CurrencyType currencyType;
 
     public PaymentHistoryFragment() {
         // Required empty public constructor
@@ -71,6 +73,7 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
         mAdapter.setOnHistoryClickListener(this);
         recyclerView.setAdapter(mAdapter);
         period = Constants.Period.one;
+        currencyType = com.softranger.bayshopmf.model.Currency.CurrencyType.All;
         ApiClient.getInstance().getRequest(Constants.Api.urlUserBalance(period), mHandler);
         mProgressBar.setVisibility(View.VISIBLE);
         return view;
@@ -97,6 +100,24 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
                 break;
         }
         ApiClient.getInstance().getRequest(Constants.Api.urlUserBalance(period), mHandler);
+    }
+
+    public void showListByCurrency(com.softranger.bayshopmf.model.Currency.CurrencyType currencyType) {
+        switch (currencyType) {
+            case USD:
+                mAdapter.refreshList(mUSDHistories);
+                break;
+            case Euro:
+                mAdapter.refreshList(mEuroHistories);
+                break;
+            case GBP:
+                mAdapter.refreshList(mPoundHistories);
+                break;
+            case All:
+                mAdapter.refreshList(mAllHistories);
+                break;
+        }
+        PaymentHistoryFragment.currencyType = currencyType;
     }
 
     @Override
@@ -140,7 +161,16 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
                 mAllHistories.addAll(mPoundHistories);
             }
         }
-        mAdapter.refreshList(mAllHistories);
+
+        Collections.sort(mAllHistories, new Comparator<History>() {
+            @Override
+            public int compare(History lhs, History rhs) {
+                return lhs.getDate().compareTo(rhs.getDate());
+            }
+        });
+        Collections.reverse(mAllHistories);
+
+        showListByCurrency(currencyType);
     }
 
     @Override

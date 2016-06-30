@@ -91,6 +91,7 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
         mRecyclerView.setAdapter(mAdapter);
         mInForming = getArguments().getParcelable(IN_FORMING_ARG);
         mInForming.setAutoFilling(true);
+        mGeneralDescriptionInput.setText(mInForming.getGeneralDescription());
         ImageButton next = (ImageButton) view.findViewById(R.id.buildFirstStepNextButton);
         next.setOnClickListener(this);
         mActivity.toggleLoadingProgress(true);
@@ -131,6 +132,9 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
         mActivity.unregisterReceiver(mTitleReceiver);
     }
 
+    /**
+     * Here we save all the data an go to the insurance screen
+     */
     @Override
     public void onClick(View v) {
         String description = String.valueOf(mGeneralDescriptionInput.getText());
@@ -145,6 +149,12 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
         mActivity.hideKeyboard();
     }
 
+    /**
+     * Here we give the opportunity to change the price for a product within the list
+     * this is implemented in an alert dialog
+     * @param product for which to edit the price
+     * @param position within the list
+     */
     @Override
     public void onEditClicked(final Product product, final int position) {
         mEditPriceDialog = mActivity.getEditDialog(getString(R.string.price_edit), product.getProductPrice(), R.mipmap.ic_cash_24dpi,
@@ -165,6 +175,12 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
         mEditPriceDialog.show();
     }
 
+
+    /**
+     * Here we turn on or off auto packing
+     * if it is turned on we hide the list and general description input so user could just
+     * go forward and save some time
+     */
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
@@ -176,7 +192,7 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
             case R.id.checkDeclarationManualFillingSelector:
                 mGeneralDescriptionInput.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mInForming.setAutoFilling(true);
+                mInForming.setAutoFilling(false);
                 break;
         }
     }
@@ -185,11 +201,6 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
     public void onServerResponse(JSONObject response) throws Exception {
         JSONObject data = response.getJSONObject("data");
 
-        // TODO: 6/8/16 chack this for null
-//         if (data.get("declaration") != null) {
-//             mInForming.setGeneralDescription(data.getJSONObject("declaration").optString("name", null));
-//         }
-
         JSONArray jsonBoxes = data.getJSONArray("boxes");
         for (int i = 0; i < jsonBoxes.length(); i++) {
             JSONObject box = jsonBoxes.getJSONObject(i);
@@ -197,6 +208,12 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
             detailed.setID(box.getInt("id"));
             detailed.setParcelId(box.getString("uid"));
             mInStock.add(detailed);
+        }
+
+        String declaration = data.getString("declaration");
+        if (declaration != null && !declaration.equals("null")) {
+            JSONObject jsonDeclaration = new JSONObject(declaration);
+            mInForming.setGeneralDescription(jsonDeclaration.getString("name"));
         }
 
         JSONArray jsonDec = data.getJSONArray("declarationItems");

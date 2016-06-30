@@ -10,4 +10,11 @@
         <item>Subscribe</item>
         <item>Log out</item>
     </array>
+
+    <array name="currency_list">
+        <item>USD</item>
+        <item>Euro</item>
+        <item>GBP</item>
+        <item>All</item>
+    </array>
 </resources>

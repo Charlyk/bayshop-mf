@@ -35,14 +35,23 @@
         </android.support.v7.widget.Toolbar>
 
         <ImageButton
-            android:id="@+id/çCurrencySelectorBtn"
+            android:id="@+id/paymentActivityCurrencySelectorBtn"
             style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_change_password_36dp"/>
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@mipmap/ic_all_icon_black_24dp"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/paymentActivityCurrencySelector"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 
     <FrameLayout
