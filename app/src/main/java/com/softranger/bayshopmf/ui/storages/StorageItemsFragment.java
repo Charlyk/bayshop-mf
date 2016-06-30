@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +36,6 @@ import com.softranger.bayshopmf.model.packages.Received;
 import com.softranger.bayshopmf.model.packages.Sent;
 import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
 import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -131,7 +129,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         url = getArguments().getString(URL_ARG);
         mDeposit = getArguments().getString(DEPOSIT_ARG);
         if (url != null) {
-            ApiClient.getInstance().sendRequest(url, mHandler);
+            ApiClient.getInstance().getRequest(url, mHandler);
             mActivity.toggleLoadingProgress(true);
         }
         return view;
@@ -161,7 +159,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                         public void run() {
                             if (mDeposit.equalsIgnoreCase(intent.getStringExtra("deposit"))) {
                                 mObjects.clear();
-                                ApiClient.getInstance().sendRequest(url, mHandler);
+                                ApiClient.getInstance().getRequest(url, mHandler);
                             }
                         }
                     }, 100);
@@ -451,7 +449,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     @Override
     public void onRefresh() {
         // TODO: 6/2/16 check to send the request only for current deposit
-        ApiClient.getInstance().sendRequest(url, mHandler);
+        ApiClient.getInstance().getRequest(url, mHandler);
     }
 
     @Override

@@ -22,7 +22,6 @@ import com.softranger.bayshopmf.adapter.SpinnerAdapter;
 import com.softranger.bayshopmf.model.Country;
 import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.model.Language;
-import com.softranger.bayshopmf.model.User;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.ui.ParentFragment;
@@ -112,7 +111,7 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
         mSaveButton = (Button) view.findViewById(R.id.userDataSaveButton);
         mSaveButton.setOnClickListener(this);
 
-        ApiClient.getInstance().sendRequest(Constants.Api.urlPersonalData(), mHandler);
+        ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
         setDataOnPosition();
         return view;
     }
@@ -192,19 +191,17 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
         }
 
         // build user
-        Application.user = new User.Builder()
-                .firstName(data.getString("name"))
-                .lastName(data.getString("surname"))
-                .countryId(data.getInt("countryId"))
-                .phoneCode(data.getString("phoneCode"))
-                .phoneNumber(data.getString("phone"))
-                .languageId(data.getInt("languageId"))
-                .languageName(languageName)
-                .countryName(countryName)
-                .countries(mCountries)
-                .languages(mLanguages)
-                .countryCodes(mCountryCodes)
-                .build();
+        Application.user.setFirstName(data.getString("name"));
+        Application.user.setLastName(data.getString("surname"));
+        Application.user.setCountryId(data.getInt("countryId"));
+        Application.user.setPhoneCode(data.getString("phoneCode"));
+        Application.user.setPhoneNumber(data.getString("phone"));
+        Application.user.setLanguageId(data.getInt("languageId"));
+        Application.user.setLanguageName(languageName);
+        Application.user.setCountryName(countryName);
+        Application.user.setCountries(mCountries);
+        Application.user.setLanguages(mLanguages);
+        Application.user.setCountryCodes(mCountryCodes);
 
         // set up spinners
         SpinnerAdapter<Language> languagesAdapter = new SpinnerAdapter<>(mActivity, R.layout.country_spinner_item, mLanguages);
@@ -273,7 +270,7 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
                         .add("phone", Application.user.getPhoneNumber())
                         .add("languageId", String.valueOf(Application.user.getLanguageId()))
                         .build();
-                ApiClient.getInstance().sendRequest(body, Constants.Api.urlPersonalData(), mHandler);
+                ApiClient.getInstance().postRequest(body, Constants.Api.urlPersonalData(), mHandler);
                 break;
         }
     }

@@ -1,16 +1,12 @@
 package com.softranger.bayshopmf.ui.instock.buildparcel;
 
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -31,11 +27,8 @@ import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 
 public class ConfirmationFragment extends ParentFragment implements View.OnClickListener {
@@ -90,7 +83,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
         RequestBody body = new FormBody.Builder()
                 .add("insuranceAddressId", String.valueOf(mInForming.isNeedInsurance() ? 1 : 0))
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(6, String.valueOf(mInForming.getId())), mHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(6, String.valueOf(mInForming.getId())), mHandler);
         return mRootView;
     }
 
@@ -187,7 +180,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
                         .add("useAdditionalMaterials", String.valueOf(mInForming.isAdditionalPackage() ? 1 : 0))
                         .add("sentOnUserAlert", String.valueOf(mInForming.isSentOnUserAlert() ? 1 : 0))
                         .build();
-                ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(7, String.valueOf(mInForming.getId())), mHandler);
+                ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(7, String.valueOf(mInForming.getId())), mHandler);
                 break;
             case R.id.confirmAdditionalPackageDetails:
                 mAlertDialog = mActivity.getDialog("Additional package", "Here will be the details of this element, " +

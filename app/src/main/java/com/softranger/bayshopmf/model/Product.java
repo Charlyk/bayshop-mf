@@ -26,6 +26,10 @@ public class Product implements Parcelable {
     private String mDeclarationId;
     private int mID;
     private ArrayList<Photo> mImages;
+    private boolean mIsCheckInProgress;
+    private boolean mIsPhotoInProgress;
+    private String mCheckComment;
+    private String mPhotoComment;
 
     private Product() {}
 
@@ -45,6 +49,10 @@ public class Product implements Parcelable {
         mDeclarationId = in.readString();
         mID = in.readInt();
         in.readList(mImages, Integer.class.getClassLoader());
+        mIsCheckInProgress = in.readByte() != 0;
+        mIsPhotoInProgress = in.readByte() != 0;
+        mCheckComment = in.readString();
+        mPhotoComment = in.readString();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -179,6 +187,38 @@ public class Product implements Parcelable {
         mDeclarationId = declarationId;
     }
 
+    public boolean isCheckInProgress() {
+        return mIsCheckInProgress;
+    }
+
+    public void setCheckInProgress(boolean checkInProgress) {
+        mIsCheckInProgress = checkInProgress;
+    }
+
+    public boolean isPhotoInProgress() {
+        return mIsPhotoInProgress;
+    }
+
+    public void setPhotoInProgress(boolean photoInProgress) {
+        mIsPhotoInProgress = photoInProgress;
+    }
+
+    public String getCheckComment() {
+        return mCheckComment;
+    }
+
+    public void setCheckComment(String checkComment) {
+        mCheckComment = checkComment;
+    }
+
+    public String getPhotoComment() {
+        return mPhotoComment;
+    }
+
+    public void setPhotoComment(String photoComment) {
+        mPhotoComment = photoComment;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -201,6 +241,8 @@ public class Product implements Parcelable {
         dest.writeString(mDeclarationId);
         dest.writeInt(mID);
         dest.writeList(mImages);
+        dest.writeByte((byte) (mIsCheckInProgress ? 1 : 0));
+        dest.writeByte((byte) (mIsPhotoInProgress ? 1 : 0));
     }
 
     public static class Builder {
@@ -219,6 +261,10 @@ public class Product implements Parcelable {
         private String mDeclarationId;
         private int mID;
         private ArrayList<Photo> mImages;
+        private boolean mIsCheckInProgress;
+        private boolean mIsPhotoInProgress;
+        private String mCheckComment;
+        private String mPhotoComment;
 
         public Builder productId(String productId) {
             mProductId = productId;
@@ -295,6 +341,26 @@ public class Product implements Parcelable {
             return this;
         }
 
+        public Builder isCheckInProgress(boolean isCheckInProgress) {
+            mIsCheckInProgress = isCheckInProgress;
+            return this;
+        }
+
+        public Builder isPhotoInProgress(boolean isPhotoInProgress) {
+            mIsPhotoInProgress = isPhotoInProgress;
+            return this;
+        }
+
+        public Builder checkComment(String checkComment) {
+            mCheckComment = checkComment;
+            return this;
+        }
+
+        public Builder photoComment(String photoComment) {
+            mPhotoComment = photoComment;
+            return this;
+        }
+
         public Product build() {
             Product product = new Product();
             product.mProductId = this.mProductId;
@@ -312,6 +378,10 @@ public class Product implements Parcelable {
             product.mOrderStorageId = this.mOrderStorageId;
             product.mWeight = this.mWeight;
             product.mDeclarationId = this.mDeclarationId;
+            product.mIsCheckInProgress = this.mIsCheckInProgress;
+            product.mIsPhotoInProgress = this.mIsPhotoInProgress;
+            product.mPhotoComment = this.mPhotoComment;
+            product.mCheckComment = this.mCheckComment;
             return product;
         }
     }

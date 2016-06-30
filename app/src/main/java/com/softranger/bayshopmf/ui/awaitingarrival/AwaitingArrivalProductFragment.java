@@ -6,12 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -31,17 +26,13 @@ import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.ui.general.WebViewFragment;
-import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +40,7 @@ import okhttp3.Response;
 public class AwaitingArrivalProductFragment extends ParentFragment implements View.OnClickListener {
 
     private static final String PRODUCT_ARG = "product";
+    public static final String ACTION_UPDATE = "update data";
 
     private TextView mProductId, mProductName, mProductTracking, mProductDate, mProductPrice, mPhotoState;
     private Button mGoToUrl, mEditDetails, mDeleteProduct, mCheckProduct, mAdditionalPhoto;
@@ -82,6 +74,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
+        intentFilter.addAction(ACTION_UPDATE);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mProduct = getArguments().getParcelable(PRODUCT_ARG);
         bindViews(mRootView);
@@ -93,7 +86,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         mProductPrice.setText(mProduct.getProductPrice());
         mStorageIcon.setImageResource(getStorageIcon(mProduct.getDeposit()));
         mActivity.toggleLoadingProgress(true);
-        ApiClient.getInstance().sendRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mProduct.getID())), mHandler);
+        ApiClient.getInstance().getRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mProduct.getID())), mHandler);
         return mRootView;
     }
 
@@ -102,20 +95,29 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case CheckProductFragment.ACTION_CHECK_IN_PROCESSING:
+                    mProduct.setCheckInProgress(true);
                     mCheckProduct.setSelected(true);
                     mCheckProduct.setText(mActivity.getString(R.string.check_in_progress));
                     break;
                 case AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING:
+                    mProduct.setPhotoInProgress(true);
                     mAdditionalPhoto.setSelected(true);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
                     break;
                 case AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST:
+                    mProduct.setPhotoInProgress(false);
                     mAdditionalPhoto.setSelected(false);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.additional_photo));
                     break;
                 case CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT:
+                    mProduct.setCheckInProgress(false);
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
+                    break;
+                case ACTION_UPDATE:
+                    ApiClient.getInstance().getRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mProduct.getID())), mHandler);
+                    Intent refresh = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                    mActivity.sendBroadcast(refresh);
                     break;
             }
         }
@@ -147,6 +149,16 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         }
         mProductDate.setText(output.format(date));
         mProductPrice.setText(product.getCurrency() + product.getProductPrice());
+
+        mCheckProduct.setSelected(product.isCheckInProgress());
+        if (mCheckProduct.isSelected()) {
+            mCheckProduct.setText(mActivity.getString(R.string.check_in_progress));
+        }
+
+        mAdditionalPhoto.setSelected(product.isPhotoInProgress());
+        if (mAdditionalPhoto.isSelected()) {
+            mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
+        }
     }
 
     private void bindViews(View view) {
@@ -197,12 +209,12 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
                 deleteItem(mProduct);
                 break;
             case R.id.awaitingDetailsCheckProductBtn:
-                Toast.makeText(mActivity, getString(R.string.not_suported), Toast.LENGTH_SHORT).show();
-//                mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mProduct.getID())), true);
+                mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mProduct.getID()),
+                        mProduct.isCheckInProgress(), true), true);
                 break;
             case R.id.awaitingDetailsAdditionalPhotosBtn:
-                Toast.makeText(mActivity, getString(R.string.not_suported), Toast.LENGTH_SHORT).show();
-//                mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mProduct.getID())), true);
+                mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mProduct.getID()),
+                        mProduct.isPhotoInProgress(), true), true);
                 break;
         }
     }
@@ -247,6 +259,10 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
             mProduct.setCurrency(data.getString("currency"));
             mProduct.setProductPrice(data.getString("price"));
             mProduct.setProductUrl(data.getString("productUrl"));
+            mProduct.setCheckInProgress(data.getInt("verificationPackageRequested") == 1);
+            mProduct.setCheckComment(data.getString("verificationPackageRequestedComments"));
+            mProduct.setPhotoInProgress(data.getInt("photosPackageRequested") == 1);
+            mProduct.setPhotoComment(data.getString("photosPackageRequestedComments"));
             setDataInPlace(mProduct);
         }
     }

@@ -88,7 +88,7 @@ public class RegionalFragment extends ParentFragment implements View.OnClickList
 
         mRegionalHolderLayout.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
-        ApiClient.getInstance().sendRequest(Constants.Api.urlPersonalData(), mHandler);
+        ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
         return view;
     }
 

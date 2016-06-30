@@ -74,7 +74,7 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
         pushNotify.setOnClickListener(this);
         emails.setOnClickListener(this);
 
-        ApiClient.getInstance().sendRequest(Constants.Api.urlMailOptions(), mHandler);
+        ApiClient.getInstance().getRequest(Constants.Api.urlMailOptions(), mHandler);
         return view;
     }
 
@@ -122,7 +122,7 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
                         .build();
                 mSaveButton.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.VISIBLE);
-                ApiClient.getInstance().sendRequest(body, Constants.Api.urlMailOptions(), mHandler);
+                ApiClient.getInstance().postRequest(body, Constants.Api.urlMailOptions(), mHandler);
                 break;
         }
     }

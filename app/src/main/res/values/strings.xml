@@ -217,4 +217,9 @@
     <string name="autopacking">Autopacking</string>
     <string name="subscribe">Subscribe</string>
     <string name="english">English</string>
+    <string name="user_image">User image</string>
+    <string name="general_description_hint">Two pair of schoes, one mobile phone</string>
+    <string name="usd">USD</string>
+    <string name="euro">Euro</string>
+    <string name="punds">Pund</string>
 </resources>

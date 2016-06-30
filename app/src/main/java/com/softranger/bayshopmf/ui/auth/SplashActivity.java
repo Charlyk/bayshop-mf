@@ -37,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         if (Application.getInstance().isLoggedIn()) {
             mIntent = new Intent(this, MainActivity.class);
-            ApiClient.getInstance().sendRequest(Constants.Api.urlPersonalData(), mHandler);
+            ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
         } else {
             mIntent = new Intent(this, LoginActivity.class);
             startActivity(mIntent);

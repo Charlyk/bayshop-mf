@@ -50,6 +50,7 @@ import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
+import com.softranger.bayshopmf.ui.payment.PaymentActivity;
 import com.softranger.bayshopmf.ui.settings.SettingsActivity;
 import com.softranger.bayshopmf.ui.storages.StorageHolderFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (Application.user != null) {
             String fullName = Application.user.getFirstName() + " " + Application.user.getLastName();
             userNameLabel.setText(fullName);
+            userIdLabel.setText(Application.user.getUserId());
         }
         LinearLayout addAwaiting = (LinearLayout) navHeaderView.findViewById(R.id.add_packageButtonIcon);
         addAwaiting.setOnClickListener(this);
@@ -354,6 +356,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_profileSettings:
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
+                break;
+            case R.id.nav_paymentHistory:
+                Intent payment = new Intent(this, PaymentActivity.class);
+                startActivity(payment);
                 break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);

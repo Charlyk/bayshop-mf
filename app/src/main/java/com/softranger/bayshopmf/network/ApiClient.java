@@ -69,6 +69,20 @@ public class ApiClient {
         }
     }
 
+    public void putRequest(RequestBody body, String url, Handler handler) {
+        if (Application.currentToken != null) {
+            HttpUrl httpUrl = HttpUrl.parse(url);
+            Request request = new Request.Builder()
+                    .url(httpUrl)
+                    .addHeader("Bearer", Application.currentToken)
+                    .addHeader("DeviceId", deviceId)
+                    .addHeader("Language", "ru")
+                    .put(body)
+                    .build();
+            execute(request, handler);
+        }
+    }
+
     public void delete(String url, Handler handler) {
         if (Application.currentToken != null) {
             HttpUrl httpUrl = HttpUrl.parse(url);
@@ -83,7 +97,7 @@ public class ApiClient {
         }
     }
 
-    public void sendRequest(RequestBody requestBody, String urlString, Handler handler) {
+    public void postRequest(RequestBody requestBody, String urlString, Handler handler) {
         if (Application.currentToken != null) {
             HttpUrl url = HttpUrl.parse(urlString);
             Request request = new Request.Builder()
@@ -94,7 +108,7 @@ public class ApiClient {
         }
     }
 
-    public void sendRequest(String urlString, Handler handler) {
+    public void getRequest(String urlString, Handler handler) {
         if (Application.currentToken != null) {
             HttpUrl url = HttpUrl.parse(urlString);
             Request request = new Request.Builder().

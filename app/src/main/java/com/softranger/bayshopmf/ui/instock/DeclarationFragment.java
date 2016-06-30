@@ -4,9 +4,6 @@ package com.softranger.bayshopmf.ui.instock;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,12 +24,10 @@ import com.softranger.bayshopmf.util.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +67,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         mDeclarationAdapter = new DeclarationListAdapter(mInStockDetailed);
         mDeclarationAdapter.setOnActionButtonsClickListener(this);
         mRecyclerView.setAdapter(mDeclarationAdapter);
-        ApiClient.getInstance().sendRequest(Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
+        ApiClient.getInstance().getRequest(Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
         return view;
     }
 
@@ -106,7 +101,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         isSaveClicked = true;
         RequestBody body = new FormBody.Builder().add("title", inStockDetailed.getDescription())
                 .add("declarationItems", String.valueOf(buildProductsArray(products))).build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
     }
 
     private JSONArray buildProductsArray(ArrayList<Product> products) {

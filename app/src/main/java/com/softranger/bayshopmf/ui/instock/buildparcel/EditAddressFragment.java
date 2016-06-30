@@ -125,11 +125,11 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
             addressId = mAddress.getId();
             mActivity.setToolbarTitle(getString(R.string.edit_address), true);
             setDataOnPosition(mAddress);
-            ApiClient.getInstance().sendRequest(Constants.Api.urlGetAddress(String.valueOf(addressId)), mHandler);
+            ApiClient.getInstance().getRequest(Constants.Api.urlGetAddress(String.valueOf(addressId)), mHandler);
         } else {
             mAddress = new Address.Builder().build();
             mActivity.setToolbarTitle(getString(R.string.add_new_address), true);
-            ApiClient.getInstance().sendRequest(Constants.Api.urlGetPhoneCodes(), mHandler);
+            ApiClient.getInstance().getRequest(Constants.Api.urlGetPhoneCodes(), mHandler);
         }
 
         Button saveButton = (Button) mRootView.findViewById(R.id.addAddressSaveAddressButton);
@@ -271,7 +271,7 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
                     url = Constants.Api.urlAddNewAddress(String.valueOf(addressId));
                 }
                 isSaveClicked = true;
-                ApiClient.getInstance().sendRequest(requestBody, url, mHandler);
+                ApiClient.getInstance().postRequest(requestBody, url, mHandler);
                 mActivity.toggleLoadingProgress(true);
                 break;
         }

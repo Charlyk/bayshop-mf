@@ -4,10 +4,6 @@ package com.softranger.bayshopmf.ui.services;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +19,8 @@ import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +29,7 @@ public class CheckProductFragment extends ParentFragment implements View.OnClick
 
     public static final String ACTION_CHECK_IN_PROCESSING = "ACTION CHECK IN PROCESSING";
     public static final String ACTION_CANCEL_CHECK_PRODUCT = "ACTION CANCEL CHECK PRODUCT";
+    private static final String PREORDER_ARG = "preorder argument";
     private static final String ID_ARG = "id argument";
     private static final String STATUS_ARG = "status argument";
 
@@ -45,15 +39,17 @@ public class CheckProductFragment extends ParentFragment implements View.OnClick
     private String mId;
     private boolean mIsInprogress;
     private Button mConfirmButton;
+    private boolean mIsPreorder;
 
     public CheckProductFragment() {
         // Required empty public constructor
     }
 
-    public static CheckProductFragment newInstance(String id, boolean isInProgress) {
+    public static CheckProductFragment newInstance(String id, boolean isInProgress, boolean preorder) {
         Bundle args = new Bundle();
         args.putString(ID_ARG, id);
         args.putBoolean(STATUS_ARG, isInProgress);
+        args.putBoolean(PREORDER_ARG, preorder);
         CheckProductFragment fragment = new CheckProductFragment();
         fragment.setArguments(args);
         return fragment;
@@ -72,6 +68,7 @@ public class CheckProductFragment extends ParentFragment implements View.OnClick
         mConfirmButton = (Button) view.findViewById(R.id.check_product_confirmBtn);
         mId = getArguments().getString(ID_ARG);
         mIsInprogress = getArguments().getBoolean(STATUS_ARG);
+        mIsPreorder = getArguments().getBoolean(PREORDER_ARG);
 
         if (mIsInprogress) {
             mConfirmButton.setText(getString(R.string.cancel_request));
@@ -98,13 +95,20 @@ public class CheckProductFragment extends ParentFragment implements View.OnClick
                 }
                 break;
             case R.id.check_product_confirmBtn: {
-                if (!mIsInprogress) {
+                if (!mIsInprogress && !mIsPreorder) {
                     RequestBody body = new FormBody.Builder()
                             .add("id", mId)
                             .add("request", Constants.Api.OPTION_CHECK)
                             .add("comments", String.valueOf(mCommentInput.getText()))
                             .build();
-                    ApiClient.getInstance().sendRequest(body, Constants.Api.urlAdditionalPhoto(), mHandler);
+                    ApiClient.getInstance().postRequest(body, Constants.Api.urlAdditionalPhoto(), mHandler);
+                    mActivity.toggleLoadingProgress(true);
+                } else if (mIsPreorder) {
+                    RequestBody body = new FormBody.Builder()
+                            .add("verificationPackageRequested", String.valueOf(mIsInprogress ? 0 : 1))
+                            .add("verificationPackageRequestedComments", String.valueOf(mCommentInput.getText()))
+                            .build();
+                    ApiClient.getInstance().putRequest(body, Constants.Api.urlEditWaitingArrivalItem(mId), mHandler);
                     mActivity.toggleLoadingProgress(true);
                 } else {
                     Intent intent = new Intent(ACTION_CANCEL_CHECK_PRODUCT);
@@ -122,6 +126,12 @@ public class CheckProductFragment extends ParentFragment implements View.OnClick
 
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
+        if (mIsInprogress && mIsPreorder) {
+            Intent intent = new Intent(ACTION_CANCEL_CHECK_PRODUCT);
+            mActivity.sendBroadcast(intent);
+            mActivity.onBackPressed();
+            return;
+        }
         Intent intent = new Intent(ACTION_CHECK_IN_PROCESSING);
         mActivity.sendBroadcast(intent);
         mActivity.onBackPressed();

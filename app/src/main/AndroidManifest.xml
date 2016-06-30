@@ -38,7 +38,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".ui.auth.SplashActivity"
             android:screenOrientation="portrait"
@@ -49,7 +48,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.auth.LoginActivity"
             android:screenOrientation="portrait">
@@ -62,14 +60,14 @@
                 <data android:scheme="@string/fb_login_protocol_scheme"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.gallery.GalleryActivity"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.payment.PaymentActivity">
+        </activity>
     </application>
 
 </manifest>

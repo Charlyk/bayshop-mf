@@ -4,11 +4,7 @@ package com.softranger.bayshopmf.ui.inprocessing;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,10 +28,7 @@ import com.softranger.bayshopmf.util.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,7 +64,7 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
         mDeposit = mPackage.getDeposit();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inProcessingDetailsList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        ApiClient.getInstance().sendRequest(Constants.Api.urlViewParcelDetails(String
+        ApiClient.getInstance().getRequest(Constants.Api.urlViewParcelDetails(String
                 .valueOf(mPackage.getId())), mHandler);
         mActivity.toggleLoadingProgress(true);
         return view;

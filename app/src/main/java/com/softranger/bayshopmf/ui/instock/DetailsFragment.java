@@ -6,12 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +23,6 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.ui.ParentFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
@@ -40,14 +34,10 @@ import com.softranger.bayshopmf.util.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
-import okhttp3.Response;
 
 
 /**
@@ -101,7 +91,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         mImagesAdapter = new ImagesAdapter(R.layout.in_stock_detailed_image);
         mImagesAdapter.setOnImageClickListener(this);
         mRecyclerView.setAdapter(mImagesAdapter);
-        ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);
+        ApiClient.getInstance().getRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);
         mActivity.toggleLoadingProgress(true);
         return mRootView;
     }
@@ -128,7 +118,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                     break;
                 case StorageItemsFragment.ACTION_ITEM_CHANGED:
                     mHolderLayout.setVisibility(View.GONE);
-                    ApiClient.getInstance().sendRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);
+                    ApiClient.getInstance().getRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);
                     mActivity.toggleLoadingProgress(true);
                     break;
             }
@@ -189,11 +179,11 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                 break;
             case R.id.check_productButton:
                 mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mInStockDetailed.getID()),
-                        mInStockDetailed.getCheckInProgress() == Constants.IN_PROGRESS), true);
+                        mInStockDetailed.getCheckInProgress() == Constants.IN_PROGRESS, false), true);
                 break;
             case R.id.additional_photoButton:
                 mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mInStockDetailed.getID()),
-                        mInStockDetailed.getPhotoInProgress() == Constants.IN_PROGRESS), true);
+                        mInStockDetailed.getPhotoInProgress() == Constants.IN_PROGRESS, false), true);
                 break;
         }
     }

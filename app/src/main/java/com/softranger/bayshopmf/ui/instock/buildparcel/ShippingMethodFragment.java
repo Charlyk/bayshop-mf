@@ -1,27 +1,19 @@
 package com.softranger.bayshopmf.ui.instock.buildparcel;
 
 
-import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -37,12 +29,10 @@ import com.softranger.bayshopmf.util.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,7 +92,7 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
         RequestBody body = new FormBody.Builder()
                 .add("memberAddress", String.valueOf(mInForming.getAddress().getId()))
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(3, String.valueOf(mInForming.getId())), mHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(3, String.valueOf(mInForming.getId())), mHandler);
         return view;
     }
 
@@ -152,7 +142,7 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
                     .maxWeight(jsonMethod.getDouble("maxWeight"))
                     .description(jsonMethod.getString("description"))
                     .calculatedPrice(jsonMethod.getDouble("calculatedPrice"))
-                    .rank(jsonMethod.getInt("rank"))
+//                    .rank(jsonMethod.getInt("rank"))
                     .currency(jsonMethod.getString("currency"))
                     .build();
             mMethods.add(method);

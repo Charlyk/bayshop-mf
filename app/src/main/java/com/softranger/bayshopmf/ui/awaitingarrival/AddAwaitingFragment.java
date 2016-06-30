@@ -4,9 +4,6 @@ package com.softranger.bayshopmf.ui.awaitingarrival;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +24,8 @@ import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,7 +123,7 @@ public class AddAwaitingFragment extends ParentFragment implements RadioGroup.On
                     .add("url", mProduct.getProductUrl())
                     .add("packagePrice", mProduct.getProductPrice())
                     .build();
-            ApiClient.getInstance().sendRequest(body, Constants.Api.urlAddWaitingArrivalItem(), mHandler);
+            ApiClient.getInstance().postRequest(body, Constants.Api.urlAddWaitingArrivalItem(), mHandler);
             mActivity.toggleLoadingProgress(true);
         }
     }

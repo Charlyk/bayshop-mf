@@ -115,10 +115,15 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.mInStockDetailed = (InStockDetailed) mObjects.get(position);
             headerHolder.mGeneralDescription.addTextChangedListener(new DescriptionTextWatcher(headerHolder.mInStockDetailed));
-            headerHolder.mGeneralDescription.setText(headerHolder.mInStockDetailed.getDescription());
-            String trackingNumber = headerHolder.mInStockDetailed.getTrackingNumber();
-            headerHolder.mTrackingNumber.setText(trackingNumber);
-            headerHolder.mDepositName.setText(headerHolder.mInStockDetailed.getDeposit());
+            String description = "";
+            if (headerHolder.mInStockDetailed.getDescription() != null
+                    && !headerHolder.mInStockDetailed.getDescription().equals("null")) {
+                description = headerHolder.mInStockDetailed.getDescription();
+            }
+            headerHolder.mGeneralDescription.setText(description);
+//            String trackingNumber = headerHolder.mInStockDetailed.getTrackingNumber();
+//            headerHolder.mTrackingNumber.setText(trackingNumber);
+//            headerHolder.mDepositName.setText(headerHolder.mInStockDetailed.getDeposit());
         }
     }
 
@@ -162,15 +167,15 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView mDepositName;
-        final TextView mTrackingNumber;
+//        final TextView mDepositName;
+//        final TextView mTrackingNumber;
         final EditText mGeneralDescription;
         InStockDetailed mInStockDetailed;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
-            mDepositName = (TextView) itemView.findViewById(R.id.depositTextLabel);
-            mTrackingNumber = (TextView) itemView.findViewById(R.id.trackingNumberLabel);
+//            mDepositName = (TextView) itemView.findViewById(R.id.depositTextLabel);
+//            mTrackingNumber = (TextView) itemView.findViewById(R.id.trackingNumberLabel);
             mGeneralDescription = (EditText) itemView.findViewById(R.id.generalDescriptionLabel);
         }
     }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * Created by macbook on 6/29/16.
  */
 public class User implements Parcelable {
+    private String mUserId;
     private String mFirstName;
     private String mLastName;
     private int mCountryId;
@@ -26,6 +27,7 @@ public class User implements Parcelable {
     }
 
     protected User(Parcel in) {
+        mUserId = in.readString();
         mFirstName = in.readString();
         mLastName = in.readString();
         mCountryId = in.readInt();
@@ -50,6 +52,14 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public String getUserId() {
+        return mUserId;
+    }
+
+    public void setUserId(String userId) {
+        mUserId = userId;
+    }
 
     public String getFirstName() {
         return mFirstName;
@@ -160,6 +170,7 @@ public class User implements Parcelable {
     }
 
     public static class Builder {
+        private String mUserId;
         private String mFirstName;
         private String mLastName;
         private int mCountryId;
@@ -171,6 +182,11 @@ public class User implements Parcelable {
         private ArrayList<Country> mCountries;
         private ArrayList<Language> mLanguages;
         private ArrayList<CountryCode> mCountryCodes;
+
+        public Builder userId(String userId) {
+            mUserId = userId;
+            return this;
+        }
 
         public Builder firstName(String firstName) {
             mFirstName = firstName;
@@ -229,6 +245,7 @@ public class User implements Parcelable {
 
         public User build() {
             User user = new User();
+            user.mUserId = this.mUserId;
             user.mFirstName = this.mFirstName;
             user.mLastName = this.mLastName;
             user.mCountryId = this.mCountryId;

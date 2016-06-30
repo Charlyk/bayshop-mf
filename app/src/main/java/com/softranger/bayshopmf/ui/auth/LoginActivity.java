@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     .add("code", serverCode)
                     .add("type", "google")
                     .build();
-            ApiClient.getInstance().sendRequest(body, Constants.Api.urlAuth(), mAuthHandler);
+            ApiClient.getInstance().postRequest(body, Constants.Api.urlAuth(), mAuthHandler);
         } else {
             Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mLoginFragment.hideLoading();
@@ -171,18 +171,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
                             Application.currentToken = data.optString("access_token");
+                            Application.user = new User.Builder()
+                                    .userId(data.getString("id"))
+                                    .build();
                             Application.getInstance().setLoginStatus(true);
                             Application.getInstance().setAuthToken(Application.currentToken);
-                            ApiClient.getInstance().sendRequest(Constants.Api.urlPersonalData(), mHandler);
+                            ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
 //                            LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
 //                            finish();
                         } else {
                             message = response.optString("message", getString(R.string.unknown_error));
                             Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                            mLoginFragment.hideLoading();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        mLoginFragment.hideLoading();
                     }
                     break;
                 }
@@ -196,10 +201,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         message = exception.getMessage();
                     }
                     Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    mLoginFragment.hideLoading();
                     break;
                 case Constants.ApiResponse.RESPONSE_FAILED: {
                     IOException exception = (IOException) msg.obj;
                     Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    mLoginFragment.hideLoading();
                     break;
                 }
             }
@@ -217,14 +224,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
                             JSONObject data = response.getJSONObject("data");
-                            Application.user = new User.Builder()
-                                    .firstName(data.getString("name"))
-                                    .lastName(data.getString("surname"))
-                                    .countryId(data.getInt("countryId"))
-                                    .phoneCode(data.getString("phoneCode"))
-                                    .phoneNumber(data.getString("phone"))
-                                    .languageId(data.getInt("languageId"))
-                                    .build();
+                            Application.user.setFirstName(data.getString("name"));
+                            Application.user.setLastName(data.getString("surname"));
+                            Application.user.setCountryId(data.getInt("countryId"));
+                            Application.user.setPhoneCode(data.getString("phoneCode"));
+                            Application.user.setPhoneNumber(data.getString("phone"));
+                            Application.user.setLanguageId(data.getInt("languageId"));
                             LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                         } else {
@@ -278,7 +283,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .add("code", facebookData)
                 .add("type", "facebook")
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlAuth(), mAuthHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlAuth(), mAuthHandler);
     }
 
     @Override

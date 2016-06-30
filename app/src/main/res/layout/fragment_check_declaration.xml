@@ -47,7 +47,7 @@
         android:visibility="gone"
         android:elevation="4dp"
         android:background="@android:color/white"
-        android:hint="@string/general_description"
+        android:hint="@string/general_description_hint"
         android:singleLine="true"
         android:textColor="@color/colorAccent"/>
 

@@ -2,10 +2,8 @@ package com.softranger.bayshopmf.ui.awaitingarrival;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +22,8 @@ import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -152,7 +147,7 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
                 .add("url", product.getProductUrl())
                 .add("packagePrice", product.getProductPrice())
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlEditWaitingArrivalItem(String.valueOf(product.getID())), mHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlEditWaitingArrivalItem(String.valueOf(product.getID())), mHandler);
         mActivity.toggleLoadingProgress(true);
     }
 
@@ -167,6 +162,8 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         product.setProductUrl(data.getString("url"));
         product.setBarcode(data.getString("barCode"));
         Snackbar.make(mRootView, getString(R.string.saved_succesfuly), Snackbar.LENGTH_SHORT).show();
+        Intent update = new Intent(AwaitingArrivalProductFragment.ACTION_UPDATE);
+        mActivity.sendBroadcast(update);
         mActivity.onBackPressed();
     }
 

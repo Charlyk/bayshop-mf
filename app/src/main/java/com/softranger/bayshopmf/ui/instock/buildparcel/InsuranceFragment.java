@@ -7,21 +7,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.ColorInt;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,12 +31,10 @@ import com.softranger.bayshopmf.util.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -117,7 +109,7 @@ public class InsuranceFragment extends ParentFragment implements View.OnClickLis
                 .add("declarationName", mInForming.getGeneralDescription())
                 .add("declarations", String.valueOf(buildProductsArray(mInForming.getProducts())))
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlBuildStep(5, String.valueOf(mInForming.getId())), mHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(5, String.valueOf(mInForming.getId())), mHandler);
         return mRootView;
     }
 

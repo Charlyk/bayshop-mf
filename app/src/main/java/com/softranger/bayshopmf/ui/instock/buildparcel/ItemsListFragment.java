@@ -7,25 +7,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.FirstStepAdapter;
@@ -41,11 +33,9 @@ import com.softranger.bayshopmf.util.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.FormBody;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -124,7 +114,7 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         } else {
             mInForming = getArguments().getParcelable(IN_FORMING_ARG);
             String url = Constants.Api.urlBuildStep(1, String.valueOf(mInForming.getId()));
-            ApiClient.getInstance().sendRequest(url, mHandler);
+            ApiClient.getInstance().getRequest(url, mHandler);
         }
         mActivity.toggleLoadingProgress(true);
         return view;
@@ -140,7 +130,7 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
             body.add("boxes", String.valueOf(boxesArray));
             if (!packageId.equals("")) body.add("packageId", packageId);
             String url = Constants.Api.urlBuildStep(1);
-            ApiClient.getInstance().sendRequest(body.build(), url, mHandler);
+            ApiClient.getInstance().postRequest(body.build(), url, mHandler);
         } catch (Exception e) {
             e.printStackTrace();
         }

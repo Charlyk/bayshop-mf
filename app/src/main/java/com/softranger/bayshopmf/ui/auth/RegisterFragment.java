@@ -113,7 +113,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 .add("last_name", lastName)
                 .add("password", password)
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlRegister(), mRegisterHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlRegister(), mRegisterHandler);
     }
 
     public Handler mRegisterHandler = new Handler(Looper.getMainLooper()) {

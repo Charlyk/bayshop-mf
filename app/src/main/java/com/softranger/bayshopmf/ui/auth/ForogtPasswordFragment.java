@@ -62,7 +62,7 @@ public class ForogtPasswordFragment extends ParentFragment implements View.OnCli
         RequestBody body = new FormBody.Builder()
                 .add("email", email)
                 .build();
-        ApiClient.getInstance().sendRequest(body, Constants.Api.urlRestorePassword(), mHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlRestorePassword(), mHandler);
     }
 
     @Override

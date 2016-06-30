@@ -24,36 +24,36 @@
             android:text="@string/declaration_alert"
             android:textColor="@color/colorAccent"/>
 
-        <TextView
-            android:id="@+id/depositTextLabel"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            tools:text="USA"/>
+        <!--<TextView-->
+            <!--android:id="@+id/depositTextLabel"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="20sp"-->
+            <!--tools:text="USA"/>-->
 
-        <TextView
-            android:id="@+id/trackingNumberTitle"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_width="wrap_content"
-            android:text="@string/tracking"/>
+        <!--<TextView-->
+            <!--android:id="@+id/trackingNumberTitle"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:text="@string/tracking"/>-->
 
-        <TextView
-            android:id="@+id/trackingNumberLabel"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="5dp"
-            android:layout_width="wrap_content"
-            android:textColor="@android:color/black"
-            tools:text="213124714612876312673"/>
+        <!--<TextView-->
+            <!--android:id="@+id/trackingNumberLabel"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="18sp"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--tools:text="213124714612876312673"/>-->
 
         <View
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
         <EditText
             android:id="@+id/generalDescriptionLabel"
             android:background="@android:color/white"
-            android:hint="@string/general_description"
+            android:hint="@string/general_description_hint"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_height="30dp"
