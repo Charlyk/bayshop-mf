@@ -198,12 +198,12 @@
             android:id="@+id/addAwaitingAddParcelButton"
             style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_margin="16dp"
             android:layout_gravity="end"
             android:text="@string/add_parcel"
-            android:background="?selectableItemBackground"
-            android:textColor="@color/colorGreenAction"
+            android:background="@drawable/green_button_bg"
+            android:textColor="@android:color/white"
             android:textSize="16sp"/>
     </LinearLayout>
 </ScrollView>

@@ -423,12 +423,12 @@
             android:id="@+id/confirmFinishAndSendBtn"
             style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_margin="16dp"
             android:layout_gravity="end"
             android:text="@string/confirm"
-            android:background="?selectableItemBackground"
-            android:textColor="@color/colorGreenAction"
+            android:background="@drawable/green_button_bg"
+            android:textColor="@android:color/white"
             android:textSize="16sp"/>
     </LinearLayout>
 </ScrollView>

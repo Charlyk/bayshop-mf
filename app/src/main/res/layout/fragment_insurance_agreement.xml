@@ -5,6 +5,4 @@
              android:background="@android:color/white"
              tools:context="com.softranger.bayshopmf.ui.instock.buildparcel.InsuranceAgreementFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
 </FrameLayout>

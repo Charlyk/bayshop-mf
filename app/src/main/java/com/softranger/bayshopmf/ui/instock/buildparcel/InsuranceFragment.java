@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -149,13 +150,13 @@ public class InsuranceFragment extends ParentFragment implements View.OnClickLis
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void changeButtonBackground(boolean needInsurance) {
-        @ColorInt int color;
+        Drawable buttonBg;
         if (needInsurance) {
-            color = mActivity.getResources().getColor(R.color.colorGreenAction);
+            buttonBg = mActivity.getResources().getDrawable(R.drawable.green_button_bg);
         } else {
-            color = mActivity.getResources().getColor(R.color.colorAccent);
+            buttonBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
         }
-        mConfirmBtn.setTextColor(color);
+        mConfirmBtn.setBackground(buttonBg);
     }
 
     @Override

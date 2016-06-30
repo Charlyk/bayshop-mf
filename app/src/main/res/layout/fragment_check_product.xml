@@ -87,12 +87,15 @@
             android:visibility="gone"/>
 
         <Button
+            style="@style/Base.Widget.AppCompat.ActionButton"
             android:id="@+id/check_product_confirmBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:minWidth="100dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
+            android:textSize="16sp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_gravity="end"
