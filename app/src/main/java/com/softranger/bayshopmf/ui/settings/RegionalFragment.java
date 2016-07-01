@@ -17,7 +17,7 @@ import com.softranger.bayshopmf.adapter.SpinnerAdapter;
 import com.softranger.bayshopmf.model.Country;
 import com.softranger.bayshopmf.model.Language;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.ParentFragment;
+import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.SpinnerObj;
 

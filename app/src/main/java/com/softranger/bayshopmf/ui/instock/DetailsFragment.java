@@ -23,7 +23,7 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.ParentFragment;
+import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;

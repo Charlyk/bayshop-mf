@@ -10,12 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.ui.ParentFragment;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
-
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
 
 /**
  * A simple {@link Fragment} subclass.

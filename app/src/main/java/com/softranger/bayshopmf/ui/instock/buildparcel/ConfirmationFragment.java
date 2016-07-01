@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.ParentFragment;
+import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 

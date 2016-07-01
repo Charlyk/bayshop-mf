@@ -15,14 +15,14 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="This product is held by customs because of insuficient data about product, please upload a document or a foto which can confirm your parcel content"
+        android:text="@string/this_product_is_held_by_customs"
         android:textColor="@color/colorAccent"
-        android:textSize="17sp"/>
+        android:drawableLeft="@mipmap/ic_vama_leuseni_48dp"
+        android:drawableStart="@mipmap/ic_vama_leuseni_48dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:background="#b1b1b1"/>
 
@@ -41,12 +41,11 @@
             android:layout_alignParentTop="true"
             android:drawableLeft="@mipmap/ic_document_24dp"
             android:drawableStart="@mipmap/ic_document_24dp"
-            android:drawablePadding="10dp"
+            android:drawablePadding="6dp"
             android:background="?selectableItemBackground"
             android:text="@string/upload_document"
             android:textColor="@color/colorGreenAction"
-            android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textSize="16sp"/>
 
         <Button
             android:id="@+id/prohibitionHeldTakePhotoBtn"
@@ -56,20 +55,18 @@
             android:layout_alignParentEnd="true"
             android:drawableRight="@mipmap/ic_photo_24dp"
             android:drawableEnd="@mipmap/ic_photo_24dp"
-            android:drawablePadding="10dp"
+            android:drawablePadding="6dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="?selectableItemBackground"
             android:text="@string/take_photo"
             android:textColor="@color/colorGreenAction"
-            android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textSize="16sp"/>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:background="#b1b1b1"/>
 </LinearLayout>

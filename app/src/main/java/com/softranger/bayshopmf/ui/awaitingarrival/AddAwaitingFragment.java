@@ -17,7 +17,7 @@ import android.widget.RadioGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.ParentFragment;
+import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Constants;

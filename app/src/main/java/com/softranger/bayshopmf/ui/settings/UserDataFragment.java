@@ -24,7 +24,7 @@ import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.model.Language;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
-import com.softranger.bayshopmf.ui.ParentFragment;
+import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.SpinnerObj;

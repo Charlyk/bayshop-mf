@@ -114,17 +114,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             productHolder.mTrackingNumber.setText(productHolder.mProduct.getTrackingNumber());
         } else if (mInStockItems.get(position) instanceof PUSParcel) {
             InProcessingViewHolder<PUSParcel> processingHolder = (InProcessingViewHolder) holder;
-
+            processingHolder.mProduct = (PUSParcel) mInStockItems.get(position);
             // check if item is an instance of local depot object
             // and if it's true then we need to show the checkbox used to select multiple items
             // to order a home delivery otherwise hide that check box
             if (mInStockItems.get(position) instanceof LocalDepot) {
-                processingHolder.mLocalDepositCheckBox.setVisibility(View.VISIBLE);
-                processingHolder.mWeightTitle.setText(mContext.getString(R.string.packed_time));
-                processingHolder.mLocalDepositCheckBox.setChecked(processingHolder.mProduct.isSelected());
-            } else {
-                processingHolder.mLocalDepositCheckBox.setVisibility(View.GONE);
-                processingHolder.mWeightTitle.setText(mContext.getString(R.string.weight));
+                processingHolder.mCreatedDateTitle.setText(mContext.getString(R.string.packed_time) + " ");
             }
 
             // check if the item is an instance of either InProcessing or packed object
@@ -149,7 +144,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
             // set name id and date in position
-            processingHolder.mProduct = (PUSParcel) mInStockItems.get(position);
             processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
             processingHolder.mProductName.setText(processingHolder.mProduct.getName());
             processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreated()));
@@ -300,10 +294,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class InProcessingViewHolder<T extends PUSParcel> extends RecyclerView.ViewHolder implements View.OnClickListener,
             CompoundButton.OnCheckedChangeListener {
 
-        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle, mWeightTitle;
+        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle, mWeightTitle, mCreatedDateTitle;
         final ProgressBar mProcessingProgressBar;
         final LinearLayout mProgressLayout;
-        final CheckBox mLocalDepositCheckBox;
         T mProduct;
 
         public InProcessingViewHolder(View itemView) {
@@ -318,8 +311,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mProcessingProgressBar = (ProgressBar) itemView.findViewById(R.id.inProcessingProgressBar);
             mProgressLayout = (LinearLayout) itemView.findViewById(R.id.inProcessingItemCompletionLayout);
             mWeightTitle = (TextView) itemView.findViewById(R.id.inProcessingWeightTitle);
-            mLocalDepositCheckBox = (CheckBox) itemView.findViewById(R.id.inProcessingLocalDepositCheckBox);
-            mLocalDepositCheckBox.setOnCheckedChangeListener(this);
+            mCreatedDateTitle = (TextView) itemView.findViewById(R.id.inProcessingCreatedDateTitle);
         }
 
         @Override

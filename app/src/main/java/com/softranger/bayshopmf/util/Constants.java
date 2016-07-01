@@ -285,6 +285,12 @@ public class Constants {
             return URL + MEMBER_ADDRESS + PHONE_CODES;
         }
 
+        /**
+         * GET
+         * Create an url to obtain user payment
+         * @param period
+         * @return
+         */
         public static String urlUserBalance(Period period) {
             return URL + BALANCE + OPTION_PERIOD + period.getPeriod();
         }

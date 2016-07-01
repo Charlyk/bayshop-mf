@@ -20,7 +20,7 @@ import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.ParentFragment;
+import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -33,7 +33,8 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InProcessingDetails<T extends PUSParcel> extends ParentFragment implements ImagesAdapter.OnImageClickListener {
+public class InProcessingDetails<T extends PUSParcel> extends ParentFragment implements ImagesAdapter.OnImageClickListener,
+        InProcessingDetailsAdapter.OnItemClickListener {
 
     private static final String PRODUCT_ARG = "in processing arguments";
 
@@ -200,11 +201,42 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
         JSONObject data = response.getJSONObject("data");
         mPackage = buildParcelDetails(data);
         InProcessingDetailsAdapter<T> adapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
+        adapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public <P extends PUSParcel> void onUploadDocumentClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onTakePictureClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onReturnToSenderClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onConfirmAddressClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onOrderDeliveryClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onSelectAddressClick(P item, int position) {
+
     }
 }

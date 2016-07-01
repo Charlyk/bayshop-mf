@@ -178,7 +178,7 @@
     <string name="fill_declaration_manualy">Fill declaration manualy</string>
     <string name="example_product">Example product</string>
     <string name="http_example_com_example_product">http://example.com/example-product</string>
-    <string name="packed_time">Packed time</string>
+    <string name="packed_time">Packed time:</string>
     <string name="order">Order</string>
     <string name="address_confirmation">Address confirmation</string>
     <string name="return_to_seller_s_address">Return to seller\'s address</string>
@@ -230,4 +230,6 @@
     <string name="date_and_time">Date and time</string>
     <string name="amount">Amount</string>
     <string name="transaction_id">Transaction ID</string>
+    <string name="order_delivery">Order delivery</string>
+    <string name="this_product_is_held_by_customs">This product is held by customs because of insufficient data about product, please upload a document or a photo which can confirm your parcel content</string>
 </resources>

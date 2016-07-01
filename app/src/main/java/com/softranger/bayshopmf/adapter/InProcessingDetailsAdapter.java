@@ -18,6 +18,7 @@ import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.packages.CustomsHeld;
 import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.model.packages.Prohibited;
 import com.softranger.bayshopmf.model.packages.Sent;
@@ -81,6 +82,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mItems.get(position) instanceof PUSParcel) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
+            headerHolder.mProcessingParcel = (T) mItems.get(position);
 
             if (!(mItems.get(position) instanceof Sent) && !(mItems.get(position) instanceof ToDelivery)) {
                 headerHolder.mSentParcelLayout.setVisibility(View.GONE);
@@ -88,15 +90,19 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                 headerHolder.mSentParcelTrack.setText(headerHolder.mProcessingParcel.getTrackingNumber());
             }
 
-            if (!(mItems.get(position) instanceof CustomsHeld)) {
-                headerHolder.mUploadLayout.setVisibility(View.GONE);
+            if (mItems.get(position) instanceof CustomsHeld) {
+                headerHolder.mUploadLayout.setVisibility(View.VISIBLE);
             }
 
-            if (!(mItems.get(position) instanceof Prohibited)) {
-                headerHolder.mProhibitionLayout.setVisibility(View.GONE);
+            if (mItems.get(position) instanceof Prohibited) {
+                headerHolder.mProhibitionLayout.setVisibility(View.VISIBLE);
             }
 
-            headerHolder.mProcessingParcel = (T) mItems.get(position);
+            if (mItems.get(position) instanceof LocalDepot) {
+                headerHolder.mHomeDeliveryLayout.setVisibility(View.VISIBLE);
+                headerHolder.mSelectButton.setVisibility(View.VISIBLE);
+            }
+
             headerHolder.mDepositIcon.setImageResource(getStorageIcon(headerHolder.mProcessingParcel.getDeposit()));
             headerHolder.mParcelId.setText(headerHolder.mProcessingParcel.getCodeNumber());
 
@@ -154,13 +160,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         }
     }
 
-    class ProhibitionHolder extends RecyclerView.ViewHolder {
-
-        public ProhibitionHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
     class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mParcelId, mGoodsPrice, mCustomsClearance, mShippingPrice,
                 mTotalPrice, mShippingBy, mTrackingNumber;
@@ -178,6 +177,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final TextView mSentParcelTrack;
         final RelativeLayout mReturnButton;
         final RelativeLayout mConfirmAddressButton;
+        final RelativeLayout mHomeDeliveryLayout;
         T mProcessingParcel;
 
         public HeaderViewHolder(View itemView) {
@@ -207,7 +207,9 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mConfirmAddressButton = (RelativeLayout) itemView.findViewById(R.id.heldByProhibitionConfirmAddressBtn);
             mSentParcelLayout = (RelativeLayout) itemView.findViewById(R.id.sentParcelHeaderLayout);
             mSentParcelTrack = (TextView) itemView.findViewById(R.id.sentParcelTrackingNumberLabel);
+            mHomeDeliveryLayout = (RelativeLayout) itemView.findViewById(R.id.orderHomeDeliveryLayout);
 
+            mHomeDeliveryLayout.setOnClickListener(this);
             mReturnButton.setOnClickListener(this);
             mConfirmAddressButton.setOnClickListener(this);
 
@@ -216,6 +218,9 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mEditButton.setVisibility(View.GONE);
             mAddToFavorite.setVisibility(View.GONE);
             mSelectButton.setVisibility(View.GONE);
+            mHomeDeliveryLayout.setVisibility(View.GONE);
+            mUploadLayout.setVisibility(View.GONE);
+            mProhibitionLayout.setVisibility(View.GONE);
         }
 
         @Override
@@ -233,6 +238,12 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                     break;
                 case R.id.heldByProhibitionConfirmAddressBtn:
                     mOnItemClickListener.onConfirmAddressClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.orderHomeDeliveryLayout:
+                    mOnItemClickListener.onOrderDeliveryClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.secondStepSelectBtn:
+                    mOnItemClickListener.onSelectAddressClick(mProcessingParcel, getAdapterPosition());
                     break;
             }
         }
@@ -264,5 +275,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         <T extends PUSParcel> void onTakePictureClick(T item, int position);
         <T extends PUSParcel> void onReturnToSenderClick(T item, int position);
         <T extends PUSParcel> void onConfirmAddressClick(T item, int position);
+        <T extends PUSParcel> void onOrderDeliveryClick(T item, int position);
+        <T extends PUSParcel> void onSelectAddressClick(T item, int position);
     }
 }
