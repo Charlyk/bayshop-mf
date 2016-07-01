@@ -49,6 +49,8 @@
 
     <include layout="@layout/second_step_list_item"/>
 
+    <include layout="@layout/signature_geolocation_btn"/>
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

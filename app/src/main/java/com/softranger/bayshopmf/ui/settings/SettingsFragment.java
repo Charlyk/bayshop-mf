@@ -61,10 +61,6 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.OnSett
                 case MainActivity.ACTION_UPDATE_TITLE:
                     mActivity.setToolbarTitle(getString(R.string.settings), true);
                     break;
-                case Constants.ACTION_CHANGE_ADDRESS:
-                    Address address = intent.getExtras().getParcelable("address");
-                    // TODO: 7/1/16 do something with address
-                    break;
             }
         }
     };

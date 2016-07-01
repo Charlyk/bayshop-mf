@@ -237,4 +237,8 @@
     <string name="thank_you">Thank you for ordering delivey</string>
     <string name="please_wait_call">Please wait till our curier will call you</string>
     <string name="at_least_six">Description must contain at least 6 characters</string>
+    <string name="call_courier">Call courier</string>
+    <string name="waiting_delivery">Waiting delivery:</string>
+    <string name="signature_of_geolocation">Signature of geolocation</string>
+    <string name="received_date">Received date:</string>
 </resources>

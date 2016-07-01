@@ -1,0 +1,229 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:clickable="true"
+             tools:context="com.softranger.bayshopmf.ui.pus.ReceivedSignature">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/receivedSignatureMapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:background="#beffffff"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/receivedSignatureParcelUid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="PUS458389534"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/receivedSignatureParcelDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:text="Used MacBook Air"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/received_date"/>
+
+            <TextView
+                android:id="@+id/receivedSignatureWaitingDateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                tools:text="26 May 2016 15:34"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/weight"/>
+
+            <TextView
+                android:id="@+id/receivedSignatureWeightLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2.5 kg"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="#beffffff"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/receivedSignatureClientNameLagel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@mipmap/ic_shipping_address"
+            android:drawablePadding="5dp"
+            android:drawableStart="@mipmap/ic_shipping_address"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            tools:text="Jora Cardan"/>
+
+        <!-- Street name row -->
+        <TextView
+            android:id="@+id/secondStepAddressTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receivedSignatureClientNameLagel"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/street_name"/>
+
+        <TextView
+            android:id="@+id/receivedSignatureStreetLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receivedSignatureClientNameLagel"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/secondStepAddressTitle"
+            android:layout_toRightOf="@id/secondStepAddressTitle"
+            android:textColor="@android:color/black"
+            tools:text="Floriolor 16/1 ap 106"/>
+
+        <!-- City row -->
+        <TextView
+            android:id="@+id/secondStepPhoneNumberTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/secondStepAddressTitle"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/phone_number"/>
+
+        <TextView
+            android:id="@+id/receivedSignaturePhoneLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receivedSignatureStreetLabel"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/secondStepPhoneNumberTitle"
+            android:layout_toRightOf="@id/secondStepPhoneNumberTitle"
+            android:textColor="@android:color/black"
+            tools:text="+37379466284"/>
+
+        <!-- Postal code row -->
+        <TextView
+            android:id="@+id/secondStepCityTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receivedSignaturePhoneLabel"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/city"/>
+
+        <TextView
+            android:id="@+id/secondStepCityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receivedSignaturePhoneLabel"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/secondStepCityTitle"
+            android:layout_toRightOf="@id/secondStepCityTitle"
+            android:textColor="@android:color/black"
+            tools:text="Chisinau"/>
+
+        <!-- Country row -->
+        <TextView
+            android:id="@+id/secondStepCountryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/secondStepCityTitle"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/country"/>
+
+        <TextView
+            android:id="@+id/receivedSignatureCountryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/secondStepCityLabel"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/secondStepCountryTitle"
+            android:layout_toRightOf="@id/secondStepCountryTitle"
+            android:textColor="@android:color/black"
+            tools:text="Moldova"/>
+
+        <!-- Country row -->
+        <TextView
+            android:id="@+id/secondStepPostalCodeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/secondStepCountryTitle"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/postal_code"/>
+
+        <TextView
+            android:id="@+id/receivedSignaturepostalCodeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receivedSignatureCountryLabel"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/secondStepPostalCodeTitle"
+            android:layout_toRightOf="@id/secondStepPostalCodeTitle"
+            android:textColor="@android:color/black"
+            tools:text="Moldova"/>
+    </RelativeLayout>
+</FrameLayout>

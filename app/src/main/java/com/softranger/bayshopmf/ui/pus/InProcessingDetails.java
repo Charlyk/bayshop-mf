@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.inprocessing;
+package com.softranger.bayshopmf.ui.pus;
 
 
 import android.app.Fragment;
@@ -23,6 +23,7 @@ import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
+import com.softranger.bayshopmf.model.packages.Received;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
 import com.softranger.bayshopmf.ui.general.AddressesListFragment;
@@ -212,7 +213,35 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.in_processing), true);
+                    switch (mPackage.getStatus()) {
+                        case Constants.ParcelStatus.IN_PROCESSING:
+                            mActivity.setToolbarTitle(getString(R.string.in_processing), true);
+                            break;
+                        case Constants.ParcelStatus.PACKED:
+                            mActivity.setToolbarTitle(getString(R.string.awaiting_sending), true);
+                            break;
+                        case Constants.ParcelStatus.SENT:
+                            mActivity.setToolbarTitle(getString(R.string.sent), true);
+                            break;
+                        case Constants.ParcelStatus.RECEIVED:
+                            mActivity.setToolbarTitle(getString(R.string.received), true);
+                            break;
+                        case Constants.ParcelStatus.LOCAL_DEPO:
+                            mActivity.setToolbarTitle(getString(R.string.local_deposit), true);
+                            break;
+                        case Constants.ParcelStatus.TAKEN_TO_DELIVERY:
+                            mActivity.setToolbarTitle(getString(R.string.take_to_delivery), true);
+                            break;
+                        case Constants.ParcelStatus.CUSTOMS_HELD:
+                            mActivity.setToolbarTitle(getString(R.string.held_by_customs), true);
+                            break;
+                        case Constants.ParcelStatus.DEPT:
+                            mActivity.setToolbarTitle(getString(R.string.held_due_to_debt), true);
+                            break;
+                        case Constants.ParcelStatus.HELD_BY_PROHIBITION:
+                            mActivity.setToolbarTitle(getString(R.string.held_by_prohibition), true);
+                            break;
+                    }
                     break;
                 case Constants.ACTION_CHANGE_ADDRESS:
                     Address address = intent.getExtras().getParcelable("address");
@@ -286,6 +315,11 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
     @Override
     public <P extends PUSParcel> void onSelectAddressClick(P item, int position) {
         mActivity.addFragment(AddressesListFragment.newInstance(true), true);
+    }
+
+    @Override
+    public <P extends PUSParcel> void onSignatureOnMapClick(P item, int position) {
+        mActivity.addFragment(ReceivedSignature.newInstance((Received) item), false);
     }
 
     @Override

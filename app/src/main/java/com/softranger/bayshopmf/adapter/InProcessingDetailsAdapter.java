@@ -21,6 +21,7 @@ import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.model.packages.Prohibited;
+import com.softranger.bayshopmf.model.packages.Received;
 import com.softranger.bayshopmf.model.packages.Sent;
 import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.util.Constants;
@@ -103,6 +104,10 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                 headerHolder.mSelectButton.setVisibility(View.VISIBLE);
             }
 
+            if (mItems.get(position) instanceof Received) {
+                headerHolder.mReceivedOnMapLayout.setVisibility(View.VISIBLE);
+            }
+
             headerHolder.mDepositIcon.setImageResource(getStorageIcon(headerHolder.mProcessingParcel.getDeposit()));
             headerHolder.mParcelId.setText(headerHolder.mProcessingParcel.getCodeNumber());
 
@@ -178,6 +183,8 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final RelativeLayout mReturnButton;
         final RelativeLayout mConfirmAddressButton;
         final RelativeLayout mHomeDeliveryLayout;
+        final RelativeLayout mReceivedOnMapLayout;
+        final ImageView mSignatureImage;
         T mProcessingParcel;
 
         public HeaderViewHolder(View itemView) {
@@ -208,11 +215,15 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mSentParcelLayout = (RelativeLayout) itemView.findViewById(R.id.sentParcelHeaderLayout);
             mSentParcelTrack = (TextView) itemView.findViewById(R.id.sentParcelTrackingNumberLabel);
             mHomeDeliveryLayout = (RelativeLayout) itemView.findViewById(R.id.orderHomeDeliveryLayout);
+            mReceivedOnMapLayout = (RelativeLayout) itemView.findViewById(R.id.receivedSignatureOnMapLayout);
+            mSignatureImage = (ImageView) itemView.findViewById(R.id.receivedSignatureSignImageView);
 
             mHomeDeliveryLayout.setOnClickListener(this);
             mReturnButton.setOnClickListener(this);
             mConfirmAddressButton.setOnClickListener(this);
+            mReceivedOnMapLayout.setOnClickListener(this);
 
+            mReceivedOnMapLayout.setVisibility(View.GONE);
             mTakePicture.setOnClickListener(this);
             mUploadDocument.setOnClickListener(this);
             mEditButton.setVisibility(View.GONE);
@@ -246,6 +257,9 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                 case R.id.secondStepSelectBtn:
                     mOnItemClickListener.onSelectAddressClick(mProcessingParcel, getAdapterPosition());
                     break;
+                case R.id.receivedSignatureOnMapLayout:
+                    mOnItemClickListener.onSignatureOnMapClick(mProcessingParcel, getAdapterPosition());
+                    break;
             }
         }
     }
@@ -278,5 +292,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         <T extends PUSParcel> void onConfirmAddressClick(T item, int position);
         <T extends PUSParcel> void onOrderDeliveryClick(T item, int position);
         <T extends PUSParcel> void onSelectAddressClick(T item, int position);
+        <T extends PUSParcel> void onSignatureOnMapClick(T item, int position);
     }
 }

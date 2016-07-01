@@ -37,11 +37,12 @@ import com.softranger.bayshopmf.model.packages.Sent;
 import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
-import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
+import com.softranger.bayshopmf.ui.pus.InProcessingDetails;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.general.AddressesListFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
+import com.softranger.bayshopmf.ui.pus.ToDeliveryDetails;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -383,6 +384,10 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
      */
     @Override
     public <T extends PUSParcel> void onInProcessingProductClick(T processingPackage, int position) {
+        if (processingPackage instanceof ToDelivery) {
+            mActivity.addFragment(ToDeliveryDetails.newInstance((ToDelivery) processingPackage), true);
+            return;
+        }
         mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
     }
 

@@ -4,7 +4,7 @@
              android:layout_height="match_parent"
              android:background="#FFDEDEDE"
              android:clickable="true"
-             tools:context=".ui.inprocessing.InProcessingDetails">
+             tools:context=".ui.pus.InProcessingDetails">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/inProcessingDetailsList"

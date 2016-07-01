@@ -34,7 +34,7 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
     private SwitchCompat mEmails;
 
     private ProgressBar mProgressBar;
-    private Button mSaveButton;
+//    private Button mSaveButton;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -66,8 +66,8 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
         RelativeLayout pushNotify = (RelativeLayout) view.findViewById(R.id.notificationsPushNotifButton);
         RelativeLayout emails = (RelativeLayout) view.findViewById(R.id.notificationsEmailsButton);
 
-        mSaveButton = (Button) view.findViewById(R.id.notificationsSaveButton);
-        mSaveButton.setOnClickListener(this);
+//        mSaveButton = (Button) view.findViewById(R.id.notificationsSaveButton);
+//        mSaveButton.setOnClickListener(this);
 
         internalMail.setOnClickListener(this);
         sms.setOnClickListener(this);
@@ -94,8 +94,8 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
 
     @Override
     public void onHandleMessageEnd() {
-        mProgressBar.setVisibility(View.GONE);
-        mSaveButton.setVisibility(View.VISIBLE);
+//        mProgressBar.setVisibility(View.GONE);
+//        mSaveButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -113,18 +113,17 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
             case R.id.notificationsEmailsButton:
                 mEmails.setChecked(!mEmails.isChecked());
                 break;
-            case R.id.notificationsSaveButton:
-                RequestBody body = new FormBody.Builder()
-                        .add("alertOnSystem", String.valueOf(mInternalMail.isChecked() ? 1 : 0))
-                        .add("obtainSms", String.valueOf(mSms.isChecked() ? 1 : 0))
-                        .add("obtainGcm", String.valueOf(mPushNotifications.isChecked() ? 1 : 0))
-                        .add("obtainMails", String.valueOf(mEmails.isChecked() ? 1 : 0))
-                        .build();
-                mSaveButton.setVisibility(View.GONE);
-                mProgressBar.setVisibility(View.VISIBLE);
-                ApiClient.getInstance().postRequest(body, Constants.Api.urlMailOptions(), mHandler);
-                break;
         }
+
+        RequestBody body = new FormBody.Builder()
+                .add("alertOnSystem", String.valueOf(mInternalMail.isChecked() ? 1 : 0))
+                .add("obtainSms", String.valueOf(mSms.isChecked() ? 1 : 0))
+                .add("obtainGcm", String.valueOf(mPushNotifications.isChecked() ? 1 : 0))
+                .add("obtainMails", String.valueOf(mEmails.isChecked() ? 1 : 0))
+                .build();
+//        mSaveButton.setVisibility(View.GONE);
+//        mProgressBar.setVisibility(View.VISIBLE);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlMailOptions(), mHandler);
     }
 
     @Override
