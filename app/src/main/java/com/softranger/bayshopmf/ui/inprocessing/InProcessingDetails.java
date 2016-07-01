@@ -2,9 +2,13 @@ package com.softranger.bayshopmf.ui.inprocessing;
 
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +24,9 @@ import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
+import com.softranger.bayshopmf.ui.instock.buildparcel.EditAddressFragment;
+import com.softranger.bayshopmf.ui.instock.buildparcel.SelectAddressFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -37,17 +44,20 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
         InProcessingDetailsAdapter.OnItemClickListener {
 
     private static final String PRODUCT_ARG = "in processing arguments";
+    public static final String ACTION_CHANGE_ADDRESS = "change delivery address";
 
     private MainActivity mActivity;
     private RecyclerView mRecyclerView;
     private String mDeposit;
     private T mPackage;
+    private AlertDialog mAlertDialog;
+    private InProcessingDetailsAdapter<T> mAdapter;
 
     public InProcessingDetails() {
         // Required empty public constructor
     }
 
-    public static<T extends PUSParcel> InProcessingDetails newInstance(@NonNull T product) {
+    public static <T extends PUSParcel> InProcessingDetails newInstance(@NonNull T product) {
         Bundle args = new Bundle();
         args.putParcelable(PRODUCT_ARG, product);
         InProcessingDetails<T> fragment = new InProcessingDetails<>();
@@ -61,6 +71,9 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_in_processing_details, container, false);
         mActivity = (MainActivity) getActivity();
+        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
+        intentFilter.addAction(ACTION_CHANGE_ADDRESS);
+        mActivity.registerReceiver(mTitleReceiver, intentFilter);
         mPackage = getArguments().getParcelable(PRODUCT_ARG);
         mDeposit = mPackage.getDeposit();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inProcessingDetailsList);
@@ -196,13 +209,29 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
         return photos;
     }
 
+    private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case MainActivity.ACTION_UPDATE_TITLE:
+                    mActivity.setToolbarTitle(getString(R.string.local_deposit), true);
+                    break;
+                case ACTION_CHANGE_ADDRESS:
+                    Address address = intent.getExtras().getParcelable("address");
+                    mPackage.setAddress(address);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
+
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
         JSONObject data = response.getJSONObject("data");
         mPackage = buildParcelDetails(data);
-        InProcessingDetailsAdapter<T> adapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
-        adapter.setOnItemClickListener(this);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
+        mAdapter.setOnItemClickListener(this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -232,11 +261,38 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
 
     @Override
     public <P extends PUSParcel> void onOrderDeliveryClick(P item, int position) {
-
+        mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
+                        + " " + item.getAddress().getClientName(), R.mipmap.ic_white_magic_kamaz_24dp,
+                getString(R.string.confirm), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
+                                R.drawable.ic_sent, getString(R.string.thank_you), getString(R.string.please_wait_call),
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mActivity.onBackPressed();
+                                    }
+                                }), false);
+                        mAlertDialog.dismiss();
+                    }
+                }, getString(R.string.cancel), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAlertDialog.dismiss();
+                    }
+                });
+        mAlertDialog.show();
     }
 
     @Override
     public <P extends PUSParcel> void onSelectAddressClick(P item, int position) {
+        mActivity.addFragment(SelectAddressFragment.newInstance(), true);
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity.unregisterReceiver(mTitleReceiver);
     }
 }

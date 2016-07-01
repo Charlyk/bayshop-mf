@@ -26,6 +26,7 @@ import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
@@ -54,6 +55,7 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
     private InForming mInForming;
     private ArrayList<Address> mAddresses;
     private ArrayList<LocalDepot> mToDeliverLIst;
+    private static boolean isPost;
 
 
     public SelectAddressFragment() {
@@ -134,16 +136,24 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
         mRecyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
         fastScroller.setSectionIndicator(indicator);
         if (mInForming != null) {
-            getAddressesList();
+            isPost = true;
+        } else {
+            isPost = false;
         }
+
+        getAddressesList(isPost);
         return view;
     }
 
-    private void getAddressesList() {
-        RequestBody body = new FormBody.Builder()
+    private void getAddressesList(boolean isPost) {
+        if (isPost) {
+            RequestBody body = new FormBody.Builder()
                 .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
                 .build();
-        ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mHandler);
+            ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mHandler);
+        } else {
+            ApiClient.getInstance().getRequest(Constants.Api.urlAddressesList(), mHandler);
+        }
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -154,7 +164,7 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
                     mActivity.setToolbarTitle(getString(R.string.addresses_list), true);
                     break;
                 case EditAddressFragment.ACTION_REFRESH_ADDRESS:
-                    getAddressesList();
+                    getAddressesList(isPost);
                     break;
             }
         }
@@ -171,8 +181,11 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
         if (mInForming != null) {
             mInForming.setAddress(address);
             mActivity.addFragment(ShippingMethodFragment.newInstance(mInForming), true);
-        } else if (mToDeliverLIst != null) {
-            // TODO: 6/27/16 do something with the list
+        } else {
+            Intent changeAddress = new Intent(InProcessingDetails.ACTION_CHANGE_ADDRESS);
+            changeAddress.putExtra("address", address);
+            mActivity.sendBroadcast(changeAddress);
+            mActivity.onBackPressed();
         }
     }
 
@@ -212,7 +225,6 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
         if (newText == null || newText.equals("")) {
             mAdapter.replaceList(mAddresses);
         } else {
-            // TODO: 6/17/16 test this for performance
             new Thread(new Runnable() {
                 @Override
                 public void run() {

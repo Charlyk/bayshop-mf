@@ -218,6 +218,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mEditButton.setVisibility(View.GONE);
             mAddToFavorite.setVisibility(View.GONE);
             mSelectButton.setVisibility(View.GONE);
+            mSelectButton.setOnClickListener(this);
             mHomeDeliveryLayout.setVisibility(View.GONE);
             mUploadLayout.setVisibility(View.GONE);
             mProhibitionLayout.setVisibility(View.GONE);

@@ -1,6 +1,7 @@
 package com.softranger.bayshopmf.ui.auth;
 
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -67,7 +68,17 @@ public class ForogtPasswordFragment extends ParentFragment implements View.OnCli
 
     @Override
     public void onServerResponse(JSONObject response) {
-        mActivity.addFragment(new ForgotResultFragment(), true);
+        mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.restore_password),
+                R.drawable.ic_mail, getString(R.string.email_has_been_sent), getString(R.string.reset_your_password),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FragmentManager fm = mActivity.getFragmentManager();
+                        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+                            fm.popBackStack();
+                        }
+                    }
+                }), true);
     }
 
     @Override

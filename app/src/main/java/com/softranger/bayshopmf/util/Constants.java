@@ -295,6 +295,13 @@ public class Constants {
             return URL + BALANCE + OPTION_PERIOD + period.getPeriod();
         }
 
+        /**
+         *
+         * @return
+         */
+        public static String urlAddressesList() {
+            return URL + MEMBER_ADDRESS;
+        }
     }
 
     public enum  Period {

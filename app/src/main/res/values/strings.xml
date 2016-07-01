@@ -232,4 +232,9 @@
     <string name="transaction_id">Transaction ID</string>
     <string name="order_delivery">Order delivery</string>
     <string name="this_product_is_held_by_customs">This product is held by customs because of insufficient data about product, please upload a document or a photo which can confirm your parcel content</string>
+    <string name="confirm_delivery">Please confirm that you want to order delivery to</string>
+    <string name="order_sent">Order sent</string>
+    <string name="thank_you">Thank you for ordering delivey</string>
+    <string name="please_wait_call">Please wait till our curier will call you</string>
+    <string name="at_least_six">Description must contain at least 6 characters</string>
 </resources>

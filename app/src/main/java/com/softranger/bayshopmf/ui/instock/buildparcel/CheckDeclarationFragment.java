@@ -143,6 +143,13 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
             mGeneralDescriptionInput.setError(getString(R.string.fill_general_description));
             return;
         }
+
+        if (description.length() < 6 && !mInForming.isAutoFilling()) {
+            Snackbar.make(mRecyclerView, getString(R.string.at_least_six), Snackbar.LENGTH_SHORT).show();
+            mGeneralDescriptionInput.setError(getString(R.string.at_least_six));
+            return;
+        }
+
         if (mInForming.isAutoFilling()) description = "";
         mInForming.setGeneralDescription(description);
         mActivity.addFragment(InsuranceFragment.newInstance(mInForming), true);
