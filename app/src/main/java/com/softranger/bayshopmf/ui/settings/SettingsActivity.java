@@ -3,18 +3,17 @@ package com.softranger.bayshopmf.ui.settings;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.util.ParentActivity;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends ParentActivity {
 
     public static final String ACTION_LOG_OUT = "action log out";
 
@@ -42,15 +41,17 @@ public class SettingsActivity extends AppCompatActivity {
         replaceFragment(settingsFragment);
     }
 
-    public void changeToolbarTitle(final String newTitle) {
+    @Override
+    public void setToolbarTitle(final String title, boolean showIcon) {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                mToolbarTitle.setText(newTitle);
+                mToolbarTitle.setText(title);
             }
         }, 200);
     }
 
+    @Override
     public void addFragment(Fragment fragment, boolean showAnimation) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -62,6 +63,12 @@ public class SettingsActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    @Override
+    public void toggleLoadingProgress(boolean show) {
+
+    }
+
+    @Override
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

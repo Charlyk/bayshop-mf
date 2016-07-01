@@ -130,6 +130,6 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mActivity.changeToolbarTitle(mActivity.getString(R.string.settings));
+        mActivity.setToolbarTitle(mActivity.getString(R.string.settings), true);
     }
 }

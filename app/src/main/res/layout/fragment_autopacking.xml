@@ -105,7 +105,7 @@
                 android:layout_toEndOf="@id/autopackingAddressImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"/>
+                tools:text="Eduard Albu"/>
         </RelativeLayout>
 
         <View
@@ -146,7 +146,7 @@
                 android:layout_below="@id/autopackingShippingMethodTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"/>
+                tools:text="BayShop Air Post"/>
         </RelativeLayout>
 
         <View
@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/autopackingInsuranceImage"
                 android:layout_toEndOf="@id/autopackingInsuranceImage"
-                android:text="New Text"/>
+                tools:text="Insurance selectedt"/>
         </RelativeLayout>
 
         <View

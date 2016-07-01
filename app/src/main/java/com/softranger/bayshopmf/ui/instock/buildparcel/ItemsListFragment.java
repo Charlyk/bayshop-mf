@@ -25,6 +25,7 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.AddressesListFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
@@ -160,14 +161,14 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
                     public void onClick(View v) {
                         mInForming.setHasBattery(true);
                         mBatteryDialog.dismiss();
-                        mActivity.addFragment(SelectAddressFragment.newInstance(mInForming), true);
+                        mActivity.addFragment(AddressesListFragment.newInstance(mInForming), true);
                     }
                 }, getString(R.string.no), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mInForming.setHasBattery(false);
                         mBatteryDialog.dismiss();
-                        mActivity.addFragment(SelectAddressFragment.newInstance(mInForming), true);
+                        mActivity.addFragment(AddressesListFragment.newInstance(mInForming), true);
                     }
                 });
         mBatteryDialog.show();

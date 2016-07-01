@@ -128,7 +128,7 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mActivity.changeToolbarTitle(mActivity.getString(R.string.settings));
+        mActivity.setToolbarTitle(mActivity.getString(R.string.settings), true);
     }
 
     @Override

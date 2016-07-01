@@ -40,8 +40,8 @@ import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragmen
 import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
+import com.softranger.bayshopmf.ui.general.AddressesListFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
-import com.softranger.bayshopmf.ui.instock.buildparcel.SelectAddressFragment;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -456,7 +456,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.storageItemsOrderDeliveryBtn:
-                mActivity.addFragment(SelectAddressFragment.newInstance(), false);
+                mActivity.addFragment(AddressesListFragment.newInstance(true), false);
                 break;
         }
     }

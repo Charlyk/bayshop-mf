@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.instock.buildparcel;
+package com.softranger.bayshopmf.ui.general;
 
 
 import android.app.Fragment;
@@ -26,9 +26,9 @@ import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.inprocessing.InProcessingDetails;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.ui.instock.buildparcel.ShippingMethodFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
-import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -44,36 +44,35 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SelectAddressFragment extends ParentFragment implements SecondStepAdapter.OnAddressClickListener,
+public class AddressesListFragment extends ParentFragment implements SecondStepAdapter.OnAddressClickListener,
         MenuItemCompat.OnActionExpandListener, SearchView.OnQueryTextListener, MenuItem.OnMenuItemClickListener {
 
-    private static final String TO_DELIVER = "TO_DELIVER_ARG";
     private static final String IN_FORMING_ARG = "in forming argument";
-    private MainActivity mActivity;
+    private static final String SHOW_SELECT_ARG = "show select button argument";
+    private ParentActivity mActivity;
     private SecondStepAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private InForming mInForming;
     private ArrayList<Address> mAddresses;
-    private ArrayList<LocalDepot> mToDeliverLIst;
     private static boolean isPost;
 
-
-    public SelectAddressFragment() {
+    public AddressesListFragment() {
         // Required empty public constructor
     }
 
-    public static SelectAddressFragment newInstance() {
+    public static AddressesListFragment newInstance(boolean showSelect) {
         Bundle args = new Bundle();
-        SelectAddressFragment fragment = new SelectAddressFragment();
+        args.putBoolean(SHOW_SELECT_ARG, showSelect);
+        AddressesListFragment fragment = new AddressesListFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
 
-    public static SelectAddressFragment newInstance(InForming inForming) {
+    public static AddressesListFragment newInstance(InForming inForming) {
         Bundle args = new Bundle();
         args.putParcelable(IN_FORMING_ARG, inForming);
-        SelectAddressFragment fragment = new SelectAddressFragment();
+        AddressesListFragment fragment = new AddressesListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -109,9 +108,7 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
-        if (getActivity() instanceof MainActivity) {
-            mActivity = (MainActivity) getActivity();
-        }
+        mActivity = (ParentActivity) getActivity();
 
         IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
         intentFilter.addAction(EditAddressFragment.ACTION_REFRESH_ADDRESS);
@@ -123,7 +120,8 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
         mRecyclerView = (RecyclerView) view.findViewById(R.id.buildSecondStepList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAddresses = new ArrayList<>();
-        mAdapter = new SecondStepAdapter(mAddresses);
+        boolean showSelectButton = getArguments().getBoolean(SHOW_SELECT_ARG);
+        mAdapter = new SecondStepAdapter(mAddresses, showSelectButton);
         mAdapter.setOnAddressClickListener(this);
 
         if (getArguments().containsKey(IN_FORMING_ARG)) {
@@ -148,8 +146,8 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
     private void getAddressesList(boolean isPost) {
         if (isPost) {
             RequestBody body = new FormBody.Builder()
-                .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
-                .build();
+                    .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
+                    .build();
             ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mHandler);
         } else {
             ApiClient.getInstance().getRequest(Constants.Api.urlAddressesList(), mHandler);
@@ -182,7 +180,7 @@ public class SelectAddressFragment extends ParentFragment implements SecondStepA
             mInForming.setAddress(address);
             mActivity.addFragment(ShippingMethodFragment.newInstance(mInForming), true);
         } else {
-            Intent changeAddress = new Intent(InProcessingDetails.ACTION_CHANGE_ADDRESS);
+            Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
             changeAddress.putExtra("address", address);
             mActivity.sendBroadcast(changeAddress);
             mActivity.onBackPressed();

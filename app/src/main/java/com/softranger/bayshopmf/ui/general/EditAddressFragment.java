@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.instock.buildparcel;
+package com.softranger.bayshopmf.ui.general;
 
 
 import android.content.BroadcastReceiver;
@@ -32,7 +32,6 @@ import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.util.ParentFragment;
-import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.SpinnerObj;
 

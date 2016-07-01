@@ -26,10 +26,12 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
 
     private ArrayList<Address> mAddresses;
     private OnAddressClickListener mOnAddressClickListener;
+    private boolean mShowSelectButton;
 
-    public SecondStepAdapter(ArrayList<Address> addresses) {
+    public SecondStepAdapter(ArrayList<Address> addresses, boolean showSelect) {
         mAddresses = addresses;
         sortListByName();
+        mShowSelectButton = showSelect;
     }
 
     public void sortListByName() {
@@ -75,6 +77,7 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
         holder.mCountry.setText(holder.mAddressObj.getCountry());
         holder.mPostalCode.setText(holder.mAddressObj.getPostalCode());
         holder.mClientName.setText(holder.mAddressObj.getClientName());
+        holder.mSelectButton.setVisibility(mShowSelectButton ? View.VISIBLE : View.GONE);
     }
 
     @Override

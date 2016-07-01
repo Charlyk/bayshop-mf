@@ -20,6 +20,8 @@ public class Constants {
 
     public static final int IN_PROGRESS = 1, FINISHED = 2, NOT_REQUESTED = 0;
 
+    public static final String ACTION_CHANGE_ADDRESS = "change delivery address";
+
     public static class ApiResponse {
         public static final int RESPONSE_OK = 1;
         public static final int RESPONSE_FAILED = -1;
