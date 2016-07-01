@@ -72,7 +72,7 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
         mAdapter = new HistoryAdapter(mActivity, mAllHistories);
         mAdapter.setOnHistoryClickListener(this);
         recyclerView.setAdapter(mAdapter);
-        period = Constants.Period.one;
+        period = Constants.Period.all;
         currencyType = com.softranger.bayshopmf.model.Currency.CurrencyType.All;
         ApiClient.getInstance().getRequest(Constants.Api.urlUserBalance(period), mHandler);
         mProgressBar.setVisibility(View.VISIBLE);
@@ -146,6 +146,8 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
                         .date(jsonHistory.getString("created"))
                         .summ(jsonHistory.getDouble("summ"))
                         .transactionId(jsonHistory.getString("trid"))
+                        .currency(jsonHistory.getString("sign"))
+                        .totalAmmount(jsonHistory.getDouble("total_amount"))
                         .build();
 
                 if (key.equals(Currency.usd.name())) {
@@ -155,12 +157,12 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
                 } else if (key.equals(Currency.gbp.name())){
                     mPoundHistories.add(history);
                 }
-
-                mAllHistories.addAll(mUSDHistories);
-                mAllHistories.addAll(mEuroHistories);
-                mAllHistories.addAll(mPoundHistories);
             }
         }
+
+        mAllHistories.addAll(mUSDHistories);
+        mAllHistories.addAll(mEuroHistories);
+        mAllHistories.addAll(mPoundHistories);
 
         Collections.sort(mAllHistories, new Comparator<History>() {
             @Override
@@ -180,8 +182,8 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
     }
 
     @Override
-    public void onHistoryClick(History history, int postion) {
-
+    public void onHistoryClick(History history, int position) {
+        mActivity.addFragment(PaymentDetailsFragment.newInstance(history), false);
     }
 
     enum Currency {

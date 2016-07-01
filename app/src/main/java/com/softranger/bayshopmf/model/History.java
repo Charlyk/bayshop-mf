@@ -13,6 +13,7 @@ public class History implements Parcelable {
     private double mSumm;
     private double mTotalAmmount;
     private String mTransactionId;
+    private String mCurrency;
 
     private History() {
 
@@ -24,6 +25,7 @@ public class History implements Parcelable {
         mSumm = in.readDouble();
         mTotalAmmount = in.readDouble();
         mTransactionId = in.readString();
+        mCurrency = in.readString();
     }
 
     public static final Creator<History> CREATOR = new Creator<History>() {
@@ -86,6 +88,14 @@ public class History implements Parcelable {
         mTransactionId = transactionId;
     }
 
+    public String getCurrency() {
+        return mCurrency;
+    }
+
+    public void setCurrency(String currency) {
+        mCurrency = currency;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -107,6 +117,7 @@ public class History implements Parcelable {
         private double mSumm;
         private double mTotalAmmount;
         private String mTransactionId;
+        private String mCurrency;
 
         public Builder paymentType(String paymentType) {
             switch (paymentType) {
@@ -145,6 +156,11 @@ public class History implements Parcelable {
             return this;
         }
 
+        public Builder currency(String currency) {
+            mCurrency = currency;
+            return this;
+        }
+
         public History build() {
             History history = new History();
             history.mPaymentType = this.mPaymentType;
@@ -153,6 +169,7 @@ public class History implements Parcelable {
             history.mSumm = this.mSumm;
             history.mTotalAmmount = this.mTotalAmmount;
             history.mTransactionId = this.mTransactionId;
+            history.mCurrency = this.mCurrency;
             return history;
         }
     }

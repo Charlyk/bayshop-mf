@@ -64,7 +64,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
         String strDate = FORMAT.format(date);
         holder.mDate.setText(strDate);
-        holder.mSumm.setText(String.valueOf(holder.mHistory.getSumm()));
+        String summ = holder.mHistory.getCurrency() + holder.mHistory.getSumm();
+        holder.mSumm.setText(summ);
         holder.mSumm.setTextColor(getTextColor(holder.mHistory.getPaymentType()));
         holder.mImageView.setImageResource(getTransactionIcon(holder.mHistory.getPaymentType()));
     }
@@ -116,6 +117,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     public interface OnHistoryClickListener {
-        void onHistoryClick(History history, int postion);
+        void onHistoryClick(History history, int position);
     }
 }

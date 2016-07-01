@@ -19,7 +19,18 @@
             android:layout_height="wrap_content"
             android:textColor="@drawable/payment_text_color"
             android:background="@drawable/payment_buttons_bg"
+            android:layout_weight="1"
+            android:text="@string/all"
+            android:button="@null"
             android:checked="true"
+            android:id="@+id/paymentHistoryPeriodAll"/>
+
+        <RadioButton
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/payment_text_color"
+            android:background="@drawable/payment_buttons_bg"
             android:layout_weight="1"
             android:text="@string/today"
             android:button="@null"
@@ -46,17 +57,6 @@
             android:text="@string/last_month"
             android:button="@null"
             android:id="@+id/paymentHistoryPeriodMonth"/>
-
-        <RadioButton
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@drawable/payment_text_color"
-            android:background="@drawable/payment_buttons_bg"
-            android:layout_weight="1"
-            android:text="@string/all"
-            android:button="@null"
-            android:id="@+id/paymentHistoryPeriodAll"/>
     </RadioGroup>
 
     <android.support.v4.widget.SwipeRefreshLayout
