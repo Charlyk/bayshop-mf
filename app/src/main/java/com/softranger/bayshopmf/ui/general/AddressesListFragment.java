@@ -72,8 +72,10 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     public static AddressesListFragment newInstance(InForming inForming) {
         Bundle args = new Bundle();
         args.putParcelable(IN_FORMING_ARG, inForming);
+        args.putBoolean(SHOW_SELECT_ARG, true);
         AddressesListFragment fragment = new AddressesListFragment();
         fragment.setArguments(args);
+
         return fragment;
     }
 
