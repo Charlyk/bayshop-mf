@@ -73,7 +73,8 @@ public class SplashActivity extends AppCompatActivity {
                                         .id(object.getInt("id"))
                                         .name(object.getString("title"))
                                         .build();
-                                if (currentCountryId == country.getId()) countryName = country.getName();
+                                if (currentCountryId == country.getId())
+                                    countryName = country.getName();
                                 countries.add(country);
                             }
                             // build languages array list
@@ -85,7 +86,8 @@ public class SplashActivity extends AppCompatActivity {
                                         .id(Integer.parseInt(key))
                                         .name(jsonLanguages.getString(key))
                                         .build();
-                                if (currentLanguageId == language.getId()) languageName = language.getName();
+                                if (currentLanguageId == language.getId())
+                                    languageName = language.getName();
                                 languages.add(language);
                             }
                             // build country codes
@@ -117,6 +119,58 @@ public class SplashActivity extends AppCompatActivity {
                                     .languages(languages)
                                     .countryCodes(countryCodes)
                                     .build();
+                            ApiClient.getInstance().getRequest(Constants.Api.urlParcelsCounter(), mCounterHandler);
+                        } else {
+                            Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(SplashActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = SplashActivity.this.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+        }
+    };
+
+    private Handler mCounterHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
+                        if (!error) {
+                            JSONObject data = response.getJSONObject("data");
+                            Iterator<String> keys = data.keys();
+                            while (keys.hasNext()) {
+                                String key = keys.next();
+                                Application.counters.put(key, data.getInt(key));
+                            }
                             startActivity(mIntent);
                         } else {
                             Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();

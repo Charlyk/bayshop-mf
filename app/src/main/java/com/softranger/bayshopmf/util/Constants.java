@@ -29,7 +29,8 @@ public class Constants {
     }
 
     public static class ParcelStatus {
-        public static final String IN_STOCK = "in-stock";
+        public static final String AWAITING_ARRIVAL = "waitingMf";
+        public static final String IN_STOCK = "mf";
         public static final String IN_PROCESSING = "processing";
         public static final String LIVE = "live";
         public static final String PACKED = "packed";
@@ -68,6 +69,7 @@ public class Constants {
         private static final String PERSONAL_DATA = "personal-data/";
         private static final String MAIL_OPTIONS = "mail-options/";
         private static final String BALANCE = "balance/";
+        private static final String PARCELS_COUNTER = "parcels-counter/";
 
         /**
          * POST
@@ -85,6 +87,15 @@ public class Constants {
          */
         public static String urlPersonalData() {
             return URL + MEMBER + PERSONAL_DATA;
+        }
+
+        /**
+         * GET
+         * Create an url to obtain all parcels quantity in each status
+         * @return strung url to access get how many parcels are in each status
+         */
+        public static String urlParcelsCounter() {
+            return URL + MEMBER + PARCELS_COUNTER;
         }
 
         /**

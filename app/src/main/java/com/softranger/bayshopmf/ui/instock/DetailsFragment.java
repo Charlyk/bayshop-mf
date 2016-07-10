@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +26,7 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
@@ -233,8 +237,17 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             photos.add(photo);
         }
         mInStockDetailed.setPhotoUrls(photos);
+        mImagesAdapter.addImages(mInStockDetailed.getPhotoUrls());
         showDetails(mRootView, mInStockDetailed);
+        new ImageDownloadThread<>(mInStockDetailed.getPhotoUrls(), mImageDownloadHandler, mActivity).start();
     }
+
+    private Handler mImageDownloadHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            mImagesAdapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     public void onHandleMessageEnd() {

@@ -1,55 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_waitingArrival"
             android:icon="@mipmap/ic_awaiting_arrival"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/awaiting_arrival"/>
         <item
             android:id="@+id/nav_inStock"
             android:checked="true"
             android:icon="@mipmap/in_stock"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/in_stock"/>
         <item
             android:id="@+id/nav_inForming"
             android:icon="@mipmap/ic_in_forming"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/in_forming"/>
         <item
             android:id="@+id/nav_inProcessing"
             android:icon="@mipmap/ic_in_processing"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/in_processing"/>
         <item
             android:id="@+id/nav_awaitingSending"
             android:icon="@mipmap/awaiting_sending"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/awaiting_sending"/>
         <item
             android:id="@+id/nav_heldDueToDebt"
             android:icon="@mipmap/held_due_to_debt"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/held_due_to_debt"/>
         <item
             android:id="@+id/nav_heldByProhibition"
             android:icon="@mipmap/ic_held_prohibition"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/held_by_prohibition"/>
         <item
             android:id="@+id/nav_sent"
             android:icon="@mipmap/sent"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/sent"/>
         <item
             android:id="@+id/nav_heldByCustoms"
             android:icon="@mipmap/held_by_customs"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/held_by_customs"/>
         <item
             android:id="@+id/nav_localDeposit"
             android:icon="@mipmap/local_deposit"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/local_deposit"/>
         <item
             android:id="@+id/nav_takeToDelivery"
             android:icon="@mipmap/take_to_delivery"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/take_to_delivery"/>
         <item
             android:id="@+id/nav_received"
             android:icon="@mipmap/received"
+            app:actionLayout="@layout/nav_counter"
             android:title="@string/received"/>
     </group>
 

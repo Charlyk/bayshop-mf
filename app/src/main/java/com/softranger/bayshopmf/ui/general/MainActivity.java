@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -81,6 +82,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     private ArrayList<FloatingActionButton> mActionButtons;
     public static ArrayList<InStockItem> inStockItems;
     private static String[] permissions;
+    private NavigationView mNavigationView;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -161,9 +163,9 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
         mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View navHeaderView = navigationView.getHeaderView(0);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        View navHeaderView = mNavigationView.getHeaderView(0);
         TextView userNameLabel = (TextView) navHeaderView.findViewById(R.id.navHeaderUserNameLabel);
         TextView userIdLabel = (TextView) navHeaderView.findViewById(R.id.navHeaderUserIdLabel);
         if (Application.user != null) {
@@ -193,6 +195,22 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
         }
+        updateParcelCounters();
+    }
+
+    private void updateParcelCounters() {
+        setMenuCounter(R.id.nav_waitingArrival, Application.getCount(Constants.ParcelStatus.AWAITING_ARRIVAL));
+        setMenuCounter(R.id.nav_inStock, Application.getCount(Constants.ParcelStatus.IN_STOCK));
+        setMenuCounter(R.id.nav_inForming, Application.getCount(Constants.ParcelStatus.LIVE));
+        setMenuCounter(R.id.nav_inProcessing, Application.getCount(Constants.ParcelStatus.IN_PROCESSING));
+        setMenuCounter(R.id.nav_awaitingSending, Application.getCount(Constants.ParcelStatus.PACKED));
+        setMenuCounter(R.id.nav_heldDueToDebt, Application.getCount(Constants.ParcelStatus.DEPT));
+        setMenuCounter(R.id.nav_heldByProhibition, Application.getCount(Constants.ParcelStatus.HELD_BY_PROHIBITION));
+        setMenuCounter(R.id.nav_sent, Application.getCount(Constants.ParcelStatus.SENT));
+        setMenuCounter(R.id.nav_heldByCustoms, Application.getCount(Constants.ParcelStatus.CUSTOMS_HELD));
+        setMenuCounter(R.id.nav_localDeposit, Application.getCount(Constants.ParcelStatus.LOCAL_DEPO));
+        setMenuCounter(R.id.nav_takeToDelivery, Application.getCount(Constants.ParcelStatus.TAKEN_TO_DELIVERY));
+        setMenuCounter(R.id.nav_received, Application.getCount(Constants.ParcelStatus.RECEIVED));
     }
 
     @Override
@@ -308,6 +326,16 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                 }, 300);
             }
         });
+    }
+
+    private void setMenuCounter(@IdRes int itemId, int count) {
+
+        View view = mNavigationView.getMenu().findItem(itemId).getActionView();
+        TextView countLabel = (TextView) view.findViewById(R.id.navCounterTextView);
+        if (count == 0) view.setVisibility(View.GONE);
+        else {
+            countLabel.setText(count > 0 ? String.valueOf(count) : null);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -456,12 +484,13 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     /**
      * Create an alert dialog with BayShop design
-     * @param title which will be shown in the dialog header
-     * @param message will be shown in dialog body
-     * @param imageResource will be shown at the left of title
-     * @param positiveButtonText text for right side button
+     *
+     * @param title                         which will be shown in the dialog header
+     * @param message                       will be shown in dialog body
+     * @param imageResource                 will be shown at the left of title
+     * @param positiveButtonText            text for right side button
      * @param onPositiveButtonClickListener click listener for positive button(can be null)
-     * @param negativeButtonText text for left side button
+     * @param negativeButtonText            text for left side button
      * @param onNegativeButtonClickListener click listener for negative button(can be null)
      * @return an Alert Dialog with specified data to be shown on the screen
      */
@@ -567,13 +596,14 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     public interface OnEditDialogClickListener {
         void onPositiveClick(String newInput);
+
         void onNegativeClick();
     }
 
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

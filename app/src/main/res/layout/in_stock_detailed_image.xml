@@ -12,6 +12,6 @@
         android:maxHeight="200dp"
         android:maxWidth="200dp"
         android:src="@drawable/computer_mac_image"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:id="@+id/productImageListItem"/>
 </LinearLayout>
