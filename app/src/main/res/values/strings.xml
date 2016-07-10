@@ -241,4 +241,6 @@
     <string name="waiting_delivery">Waiting delivery:</string>
     <string name="signature_of_geolocation">Signature of geolocation</string>
     <string name="received_date">Received date:</string>
+    <string name="overweight">Overweight</string>
+    <string name="overweight_message">Sorry but we can not deliver a parcel with a weight greater than 31kg. Please remove one package to continue.</string>
 </resources>

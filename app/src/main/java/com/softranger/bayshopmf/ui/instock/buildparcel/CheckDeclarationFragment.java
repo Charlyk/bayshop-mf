@@ -219,8 +219,7 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
 
         String declaration = data.getString("declaration");
         if (declaration != null && !declaration.equals("null")) {
-            JSONObject jsonDeclaration = new JSONObject(declaration);
-            mInForming.setGeneralDescription(jsonDeclaration.getString("name"));
+            mInForming.setGeneralDescription(declaration);
         }
 
         JSONArray jsonDec = data.getJSONArray("declarationItems");

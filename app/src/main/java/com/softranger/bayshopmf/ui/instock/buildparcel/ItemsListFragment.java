@@ -60,6 +60,7 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
     private InForming mInForming;
     private String mCurrency;
     private AlertDialog mBatteryDialog;
+    private AlertDialog mWeightAlert;
 
     public ItemsListFragment() {
         // Required empty public constructor
@@ -139,22 +140,47 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
 
     private double getTotalWeight(ArrayList<InStockItem> inStockItems) {
         int totalWeight = 0;
-        for (InStockItem item : inStockItems) {
-            totalWeight += item.getWeight();
+        if (inStockItems != null) {
+            for (InStockItem item : inStockItems) {
+                totalWeight += item.getWeight();
+            }
         }
-        return ((double) totalWeight / 1000);
+        if (totalWeight > 0) {
+            return ((double) totalWeight / 1000);
+        } else {
+            return 0;
+        }
     }
 
     private float getTotalPrice(ArrayList<InStockItem> inStockItems) {
         int totalPrice = 0;
-        for (InStockItem item : inStockItems) {
-            totalPrice += item.getPrice();
+        if (inStockItems != null) {
+            for (InStockItem item : inStockItems) {
+                totalPrice += item.getPrice();
+            }
         }
-        return totalPrice;
+        if (totalPrice > 0) {
+            return totalPrice;
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public void onClick(View v) {
+        if (getTotalWeight(mInParcelItems) > 31.0) {
+            mWeightAlert = mActivity.getDialog(getString(R.string.overweight), getString(R.string.overweight_message), R.mipmap.ic_weight_48dp,
+                    getString(R.string.ok), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mWeightAlert.dismiss();
+                        }
+                    }, null, null);
+            mWeightAlert.show();
+            return;
+        }
+
+
         mBatteryDialog = mActivity.getDialog(getString(R.string.li_ion), getString(R.string.has_li_ion_battery),
                 R.mipmap.ic_battery_empty_24dp, getString(R.string.yes), new View.OnClickListener() {
                     @Override
@@ -235,6 +261,7 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
     }
 
     private void deleteItem(InStockItem inStockItem) {
+        updateTotals(mAdapter.getList());
         ApiClient.getInstance().delete(Constants.Api.urlDeleteBoxFromParcel(String.valueOf(mInForming.getId()),
                 String.valueOf(inStockItem.getID())), mActivity.mDeleteHandler);
     }

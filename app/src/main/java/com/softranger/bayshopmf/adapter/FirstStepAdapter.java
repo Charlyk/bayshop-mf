@@ -38,6 +38,10 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
         return item;
     }
 
+    public ArrayList<InStockItem> getList() {
+        return mInStockItems;
+    }
+
     public void insertItem(int position, InStockItem inStockItem) {
         mInStockItems.add(position, inStockItem);
         notifyItemInserted(position);
