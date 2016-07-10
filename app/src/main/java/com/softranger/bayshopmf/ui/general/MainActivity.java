@@ -232,6 +232,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             addFragment(ItemsListFragment.newInstance(inStockItems, true, null, inStockItems.get(0).getDeposit()), false);
             mActionMenu.collapse();
         }
+        int count = Application.counters.get(Constants.ParcelStatus.IN_STOCK);
+        count = count - inStockItems.size();
+        Application.counters.put(Constants.ParcelStatus.IN_STOCK, count);
+        updateParcelCounters();
     }
 
     public void removeActionButtons() {
@@ -630,6 +634,11 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                             refreshIntent.putExtra("deposit", "us"); // TODO: 6/27/16 set with the actual selected storage
                             sendBroadcast(refreshIntent);
                             sendBroadcast(deleteIntent);
+
+                            int count = Application.counters.get(Constants.ParcelStatus.IN_STOCK);
+                            count += 1;
+                            Application.counters.put(Constants.ParcelStatus.IN_STOCK, count);
+                            updateParcelCounters();
                         } else {
                             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                         }
