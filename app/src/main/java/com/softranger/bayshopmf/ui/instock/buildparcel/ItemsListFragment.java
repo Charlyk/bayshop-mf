@@ -235,11 +235,13 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
     @Override
     public void onDeleteClick(InStockItem inStockItem, final int position) {
         final InStockItem item = mAdapter.removeItem(position);
+        updateTotals(mAdapter.getList());
         Snackbar.make(mRecyclerView, mActivity.getString(R.string.item_deleted), Snackbar.LENGTH_SHORT)
                 .setAction(mActivity.getString(R.string.undo), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mAdapter.insertItem(position, item);
+                        updateTotals(mAdapter.getList());
                     }
                 }).setActionTextColor(mActivity.getResources()
                 .getColor(R.color.colorGreenAction))
@@ -261,7 +263,6 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
     }
 
     private void deleteItem(InStockItem inStockItem) {
-        updateTotals(mAdapter.getList());
         ApiClient.getInstance().delete(Constants.Api.urlDeleteBoxFromParcel(String.valueOf(mInForming.getId()),
                 String.valueOf(inStockItem.getID())), mActivity.mDeleteHandler);
     }
