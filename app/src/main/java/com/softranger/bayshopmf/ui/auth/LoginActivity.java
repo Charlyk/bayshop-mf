@@ -178,8 +178,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Application.getInstance().setLoginStatus(true);
                             Application.getInstance().setAuthToken(Application.currentToken);
                             ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
-//                            LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                            finish();
                         } else {
                             message = response.optString("message", getString(R.string.unknown_error));
                             Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -291,9 +289,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                            mLoginFragment.hideLoading();
                         }
                     } catch (Exception e) {
                         Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        mLoginFragment.hideLoading();
                     }
                     break;
                 }
@@ -307,6 +307,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         message = exception.getMessage();
                     }
                     Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    mLoginFragment.hideLoading();
                     break;
                 }
                 case Constants.ApiResponse.RESPONSE_ERROR: {
@@ -318,10 +319,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         message = exception.getMessage();
                     }
                     Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    mLoginFragment.hideLoading();
                     break;
                 }
             }
-            mLoginFragment.hideLoading();
+
         }
     };
 

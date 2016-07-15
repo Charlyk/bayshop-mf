@@ -9,6 +9,7 @@
         android:id="@+id/details_tracking_titleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         android:text="@string/tracking"/>
 
     <TextView
@@ -16,55 +17,85 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:textSize="18sp"
         tools:text="12312413412312"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"/>
+        android:textColor="@android:color/black"/>
 
-    <TextView
-        android:id="@+id/details_date_titleLabel"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/date"/>
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/details_date_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        tools:text="23.01.2016 until 23.02.2016"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/details_weight_titleLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/weight"/>
+            <TextView
+                android:id="@+id/details_date_titleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/date"/>
 
-    <TextView
-        android:id="@+id/details_weight_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        tools:text="0.05 kg."
-        android:textColor="@android:color/black"
-        android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/details_date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                tools:text="23.01.2016"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/details_price_titleLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/price"/>
+            <TextView
+                android:id="@+id/details_price_titleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/price"/>
 
-    <TextView
-        android:id="@+id/details_price_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        tools:text="$ 25"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/details_price_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                tools:text="$ 25"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/details_weight_titleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/weight"/>
+
+            <TextView
+                android:id="@+id/details_weight_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginTop="5dp"
+                tools:text="0.05 kg."
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

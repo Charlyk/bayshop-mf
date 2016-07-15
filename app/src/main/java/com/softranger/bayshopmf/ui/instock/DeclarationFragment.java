@@ -67,6 +67,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         mDeclarationAdapter = new DeclarationListAdapter(mInStockDetailed);
         mDeclarationAdapter.setOnActionButtonsClickListener(this);
         mRecyclerView.setAdapter(mDeclarationAdapter);
+        mActivity.toggleLoadingProgress(true);
         ApiClient.getInstance().getRequest(Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
         return view;
     }
@@ -163,5 +164,10 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         }
 
         isSaveClicked = false;
+    }
+
+    @Override
+    public void finallyMethod() {
+        mActivity.toggleLoadingProgress(false);
     }
 }

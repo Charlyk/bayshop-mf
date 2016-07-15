@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -240,6 +241,8 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
             mActivity.removeActionButtons();
             mActivity.mActionMenu.setVisibility(View.VISIBLE);
             mActivity.setToolbarToInitialState();
+            Application.counters.put(Constants.ParcelStatus.LIVE, Application.counters.get(Constants.ParcelStatus.LIVE) - 1);
+            mActivity.updateParcelCounters(Constants.ParcelStatus.LIVE);
         } else {
             JSONObject data = response.getJSONObject("data");
             mInForming.setGoodsPrice(data.getDouble("totalPriceBoxes"));

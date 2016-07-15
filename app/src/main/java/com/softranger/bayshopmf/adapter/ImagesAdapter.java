@@ -53,6 +53,12 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
         downloadImages();
     }
 
+    public void refreshList(ArrayList<Photo> photos) {
+        mImages.clear();
+        mImages.addAll(photos);
+        notifyDataSetChanged();
+        downloadImages();
+    }
     public void addImages(ArrayList<Photo> photos) {
         mImages.addAll(photos);
         notifyDataSetChanged();

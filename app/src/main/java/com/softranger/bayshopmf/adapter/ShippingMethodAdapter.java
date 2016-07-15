@@ -63,8 +63,14 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             itemHolder.mShippingMethod.setText(itemHolder.mShippingMethodObj.getName());
             String price = itemHolder.mShippingMethodObj.getCurrency() + itemHolder.mShippingMethodObj.getCalculatedPrice();
             itemHolder.mMethodPrice.setText(price);
-            String description = Html.fromHtml(itemHolder.mShippingMethodObj.getDescription()).toString();
-            itemHolder.mDescription.setText(description);
+            String html = itemHolder.mShippingMethodObj.getDescription();
+            html = html.replaceAll("<(.*?)\\>"," ");//Removes all items in brackets
+            html = html.replaceAll("<(.*?)\\\n"," ");//Must be undeneath
+            html = html.replaceFirst("(.*?)\\>", " ");//Removes any connected item to the last bracket
+            html = html.replaceAll("&nbsp;"," ");
+            html = html.replaceAll("&amp;"," ");
+//            String description = Html.fromHtml(itemHolder.mShippingMethodObj.getDescription()).toString();
+            itemHolder.mDescription.setText(html);
         }
     }
 

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,9 +44,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     public static final String ACTION_UPDATE = "update data";
 
     private TextView mProductId, mProductName, mProductTracking, mProductDate, mProductPrice, mPhotoState;
-    private Button mGoToUrl, mEditDetails, mDeleteProduct, mCheckProduct, mAdditionalPhoto;
+    private Button mGoToUrl, mEditDetails, mCheckProduct, mAdditionalPhoto;
     private ImageView mStorageIcon, mPhotoPreview;
-
     private MainActivity mActivity;
     private Product mProduct;
     private View mRootView;
@@ -78,7 +78,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mProduct = getArguments().getParcelable(PRODUCT_ARG);
         bindViews(mRootView);
-        mActivity.setToolbarTitle(mProduct.getProductId(), true);
         mProductId.setText(mProduct.getProductId());
         mProductName.setText(mProduct.getProductName());
         mProductTracking.setText(mProduct.getTrackingNumber());
@@ -177,8 +176,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         mEditDetails = (Button) view.findViewById(R.id.awaitingDetailsEditButton);
         mEditDetails.setOnClickListener(this);
 
-        mDeleteProduct = (Button) view.findViewById(R.id.awaitingDetailsDeleteButton);
-        mDeleteProduct.setOnClickListener(this);
+        ImageButton deleteProduct = (ImageButton) view.findViewById(R.id.awaitingDetailsDeleteButton);
+        deleteProduct.setOnClickListener(this);
 
         mCheckProduct = (Button) view.findViewById(R.id.awaitingDetailsCheckProductBtn);
         mCheckProduct.setOnClickListener(this);
@@ -252,7 +251,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
         if (isDeleteClicked) {
-            mActivity.toggleLoadingProgress(false);
+            mActivity.toggleLoadingProgress(true);
             Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
             intent.putExtra("deposit", mProduct.getDeposit());
             mActivity.sendBroadcast(intent);

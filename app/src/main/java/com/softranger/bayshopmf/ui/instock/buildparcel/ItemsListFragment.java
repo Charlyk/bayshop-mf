@@ -246,14 +246,12 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
                     mActivity.setToolbarTitle(getString(R.string.list_items), true);
                     break;
                 case MainActivity.ACTION_ITEM_DELETED:
-                    boolean hasParcels = intent.getExtras().getBoolean("hasMoreItems");
-                    if (!hasParcels) {
-                        mActivity.onBackPressed();
-                    } else if (removedPos > -1) {
-                        mAdapter.removeItem(removedPos);
-                        removedPos = -1;
-                        updateTotals(mInParcelItems);
-                    }
+//                    boolean hasParcels = intent.getExtras().getBoolean("hasMoreItems");
+//                    if (removedPos > -1) {
+//                        mAdapter.removeItem(removedPos);
+//                        removedPos = -1;
+//                        updateTotals(mInParcelItems);
+//                    }
                     break;
             }
         }
@@ -274,30 +272,36 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
     public void onDeleteClick(InStockItem inStockItem, final int position) {
         final InStockItem item = mAdapter.removeItem(position);
         updateTotals(mAdapter.getList());
-        Snackbar.make(mRecyclerView, mActivity.getString(R.string.item_deleted), Snackbar.LENGTH_SHORT)
-                .setAction(mActivity.getString(R.string.undo), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAdapter.insertItem(position, item);
-                        updateTotals(mAdapter.getList());
-                    }
-                }).setActionTextColor(mActivity.getResources()
-                .getColor(R.color.colorGreenAction))
-                // add a callback to know when the Snackbar goes away
-                .setCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        // check the event status and delete schedule from server if
-                        // the Snackbar was not dismissed by "Undo" button click
-                        switch (event) {
-                            case DISMISS_EVENT_TIMEOUT:
-                            case DISMISS_EVENT_CONSECUTIVE:
-                            case DISMISS_EVENT_MANUAL:
-                                deleteItem(item);
-                                break;
+        if (mAdapter.getItemCount() > 0) {
+            Snackbar.make(mRecyclerView, mActivity.getString(R.string.item_deleted), Snackbar.LENGTH_SHORT)
+                    .setAction(mActivity.getString(R.string.undo), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mAdapter.insertItem(position, item);
+                            updateTotals(mAdapter.getList());
                         }
-                    }
-                }).show();
+                    }).setActionTextColor(mActivity.getResources()
+                    .getColor(R.color.colorGreenAction))
+                    // add a callback to know when the Snackbar goes away
+                    .setCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar snackbar, int event) {
+                            // check the event status and delete schedule from server if
+                            // the Snackbar was not dismissed by "Undo" button click
+                            switch (event) {
+                                case DISMISS_EVENT_TIMEOUT:
+                                case DISMISS_EVENT_CONSECUTIVE:
+                                case DISMISS_EVENT_MANUAL:
+                                    deleteItem(item);
+                                    break;
+                            }
+                        }
+                    }).show();
+        } else {
+            deleteItem(item);
+            mActivity.toggleLoadingProgress(true);
+            mActivity.onBackPressed();
+        }
     }
 
     /**

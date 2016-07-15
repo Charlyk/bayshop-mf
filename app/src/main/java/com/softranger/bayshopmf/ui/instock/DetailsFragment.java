@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -130,18 +131,22 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     };
 
     private void showDetails(final View view, final InStockDetailed detailed) {
+        // fill text views
+        final TextView tracking = (TextView) view.findViewById(R.id.details_tracking_label);
+        final TextView date = (TextView) view.findViewById(R.id.details_date_label);
+        final TextView weight = (TextView) view.findViewById(R.id.details_weight_label);
+        final TextView price = (TextView) view.findViewById(R.id.details_price_label);
+
+        final TextView uid = (TextView) view.findViewById(R.id.inStockDetailsItemId);
+        final TextView description = (TextView) view.findViewById(R.id.inStockDetailsProductName);
+        final ImageView storage = (ImageView) view.findViewById(R.id.inStockDetailsStorageIcon);
+
+        final SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        final SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
+
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // fill text views
-                TextView tracking = (TextView) view.findViewById(R.id.details_tracking_label);
-                TextView date = (TextView) view.findViewById(R.id.details_date_label);
-                TextView weight = (TextView) view.findViewById(R.id.details_weight_label);
-                TextView price = (TextView) view.findViewById(R.id.details_price_label);
-
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
-
                 Date createdDate;
                 String strDate = "";
                 try {
@@ -150,6 +155,10 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                uid.setText(detailed.getParcelId());
+                description.setText(detailed.getDescription());
+                storage.setImageResource(getStorageIcon(detailed.getDeposit()));
 
                 tracking.setText(detailed.getTrackingNumber());
                 date.setText(strDate);
@@ -180,6 +189,18 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                 mAdditionalPhoto.setOnClickListener(DetailsFragment.this);
             }
         });
+    }
+
+    private int getStorageIcon(String storage) {
+        switch (storage) {
+            case Constants.US:
+                return R.mipmap.ic_usa_flag;
+            case Constants.GB:
+                return R.mipmap.ic_uk_flag;
+            case Constants.DE:
+                return R.mipmap.ic_de_flag;
+        }
+        return R.mipmap.ic_usa_flag;
     }
 
     @Override
@@ -222,11 +243,11 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         JSONObject data = response.getJSONObject("data");
         mInStockDetailed = (InStockDetailed) new InStockDetailed.Builder()
                 .date(data.getString("createdDate"))
-                .price(data.getString("price"))
+                .price(data.getDouble("price"))
                 .photoInProgress(data.getInt("photosInProgress"))
                 .checkInProgress(data.getBoolean("checkProductInProgress") ? 1 : 0)
                 .curency(data.getString("currency"))
-                .weight(data.getString("weight"))
+                .weight(data.getDouble("weight"))
                 .deposit(mInStockItem.getDeposit())
                 .trackingNumber(data.getString("trackingNumber"))
                 .hasDeclaration(data.getBoolean("declarationFilled"))
@@ -243,8 +264,10 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                     .build();
             photos.add(photo);
         }
+
         mInStockDetailed.setPhotoUrls(photos);
-        mImagesAdapter.addImages(mInStockDetailed.getPhotoUrls());
+
+        mImagesAdapter.refreshList(mInStockDetailed.getPhotoUrls());
         showDetails(mRootView, mInStockDetailed);
         new ImageDownloadThread<>(mInStockDetailed.getPhotoUrls(), mImageDownloadHandler, mActivity).start();
     }

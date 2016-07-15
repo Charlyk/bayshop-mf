@@ -14,8 +14,6 @@ public class InStockDetailed extends InStockItem {
     private ArrayList<Photo> mPhotoUrls;
     private ArrayList<Product> mProducts;
     private String mDate;
-    private String mWeight;
-    private String mPrice;
     private String mDescription;
     private String mCurency;
     private int mPhotoInProgress;
@@ -29,8 +27,6 @@ public class InStockDetailed extends InStockItem {
         super(in);
         in.readList(mPhotoUrls, Photo.class.getClassLoader());
         mDate = in.readString();
-        mWeight = in.readString();
-        mPrice = in.readString();
         mDescription = in.readString();
         mCurency = in.readString();
         mPhotoInProgress = in.readInt();
@@ -64,22 +60,6 @@ public class InStockDetailed extends InStockItem {
 
     public void setDate(String date) {
         mDate = date;
-    }
-
-    public String getDetailedWeight() {
-        return mWeight;
-    }
-
-    public void setDetailedWeight(String weight) {
-        mWeight = weight;
-    }
-
-    public String getPriceDetailed() {
-        return String.valueOf(mPrice);
-    }
-
-    public void setPrice(String price) {
-        mPrice = price;
     }
 
     public void setDescription(String description) {
@@ -127,8 +107,6 @@ public class InStockDetailed extends InStockItem {
         super.writeToParcel(parcel, i);
         parcel.writeList(mPhotoUrls);
         parcel.writeString(mDate);
-        parcel.writeString(mWeight);
-        parcel.writeString(mPrice);
         parcel.writeString(mDescription);
         parcel.writeString(mCurency);
         parcel.writeInt(mPhotoInProgress);
@@ -139,8 +117,6 @@ public class InStockDetailed extends InStockItem {
     public static class Builder extends InStockItem.Builder {
         private ArrayList<Photo> mPhotoUrls;
         private String mDate;
-        private String mWeight;
-        private String mPrice;
         private String mCurency;
         private int mPhotoInProgress;
         private int mCheckInProgress;
@@ -156,12 +132,7 @@ public class InStockDetailed extends InStockItem {
             return this;
         }
 
-        public Builder weight(String weight) {
-            mWeight = weight;
-            return this;
-        }
-
-        public Builder price(String price) {
+        public Builder price(double price) {
             mPrice = price;
             return this;
         }
@@ -188,19 +159,20 @@ public class InStockDetailed extends InStockItem {
 
         public InStockDetailed build() {
             InStockDetailed itemDetailed = new InStockDetailed();
-            itemDetailed.setPhotoUrls(mPhotoUrls);
-            itemDetailed.setDate(mDate);
-            itemDetailed.setPrice(mPrice);
-            itemDetailed.setDetailedWeight(mWeight);
-            itemDetailed.setTrackingNumber(mTrackingNumber);
-            itemDetailed.setName(mName);
-            itemDetailed.setDeposit(mDeposit);
-            itemDetailed.setCurency(mCurency);
-            itemDetailed.setHasDeclaration(hasDeclaration);
-            itemDetailed.setPhotoInProgress(mPhotoInProgress);
-            itemDetailed.setCheckInProgress(mCheckInProgress);
-            itemDetailed.setProducts(mProducts);
-            itemDetailed.setID(mID);
+            itemDetailed.setPhotoUrls(this.mPhotoUrls);
+            itemDetailed.setDate(this.mDate);
+            itemDetailed.setPrice(this.mPrice);
+            itemDetailed.setTrackingNumber(this.mTrackingNumber);
+            itemDetailed.setName(this.mName);
+            itemDetailed.setDeposit(this.mDeposit);
+            itemDetailed.setParcelId(this.mParcelId);
+            itemDetailed.setCurency(this.mCurency);
+            itemDetailed.setHasDeclaration(this.hasDeclaration);
+            itemDetailed.setPhotoInProgress(this.mPhotoInProgress);
+            itemDetailed.setCheckInProgress(this.mCheckInProgress);
+            itemDetailed.setProducts(this.mProducts);
+            itemDetailed.setID(this.mID);
+            itemDetailed.setWeight(mWeight);
             return itemDetailed;
         }
     }

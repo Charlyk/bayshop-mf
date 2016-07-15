@@ -43,6 +43,7 @@ import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.general.AddressesListFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.ui.pus.ToDeliveryDetails;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
@@ -241,6 +242,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                                     .build();
                             mObjects.add(inForming);
                         }
+                        int count = arrayData.length();
+                        Application.counters.put(Constants.ParcelStatus.LIVE, count);
+                        mActivity.updateParcelCounters(Constants.ParcelStatus.LIVE);
                         if (mObjects.size() == 0) mActivity.removeActionButtons();
                         break;
                     }
@@ -340,7 +344,6 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     @Override
     public void onRowClick(final InStockItem inStockItem, int position) {
         mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
-        mActivity.setToolbarTitle(inStockItem.getName(), true);
     }
 
     /**
@@ -352,7 +355,6 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     public void onNoDeclarationItemSelected(final InStockItem inStockItem, int position) {
         mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
         Toast.makeText(mActivity, getString(R.string.fill_in_the_declaration), Toast.LENGTH_SHORT).show();
-        mActivity.setToolbarTitle(inStockItem.getName(), true);
     }
 
     /**

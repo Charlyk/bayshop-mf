@@ -11,7 +11,7 @@ public class InStockItem implements Parcelable {
     protected boolean isSelected;
     protected boolean hasDeclaration;
     protected double mPrice;
-    protected int mWeight;
+    protected double mWeight;
     protected String mName;
     protected String mTrackingNumber;
     protected String mDeposit;
@@ -119,11 +119,11 @@ public class InStockItem implements Parcelable {
         mCurrency = currency;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return mWeight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         mWeight = weight;
     }
 
@@ -155,7 +155,7 @@ public class InStockItem implements Parcelable {
         protected int mID;
         protected double mPrice;
         protected String mCurrency;
-        protected int mWeight;
+        protected double mWeight;
 
         public Builder isSelected(boolean isSelected) {
             this.isSelected = isSelected;
@@ -202,7 +202,7 @@ public class InStockItem implements Parcelable {
             return this;
         }
 
-        public Builder weight(int weight) {
+        public Builder weight(double weight) {
             mWeight = weight;
             return this;
         }

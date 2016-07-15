@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_selected="true"
-          android:drawable="@mipmap/processing"/>
-    <item android:drawable="@mipmap/photo_passive"/>
+          android:drawable="@mipmap/ic_processing_30dp"/>
+    <item android:drawable="@mipmap/ic_photo_30dp"/>
 </selector>
