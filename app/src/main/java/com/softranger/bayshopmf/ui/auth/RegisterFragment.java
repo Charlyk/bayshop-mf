@@ -20,10 +20,12 @@ import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -32,7 +34,7 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends Fragment implements View.OnClickListener {
+public class RegisterFragment extends ParentFragment implements View.OnClickListener {
 
     private LoginActivity mActivity;
 
@@ -47,6 +49,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     private String mEmail;
     private String mPassword;
+
+    private static RequestStep requestStep;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -81,8 +85,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }
 
         String lastName = String.valueOf(mLastNameInput.getText());
-        if (lastName.equals("") || lastName.length() < 5) {
-            mLastNameInput.setError(mActivity.getString(R.string.enter_phone_number));
+        if (lastName.equals("")) {
+            mLastNameInput.setError(mActivity.getString(R.string.enter_last_name));
             return;
         }
 
@@ -107,122 +111,55 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         mConfirmButton.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
 
+        mEmail = email;
+        mPassword = password;
+
         RequestBody body = new FormBody.Builder()
                 .add("email", email)
                 .add("first_name", firstName)
                 .add("last_name", lastName)
                 .add("password", password)
                 .build();
-        ApiClient.getInstance().postRequest(body, Constants.Api.urlRegister(), mRegisterHandler);
+        requestStep = RequestStep.REGISTER;
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlRegister(), mHandler);
     }
 
-    public Handler mRegisterHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message");
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            ApiClient.getInstance().logIn(mEmail, mPassword, mAuthHandler);
-                        } else {
-                            mConfirmButton.setVisibility(View.VISIBLE);
-                            mProgressBar.setVisibility(View.GONE);
-                            Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        mConfirmButton.setVisibility(View.VISIBLE);
-                        mProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        switch (requestStep) {
+            case REGISTER:
+                requestStep = RequestStep.LOGIN;
+                ApiClient.getInstance().logIn(mEmail, mPassword, mHandler);
+                break;
+            case LOGIN: {
+                JSONObject data = response.getJSONObject("data");
+                Application.currentToken = data.optString("access_token");
+                Application.getInstance().setLoginStatus(true);
+                Application.getInstance().setAuthToken(Application.currentToken);
+                ApiClient.getInstance().getRequest(Constants.Api.urlParcelsCounter(), mHandler);
+                break;
+            }
+            case COUNTERS: {
+                JSONObject data = response.getJSONObject("data");
+                Iterator<String> keys = data.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    Application.counters.put(key, data.getInt(key));
                 }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    mConfirmButton.setVisibility(View.VISIBLE);
-                    mProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    mConfirmButton.setVisibility(View.VISIBLE);
-                    mProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
+                mActivity.startActivity(new Intent(mActivity, MainActivity.class));
+                mActivity.finish();
+                break;
             }
         }
-    };
+    }
 
-    private Handler mAuthHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            Application.currentToken = data.optString("access_token");
-                            Application.getInstance().setLoginStatus(true);
-                            Application.getInstance().setAuthToken(Application.currentToken);
-                            mActivity.startActivity(new Intent(mActivity, MainActivity.class));
-                            mActivity.finish();
-                        } else {
-                            message = response.optString("message", getString(R.string.unknown_error));
-                            Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mConfirmButton.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.GONE);
-        }
-    };
+    @Override
+    public void finallyMethod() {
+        mConfirmButton.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    enum RequestStep {
+        REGISTER, LOGIN, COUNTERS
+    }
 }

@@ -46,7 +46,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mContext = context;
         mInStockItems = new ArrayList<>();
         input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        output = new SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault());
+        output = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -145,7 +145,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             // set name id and date in position
             processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
-            processingHolder.mProductName.setText(processingHolder.mProduct.getName());
+            String name = processingHolder.mProduct.getName();
+            if (name == null || name.equals("") || name.equals("null")) {
+                processingHolder.mProductName.setText(mContext.getString(R.string.no_description));
+                processingHolder.mProductName.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+            } else {
+                processingHolder.mProductName.setText(processingHolder.mProduct.getName());
+                processingHolder.mProductName.setTextColor(mContext.getResources().getColor(android.R.color.black));
+            }
             processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreated()));
 
             // compute kilos from grams and set the result in weight label
@@ -158,7 +165,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (processingHolder.mProduct.getName() == null || processingHolder.mProduct.getName().equals("null"))
                 processingHolder.mProduct.setName("");
             processingHolder.mParcelId.setText(processingHolder.mProduct.getCodeNumber());
-            processingHolder.mProductName.setText(processingHolder.mProduct.getName());
+            String name = processingHolder.mProduct.getName();
+            if (name == null || name.equals("") || name.equals("null")) {
+                processingHolder.mProductName.setText(mContext.getString(R.string.no_description));
+                processingHolder.mProductName.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+            } else {
+                processingHolder.mProductName.setText(processingHolder.mProduct.getName());
+                processingHolder.mProductName.setTextColor(mContext.getResources().getColor(android.R.color.black));
+            }
             processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreatedDate()));
             double kg = processingHolder.mProduct.getWeight() / 1000;
             processingHolder.mWeight.setText(kg + "kg.");

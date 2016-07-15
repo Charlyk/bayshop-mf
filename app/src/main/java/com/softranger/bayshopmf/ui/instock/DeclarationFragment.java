@@ -104,6 +104,11 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         ApiClient.getInstance().postRequest(body, Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
     }
 
+    @Override
+    public void onDeleteClick(int position) {
+        mActivity.hideKeyboard();
+    }
+
     private JSONArray buildProductsArray(ArrayList<Product> products) {
         JSONArray productsArray = new JSONArray();
         try {
@@ -134,8 +139,10 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     public void onServerResponse(JSONObject response) throws Exception {
         if (isSaveClicked) {
             Intent update = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+            update.putExtra("deposit", mInStockDetailed.getDeposit());
             mActivity.sendBroadcast(update);
             mActivity.onBackPressed();
+            mActivity.hideKeyboard();
             Snackbar.make(mRecyclerView, getString(R.string.declaration_saved), Snackbar.LENGTH_SHORT).show();
         } else {
             JSONObject data = response.getJSONObject("data");

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
@@ -228,6 +229,10 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
                                 String.valueOf(product.getID())), mHandler);
                         mActivity.toggleLoadingProgress(true);
                         dialog.dismiss();
+                        int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                        count -= 1;
+                        Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
+                        mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
                     }
                 }, "No", new View.OnClickListener() {
                     @Override

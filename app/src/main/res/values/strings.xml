@@ -84,7 +84,7 @@
     <string name="add_awaiting_alert">It\'s important to enter the tracking number, there is no use in parcel processing without it. That\'s alright if you don\'t know the tracking number, your parcel won\'t be lost.</string>
     <string name="add_awaiting_package">Add awaiting package</string>
     <string name="enter_valid_email">Please specify a valid email address</string>
-    <string name="enter_valid_password">Please enter your password</string>
+    <string name="enter_valid_password">Please enter a 6 digits password</string>
     <string name="unknown_error">Something went wrong</string>
     <string name="three_services">Remember that we have three awesome services for each parcel you are going to receive</string>
     <string name="you_can_combine_several_parcels_in_one">You can combine several parcels in one</string>
@@ -190,9 +190,9 @@
     <string name="confirm_password">Confirm password</string>
     <string name="please_repeat_your_password">Please repeat your password</string>
     <string name="register">Register</string>
-    <string name="passwords_does_not_match">Passwords does\'t match</string>
+    <string name="passwords_does_not_match">Passwords did\'t match</string>
     <string name="forgot_your_password">Forgot your password?</string>
-    <string name="restore_explain">Enter your email address and we will send a link to restor your password.</string>
+    <string name="restore_explain">Enter your email address and we will send a link to restore your password.</string>
     <string name="restore">Restore</string>
     <string name="restore_password">Restore password</string>
     <string name="email_has_been_sent">Email has been sent.</string>
@@ -243,4 +243,8 @@
     <string name="received_date">Received date:</string>
     <string name="overweight">Overweight</string>
     <string name="overweight_message">Sorry but we can not deliver a parcel with a weight greater than 31kg. Please remove one package to continue.</string>
+    <string name="no_description">Description not filled.</string>
+    <string name="_0">0</string>
+    <string name="_0_0">0.0</string>
+    <string name="_12345678901234567890">12345678901234567890</string>
 </resources>

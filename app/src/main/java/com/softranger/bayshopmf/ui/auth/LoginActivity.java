@@ -33,6 +33,7 @@ import com.softranger.bayshopmf.util.FacebookAuth.OnLoginDataReadyListener;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -230,6 +231,62 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Application.user.setPhoneCode(data.getString("phoneCode"));
                             Application.user.setPhoneNumber(data.getString("phone"));
                             Application.user.setLanguageId(data.getInt("languageId"));
+                            ApiClient.getInstance().getRequest(Constants.Api.urlParcelsCounter(), mCounterHandler);
+                        } else {
+                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                            mLoginFragment.hideLoading();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        mLoginFragment.hideLoading();
+                    }
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_FAILED: {
+                    String message = getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        Response response = (Response) msg.obj;
+                        message = response.message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (Exception) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    mLoginFragment.hideLoading();
+                    break;
+                }
+                case Constants.ApiResponse.RESPONSE_ERROR: {
+                    String message = LoginActivity.this.getString(R.string.unknown_error);
+                    if (msg.obj instanceof Response) {
+                        message = ((Response) msg.obj).message();
+                    } else if (msg.obj instanceof Exception) {
+                        Exception exception = (IOException) msg.obj;
+                        message = exception.getMessage();
+                    }
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    mLoginFragment.hideLoading();
+                    break;
+                }
+            }
+        }
+    };
+
+    private Handler mCounterHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.ApiResponse.RESPONSE_OK: {
+                    try {
+                        JSONObject response = new JSONObject((String) msg.obj);
+                        String message = response.optString("message", getString(R.string.unknown_error));
+                        boolean error = !message.equalsIgnoreCase("ok");
+                        if (!error) {
+                            JSONObject data = response.getJSONObject("data");
+                            Iterator<String> keys = data.keys();
+                            while (keys.hasNext()) {
+                                String key = keys.next();
+                                Application.counters.put(key, data.getInt(key));
+                            }
                             LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                         } else {

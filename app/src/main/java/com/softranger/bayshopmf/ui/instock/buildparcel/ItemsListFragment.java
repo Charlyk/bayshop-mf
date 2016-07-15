@@ -26,6 +26,7 @@ import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.AddressesListFragment;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
@@ -113,6 +114,18 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
             mInStockItems = getArguments().getParcelableArrayList(IN_STOCK_ARG);
             updateTotals(mInStockItems);
             sendPackagesToServer(mInForming == null ? "" : String.valueOf(mInForming.getId()));
+
+            // if in forming is null then we should update counters because a new in forming was created
+            if (mInForming == null) {
+                // get current value
+                int inFormingCount = Application.counters.get(Constants.ParcelStatus.LIVE);
+                // increment it by one
+                inFormingCount = inFormingCount + 1;
+                // replace it in the counters map
+                Application.counters.put(Constants.ParcelStatus.LIVE, inFormingCount);
+                // update all counters
+                mActivity.updateParcelCounters(Constants.ParcelStatus.LIVE);
+            }
         } else {
             mInForming = getArguments().getParcelable(IN_FORMING_ARG);
             String url = Constants.Api.urlBuildStep(1, String.valueOf(mInForming.getId()));
@@ -122,6 +135,12 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         return view;
     }
 
+    /**
+     * Start PUS parcel creation by sending ID's for selected parcels to server
+     * those ID's will be either added to existing parcel or will be created a new one
+     * @param packageId either null or empty string to create a new parcel or
+     *                  an id for an existing parcel to add selections to it
+     */
     private void sendPackagesToServer(String packageId) {
         JSONArray boxesArray = new JSONArray();
         try {
@@ -130,7 +149,7 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
             }
             FormBody.Builder body = new FormBody.Builder();
             body.add("boxes", String.valueOf(boxesArray));
-            if (!packageId.equals("")) body.add("packageId", packageId);
+            if (packageId == null || !packageId.equals("")) body.add("packageId", packageId);
             String url = Constants.Api.urlBuildStep(1);
             ApiClient.getInstance().postRequest(body.build(), url, mHandler);
         } catch (Exception e) {
@@ -138,6 +157,11 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Compute total weight for a list of in stock items
+     * @param inStockItems which weight we need to compute
+     * @return total weight in kilos
+     */
     private double getTotalWeight(ArrayList<InStockItem> inStockItems) {
         int totalWeight = 0;
         if (inStockItems != null) {
@@ -152,6 +176,11 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Compute total price for a list of in stock items
+     * @param inStockItems for which total price needed
+     * @return total price for the given list of items
+     */
     private float getTotalPrice(ArrayList<InStockItem> inStockItems) {
         int totalPrice = 0;
         if (inStockItems != null) {
@@ -200,6 +229,10 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         mBatteryDialog.show();
     }
 
+    /**
+     * Called to update totals at the bottom of the screen
+     * @param items
+     */
     private void updateTotals(ArrayList<InStockItem> items) {
         mTotalPrice.setText(mCurrency + String.valueOf(getTotalPrice(items)));
         mTotalWeight.setText(String.valueOf(getTotalWeight(items)) + "kg.");
@@ -232,6 +265,11 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         mActivity.unregisterReceiver(mTitleReceiver);
     }
 
+    /**
+     * Called when delete button within an item is clicked
+     * @param inStockItem which item is to be deleted
+     * @param position of deleted item in the list
+     */
     @Override
     public void onDeleteClick(InStockItem inStockItem, final int position) {
         final InStockItem item = mAdapter.removeItem(position);
@@ -262,9 +300,26 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
                 }).show();
     }
 
+    /**
+     * Send delete request to server to remove given item from the parcel
+     * @param inStockItem which need to be removed from current parcel
+     */
     private void deleteItem(InStockItem inStockItem) {
         ApiClient.getInstance().delete(Constants.Api.urlDeleteBoxFromParcel(String.valueOf(mInForming.getId()),
                 String.valueOf(inStockItem.getID())), mActivity.mDeleteHandler);
+        // if building is started than we need to update nav drawer counter for in stock
+        int inStockCount = Application.counters.get(Constants.ParcelStatus.IN_STOCK);
+        // subtract from current count the selected items count to show to user
+        inStockCount = inStockCount + 1;
+
+        int inFormingCount = Application.counters.get(Constants.ParcelStatus.LIVE);
+
+        inFormingCount = inFormingCount - 1;
+
+        Application.counters.put(Constants.ParcelStatus.IN_STOCK, inStockCount);
+        Application.counters.put(Constants.ParcelStatus.LIVE, inFormingCount);
+        mActivity.updateParcelCounters(Constants.ParcelStatus.IN_STOCK);
+        mActivity.updateParcelCounters(Constants.ParcelStatus.LIVE);
     }
 
     @Override
@@ -294,6 +349,17 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
                 .hasBattery(jsoPus.getInt("isBatteryLionExists"))
                 .items(detailedList)
                 .build();
+
+        // if any items were added to this parcel then we need to update parcels counters
+        if (mInStockItems != null) {
+            // if building is started than we need to update nav drawer counter for in stock
+            int count = Application.counters.get(Constants.ParcelStatus.IN_STOCK);
+            // subtract from current count the selected items count to show to user
+            count = count - mInStockItems.size();
+
+            Application.counters.put(Constants.ParcelStatus.IN_STOCK, count);
+            mActivity.updateParcelCounters(Constants.ParcelStatus.IN_STOCK);
+        }
     }
 
     @Override

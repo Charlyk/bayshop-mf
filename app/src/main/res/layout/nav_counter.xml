@@ -12,9 +12,7 @@
         android:layout_height="wrap_content"
         android:minWidth="30dp"
         android:minHeight="30dp"
-        android:textColor="@android:color/white"
         android:padding="5dp"
         tools:text="100"
-        android:gravity="center"
-        android:background="@drawable/circle_background"/>
+        android:gravity="center"/>
 </LinearLayout>

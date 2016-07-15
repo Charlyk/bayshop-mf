@@ -163,7 +163,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                                 ApiClient.getInstance().getRequest(url, mHandler);
                             }
                         }
-                    }, 100);
+                    }, 50);
                     break;
             }
         }
@@ -321,7 +321,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
      */
     private <T extends PUSParcel> T buildGeneralPackage(JSONObject jsonItem, T parcel) throws Exception {
         parcel = new T.Builder<>(parcel)
-                .created(jsonItem.optString("created", ""))
+                .created(jsonItem.optString("fieldTime", ""))
                 .percentage(jsonItem.optInt("percent", 0))
                 .id(jsonItem.getInt("id"))
                 .codeNumber(jsonItem.optString("codeNumber", ""))

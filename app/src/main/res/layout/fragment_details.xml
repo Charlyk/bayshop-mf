@@ -1,10 +1,9 @@
-<android.support.v4.widget.NestedScrollView
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="@android:color/white"
-    android:padding="16dp"
     android:clipToPadding="false">
 
     <LinearLayout
@@ -15,11 +14,16 @@
 
         <include
             layout="@layout/additional_buttons"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <include
             layout="@layout/detailed_item_details"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"/>
@@ -27,6 +31,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/inStockDetailsImageList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</ScrollView>

@@ -26,14 +26,12 @@
         android:id="@+id/shippingMethodItemPriceLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="5dp"
         android:textColor="@android:color/black"
+        android:layout_toLeftOf="@+id/shippingMethodDetailsBtn"
+        android:layout_toStartOf="@+id/shippingMethodDetailsBtn"
         android:textSize="18sp"
         tools:text="$10"/>
     
@@ -52,12 +50,14 @@
         android:id="@+id/shippingMethodSelectBtn"
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_below="@+id/shippingMethodDescriptionLabel"
+        android:layout_marginTop="10dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
         android:background="?selectableItemBackground"
         android:text="@string/select_method"
         android:textColor="@color/colorGreenAction"/>
@@ -70,8 +70,9 @@
         android:layout_below="@+id/shippingMethodDescriptionLabel"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/shippingMethodSelectBtn"
-        android:layout_toStartOf="@+id/shippingMethodSelectBtn"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:background="?selectableItemBackground"
         android:src="@mipmap/ic_detail_24dp"
         android:contentDescription="@string/details"/>
@@ -80,5 +81,5 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#b1b1b1"
-        android:layout_below="@id/shippingMethodDetailsBtn"/>
+        android:layout_below="@id/shippingMethodSelectBtn"/>
 </RelativeLayout>

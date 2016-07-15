@@ -75,10 +75,9 @@ public class AdditionalPhotoFragment extends ParentFragment implements View.OnCl
             mConfirmButton.setText(getString(R.string.cancel_request));
             mConfirmButton.setBackgroundColor(mActivity.getResources().getColor(R.color.colorAccent));
             mLeaveComment.setVisibility(View.GONE);
-        } else {
-            mLeaveComment.setOnClickListener(this);
         }
 
+        mLeaveComment.setOnClickListener(this);
         mConfirmButton.setOnClickListener(this);
         return view;
     }
@@ -86,7 +85,7 @@ public class AdditionalPhotoFragment extends ParentFragment implements View.OnCl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.check_product_leaveCommentBtn:
+            case R.id.additionalPhotoleaveCommentBtn:
                 if (mCommentInput.getVisibility() == View.GONE) {
                     mCommentInput.setVisibility(View.VISIBLE);
                     mLeaveComment.setText(getString(R.string.hide_comment));

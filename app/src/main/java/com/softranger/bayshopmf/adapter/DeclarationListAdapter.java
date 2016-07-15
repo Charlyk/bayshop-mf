@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.util.Application;
 
 import java.util.ArrayList;
 
@@ -36,13 +38,17 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public DeclarationListAdapter(InStockDetailed inStockDetailed) {
         mProducts = new ArrayList<>();
         mObjects = new ArrayList<>();
+        // add in stock detailed item for list header
         mObjects.add(inStockDetailed);
-        Product product = new Product.Builder().productName("").productUrl("").productPrice("").productQuantity("").build();
-        mProducts.add(product);
-        mObjects.add(product);
         mInStockDetailed = inStockDetailed;
+        // add an object for bottom action item
+        // there are buttons add and save
         mActionHolder = new Object();
         mObjects.add(mActionHolder);
+
+        if (!mInStockDetailed.isHasDeclaration()) {
+            addNewProductCard();
+        }
     }
 
     public void setOnActionButtonsClickListener(OnActionButtonsClick onActionButtonsClickListener) {
@@ -64,7 +70,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void removeItem(Product itemToRemove) {
-        if (mObjects.size() != 2) {
+        if (mObjects.size() > 3) {
             mProducts.remove(itemToRemove);
             final int itemPosition = mObjects.indexOf(itemToRemove);
             mObjects.remove(itemToRemove);
@@ -165,7 +171,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    class HeaderViewHolder extends RecyclerView.ViewHolder {
+    class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnFocusChangeListener {
 
 //        final TextView mDepositName;
 //        final TextView mTrackingNumber;
@@ -177,31 +183,70 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 //            mDepositName = (TextView) itemView.findViewById(R.id.depositTextLabel);
 //            mTrackingNumber = (TextView) itemView.findViewById(R.id.trackingNumberLabel);
             mGeneralDescription = (EditText) itemView.findViewById(R.id.generalDescriptionLabel);
+            mGeneralDescription.setOnFocusChangeListener(this);
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mGeneralDescription.setHint("");
+            } else {
+                mGeneralDescription.setHint(Application.getInstance().getString(R.string.general_description_hint));
+            }
         }
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnFocusChangeListener {
 
         final EditText mProductName;
         final EditText mProductUrl;
         final EditText mProductQuantity;
         final EditText mProductPrice;
-        final Button mItemDeleteButton;
+        final ImageButton mItemDeleteButton;
         Product mProduct;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             mProductName = (EditText) itemView.findViewById(R.id.productNameInput);
+            mProductName.setOnFocusChangeListener(this);
             mProductUrl = (EditText) itemView.findViewById(R.id.productUrlInput);
+            mProductUrl.setOnFocusChangeListener(this);
             mProductQuantity = (EditText) itemView.findViewById(R.id.productQuantityInput);
+            mProductQuantity.setOnFocusChangeListener(this);
             mProductPrice = (EditText) itemView.findViewById(R.id.productPriceInput);
-            mItemDeleteButton = (Button) itemView.findViewById(R.id.itemDeleteButton);
+            mProductPrice.setOnFocusChangeListener(this);
+            mItemDeleteButton = (ImageButton) itemView.findViewById(R.id.declarationItemDeleteButton);
             mItemDeleteButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             removeItem(mProduct);
+            if (mOnActionButtonsClick != null) {
+                mOnActionButtonsClick.onDeleteClick(getAdapterPosition());
+            }
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            switch (v.getId()) {
+                case R.id.productNameInput:
+                    if (hasFocus) mProductName.setHint("");
+                    else mProductName.setHint(Application.getInstance().getString(R.string.example_product));
+                    break;
+                case R.id.productUrlInput:
+                    if (hasFocus) mProductUrl.setHint("");
+                    else mProductUrl.setHint(Application.getInstance().getString(R.string.http_example_com_example_product));
+                    break;
+                case R.id.productQuantityInput:
+                    if (hasFocus) mProductQuantity.setHint("");
+                    else mProductQuantity.setHint(Application.getInstance().getString(R.string._0));
+                    break;
+                case R.id.productPriceInput:
+                    if (hasFocus) mProductPrice.setHint("");
+                    else mProductPrice.setHint(Application.getInstance().getString(R.string._0_0));
+                    break;
+            }
         }
     }
 
@@ -328,5 +373,6 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public interface OnActionButtonsClick {
         void onAddFieldsClick();
         void onSaveItemsClick(InStockDetailed inStockDetailed, ArrayList<Product> products);
+        void onDeleteClick(int position);
     }
 }

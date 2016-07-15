@@ -195,47 +195,110 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
         }
-        updateParcelCounters();
+        updateParcelCounters(null);
     }
 
-    private void updateParcelCounters() {
-        setMenuCounter(R.id.nav_waitingArrival, Application.getCount(Constants.ParcelStatus.AWAITING_ARRIVAL));
-        setMenuCounter(R.id.nav_inStock, Application.getCount(Constants.ParcelStatus.IN_STOCK));
-        setMenuCounter(R.id.nav_inForming, Application.getCount(Constants.ParcelStatus.LIVE));
-        setMenuCounter(R.id.nav_inProcessing, Application.getCount(Constants.ParcelStatus.IN_PROCESSING));
-        setMenuCounter(R.id.nav_awaitingSending, Application.getCount(Constants.ParcelStatus.PACKED));
-        setMenuCounter(R.id.nav_heldDueToDebt, Application.getCount(Constants.ParcelStatus.DEPT));
-        setMenuCounter(R.id.nav_heldByProhibition, Application.getCount(Constants.ParcelStatus.HELD_BY_PROHIBITION));
-        setMenuCounter(R.id.nav_sent, Application.getCount(Constants.ParcelStatus.SENT));
-        setMenuCounter(R.id.nav_heldByCustoms, Application.getCount(Constants.ParcelStatus.CUSTOMS_HELD));
-        setMenuCounter(R.id.nav_localDeposit, Application.getCount(Constants.ParcelStatus.LOCAL_DEPO));
-        setMenuCounter(R.id.nav_takeToDelivery, Application.getCount(Constants.ParcelStatus.TAKEN_TO_DELIVERY));
-        setMenuCounter(R.id.nav_received, Application.getCount(Constants.ParcelStatus.RECEIVED));
+    /**
+     * Set the parcels count on the right side in the Navigation Drawer
+     */
+    public void updateParcelCounters(@Nullable String parcelStatus) {
+        if (parcelStatus == null) {
+            setMenuCounter(R.id.nav_waitingArrival, Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL));
+            setMenuCounter(R.id.nav_inStock, Application.counters.get(Constants.ParcelStatus.IN_STOCK));
+            setMenuCounter(R.id.nav_inForming, Application.counters.get(Constants.ParcelStatus.LIVE));
+            setMenuCounter(R.id.nav_inProcessing, Application.counters.get(Constants.ParcelStatus.IN_PROCESSING));
+            setMenuCounter(R.id.nav_awaitingSending, Application.counters.get(Constants.ParcelStatus.PACKED));
+            setMenuCounter(R.id.nav_heldDueToDebt, Application.counters.get(Constants.ParcelStatus.DEPT));
+            setMenuCounter(R.id.nav_heldByProhibition, Application.counters.get(Constants.ParcelStatus.HELD_BY_PROHIBITION));
+            setMenuCounter(R.id.nav_sent, Application.counters.get(Constants.ParcelStatus.SENT));
+            setMenuCounter(R.id.nav_heldByCustoms, Application.counters.get(Constants.ParcelStatus.CUSTOMS_HELD));
+            setMenuCounter(R.id.nav_localDeposit, Application.counters.get(Constants.ParcelStatus.LOCAL_DEPO));
+            setMenuCounter(R.id.nav_takeToDelivery, Application.counters.get(Constants.ParcelStatus.TAKEN_TO_DELIVERY));
+            setMenuCounter(R.id.nav_received, Application.counters.get(Constants.ParcelStatus.RECEIVED));
+            return;
+        }
+
+        switch (parcelStatus) {
+            case Constants.ParcelStatus.AWAITING_ARRIVAL:
+                setMenuCounter(R.id.nav_waitingArrival, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.IN_STOCK:
+                setMenuCounter(R.id.nav_inStock, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.LIVE:
+                setMenuCounter(R.id.nav_inForming, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.IN_PROCESSING:
+                setMenuCounter(R.id.nav_inProcessing, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.PACKED:
+                setMenuCounter(R.id.nav_awaitingSending, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.DEPT:
+                setMenuCounter(R.id.nav_heldDueToDebt, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.HELD_BY_PROHIBITION:
+                setMenuCounter(R.id.nav_heldByProhibition, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.SENT:
+                setMenuCounter(R.id.nav_sent, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.CUSTOMS_HELD:
+                setMenuCounter(R.id.nav_heldByCustoms, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.LOCAL_DEPO:
+                setMenuCounter(R.id.nav_localDeposit, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.TAKEN_TO_DELIVERY:
+                setMenuCounter(R.id.nav_takeToDelivery, Application.counters.get(parcelStatus));
+                break;
+            case Constants.ParcelStatus.RECEIVED:
+                setMenuCounter(R.id.nav_received, Application.counters.get(parcelStatus));
+                break;
+        }
     }
 
+    /**
+     * Either show or hide the progress bar
+     *
+     * @param show true to show the bar or false to hide it
+     */
     @Override
     public void toggleLoadingProgress(boolean show) {
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    /**
+     * Starts the build parcel process
+     *
+     * @param continueBuilding true iff add button is clicked or false if create new is clicked
+     * @param inForming        null if create new is clicked or an in forming parcel if need to continue
+     */
     public void startBuildingPusParcel(boolean continueBuilding, @Nullable InForming inForming) {
+        // check if there are any selected item in the list
+        // if continueBuilding is true it does not matter if there are or not any parcel selected
+        // we can just continue building the previous parcels
         if (!continueBuilding && inStockItems.size() <= 0) {
             Snackbar.make(mActionMenu, getString(R.string.please_select_parcels), Snackbar.LENGTH_SHORT).show();
+            // we need to close floating menu and hide white background
+            mActionMenu.collapse();
             return;
         }
 
+        // here we need to decide if we need to continue or not
         if (continueBuilding) {
+            // if there are any selected item then we need to tell to items list fragment that it should
+            // add more items to clicked parcel, if not then it will use just GET method to obtain
+            // already added parcels from server
             boolean add = inStockItems.size() > 0;
             addFragment(ItemsListFragment.newInstance(inStockItems, add, inForming, inForming.getDeposit()), false);
-            mActionMenu.collapse();
         } else {
+            // if continueBuilding is false than we need just start a new parcel and add to it all
+            // selected items
             addFragment(ItemsListFragment.newInstance(inStockItems, true, null, inStockItems.get(0).getDeposit()), false);
-            mActionMenu.collapse();
         }
-        int count = Application.counters.get(Constants.ParcelStatus.IN_STOCK);
-        count = count - inStockItems.size();
-        Application.counters.put(Constants.ParcelStatus.IN_STOCK, count);
-        updateParcelCounters();
+        // we need to close floating menu and hide white background
+        mActionMenu.collapse();
     }
 
     public void removeActionButtons() {
@@ -336,9 +399,13 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
         View view = mNavigationView.getMenu().findItem(itemId).getActionView();
         TextView countLabel = (TextView) view.findViewById(R.id.navCounterTextView);
-        if (count == 0) view.setVisibility(View.GONE);
-        else {
-            countLabel.setText(count > 0 ? String.valueOf(count) : null);
+        if (count <= 0) {
+            view.setVisibility(View.GONE);
+        } else {
+            if (view.getVisibility() == View.GONE) {
+                view.setVisibility(View.VISIBLE);
+            }
+            countLabel.setText(String.valueOf(count));
         }
     }
 
@@ -634,11 +701,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                             refreshIntent.putExtra("deposit", "us"); // TODO: 6/27/16 set with the actual selected storage
                             sendBroadcast(refreshIntent);
                             sendBroadcast(deleteIntent);
-
-                            int count = Application.counters.get(Constants.ParcelStatus.IN_STOCK);
-                            count += 1;
-                            Application.counters.put(Constants.ParcelStatus.IN_STOCK, count);
-                            updateParcelCounters();
                         } else {
                             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                         }

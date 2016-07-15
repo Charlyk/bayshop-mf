@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
@@ -30,7 +31,7 @@ import okhttp3.RequestBody;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddAwaitingFragment extends ParentFragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+public class AddAwaitingFragment extends ParentFragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener, View.OnFocusChangeListener {
 
     private EditText mProductUrlInput;
     private EditText mProductTrackingNumInput;
@@ -58,6 +59,12 @@ public class AddAwaitingFragment extends ParentFragment implements RadioGroup.On
         mProductTrackingNumInput = (EditText) mRootView.findViewById(R.id.addAwaitingTrackingInput);
         mProductNameInput = (EditText) mRootView.findViewById(R.id.addAwaitingNameInput);
         mProductPriceInput = (EditText) mRootView.findViewById(R.id.addAwaitingPriceInput);
+
+        mProductNameInput.setOnFocusChangeListener(this);
+        mProductTrackingNumInput.setOnFocusChangeListener(this);
+        mProductUrlInput.setOnFocusChangeListener(this);
+        mProductPriceInput.setOnFocusChangeListener(this);
+
         RadioGroup storageSelector = (RadioGroup) mRootView.findViewById(R.id.addAwaitingStorageSelectorGroup);
         storageSelector.setOnCheckedChangeListener(this);
         Button addParcelBtn = (Button) mRootView.findViewById(R.id.addAwaitingAddParcelButton);
@@ -134,10 +141,42 @@ public class AddAwaitingFragment extends ParentFragment implements RadioGroup.On
         intent.putExtra("deposit", mProduct.getDeposit());
         mActivity.sendBroadcast(intent);
         mActivity.onBackPressed();
+        int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
+        count += 1;
+        Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
+        mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
     }
 
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.addAwaitingNameInput:
+                if (hasFocus) mProductNameInput.setHint("");
+                else mProductNameInput.setHint(getString(R.string.ipad_mini));
+                break;
+            case R.id.addAwaitingLinkToProductInput:
+                if (hasFocus) mProductUrlInput.setHint("");
+                else mProductUrlInput.setHint(getString(R.string.http_example_com_example_product));
+                break;
+            case R.id.addAwaitingTrackingInput:
+                if (hasFocus) mProductTrackingNumInput.setHint("");
+                else mProductTrackingNumInput.setHint(getString(R.string._12345678901234567890));
+                break;
+            case R.id.addAwaitingPriceInput:
+                if (hasFocus) mProductPriceInput.setHint("");
+                else mProductPriceInput.setHint(getString(R.string._400));
+                break;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity.hideKeyboard();
     }
 }

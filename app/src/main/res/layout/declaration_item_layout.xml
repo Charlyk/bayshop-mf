@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="7dp"
     app:cardElevation="2dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -13,26 +13,49 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="@string/product_name"/>
-
-        <EditText
-            android:id="@+id/productNameInput"
-            android:inputType="text"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:nextFocusDown="@+id/productUrlInput"
-            android:padding="2dp"
-            android:hint="@string/example_product"
-            android:background="@android:color/white"
-            android:layout_height="30dp"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:singleLine="true"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/product_name"/>
+
+            <ImageButton
+                android:id="@+id/declarationItemDeleteButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:src="@mipmap/ic_delete_24dpi"/>
+
+            <EditText
+                android:id="@+id/productNameInput"
+                android:inputType="text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/declarationItemDeleteButton"
+                android:layout_toLeftOf="@id/declarationItemDeleteButton"
+                android:layout_below="@id/textView3"
+                android:nextFocusDown="@+id/productUrlInput"
+                android:padding="2dp"
+                android:hint="@string/example_product"
+                android:background="@android:color/white"
+                android:layout_height="30dp"
+                android:layout_width="match_parent"
+                android:singleLine="true"/>
+        </RelativeLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -92,7 +115,7 @@
                 <EditText
                     android:id="@+id/productQuantityInput"
                     android:padding="2dp"
-                    android:hint="0"
+                    android:hint="@string/_0"
                     android:nextFocusDown="@+id/productPriceInput"
                     android:background="@android:color/white"
                     android:inputType="number"
@@ -117,7 +140,7 @@
                 <EditText
                     android:id="@+id/productPriceInput"
                     android:padding="2dp"
-                    android:hint="0.0"
+                    android:hint="@string/_0_0"
                     android:background="@android:color/white"
                     android:inputType="numberDecimal"
                     android:layout_height="30dp"
@@ -125,25 +148,25 @@
             </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#b1b1b1"/>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.5dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:background="#b1b1b1"/>-->
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/delete_item"
-            android:textSize="16sp"
-            android:background="?selectableItemBackground"
-            android:textColor="@color/colorAccent"
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:id="@+id/itemDeleteButton"
-            android:layout_gravity="end"/>
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:text="@string/delete_item"-->
+            <!--android:textSize="16sp"-->
+            <!--android:background="@drawable/red_button_bg"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--style="@style/Base.Widget.AppCompat.ActionButton"-->
+            <!--android:id="@+id/itemDeleteButton"-->
+            <!--android:layout_gravity="end"/>-->
     </LinearLayout>
 </android.support.v7.widget.CardView>

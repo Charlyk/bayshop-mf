@@ -131,7 +131,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="10dp"
             android:background="@android:color/white"
-            android:hint="12345678901234567890"
+            android:hint="@string/_12345678901234567890"
             android:padding="3dp"
             android:singleLine="true"/>
 

@@ -89,7 +89,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         intentFilter.addAction(StorageItemsFragment.ACTION_ITEM_CHANGED);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.inStockDetailsImageList);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mInStockItem = getArguments().getParcelable(ITEM_ARG);
         mImagesAdapter = new ImagesAdapter(R.layout.in_stock_detailed_image);
@@ -129,50 +129,57 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         }
     };
 
-    private void showDetails(View view, InStockDetailed detailed) {
-        // fill text views
-        TextView tracking = (TextView) view.findViewById(R.id.details_tracking_label);
-        TextView date = (TextView) view.findViewById(R.id.details_date_label);
-        TextView weight = (TextView) view.findViewById(R.id.details_weight_label);
-        TextView price = (TextView) view.findViewById(R.id.details_price_label);
+    private void showDetails(final View view, final InStockDetailed detailed) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // fill text views
+                TextView tracking = (TextView) view.findViewById(R.id.details_tracking_label);
+                TextView date = (TextView) view.findViewById(R.id.details_date_label);
+                TextView weight = (TextView) view.findViewById(R.id.details_weight_label);
+                TextView price = (TextView) view.findViewById(R.id.details_price_label);
 
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
 
-        Date createdDate;
-        String strDate = "";
-        try {
-            createdDate = inputFormat.parse(detailed.getDate());
-            strDate = outputFormat.format(createdDate);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                Date createdDate;
+                String strDate = "";
+                try {
+                    createdDate = inputFormat.parse(detailed.getDate());
+                    strDate = outputFormat.format(createdDate);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        tracking.setText(detailed.getTrackingNumber());
-        date.setText(strDate);
-        weight.setText(detailed.getWeight() + "kg");
-        price.setText(detailed.getCurency() + detailed.getPrice());
+                tracking.setText(detailed.getTrackingNumber());
+                date.setText(strDate);
+                weight.setText(detailed.getWeight() + "kg");
+                price.setText(detailed.getCurency() + detailed.getPrice());
 
-        // set buttons listeners
-        mFillDeclaration = (Button) view.findViewById(R.id.fill_declarationButton);
-        mCheckProduct = (Button) view.findViewById(R.id.check_productButton);
-        mAdditionalPhoto = (Button) view.findViewById(R.id.additional_photoButton);
+                mFillDeclaration = (Button) view.findViewById(R.id.fill_declarationButton);
+                mCheckProduct = (Button) view.findViewById(R.id.check_productButton);
+                mAdditionalPhoto = (Button) view.findViewById(R.id.additional_photoButton);
 
-        if (detailed.getPhotoInProgress() == Constants.IN_PROGRESS) {
-            mAdditionalPhoto.setSelected(true);
-        }
+                if (detailed.getPhotoInProgress() == Constants.IN_PROGRESS) {
+                    mAdditionalPhoto.setSelected(true);
+                }
 
-        if (detailed.getCheckInProgress() == Constants.IN_PROGRESS) {
-            mCheckProduct.setSelected(true);
-        }
+                if (detailed.getCheckInProgress() == Constants.IN_PROGRESS) {
+                    mCheckProduct.setSelected(true);
+                }
 
-        mFillDeclaration.setSelected(detailed.isHasDeclaration());
-        if (mFillDeclaration.isSelected()) {
-            mFillDeclaration.setText(mActivity.getString(R.string.edit_declaration));
-        }
-        mFillDeclaration.setOnClickListener(this);
-        mCheckProduct.setOnClickListener(this);
-        mAdditionalPhoto.setOnClickListener(this);
+                if (detailed.isHasDeclaration()) {
+                    mFillDeclaration.setText(mActivity.getString(R.string.edit_declaration));
+                } else {
+                    mFillDeclaration.setText(mActivity.getString(R.string.fill_in_the_declaration));
+                }
+                mFillDeclaration.setSelected(detailed.isHasDeclaration());
+
+                mFillDeclaration.setOnClickListener(DetailsFragment.this);
+                mCheckProduct.setOnClickListener(DetailsFragment.this);
+                mAdditionalPhoto.setOnClickListener(DetailsFragment.this);
+            }
+        });
     }
 
     @Override
