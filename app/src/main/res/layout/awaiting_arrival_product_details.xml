@@ -203,29 +203,29 @@
                 android:id="@+id/awaitingDetailsPrice"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="@string/weight"
-                android:id="@+id/awaitingDetailsWeightTitle"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="12sp"-->
+                <!--android:text="@string/weight"-->
+                <!--android:id="@+id/awaitingDetailsWeightTitle"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"
-                android:text="@string/kg"
-                android:id="@+id/awaitingDetailsWeight"/>
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:textSize="18sp"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="@string/kg"-->
+                <!--android:id="@+id/awaitingDetailsWeight"/>-->
+        <!--</LinearLayout>-->
 
         <Button
             style="@style/Base.Widget.AppCompat.ActionButton"

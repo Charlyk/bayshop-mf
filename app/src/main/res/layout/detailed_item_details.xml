@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="23.01.2016"
                 android:textColor="@android:color/black"/>
         </LinearLayout>
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="$ 25"
                 android:textColor="@android:color/black"/>
         </LinearLayout>
