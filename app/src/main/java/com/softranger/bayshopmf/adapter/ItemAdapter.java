@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -205,6 +206,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void deleteItem(int position) {
+        mInStockItems.remove(position);
+        notifyItemRemoved(position);
+    }
+
     class InStockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ViewAnimator.AnimationListener {
         final TextView mUIDLabel;
         final TextView mTrackingLabel;
@@ -287,6 +293,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final TextView mItemId;
         final TextView mItemName;
         final TextView mTrackingNumber;
+        final TextView mCreatedDateLabel;
+        final ImageButton mDeleteButton;
         Product mProduct;
 
         public ProductViewHolder(View itemView) {
@@ -295,12 +303,21 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mItemId = (TextView) itemView.findViewById(R.id.itemIdLabel);
             mItemName = (TextView) itemView.findViewById(R.id.itemNameLabel);
             mTrackingNumber = (TextView) itemView.findViewById(R.id.itemTrackingLabel);
+            mCreatedDateLabel = (TextView) itemView.findViewById(R.id.itemDateLabel);
+            mDeleteButton = (ImageButton) itemView.findViewById(R.id.itemDeleteButton);
+            mDeleteButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onProductClick(mProduct, getAdapterPosition());
+            if (mOnItemClickListener == null) return;
+            switch (v.getId()) {
+                case R.id.itemDeleteButton:
+                    mOnItemClickListener.onProductItemDeleteClick(mProduct, getAdapterPosition());
+                    break;
+                default:
+                    mOnItemClickListener.onProductClick(mProduct, getAdapterPosition());
+                    break;
             }
         }
     }
@@ -427,5 +444,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onCheckOrderClick();
 
         void onAdditionalPhotosClick();
+
+        void onProductItemDeleteClick(Product product, int position);
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:background="@drawable/selectable_background"
@@ -16,7 +16,7 @@
         android:layout_marginRight="16dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_marginBottom="5dp"
         tools:text="MF123141321"
         android:id="@+id/itemIdLabel"/>
@@ -24,30 +24,98 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/itemIdLabel"
         android:ellipsize="end"
         android:singleLine="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="5dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textColor="@android:color/black"
         tools:text="Computer shiushit"
         android:id="@+id/itemNameLabel"/>
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/trackingNumberLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textSize="18sp"
-        tools:text="1243432423412312"
-        android:id="@+id/itemTrackingLabel"/>
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/itemNameLabel"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:text="@string/tracking"
+            android:id="@+id/itemTrackingTitle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/black"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="16sp"
+            tools:text="1243432423412312"
+            android:id="@+id/itemTrackingLabel"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/trackingNumberLayout"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:text="@string/created_on"
+            android:id="@+id/itemDateTitle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/black"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="16sp"
+            tools:text="23 Jul 2016 (3 days ago)"
+            android:id="@+id/itemDateLabel"/>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#b1b1b1"/>
-</LinearLayout>
+
+    <ImageButton
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:src="@mipmap/ic_delete_24dpi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:id="@+id/itemDeleteButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

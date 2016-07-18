@@ -85,9 +85,8 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.mProcessingParcel = (T) mItems.get(position);
 
-            if (!(mItems.get(position) instanceof Sent) && !(mItems.get(position) instanceof ToDelivery)) {
-                headerHolder.mSentParcelLayout.setVisibility(View.GONE);
-            } else if (mItems.get(position) instanceof Sent || mItems.get(position) instanceof ToDelivery) {
+            if (mItems.get(position) instanceof Sent) {
+                headerHolder.mSentParcelLayout.setVisibility(View.VISIBLE);
                 headerHolder.mSentParcelTrack.setText(headerHolder.mProcessingParcel.getTrackingNumber());
             }
 
@@ -106,6 +105,10 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
 
             if (mItems.get(position) instanceof Received) {
                 headerHolder.mReceivedOnMapLayout.setVisibility(View.VISIBLE);
+            }
+
+            if (mItems.get(position) instanceof ToDelivery) {
+                headerHolder.mToDeliveryDetails.setVisibility(View.VISIBLE);
             }
 
             headerHolder.mDepositIcon.setImageResource(getStorageIcon(headerHolder.mProcessingParcel.getDeposit()));
@@ -184,6 +187,8 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final RelativeLayout mConfirmAddressButton;
         final RelativeLayout mHomeDeliveryLayout;
         final RelativeLayout mReceivedOnMapLayout;
+        final LinearLayout mToDeliveryDetails;
+        final LinearLayout mCallCourierBtn;
         final ImageView mSignatureImage;
         T mProcessingParcel;
 
@@ -217,7 +222,10 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mHomeDeliveryLayout = (RelativeLayout) itemView.findViewById(R.id.orderHomeDeliveryLayout);
             mReceivedOnMapLayout = (RelativeLayout) itemView.findViewById(R.id.receivedSignatureOnMapLayout);
             mSignatureImage = (ImageView) itemView.findViewById(R.id.receivedSignatureSignImageView);
+            mToDeliveryDetails = (LinearLayout) itemView.findViewById(R.id.takeToDeliveryDetailsHeaderLayout);
+            mCallCourierBtn = (LinearLayout) itemView.findViewById(R.id.takeToDeliveryDetailsCallBtn);
 
+            mCallCourierBtn.setOnClickListener(this);
             mHomeDeliveryLayout.setOnClickListener(this);
             mReturnButton.setOnClickListener(this);
             mConfirmAddressButton.setOnClickListener(this);
@@ -232,7 +240,9 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mSelectButton.setOnClickListener(this);
             mHomeDeliveryLayout.setVisibility(View.GONE);
             mUploadLayout.setVisibility(View.GONE);
+            mToDeliveryDetails.setVisibility(View.GONE);
             mProhibitionLayout.setVisibility(View.GONE);
+            mSentParcelLayout.setVisibility(View.GONE);
         }
 
         @Override
@@ -259,6 +269,9 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                     break;
                 case R.id.receivedSignatureOnMapLayout:
                     mOnItemClickListener.onSignatureOnMapClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.takeToDeliveryDetailsCallBtn:
+                    mOnItemClickListener.onCallCourierClick(mProcessingParcel, getAdapterPosition());
                     break;
             }
         }
@@ -293,5 +306,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         <T extends PUSParcel> void onOrderDeliveryClick(T item, int position);
         <T extends PUSParcel> void onSelectAddressClick(T item, int position);
         <T extends PUSParcel> void onSignatureOnMapClick(T item, int position);
+        <T extends PUSParcel> void onCallCourierClick(T item, int position);
     }
 }

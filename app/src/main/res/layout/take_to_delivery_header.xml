@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/takeToDeliveryDetailsHeaderLayout"
+              android:layout_marginBottom="10dp"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_take_to_delivery_44dp"
+            android:id="@+id/imageView5"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:text="@string/take_to_delivery_alert"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/textView24"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <LinearLayout
+        android:id="@+id/takeToDeliveryDetailsCallBtn"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:clickable="true"
+        android:background="?selectableItemBackground"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="16sp"
+            android:drawableLeft="@mipmap/ic_call_24dp"
+            android:drawableStart="@mipmap/ic_call_24dp"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:textColor="@color/colorGreenAction"
+            android:text="@string/call_courier"
+            android:id="@+id/textView16"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.softranger.bayshopmf.ui.pus.ToDeliveryDetails"
+        tools:layout="@layout/fragment_to_delivery_details"/>
+</LinearLayout>

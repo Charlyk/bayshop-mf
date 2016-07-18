@@ -64,12 +64,14 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         mTrackingInput.setText(product.getTrackingNumber());
         mUrlInput.setText(product.getProductUrl());
         mPriceInput.setText(product.getProductPrice());
-        mActivity.setToolbarTitle(product.getProductId(), true);
+        mActivity.setToolbarTitle(getString(R.string.edit_details), true);
 
         switch (product.getDeposit()) {
+            case Constants.USA:
             case Constants.US:
                 mUsaSelector.setChecked(true);
                 break;
+            case Constants.UK:
             case Constants.GB:
                 mUkSelector.setChecked(true);
                 break;
@@ -161,6 +163,7 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         product.setProductPrice(data.getString("packagePrice"));
         product.setProductUrl(data.getString("url"));
         product.setBarcode(data.getString("barCode"));
+
         Snackbar.make(mRootView, getString(R.string.saved_succesfuly), Snackbar.LENGTH_SHORT).show();
         Intent update = new Intent(AwaitingArrivalProductFragment.ACTION_UPDATE);
         mActivity.sendBroadcast(update);

@@ -12,6 +12,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -73,6 +74,8 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     private ArrayList<InForming> mInFormingItems;
     private SwipeRefreshLayout mRefreshLayout;
     private Button mOrderDeliveryBtn;
+    private AlertDialog mAlertDialog;
+    private boolean isDeleteClicked;
 
     public StorageItemsFragment() {
         // Required empty public constructor
@@ -386,10 +389,6 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
      */
     @Override
     public <T extends PUSParcel> void onInProcessingProductClick(T processingPackage, int position) {
-        if (processingPackage instanceof ToDelivery) {
-            mActivity.addFragment(ToDeliveryDetails.newInstance((ToDelivery) processingPackage), true);
-            return;
-        }
         mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
     }
 
@@ -401,16 +400,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
      */
     @Override
     public <T extends PUSParcel> void onLocalDepoItemSelected(T localDepotItem, int position, boolean isChecked) {
-//        if (isChecked) {
-//            mSelectedForDelivery.add((LocalDepot) localDepotItem);
-//        } else {
-//            mSelectedForDelivery.remove(localDepotItem);
-//        }
-//        if (mSelectedForDelivery.size() > 0) {
-//            mOrderDeliveryBtn.setVisibility(View.VISIBLE);
-//        } else {
-//            mOrderDeliveryBtn.setVisibility(View.GONE);
-//        }
+
     }
 
     /**
@@ -448,6 +438,37 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     }
 
     @Override
+    public void onProductItemDeleteClick(Product product, int position) {
+        deleteItem(product, position);
+    }
+
+    private void deleteItem(final Product product, final int position) {
+        mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
+                        + product.getProductName() + "?", R.mipmap.ic_delete_box_24dpi,
+                getString(R.string.yes), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        isDeleteClicked = true;
+                        mObjects.remove(product);
+                        mAdapter.deleteItem(position);
+                        ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(
+                                String.valueOf(product.getID())), mHandler);
+                        mAlertDialog.dismiss();
+                        int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                        count -= 1;
+                        Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
+                        mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                    }
+                }, getString(R.string.no), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mAlertDialog != null) mAlertDialog.dismiss();
+                    }
+                });
+        if (mAlertDialog != null) mAlertDialog.show();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mActivity.unregisterReceiver(mBroadcastReceiver);
@@ -478,7 +499,11 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                         String message = response.optString("message", getString(R.string.unknown_error));
                         boolean error = !message.equalsIgnoreCase("ok");
                         if (!error) {
-                            buildItemsList(response);
+                            if (!isDeleteClicked) {
+                                buildItemsList(response);
+                            } else {
+                                isDeleteClicked = false;
+                            }
                         } else {
                             Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
                         }

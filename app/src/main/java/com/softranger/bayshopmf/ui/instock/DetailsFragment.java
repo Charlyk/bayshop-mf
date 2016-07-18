@@ -62,6 +62,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     private View mRootView;
     private ImagesAdapter mImagesAdapter;
     private LinearLayout mHolderLayout;
+    private LinearLayout mNoPhotoLayout;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -91,6 +92,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.inStockDetailsImageList);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
+        mNoPhotoLayout = (LinearLayout) mRootView.findViewById(R.id.noPhotoLayoutHolder);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mInStockItem = getArguments().getParcelable(ITEM_ARG);
         mImagesAdapter = new ImagesAdapter(R.layout.in_stock_detailed_image);
@@ -265,17 +267,31 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             photos.add(photo);
         }
 
-        mInStockDetailed.setPhotoUrls(photos);
+        if (photos.size() <= 0) {
+            mRecyclerView.setVisibility(View.GONE);
+            mNoPhotoLayout.setVisibility(View.VISIBLE);
+        } else {
+            mInStockDetailed.setPhotoUrls(photos);
 
-        mImagesAdapter.refreshList(mInStockDetailed.getPhotoUrls());
-        showDetails(mRootView, mInStockDetailed);
-        new ImageDownloadThread<>(mInStockDetailed.getPhotoUrls(), mImageDownloadHandler, mActivity).start();
+            mImagesAdapter.refreshList(mInStockDetailed.getPhotoUrls());
+            showDetails(mRootView, mInStockDetailed);
+            new ImageDownloadThread<>(mInStockDetailed.getPhotoUrls(), mImageDownloadHandler, mActivity).start();
+        }
     }
 
     private Handler mImageDownloadHandler = new Handler(Looper.getMainLooper()) {
         @Override
-        public void handleMessage(Message msg) {
-            mImagesAdapter.notifyDataSetChanged();
+        public void handleMessage(final Message msg) {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Photo photo = (Photo) msg.obj;
+
+                    if (photo != null && photo.getImage() != null) {
+                        mImagesAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
         }
     };
 

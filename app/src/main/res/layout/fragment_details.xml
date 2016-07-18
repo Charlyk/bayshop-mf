@@ -51,7 +51,7 @@
                 android:textColor="@color/colorAccent"
                 android:layout_toEndOf="@id/inStockDetailsStorageIcon"
                 android:layout_toRightOf="@id/inStockDetailsStorageIcon"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="MF3121241412"
                 android:id="@+id/inStockDetailsItemId"/>
 
@@ -61,7 +61,7 @@
                 android:textColor="@android:color/black"
                 tools:text="Product name will be here"
                 android:layout_marginTop="5dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:layout_below="@id/inStockDetailsStorageIcon"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -94,5 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"/>
+
+        <include layout="@layout/no_photos_layout"/>
     </LinearLayout>
 </ScrollView>

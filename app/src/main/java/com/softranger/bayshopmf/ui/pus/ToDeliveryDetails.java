@@ -43,22 +43,12 @@ public class ToDeliveryDetails extends ParentFragment implements OnMapReadyCallb
 
     private static final String TO_DELIVERY_ARG = "to delivery parcel arg";
     private MapView mMapView;
-
-    // tracking number
-    private TextView mTrackingnumber;
-    // parcel details
-    private TextView mUid;
-    private TextView mDescription;
-    private TextView mWaitDate;
-    private TextView mWeight;
     private ToDelivery mToDelivery;
-    private static SimpleDateFormat serverFormat;
-    private static SimpleDateFormat friendlyFormat;
 
     private static final double LATITUDE = 47.043252904877306;
     private static final double LONGITUDE = 28.868207931518555;
 
-    private MainActivity mActivity;
+//    private MainActivity mActivity;
 
 
     public ToDeliveryDetails() {
@@ -78,39 +68,17 @@ public class ToDeliveryDetails extends ParentFragment implements OnMapReadyCallb
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_to_delivery_details, container, false);
-        mActivity = (MainActivity) getActivity();
-
-        serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        friendlyFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
 
         mMapView = (MapView) view.findViewById(R.id.toDeliveryDetailsMapView);
         mMapView.onCreate(savedInstanceState);
-        mMapView.getMapAsync(this);
-
-        mToDelivery = getArguments().getParcelable(TO_DELIVERY_ARG);
-
-
-        // tracking number
-        mTrackingnumber = (TextView) view.findViewById(R.id.toDeliveryDetailsTrackingNumberLabel);
-        // parcel details
-        mUid = (TextView) view.findViewById(R.id.toDeliveryDetailsParcelUid);
-        mDescription = (TextView) view.findViewById(R.id.toDeliveryDetailsParcelDescription);
-        mWaitDate = (TextView) view.findViewById(R.id.toDeliveryDetailsWaitingDateLabel);
-        mWeight = (TextView) view.findViewById(R.id.toDeliveryDetailsWeightLabel);
-
-        Button button = (Button) view.findViewById(R.id.toDeliveryDetailsCallCourierBtn);
-        button.setOnClickListener(this);
-
-        ApiClient.getInstance().getRequest(Constants.Api.urlViewParcelDetails(String
-                .valueOf(mToDelivery.getId())), mHandler);
-
-        mActivity.toggleLoadingProgress(true);
+        mMapView.setClickable(false);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mMapView.getMapAsync(this);
         mMapView.onResume();
     }
 
@@ -151,29 +119,12 @@ public class ToDeliveryDetails extends ParentFragment implements OnMapReadyCallb
     public void onServerResponse(JSONObject response) throws Exception {
         JSONObject data = response.getJSONObject("data");
         mToDelivery = buildParcelDetails(data);
-
-        mTrackingnumber.setText(mToDelivery.getTrackingNumber());
-        mUid.setText(mToDelivery.getCodeNumber());
-        mDescription.setText(mToDelivery.getName());
-
-        Date date = new Date();
-        try {
-            date = serverFormat.parse(mToDelivery.getTakenToDeliveryTime());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String strDate = friendlyFormat.format(date);
-
-        mWaitDate.setText(strDate);
-
-//        mWeight.setText(mToDelivery.getRealWeght());
     }
 
-    @Override
-    public void onHandleMessageEnd() {
-        mActivity.toggleLoadingProgress(false);
-    }
+//    @Override
+//    public void onHandleMessageEnd() {
+//        mActivity.toggleLoadingProgress(false);
+//    }
 
     private ToDelivery buildParcelDetails(JSONObject data) throws Exception {
         final String parcelStatus = data.getString("status");

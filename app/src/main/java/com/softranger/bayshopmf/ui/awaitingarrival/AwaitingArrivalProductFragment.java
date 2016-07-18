@@ -9,12 +9,14 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -49,6 +51,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     private MainActivity mActivity;
     private Product mProduct;
     private View mRootView;
+    private RecyclerView mRecyclerView;
+    private LinearLayout mNoPhotosLayout;
 
     private static boolean isDeleteClicked;
 
@@ -77,6 +81,13 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         intentFilter.addAction(ACTION_UPDATE);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mProduct = getArguments().getParcelable(PRODUCT_ARG);
+
+        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.awaitingArrivalDetailsImageList);
+        mNoPhotosLayout = (LinearLayout) mRootView.findViewById(R.id.noPhotoLayoutHolder);
+
+        mRecyclerView.setVisibility(View.GONE);
+        mNoPhotosLayout.setVisibility(View.VISIBLE);
+
         bindViews(mRootView);
         mProductId.setText(mProduct.getProductId());
         mProductName.setText(mProduct.getProductName());
@@ -219,9 +230,9 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     }
     AlertDialog dialog = null;
     private void deleteItem(final Product product) {
-        dialog = mActivity.getDialog("Delete", getString(R.string.confirm_deleting) + " "
+        dialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
                 + mProduct.getProductName() + "?", R.mipmap.ic_delete_box_24dpi,
-                "Yes", new View.OnClickListener() {
+                getString(R.string.yes), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(
@@ -233,7 +244,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
                         Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
                         mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
                     }
-                }, "No", new View.OnClickListener() {
+                }, getString(R.string.no), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (dialog != null) dialog.dismiss();

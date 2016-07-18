@@ -323,6 +323,11 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
     }
 
     @Override
+    public <P extends PUSParcel> void onCallCourierClick(P item, int position) {
+
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mActivity.unregisterReceiver(mTitleReceiver);
