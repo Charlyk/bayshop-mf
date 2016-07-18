@@ -308,7 +308,7 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
                     public void onClick(View v) {
                         mAlertDialog.dismiss();
                     }
-                });
+                }, R.color.colorGreenAction);
         mAlertDialog.show();
     }
 
@@ -318,12 +318,27 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
     }
 
     @Override
-    public <P extends PUSParcel> void onSignatureOnMapClick(P item, int position) {
+    public <P extends PUSParcel> void onCallCourierClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onPayTheDebtClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onSignatureClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onGeolocationClick(P item, int position) {
         mActivity.addFragment(ReceivedSignature.newInstance((Received) item), false);
     }
 
     @Override
-    public <P extends PUSParcel> void onCallCourierClick(P item, int position) {
+    public <P extends PUSParcel> void onStartTrackingClick(P item, int position) {
 
     }
 

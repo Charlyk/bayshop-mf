@@ -41,12 +41,12 @@
             android:title="@string/held_by_prohibition"/>
         <item
             android:id="@+id/nav_sent"
-            android:icon="@mipmap/sent"
+            android:icon="@mipmap/ic_sent_black_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/sent"/>
         <item
             android:id="@+id/nav_heldByCustoms"
-            android:icon="@mipmap/held_by_customs"
+            android:icon="@mipmap/ic_held_by_customs_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/held_by_customs"/>
         <item

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/colorAccent"
             tools:text="PUS231312312312"/>
 
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@android:color/black"
             tools:text="Notebook from USA"/>
 
@@ -49,8 +49,10 @@
                 android:id="@+id/inProcessingCreatedDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="@android:color/black"
-                tools:text="12 Mar 2016, 10:30"/>
+                tools:text="12 Mar 2016"/>
         </LinearLayout>
     </LinearLayout>
 

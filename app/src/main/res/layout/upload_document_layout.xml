@@ -6,20 +6,6 @@
               android:id="@+id/uploadDocumentLayout"
               android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/prohibitionHeldReasonLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="@string/this_product_is_held_by_customs"
-        android:textColor="@color/colorAccent"
-        android:drawableLeft="@mipmap/ic_vama_leuseni_48dp"
-        android:drawableStart="@mipmap/ic_vama_leuseni_48dp"/>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
@@ -53,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:drawableRight="@mipmap/ic_photo_24dp"
-            android:drawableEnd="@mipmap/ic_photo_24dp"
+            android:drawableStart="@mipmap/ic_photo_24dp"
+            android:drawableLeft="@mipmap/ic_photo_24dp"
             android:drawablePadding="6dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"

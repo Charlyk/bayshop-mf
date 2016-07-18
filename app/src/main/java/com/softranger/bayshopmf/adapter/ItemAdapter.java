@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by eduard on 28.04.16.
@@ -46,8 +47,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public ItemAdapter(Context context) {
         mContext = context;
         mInStockItems = new ArrayList<>();
-        input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        output = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -183,6 +182,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private String getFormattedDate(String createdDate) {
+        Date today  = new Date();
         Date date = new Date();
         String formattedDate = "";
         try {
@@ -191,6 +191,15 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             formattedDate = output.format(date);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            long diff = today.getTime() - date.getTime();
+            long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+            if (days > 0) {
+                formattedDate = formattedDate + " (" + days + " days ago)"; // TODO: 7/18/16 replace with string id
+            } else {
+                formattedDate = formattedDate + "(Today)"; // TODO: 7/18/16 replace with string id
+            }
         }
         return formattedDate;
     }

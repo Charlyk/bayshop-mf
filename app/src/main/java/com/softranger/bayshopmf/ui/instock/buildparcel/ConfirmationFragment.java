@@ -191,7 +191,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
                             public void onClick(View v) {
                                 mAlertDialog.dismiss();
                             }
-                        }, null, null);
+                        }, null, null, 0);
                 mAlertDialog.show();
                 break;
             case R.id.confirmLocalDeliveryDetails:
@@ -202,7 +202,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
                             public void onClick(View v) {
                                 mAlertDialog.dismiss();
                             }
-                        }, null, null);
+                        }, null, null, 0);
                 mAlertDialog.show();
                 break;
             case R.id.confirmSentOnUserAlertDetails:
@@ -213,7 +213,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
                             public void onClick(View v) {
                                 mAlertDialog.dismiss();
                             }
-                        }, null, null);
+                        }, null, null, 0);
                 mAlertDialog.show();
                 break;
             case R.id.confirmAgreeTermsDetails:
@@ -224,7 +224,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
                             public void onClick(View v) {
                                 mAlertDialog.dismiss();
                             }
-                        }, null, null);
+                        }, null, null, 0);
                 mAlertDialog.show();
                 break;
         }

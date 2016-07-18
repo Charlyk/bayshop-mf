@@ -12,8 +12,7 @@
         android:layout_margin="17dp"
         android:gravity="center"
         android:text="@string/delivery_warning"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"/>
+        android:textColor="@color/colorAccent"/>
 
     <View
         android:layout_width="match_parent"

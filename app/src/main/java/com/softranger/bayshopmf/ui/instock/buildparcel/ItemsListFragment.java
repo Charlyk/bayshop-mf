@@ -204,14 +204,14 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
                         public void onClick(View v) {
                             mWeightAlert.dismiss();
                         }
-                    }, null, null);
+                    }, null, null, 0);
             mWeightAlert.show();
             return;
         }
 
 
         mBatteryDialog = mActivity.getDialog(getString(R.string.li_ion), getString(R.string.has_li_ion_battery),
-                R.mipmap.ic_battery_empty_24dp, getString(R.string.yes), new View.OnClickListener() {
+                R.mipmap.ic_battery_24dp, getString(R.string.yes), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mInForming.setHasBattery(true);
@@ -225,7 +225,7 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
                         mBatteryDialog.dismiss();
                         mActivity.addFragment(AddressesListFragment.newInstance(mInForming), true);
                     }
-                });
+                }, 0);
         mBatteryDialog.show();
     }
 
@@ -272,7 +272,7 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
     public void onDeleteClick(InStockItem inStockItem, final int position) {
         final InStockItem item = mAdapter.removeItem(position);
         updateTotals(mAdapter.getList());
-        if (mAdapter.getItemCount() > 0) {
+        if (mAdapter.getItemCount() > 1) {
             Snackbar.make(mRecyclerView, mActivity.getString(R.string.item_deleted), Snackbar.LENGTH_SHORT)
                     .setAction(mActivity.getString(R.string.undo), new View.OnClickListener() {
                         @Override

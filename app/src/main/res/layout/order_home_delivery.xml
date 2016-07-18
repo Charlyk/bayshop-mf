@@ -6,7 +6,15 @@
                 android:clickable="true"
                 android:background="?selectableItemBackground">
 
+    <View
+        android:id="@+id/topSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentTop="true"
+        android:background="#b1b1b1"/>
+
     <TextView
+        android:layout_below="@id/topSeparator"
         android:id="@+id/localDepotOrderTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

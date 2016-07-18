@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.model.Photo;
 
 import java.util.ArrayList;
 
@@ -18,10 +19,12 @@ import java.util.ArrayList;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.ViewHolder> {
+public class FirstStepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<InStockItem> mInStockItems;
     private OnItemClickListener mOnItemClickListener;
+
+    private static final int ALERT = 0, ITEM = 1;
 
     public FirstStepAdapter(ArrayList<InStockItem> inStockItems) {
         mInStockItems = inStockItems;
@@ -32,8 +35,8 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
     }
 
     public InStockItem removeItem(int position) {
-        InStockItem item = mInStockItems.get(position);
-        mInStockItems.remove(position);
+        InStockItem item = mInStockItems.get(position - 1);
+        mInStockItems.remove(position - 1);
         notifyItemRemoved(position);
         return item;
     }
@@ -53,25 +56,51 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.build_parcel_first_step_list_item, parent, false);
-        return new ViewHolder(view);
+    public int getItemViewType(int position) {
+        switch (position) {
+            case 0:
+                return ALERT;
+            default:
+                return ITEM;
+        }
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mInStockItem = mInStockItems.get(position);
-        holder.mMfLabel.setText(holder.mInStockItem.getParcelId());
-        holder.mNameLabel.setText(holder.mInStockItem.getName());
-        holder.mWeightLabel.setText(String.valueOf(((float) holder.mInStockItem.getWeight() / 1000)) + "kg.");
-        holder.mPriceLabel.setText(String.valueOf(holder.mInStockItem.getCurrency()
-                + holder.mInStockItem.getPrice()));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case ALERT: {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.warning_item,
+                        parent, false);
+                return new WarningHolder(view);
+            }
+            default: {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.build_parcel_first_step_list_item, parent, false);
+                return new ViewHolder(view);
+            }
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ViewHolder) {
+            ViewHolder viewHolder = (ViewHolder) holder;
+            viewHolder.mInStockItem = mInStockItems.get(position - 1);
+            viewHolder.mMfLabel.setText(viewHolder.mInStockItem.getParcelId());
+            viewHolder.mNameLabel.setText(viewHolder.mInStockItem.getName());
+            viewHolder.mWeightLabel.setText(String.valueOf(((float) viewHolder.mInStockItem.getWeight() / 1000)) + "kg.");
+            viewHolder.mPriceLabel.setText(String.valueOf(viewHolder.mInStockItem.getCurrency()
+                    + viewHolder.mInStockItem.getPrice()));
+        } else if (holder instanceof WarningHolder) {
+            WarningHolder warningHolder = (WarningHolder) holder;
+            // TODO: 7/18/16 replace the text below with the correct one
+            warningHolder.mLabel.setText("This is some warning for this screen, please pay attention to what is writen here.");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mInStockItems.size();
+        return mInStockItems.size() + 1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -97,6 +126,14 @@ public class FirstStepAdapter extends RecyclerView.Adapter<FirstStepAdapter.View
             if (mOnItemClickListener != null) {
                 mOnItemClickListener.onDeleteClick(mInStockItem, getAdapterPosition());
             }
+        }
+    }
+
+    public class WarningHolder extends RecyclerView.ViewHolder {
+        final TextView mLabel;
+        public WarningHolder(View itemView) {
+            super(itemView);
+            mLabel = (TextView) itemView.findViewById(R.id.warningItemLabel);
         }
     }
 

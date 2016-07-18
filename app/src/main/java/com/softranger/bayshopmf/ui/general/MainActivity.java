@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -563,19 +564,26 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
      * @param onPositiveButtonClickListener click listener for positive button(can be null)
      * @param negativeButtonText            text for left side button
      * @param onNegativeButtonClickListener click listener for negative button(can be null)
+     * @param color                         color for top dialog bar
      * @return an Alert Dialog with specified data to be shown on the screen
      */
     public AlertDialog getDialog(@NonNull String title, @NonNull String message, @DrawableRes int imageResource,
                                  @Nullable String positiveButtonText,
                                  @Nullable View.OnClickListener onPositiveButtonClickListener,
-                                 @Nullable String negativeButtonText, @Nullable View.OnClickListener onNegativeButtonClickListener) {
+                                 @Nullable String negativeButtonText, @Nullable View.OnClickListener onNegativeButtonClickListener,
+                                 @ColorRes int color) {
         // inflate dialog layout and bind all views
         View dialogLayout = LayoutInflater.from(this).inflate(R.layout.alert_dialog_layout, null, false);
+        LinearLayout topDialogBar = (LinearLayout) dialogLayout.findViewById(R.id.topDialogBarLayout);
         ImageView dialogImage = (ImageView) dialogLayout.findViewById(R.id.alertDialogImageLabel);
         TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.alertDialogTitleLabel);
         TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.alertDialogMessageLabel);
         Button negativeButton = (Button) dialogLayout.findViewById(R.id.alertDialogNegativeButton);
         Button positiveButton = (Button) dialogLayout.findViewById(R.id.alertDialogPositiveButton);
+
+        // set top bar background
+        if (color == 0) color = R.color.colorAccent;
+        topDialogBar.setBackgroundColor(getResources().getColor(color));
 
         // set not null data, as text and image for dialog
         dialogTitle.setText(title);

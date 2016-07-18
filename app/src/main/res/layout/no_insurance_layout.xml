@@ -6,57 +6,65 @@
                 android:background="?selectableItemBackground"
                 android:clickable="true">
 
-    <!-- Want insurance selector -->
-    <RadioButton
-        android:id="@+id/noInsuranceRadioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/noInsuranceTitle"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:clickable="false"/>
+    <RelativeLayout
+        android:id="@+id/noInsuranceButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <!-- Shield image view -->
-    <ImageView
-        android:id="@+id/noInsuranceWarningImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_warning_24dpi"/>
+        <!-- Want insurance selector -->
+        <RadioButton
+            android:id="@+id/noInsuranceRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:clickable="false"/>
 
-    <!-- Want insurance title -->
-    <TextView
-        android:id="@+id/noInsuranceTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/noInsuranceWarningImage"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_toEndOf="@+id/noInsuranceWarningImage"
-        android:layout_toLeftOf="@+id/noInsuranceRadioButton"
-        android:layout_toRightOf="@+id/noInsuranceWarningImage"
-        android:layout_toStartOf="@+id/noInsuranceRadioButton"
-        android:text="@string/i_refuse_the_insurance"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+        <!-- Shield image view -->
+        <ImageView
+            android:id="@+id/noInsuranceWarningImage"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@mipmap/ic_warning_24dpi"/>
+
+        <!-- Want insurance title -->
+        <TextView
+            android:id="@+id/noInsuranceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/noInsuranceWarningImage"
+            android:layout_toLeftOf="@+id/noInsuranceRadioButton"
+            android:layout_toRightOf="@+id/noInsuranceWarningImage"
+            android:layout_toStartOf="@+id/noInsuranceRadioButton"
+            android:text="@string/i_refuse_the_insurance"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+
+
 
     <!-- Insurance descritpion -->
     <TextView
         android:id="@+id/noInsuranceDescriptionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/noInsuranceTitle"
-        android:layout_marginTop="10dp"
+        android:layout_below="@id/noInsuranceButtonLayout"
+        android:layout_marginTop="17dp"
         android:ellipsize="end"
-        android:maxLines="4"
+        android:maxLines="3"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:text="@string/lorem_ipsum"/>
@@ -70,7 +78,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/noInsuranceDescriptionLabel"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="?selectableItemBackground"

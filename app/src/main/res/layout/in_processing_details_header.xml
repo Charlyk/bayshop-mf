@@ -6,13 +6,19 @@
               android:background="@android:color/white"
               android:orientation="vertical">
 
+    <include layout="@layout/warning_with_icon"/>
+
     <include layout="@layout/sent_parcels_header_layout"/>
 
     <include layout="@layout/upload_document_layout"/>
 
+    <include layout="@layout/signature_geolocation_btn"/>
+
     <include layout="@layout/prohibition_details_header"/>
 
     <include layout="@layout/order_home_delivery"/>
+
+    <include layout="@layout/pay_debt_layout"/>
 
     <include layout="@layout/take_to_delivery_header"/>
 
@@ -50,8 +56,6 @@
         android:background="#b1b1b1"/>
 
     <include layout="@layout/second_step_list_item"/>
-
-    <include layout="@layout/signature_geolocation_btn"/>
 
     <TableLayout
         android:layout_width="match_parent"

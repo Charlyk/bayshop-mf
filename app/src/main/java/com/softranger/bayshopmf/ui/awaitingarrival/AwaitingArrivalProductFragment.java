@@ -249,7 +249,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
                     public void onClick(View v) {
                         if (dialog != null) dialog.dismiss();
                     }
-                });
+                }, 0);
         if (dialog != null) dialog.show();
     }
 

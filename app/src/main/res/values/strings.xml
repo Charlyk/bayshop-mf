@@ -69,7 +69,7 @@
     <string name="tracking_number">Tracking number:</string>
     <string name="link_to_the_product_ordered_by_you">Link to the product ordered by you:</string>
     <string name="held_by_prohibition">Held by prohibition</string>
-    <string name="created_on">"Created on: "</string>
+    <string name="created_on">"Created: "</string>
     <string name="complete">" complete"</string>
 
     <string name="cancel">Cancel</string>
@@ -228,7 +228,7 @@
     <string name="all">All</string>
     <string name="total_amount">Total amount</string>
     <string name="date_and_time">Date and time</string>
-    <string name="amount">Amount</string>
+    <string name="amount">Transfer balance</string>
     <string name="transaction_id">Transaction ID</string>
     <string name="order_delivery">Order delivery</string>
     <string name="this_product_is_held_by_customs">This product is held by customs because of insufficient data about product, please upload a document or a photo which can confirm your parcel content</string>
@@ -249,4 +249,8 @@
     <string name="_12345678901234567890">12345678901234567890</string>
     <string name="kg">---</string>
     <string name="take_to_delivery_alert">This product was took by courier and will be delivered to you shortly.</string>
+    <string name="pay_the_debt">Pay the debt</string>
+    <string name="geolocation">Geolocation</string>
+    <string name="signature">Signature</string>
+    <string name="track_parcel">Track parcel</string>
 </resources>

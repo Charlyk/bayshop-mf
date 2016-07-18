@@ -464,7 +464,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                     public void onClick(View v) {
                         if (mAlertDialog != null) mAlertDialog.dismiss();
                     }
-                });
+                }, 0);
         if (mAlertDialog != null) mAlertDialog.show();
     }
 
