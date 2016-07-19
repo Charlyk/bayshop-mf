@@ -48,6 +48,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.ui.ShippingCalculatorActivity;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
@@ -463,6 +464,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case R.id.nav_paymentHistory:
                 Intent payment = new Intent(this, PaymentActivity.class);
                 startActivity(payment);
+                break;
+            case R.id.nav_shippingCalculator:
+                Intent calculator = new Intent(this, ShippingCalculatorActivity.class);
+                startActivity(calculator);
                 break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);

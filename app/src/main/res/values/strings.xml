@@ -248,9 +248,14 @@
     <string name="_0_0">0.0</string>
     <string name="_12345678901234567890">12345678901234567890</string>
     <string name="kg">---</string>
+    <string name="kilos">kg.</string>
     <string name="take_to_delivery_alert">This product was took by courier and will be delivered to you shortly.</string>
     <string name="pay_the_debt">Pay the debt</string>
     <string name="geolocation">Geolocation</string>
     <string name="signature">Signature</string>
     <string name="track_parcel">Track parcel</string>
+    <string name="volume">Volume (cm)</string>
+    <string name="z">Z</string>
+    <string name="y">Y</string>
+    <string name="x">X</string>
 </resources>

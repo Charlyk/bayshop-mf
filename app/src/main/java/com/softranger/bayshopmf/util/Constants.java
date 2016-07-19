@@ -301,16 +301,17 @@ public class Constants {
         /**
          * GET
          * Create an url to obtain user payment
-         * @param period
-         * @return
+         * @param period {@link Constants.Period}
+         * @return url to obtain payment history from server with the selected interval
          */
         public static String urlUserBalance(Period period) {
             return URL + BALANCE + OPTION_PERIOD + period.getPeriod();
         }
 
         /**
-         *
-         * @return
+         * GET
+         * Create url to obtain all user addresses from server
+         * @return url with which we can obtain a list of addresses added by current user
          */
         public static String urlAddressesList() {
             return URL + MEMBER_ADDRESS;

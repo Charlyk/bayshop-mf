@@ -16,6 +16,8 @@ import android.widget.RadioGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.storages.StorageHolderFragment;
+import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -110,6 +112,13 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
                 mUsaSelector.setChecked(true);
                 break;
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Intent updateTitle = new Intent(MainActivity.ACTION_UPDATE_TITLE);
+        mActivity.sendBroadcast(updateTitle);
     }
 
     @Override

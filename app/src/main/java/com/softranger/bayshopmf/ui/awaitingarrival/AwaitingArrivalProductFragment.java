@@ -78,6 +78,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
+        intentFilter.addAction(MainActivity.ACTION_UPDATE_TITLE);
         intentFilter.addAction(ACTION_UPDATE);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mProduct = getArguments().getParcelable(PRODUCT_ARG);
@@ -128,6 +129,9 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
                     ApiClient.getInstance().getRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mProduct.getID())), mHandler);
                     Intent refresh = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
                     mActivity.sendBroadcast(refresh);
+                    break;
+                case MainActivity.ACTION_UPDATE_TITLE:
+                    mActivity.setToolbarTitle(getString(R.string.awaiting_arrival), true);
                     break;
             }
         }
