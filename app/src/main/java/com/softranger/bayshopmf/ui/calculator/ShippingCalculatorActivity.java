@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui;
+package com.softranger.bayshopmf.ui.calculator;
 
 import android.os.Handler;
 import android.os.Looper;

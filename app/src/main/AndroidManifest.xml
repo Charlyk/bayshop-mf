@@ -79,7 +79,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbtZmtnHa-hMA_MFjkGRGBuaecJCGhXo4"/>
 
-        <activity android:name=".ui.ShippingCalculatorActivity">
+        <activity android:name=".ui.calculator.ShippingCalculatorActivity">
         </activity>
     </application>
 
