@@ -178,6 +178,8 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     public void onDestroyView() {
         super.onDestroyView();
         mActivity.unregisterReceiver(mTitleReceiver);
+        Intent intent = new Intent(MainActivity.ACTION_UPDATE_TITLE);
+        mActivity.sendBroadcast(intent);
     }
 
     @Override
