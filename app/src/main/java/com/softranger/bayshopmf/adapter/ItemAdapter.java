@@ -119,7 +119,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // and if it's true then we need to show the checkbox used to select multiple items
             // to order a home delivery otherwise hide that check box
             if (mInStockItems.get(position) instanceof LocalDepot) {
-                processingHolder.mCreatedDateTitle.setText(mContext.getString(R.string.packed_time) + " ");
+                processingHolder.mCreatedDateTitle.setText(mContext.getString(R.string.created_on) + " ");
             }
 
             // check if the item is an instance of either InProcessing or packed object

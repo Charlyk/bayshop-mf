@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.softranger.bayshopmf.ui.contact.SearchMailActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbarAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:navigationIcon="@mipmap/ic_back_24dp"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/toolbarAppBarLayout"
+        android:id="@+id/mailsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/mail_list_item"/>
+</RelativeLayout>

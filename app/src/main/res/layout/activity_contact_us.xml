@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context=".ui.storages.StorageHolderFragment">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbarAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:navigationIcon="@mipmap/ic_back_24dp">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Inner Mail"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"/>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/mailActivityTabBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_below="@id/toolbarAppBarLayout"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextColor="#898989"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mailActivityViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mailActivityTabBarLayout"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/mailActivityTabBarLayout"
+        android:background="@drawable/drop_shadow"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/mailActivityProgressBar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/composeMailButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="composeMail"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        fab:fab_colorNormal="@color/colorGreenAction"
+        fab:fab_colorPressed="@color/colorGreenActionDark"
+        fab:fab_plusIconColor="@android:color/white"
+        fab:fab_title="Create parcel"
+        fab:fab_icon="@mipmap/ic_button_24dp"
+        fab:fab_size="normal"/>
+</RelativeLayout>

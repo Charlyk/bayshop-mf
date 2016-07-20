@@ -81,6 +81,10 @@
 
         <activity android:name=".ui.calculator.ShippingCalculatorActivity">
         </activity>
+        <activity android:name=".ui.contact.ContactUsActivity">
+        </activity>
+        <activity android:name=".ui.contact.SearchMailActivity">
+        </activity>
     </application>
 
 </manifest>

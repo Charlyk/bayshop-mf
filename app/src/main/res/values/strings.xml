@@ -258,4 +258,10 @@
     <string name="z">Z</string>
     <string name="y">Y</string>
     <string name="x">X</string>
+    <string name="orders">Orders</string>
+    <string name="parcels">Parcels</string>
+    <string name="personal">Personal</string>
+    <string name="system">System</string>
+    <string name="read_status">Change status</string>
+    <string name="search_mails">Search mails</string>
 </resources>

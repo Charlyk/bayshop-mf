@@ -49,6 +49,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
+import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
@@ -416,6 +417,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        boolean closeDrawer = true;
         switch (id) {
             case R.id.nav_inStock:
                 selectedFragment = SelectedFragment.IN_STOCK;
@@ -460,17 +462,28 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case R.id.nav_profileSettings:
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
+                closeDrawer = false;
                 break;
             case R.id.nav_paymentHistory:
                 Intent payment = new Intent(this, PaymentActivity.class);
                 startActivity(payment);
+                closeDrawer = false;
                 break;
             case R.id.nav_shippingCalculator:
                 Intent calculator = new Intent(this, ShippingCalculatorActivity.class);
                 startActivity(calculator);
+                closeDrawer = false;
+                break;
+            case R.id.nav_contactUs:
+                Intent contactUs = new Intent(this, ContactUsActivity.class);
+                startActivity(contactUs);
+                closeDrawer = false;
                 break;
         }
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+        if (closeDrawer)
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+
         if (mActionMenu.isExpanded()) {
             mActionMenu.collapse();
             mFabBackground.setVisibility(View.GONE);
