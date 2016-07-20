@@ -85,6 +85,8 @@
         </activity>
         <activity android:name=".ui.contact.SearchMailActivity">
         </activity>
+        <activity android:name=".ui.addresses.WarehouseAddressesActivity">
+        </activity>
     </application>
 
 </manifest>

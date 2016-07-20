@@ -41,9 +41,8 @@ import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragmen
 import com.softranger.bayshopmf.ui.pus.InProcessingDetails;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
-import com.softranger.bayshopmf.ui.general.AddressesListFragment;
+import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
-import com.softranger.bayshopmf.ui.pus.ToDeliveryDetails;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 

@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.general;
+package com.softranger.bayshopmf.ui.addresses;
 
 
 import android.app.Fragment;
@@ -24,8 +24,8 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.packages.InForming;
-import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ShippingMethodFragment;
 import com.softranger.bayshopmf.util.ParentFragment;

@@ -1,0 +1,388 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.softranger.bayshopmf.ui.addresses.WarehouseAddressFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressesFullNameTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/full_name"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/addressesFullNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bay Shop"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/addressesFullNameCopyButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/copy"
+                android:textColor="@color/colorGreenAction"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressesLineOneTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address_line_1"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/addressesLineOneLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="950 Ridge RD, UNIT B-11"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/addressesLineOneCopyButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/copy"
+                android:textColor="@color/colorGreenAction"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressesLineTwoTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address_line_2"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/addressesLineTwoLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ste #LM19706"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/addressesLineTwoCopyButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/copy"
+                android:textColor="@color/colorGreenAction"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressesCityTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/city"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/addressesCityLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Claymont"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/addressesCityCopyButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/copy"
+                android:textColor="@color/colorGreenAction"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressesStateTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/state"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/addressesStateLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DE (Delaware)"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/addressesStateCopyButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/copy"
+                android:textColor="@color/colorGreenAction"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressesPostalCodeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/postal_code"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/addressesPostalCodeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="19703"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/addressesPostalCodeCopyButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/copy"
+                android:textColor="@color/colorGreenAction"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressesCountryTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/country"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/addressesCountryLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bay Shop"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/addressesCountryCopyButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/copy"
+                android:textColor="@color/colorGreenAction"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addressesPhoneNumberTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/addressesPhoneNumberLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bay Shop"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/addressesPhoneNumberCopyButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/copy"
+                android:textColor="@color/colorGreenAction"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+    </LinearLayout>
+</ScrollView>

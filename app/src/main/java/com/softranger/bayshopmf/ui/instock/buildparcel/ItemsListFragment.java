@@ -25,7 +25,7 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.general.AddressesListFragment;
+import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;

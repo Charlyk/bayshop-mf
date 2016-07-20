@@ -264,4 +264,11 @@
     <string name="system">System</string>
     <string name="read_status">Change status</string>
     <string name="search_mails">Search mails</string>
+    <string name="warehouse_addresses">Warehouse addresses</string>
+    <string name="copy">Copy</string>
+    <string name="full_name">Full name</string>
+    <string name="address_line_1">Address line 1</string>
+    <string name="address_line_2">Address line 2</string>
+    <string name="state">State</string>
+    <string name="copied">Copied to clipboard</string>
 </resources>

@@ -48,6 +48,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
 import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
 import com.softranger.bayshopmf.util.ParentActivity;
@@ -477,6 +478,11 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case R.id.nav_contactUs:
                 Intent contactUs = new Intent(this, ContactUsActivity.class);
                 startActivity(contactUs);
+                closeDrawer = false;
+                break;
+            case R.id.nav_addresses:
+                Intent addresses = new Intent(this, WarehouseAddressesActivity.class);
+                startActivity(addresses);
                 closeDrawer = false;
                 break;
         }

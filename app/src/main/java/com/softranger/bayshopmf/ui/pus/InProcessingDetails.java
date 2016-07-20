@@ -26,7 +26,7 @@ import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.model.packages.Received;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
-import com.softranger.bayshopmf.ui.general.AddressesListFragment;
+import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
