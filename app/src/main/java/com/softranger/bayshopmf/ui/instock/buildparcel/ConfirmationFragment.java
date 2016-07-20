@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -151,7 +152,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
         mActivity.unregisterReceiver(mTitleReceiver);
     }
 
-    AlertDialog mAlertDialog;
+    private AlertDialog mAlertDialog;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -175,13 +176,21 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
                     Snackbar.make(mFinishAndSend, "Please agree with our terms and condition first", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
-                isButtonClicked = true;
-                mActivity.toggleLoadingProgress(true);
-                RequestBody body = new FormBody.Builder()
-                        .add("useAdditionalMaterials", String.valueOf(mInForming.isAdditionalPackage() ? 1 : 0))
-                        .add("sentOnUserAlert", String.valueOf(mInForming.isSentOnUserAlert() ? 1 : 0))
-                        .build();
-                ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(7, String.valueOf(mInForming.getId())), mHandler);
+
+                mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.parcel_confirmation),
+                        R.mipmap.ic_parcel_process_44dp, getString(R.string.parcel_in_process), getString(R.string.parcel_in_place),
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                isButtonClicked = true;
+                                mActivity.toggleLoadingProgress(true);
+                                RequestBody body = new FormBody.Builder()
+                                        .add("useAdditionalMaterials", String.valueOf(mInForming.isAdditionalPackage() ? 1 : 0))
+                                        .add("sentOnUserAlert", String.valueOf(mInForming.isSentOnUserAlert() ? 1 : 0))
+                                        .build();
+                                ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(7, String.valueOf(mInForming.getId())), mHandler);
+                            }
+                        }), false);
                 break;
             case R.id.confirmAdditionalPackageDetails:
                 mAlertDialog = mActivity.getDialog("Additional package", "Here will be the details of this element, " +

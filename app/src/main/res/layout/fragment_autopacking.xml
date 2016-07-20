@@ -17,7 +17,6 @@
         android:gravity="center"
         android:maxLines="3"
         android:layout_margin="16dp"
-        android:textSize="18sp"
         android:layout_gravity="center_horizontal"
         android:text="@string/lorem_ipsum"/>
 
@@ -44,14 +43,23 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
 
+        <ImageView
+            android:id="@+id/autoPackingTitleIcon"
+            android:layout_width="26dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_auto_packaging_36dp"/>
+
         <TextView
             android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_toRightOf="@id/autoPackingTitleIcon"
+            android:layout_toEndOf="@id/autoPackingTitleIcon"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_toLeftOf="@id/autopackingUseSwitch"
             android:layout_toStartOf="@id/autopackingUseSwitch"
             android:layout_centerVertical="true"
@@ -81,10 +89,13 @@
 
             <ImageView
                 android:id="@+id/autopackingAddressImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
+                android:src="@mipmap/ic_address_36dp"
                 android:layout_alignParentStart="true"
                 android:contentDescription="@string/addresses"/>
 
@@ -95,7 +106,7 @@
                 android:textColor="@android:color/black"
                 android:layout_toRightOf="@id/autopackingAddressImage"
                 android:layout_toEndOf="@id/autopackingAddressImage"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:text="@string/addresses"/>
 
             <TextView
@@ -124,8 +135,11 @@
 
             <ImageView
                 android:id="@+id/autopackingShippingMethodImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@mipmap/ic_shipping_by_36dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
@@ -138,7 +152,7 @@
                 android:textColor="@android:color/black"
                 android:layout_toRightOf="@id/autopackingShippingMethodImage"
                 android:layout_toEndOf="@id/autopackingShippingMethodImage"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:text="@string/shipping_method"/>
 
             <TextView
@@ -146,6 +160,8 @@
                 android:layout_below="@id/autopackingShippingMethodTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/autopackingShippingMethodImage"
+                android:layout_toEndOf="@id/autopackingShippingMethodImage"
                 tools:text="BayShop Air Post"/>
         </RelativeLayout>
 
@@ -165,9 +181,12 @@
 
             <ImageView
                 android:id="@+id/autopackingInsuranceImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_alignParentStart="true"
+                android:src="@mipmap/ic_insurance_36dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/insurance"/>
@@ -179,7 +198,7 @@
                 android:textColor="@android:color/black"
                 android:layout_toRightOf="@id/autopackingInsuranceImage"
                 android:layout_toEndOf="@id/autopackingInsuranceImage"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:text="@string/insurance"/>
 
             <TextView
@@ -199,9 +218,10 @@
 
         <Button
             style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_margin="16dp"
+            android:minWidth="100dp"
             android:textColor="@android:color/white"
             android:background="@drawable/green_button_bg"
             android:text="@string/save"

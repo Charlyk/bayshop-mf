@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
+import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.model.packages.CustomsHeld;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.packages.InProcessing;
@@ -483,7 +484,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.storageItemsOrderDeliveryBtn:
-                mActivity.addFragment(AddressesListFragment.newInstance(true), false);
+                mActivity.addFragment(AddressesListFragment.newInstance(SecondStepAdapter.ButtonType.select), false);
                 break;
         }
     }

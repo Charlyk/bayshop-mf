@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -55,16 +56,19 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     private InForming mInForming;
     private ArrayList<Address> mAddresses;
     private static boolean isPost;
+    private SecondStepAdapter.ButtonType mButtonType;
+    private AlertDialog mDeleteDialog;
+    private static boolean deleteClicked;
 
     public AddressesListFragment() {
         // Required empty public constructor
     }
 
-    public static AddressesListFragment newInstance(boolean showSelect) {
+    public static AddressesListFragment newInstance(SecondStepAdapter.ButtonType buttonType) {
         Bundle args = new Bundle();
-        args.putBoolean(SHOW_SELECT_ARG, showSelect);
         AddressesListFragment fragment = new AddressesListFragment();
         fragment.setArguments(args);
+        fragment.mButtonType = buttonType;
         return fragment;
     }
 
@@ -122,8 +126,7 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
         mRecyclerView = (RecyclerView) view.findViewById(R.id.buildSecondStepList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAddresses = new ArrayList<>();
-        boolean showSelectButton = getArguments().getBoolean(SHOW_SELECT_ARG);
-        mAdapter = new SecondStepAdapter(mAddresses, showSelectButton);
+        mAdapter = new SecondStepAdapter(mAddresses, mButtonType);
         mAdapter.setOnAddressClickListener(this);
 
         if (getArguments().containsKey(IN_FORMING_ARG)) {
@@ -146,6 +149,7 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     }
 
     private void getAddressesList(boolean isPost) {
+        mActivity.toggleLoadingProgress(true);
         if (isPost) {
             RequestBody body = new FormBody.Builder()
                     .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
@@ -206,6 +210,26 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     }
 
     @Override
+    public void onDeleteAddressClick(final Address address, final int position) {
+        String message = getString(R.string.confirm_address_deleteing) + " " + address.getClientName() + " " + getString(R.string.address);
+        mDeleteDialog = mActivity.getDialog(getString(R.string.delete_address), message, R.mipmap.ic_delete_address_24dp, getString(R.string.confirm), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.removeItem(position);
+                deleteClicked = true;
+                ApiClient.getInstance().delete(Constants.Api.urlGetAddress(String.valueOf(address.getId())), mHandler);
+                mDeleteDialog.dismiss();
+            }
+        }, getString(R.string.cancel), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDeleteDialog.dismiss();
+            }
+        }, 0);
+        mDeleteDialog.show();
+    }
+
+    @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
         return true;
     }
@@ -254,31 +278,35 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
 
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
-        mAddresses.clear();
-        JSONObject data = response.getJSONObject("data");
-        JSONArray addressesJSON = data.getJSONArray("addresses");
-        for (int i = 0; i < addressesJSON.length(); i++) {
-            JSONObject a = addressesJSON.getJSONObject(i);
-            String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
-            Address address = new Address.Builder()
-                    .id(a.getInt("id"))
-                    .clientName(name)
-                    .firstName(a.getString("shipping_first_name"))
-                    .lastName(a.getString("shipping_last_name"))
-                    .street(a.getString("shipping_address"))
-                    .city(a.getString("shipping_city"))
-                    .country(a.getString("countryTitle"))
-                    .postalCode(a.getString("shipping_zip"))
-                    .phoneNumber(a.optString("phone", ""))
-                    .phoneCode(a.optString("shipping_phone_code", ""))
-                    .build();
-            mAddresses.add(address);
+        if (!deleteClicked) {
+            mAddresses.clear();
+            JSONObject data = response.getJSONObject("data");
+            JSONArray addressesJSON = data.getJSONArray("addresses");
+            for (int i = 0; i < addressesJSON.length(); i++) {
+                JSONObject a = addressesJSON.getJSONObject(i);
+                String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
+                Address address = new Address.Builder()
+                        .id(a.getInt("id"))
+                        .clientName(name)
+                        .firstName(a.getString("shipping_first_name"))
+                        .lastName(a.getString("shipping_last_name"))
+                        .street(a.getString("shipping_address"))
+                        .city(a.getString("shipping_city"))
+                        .country(a.getString("countryTitle"))
+                        .postalCode(a.getString("shipping_zip"))
+                        .phoneNumber(a.optString("phone", ""))
+                        .phoneCode(a.optString("shipping_phone_code", ""))
+                        .build();
+                mAddresses.add(address);
+            }
+            mAdapter.refreshList();
+        } else {
+            deleteClicked = false;
         }
-        mAdapter.refreshList();
     }
 
     @Override
-    public void onHandleMessageEnd() {
+    public void finallyMethod() {
         mActivity.toggleLoadingProgress(false);
     }
 }

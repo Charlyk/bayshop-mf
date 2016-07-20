@@ -111,6 +111,7 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
         mSaveButton = (Button) view.findViewById(R.id.userDataSaveButton);
         mSaveButton.setOnClickListener(this);
 
+        mActivity.toggleLoadingProgress(true);
         ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
         setDataOnPosition();
         return view;
@@ -278,6 +279,11 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     @Override
     public void onHandleMessageEnd() {
         isSaveClicked = false;
+    }
+
+    @Override
+    public void finallyMethod() {
+        mActivity.toggleLoadingProgress(false);
     }
 
     private Handler mDownloadHandler = new Handler(Looper.getMainLooper()) {

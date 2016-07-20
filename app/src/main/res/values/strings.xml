@@ -271,4 +271,11 @@
     <string name="address_line_2">Address line 2</string>
     <string name="state">State</string>
     <string name="copied">Copied to clipboard</string>
+    <string name="divide_parcels">Divide parcels</string>
+    <string name="delete_address">Delete address</string>
+    <string name="confirm_address_deleteing">Please confirm that you want to delete</string>
+    <string name="address">address</string>
+    <string name="parcel_confirmation">Parcel confirmation</string>
+    <string name="parcel_in_process">Your parcel is in process.</string>
+    <string name="parcel_in_place">The parcel will be packed shortly, you will be notified once it\'s done.</string>
 </resources>

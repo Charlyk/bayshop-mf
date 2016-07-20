@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
+import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.Photo;
 import com.softranger.bayshopmf.model.Product;
@@ -314,7 +315,7 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
 
     @Override
     public <P extends PUSParcel> void onSelectAddressClick(P item, int position) {
-        mActivity.addFragment(AddressesListFragment.newInstance(true), true);
+        mActivity.addFragment(AddressesListFragment.newInstance(SecondStepAdapter.ButtonType.select), true);
     }
 
     @Override

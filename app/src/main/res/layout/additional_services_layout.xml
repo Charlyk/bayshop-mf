@@ -8,7 +8,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
         android:textColor="@color/colorAccent"
         android:padding="16dp"
         android:gravity="center"
@@ -17,6 +16,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
+        android:id="@+id/leftLayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,26 +25,22 @@
         android:layout_gravity="center"
         android:layout_marginBottom="10dp">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:src="@drawable/generic_img"
-            android:layout_weight="1"
-            android:id="@+id/imageView3"/>
-
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1">
             
             <LinearLayout
                 android:id="@+id/inStockAddsCombineParcelsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -64,10 +60,11 @@
 
             <LinearLayout
                 android:id="@+id/inStockAddsOrderCheckBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -83,13 +80,48 @@
                     android:layout_height="wrap_content"
                     android:text="@string/you_can_order_product_checking"/>
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rightLayout"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1">
 
             <LinearLayout
-                android:id="@+id/inStockAddsAdditionalPhotosBtn"
-                android:layout_width="wrap_content"
+                android:id="@+id/inStockAddsDivideParcelsBtn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_devide_50dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/divide_parcels"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/inStockAddsAdditionalPhotosBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

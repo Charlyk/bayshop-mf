@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.adapter.SettingsAdapter;
 import com.softranger.bayshopmf.model.Setting;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
@@ -84,7 +85,7 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.OnSett
                 mActivity.setToolbarTitle(mActivity.getString(R.string.user_data), true);
                 break;
             case ADDRESSES:
-                mActivity.addFragment(AddressesListFragment.newInstance(false), true);
+                mActivity.addFragment(AddressesListFragment.newInstance(SecondStepAdapter.ButtonType.delete), false);
                 mActivity.setToolbarTitle(mActivity.getString(R.string.addresses), true);
                 break;
             case CHANGE_PASSWORD:
@@ -92,7 +93,7 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.OnSett
                 mActivity.setToolbarTitle(mActivity.getString(R.string.change_password), true);
                 break;
             case REGIONAL_SETTINGS:
-                mActivity.addFragment(RegionalFragment.newInstance(), true);
+                mActivity.addFragment(RegionalFragment.newInstance(), false);
                 mActivity.setToolbarTitle(mActivity.getString(R.string.regional), true);
                 break;
             case AUTO_PACKAGING:

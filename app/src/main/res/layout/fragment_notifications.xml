@@ -32,8 +32,8 @@
 
         <ImageView
             android:id="@+id/notificationsInternalMailImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
             android:layout_alignParentLeft="true"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_centerVertical="true"
             android:text="@string/internal_mail"
             android:layout_toLeftOf="@+id/notificationsInternalMailSwitch"
@@ -81,8 +81,8 @@
 
         <ImageView
             android:id="@+id/notificationsSmsImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
             android:layout_alignParentLeft="true"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_toLeftOf="@id/notificationsSmsSwitch"
             android:layout_toStartOf="@+id/notificationsSmsSwitch"
             android:layout_toEndOf="@+id/notificationsSmsImage"
@@ -130,8 +130,8 @@
 
         <ImageView
             android:id="@+id/notificationsPushNotifImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
             android:layout_alignParentLeft="true"
@@ -145,7 +145,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_toLeftOf="@id/notificationsPushNotifSwitch"
             android:layout_toStartOf="@+id/notificationsPushNotifSwitch"
             android:layout_centerVertical="true"
@@ -179,8 +179,8 @@
 
         <ImageView
             android:id="@+id/notificationsEmailsImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
             android:layout_alignParentLeft="true"
@@ -194,7 +194,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_centerVertical="true"
             android:text="@string/emails"
             android:layout_toLeftOf="@+id/notificationsEmailsSwitch"

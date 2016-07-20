@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Address;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 import java.util.ArrayList;
@@ -26,12 +27,13 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
 
     private ArrayList<Address> mAddresses;
     private OnAddressClickListener mOnAddressClickListener;
-    private boolean mShowSelectButton;
+    private ButtonType mButtonType;
 
-    public SecondStepAdapter(ArrayList<Address> addresses, boolean showSelect) {
+    public SecondStepAdapter(ArrayList<Address> addresses, ButtonType buttonType) {
         mAddresses = addresses;
         sortListByName();
-        mShowSelectButton = showSelect;
+        if (buttonType == null) buttonType = ButtonType.select;
+        mButtonType = buttonType;
     }
 
     public void sortListByName() {
@@ -77,7 +79,19 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
         holder.mCountry.setText(holder.mAddressObj.getCountry());
         holder.mPostalCode.setText(holder.mAddressObj.getPostalCode());
         holder.mClientName.setText(holder.mAddressObj.getClientName());
-        holder.mSelectButton.setVisibility(mShowSelectButton ? View.VISIBLE : View.GONE);
+
+        switch (mButtonType) {
+            case none:
+                holder.mSelectButton.setVisibility(View.GONE);
+                break;
+            case select:
+                holder.mSelectButton.setVisibility(View.VISIBLE);
+                break;
+            case delete:
+                holder.mSelectButton.setText(Application.getInstance().getString(R.string.delete));
+                holder.mSelectButton.setTextColor(Application.getInstance().getResources().getColor(R.color.colorAccent));
+                break;
+        }
     }
 
     @Override
@@ -139,7 +153,15 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
             switch (v.getId()) {
                 case R.id.secondStepSelectBtn: {
                     if (mOnAddressClickListener != null) {
-                        mOnAddressClickListener.onSelectAddressClick(mAddressObj, getAdapterPosition());
+                        switch (mButtonType) {
+                            case select:
+                                mOnAddressClickListener.onSelectAddressClick(mAddressObj, getAdapterPosition());
+                                break;
+                            case delete:
+                                mOnAddressClickListener.onDeleteAddressClick(mAddressObj, getAdapterPosition());
+                                break;
+                        }
+
                     }
                     break;
                 }
@@ -164,5 +186,10 @@ public class SecondStepAdapter extends RecyclerView.Adapter<SecondStepAdapter.Vi
         void onSelectAddressClick(Address address, int position);
         void onAddToFavoritesClick(Address address, int position, ImageButton button);
         void onEditAddressClick(Address address, int position);
+        void onDeleteAddressClick(Address address, int position);
+    }
+
+    public enum ButtonType {
+        none, select, delete
     }
 }

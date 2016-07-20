@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -111,7 +112,7 @@ public class AutopackingFragment extends ParentFragment implements View.OnClickL
                 }
                 break;
             case R.id.autopackingAddressesButton:
-                mActivity.addFragment(AddressesListFragment.newInstance(true), true);
+                mActivity.addFragment(AddressesListFragment.newInstance(SecondStepAdapter.ButtonType.select), true);
                 break;
             case R.id.autopackingShippingMethodBtn:
 

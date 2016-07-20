@@ -578,115 +578,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         }
     }
 
-    /**
-     * Create an alert dialog with BayShop design
-     *
-     * @param title                         which will be shown in the dialog header
-     * @param message                       will be shown in dialog body
-     * @param imageResource                 will be shown at the left of title
-     * @param positiveButtonText            text for right side button
-     * @param onPositiveButtonClickListener click listener for positive button(can be null)
-     * @param negativeButtonText            text for left side button
-     * @param onNegativeButtonClickListener click listener for negative button(can be null)
-     * @param color                         color for top dialog bar
-     * @return an Alert Dialog with specified data to be shown on the screen
-     */
-    public AlertDialog getDialog(@NonNull String title, @NonNull String message, @DrawableRes int imageResource,
-                                 @Nullable String positiveButtonText,
-                                 @Nullable View.OnClickListener onPositiveButtonClickListener,
-                                 @Nullable String negativeButtonText, @Nullable View.OnClickListener onNegativeButtonClickListener,
-                                 @ColorRes int color) {
-        // inflate dialog layout and bind all views
-        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.alert_dialog_layout, null, false);
-        LinearLayout topDialogBar = (LinearLayout) dialogLayout.findViewById(R.id.topDialogBarLayout);
-        ImageView dialogImage = (ImageView) dialogLayout.findViewById(R.id.alertDialogImageLabel);
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.alertDialogTitleLabel);
-        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.alertDialogMessageLabel);
-        Button negativeButton = (Button) dialogLayout.findViewById(R.id.alertDialogNegativeButton);
-        Button positiveButton = (Button) dialogLayout.findViewById(R.id.alertDialogPositiveButton);
-
-        // set top bar background
-        if (color == 0) color = R.color.colorAccent;
-        topDialogBar.setBackgroundColor(getResources().getColor(color));
-
-        // set not null data, as text and image for dialog
-        dialogTitle.setText(title);
-        dialogMessage.setText(message);
-        dialogImage.setImageResource(imageResource);
-
-        // check and set buttons either text and listener or visibility to GONE
-        if (positiveButtonText != null) {
-            positiveButton.setText(positiveButtonText);
-            positiveButton.setOnClickListener(onPositiveButtonClickListener);
-        } else {
-            positiveButton.setVisibility(View.GONE);
-        }
-
-        if (negativeButtonText != null) {
-            negativeButton.setText(negativeButtonText);
-            negativeButton.setOnClickListener(onNegativeButtonClickListener);
-        } else {
-            negativeButton.setVisibility(View.GONE);
-        }
-
-        // Create the dialog with the given layout and return it
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
-                .setView(dialogLayout);
-        return dialogBuilder.create();
-    }
-
-    public AlertDialog getEditDialog(@NonNull String title, @NonNull String message, @DrawableRes int imageResource,
-                                     @Nullable String positiveButtonText,
-                                     @Nullable String negativeButtonText, int inputType,
-                                     @Nullable final OnEditDialogClickListener onEditDialogClickListener) {
-        // inflate dialog layout and bind all views
-        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.edit_text_dialog, null, false);
-        ImageView dialogImage = (ImageView) dialogLayout.findViewById(R.id.editDialogImageLabel);
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.editDialogTitleLabel);
-        final EditText dialogMessage = (EditText) dialogLayout.findViewById(R.id.editDialogInput);
-        Button negativeButton = (Button) dialogLayout.findViewById(R.id.editDialogNegativeButton);
-        Button positiveButton = (Button) dialogLayout.findViewById(R.id.editDialogPositiveButton);
-
-        // set not null data, as text and image for dialog
-        dialogTitle.setText(title);
-        dialogMessage.setText(message);
-        dialogImage.setImageResource(imageResource);
-
-        // check and set buttons either text and listener or visibility to GONE
-        if (positiveButtonText != null) {
-            positiveButton.setText(positiveButtonText);
-            positiveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onEditDialogClickListener != null) {
-                        onEditDialogClickListener.onPositiveClick(String.valueOf(dialogMessage.getText()));
-                    }
-                }
-            });
-        } else {
-            positiveButton.setVisibility(View.GONE);
-        }
-
-        if (negativeButtonText != null) {
-            negativeButton.setText(negativeButtonText);
-            negativeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onEditDialogClickListener != null) {
-                        onEditDialogClickListener.onNegativeClick();
-                    }
-                }
-            });
-        } else {
-            negativeButton.setVisibility(View.GONE);
-        }
-
-        // Create the dialog with the given layout and return it
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
-                .setView(dialogLayout);
-        return dialogBuilder.create();
-    }
-
     public void expandTextView(TextView tv) {
         ObjectAnimator animation = ObjectAnimator.ofInt(tv, "maxLines", 300);
         animation.setDuration(200).start();
@@ -703,13 +594,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         void onNegativeClick();
     }
 
-    public void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
+
 
     public Handler mDeleteHandler = new Handler(Looper.getMainLooper()) {
         @Override

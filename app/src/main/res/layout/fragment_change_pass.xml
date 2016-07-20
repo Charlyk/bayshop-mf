@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -8,93 +8,172 @@
               android:clickable="true"
               tools:context="com.softranger.bayshopmf.ui.settings.ChangePassFragment">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/changePasswordCurrentPassLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentTop="true"
+        android:layout_height="?actionBarSize"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/changePassWordCurrentPassInput"
-            android:inputType="textPassword"
+        <View
+            android:id="@+id/currentPassInputFocusIndicator"
+            android:layout_width="5dp"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"/>
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/currentPassIcon"
+            android:src="@mipmap/ic_change_password_36dp"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:drawableLeft="@mipmap/ic_change_password_36dp"
-            android:drawableStart="@mipmap/ic_change_password_36dp"
-            android:drawablePadding="16dp"
-            android:layout_height="40dp"
-            android:nextFocusDown="@+id/changePassWordNewPassInput"
-            android:background="@android:color/white"
-            android:hint="@string/current_password"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/currentPassIcon"
+            android:layout_toEndOf="@id/currentPassIcon"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_password"
+                android:id="@+id/currentPassTitleLabel"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/currentPassInput"/>
+        </LinearLayout>
+    </RelativeLayout>
 
     <View
-        android:id="@+id/changePasswordCurrentPassLayoutDivider"
         android:layout_width="match_parent"
-        android:layout_below="@+id/changePasswordCurrentPassLayout"
         android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#b1b1b1"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/changePasswordNewPassLayout"
-        android:layout_below="@+id/changePasswordCurrentPassLayoutDivider"
-        android:layout_marginTop="16dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_height="?actionBarSize"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/changePassWordNewPassInput"
-            android:inputType="textPassword"
+        <View
+            android:id="@+id/newPassInputFocusIndicator"
+            android:visibility="gone"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"/>
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/newPassIcon"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/ic_change_password_open_36dp"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:drawableLeft="@mipmap/ic_change_password_open_36dp"
-            android:drawableStart="@mipmap/ic_change_password_open_36dp"
-            android:drawablePadding="16dp"
-            android:nextFocusDown="@+id/changePassWordConfirmPassInput"
-            android:layout_height="40dp"
-            android:background="@android:color/white"
-            android:hint="@string/enter_a_new_password"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/newPassIcon"
+            android:layout_toEndOf="@id/newPassIcon"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_a_new_password"
+                android:id="@+id/newPassTitleLabel"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/newPassInput"/>
+        </LinearLayout>
+    </RelativeLayout>
 
     <View
-        android:id="@+id/changePasswordNewPassLayoutDivider"
-        android:layout_below="@+id/changePasswordNewPassLayout"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:background="#b1b1b1"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/changePasswordConfirmPassLayout"
-        android:layout_below="@+id/changePasswordNewPassLayoutDivider"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_height="?actionBarSize"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/changePassWordConfirmPassInput"
-            android:inputType="textPassword"
+        <View
+            android:id="@+id/confirmPassInputFocusIndicator"
+            android:layout_width="5dp"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"/>
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/confirmPassIcon"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/ic_change_password_open_36dp"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:drawableLeft="@mipmap/ic_change_password_open_36dp"
-            android:drawableStart="@mipmap/ic_change_password_open_36dp"
-            android:drawablePadding="16dp"
-            android:layout_height="40dp"
-            android:background="@android:color/white"
-            android:hint="@string/confirm_password"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/confirmPassIcon"
+            android:layout_toEndOf="@id/confirmPassIcon"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_password"
+                android:id="@+id/confirmPassTitleLabel"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/confirmPassInput"/>
+        </LinearLayout>
+    </RelativeLayout>
 
     <View
-        android:id="@+id/changePasswordConfirmPassLayoutDivider"
-        android:layout_below="@+id/changePasswordConfirmPassLayout"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#b1b1b1"/>
 
     <Button
@@ -102,9 +181,6 @@
         android:layout_width="wrap_content"
         android:minWidth="100dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/changePasswordConfirmPassLayoutDivider"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
         android:textSize="16sp"
         android:text="@string/save"
@@ -112,4 +188,4 @@
         android:background="@drawable/green_button_bg"
         android:textColor="@android:color/white"
         android:layout_gravity="end"/>
-</RelativeLayout>
+</LinearLayout>

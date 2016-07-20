@@ -41,7 +41,6 @@ public class RegionalFragment extends ParentFragment implements View.OnClickList
     private ArrayList<Country> mCountries;
     private ArrayList<Language> mLanguages;
     private Button mSaveBtn;
-    private ProgressBar mProgressBar;
     private LinearLayout mRegionalHolderLayout;
 
     private static boolean isSaveClicked;
@@ -69,7 +68,6 @@ public class RegionalFragment extends ParentFragment implements View.OnClickList
         mActivity = (SettingsActivity) getActivity();
 
         mSaveBtn = (Button) view.findViewById(R.id.regionalSaveButton);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.regionalProgressBar);
         mRegionalHolderLayout = (LinearLayout) view.findViewById(R.id.regionalHolderLayout);
         LinearLayout countryBtn = (LinearLayout) view.findViewById(R.id.regionalCountryButton);
         LinearLayout languageBtn = (LinearLayout) view.findViewById(R.id.regionalLanguageButton);
@@ -87,7 +85,7 @@ public class RegionalFragment extends ParentFragment implements View.OnClickList
         mLanguageLabel = (TextView) view.findViewById(R.id.regionalLanguageLabel);
 
         mRegionalHolderLayout.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
+        mActivity.toggleLoadingProgress(true);
         ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
         return view;
     }
@@ -103,7 +101,6 @@ public class RegionalFragment extends ParentFragment implements View.OnClickList
                 break;
             case R.id.regionalSaveButton:
                 isSaveClicked = true;
-                mProgressBar.setVisibility(View.VISIBLE);
                 mSaveBtn.setEnabled(false);
                 mSaveBtn.setClickable(false);
                 // TODO: 6/29/16 send data to server
@@ -172,10 +169,14 @@ public class RegionalFragment extends ParentFragment implements View.OnClickList
     }
 
     @Override
+    public void finallyMethod() {
+        mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
     public void onHandleMessageEnd() {
         isSaveClicked = false;
         mRegionalHolderLayout.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
         mSaveBtn.setEnabled(true);
         mSaveBtn.setClickable(true);
     }

@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
@@ -18,6 +19,8 @@ public class SettingsActivity extends ParentActivity {
     public static final String ACTION_LOG_OUT = "action log out";
 
     private TextView mToolbarTitle;
+
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class SettingsActivity extends ParentActivity {
                 onBackPressed();
             }
         });
+
+        mProgressBar = (ProgressBar) findViewById(R.id.settingsProgressBar);
 
         mToolbarTitle = (TextView) findViewById(R.id.settingsActivityToolbarTitle);
         SettingsFragment settingsFragment = new SettingsFragment();
@@ -64,8 +69,13 @@ public class SettingsActivity extends ParentActivity {
     }
 
     @Override
-    public void toggleLoadingProgress(boolean show) {
-
+    public void toggleLoadingProgress(final boolean show) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
     @Override
