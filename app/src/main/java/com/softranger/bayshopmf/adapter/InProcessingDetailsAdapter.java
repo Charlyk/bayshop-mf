@@ -13,6 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.model.packages.CustomsHeld;
@@ -26,6 +33,7 @@ import com.softranger.bayshopmf.model.packages.Prohibited;
 import com.softranger.bayshopmf.model.packages.Received;
 import com.softranger.bayshopmf.model.packages.Sent;
 import com.softranger.bayshopmf.model.packages.ToDelivery;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 import java.util.ArrayList;
@@ -41,6 +49,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
     private ArrayList<Object> mItems;
     private ImagesAdapter.OnImageClickListener mOnImageClickListener;
     private OnItemClickListener mOnItemClickListener;
+    private boolean mShowMap;
 
     public InProcessingDetailsAdapter(T parcel, ImagesAdapter.OnImageClickListener onImageClickListener) {
         mItems = new ArrayList<>();
@@ -51,6 +60,10 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setShowMap(boolean showMap) {
+        mShowMap = showMap;
     }
 
     @Override
@@ -126,6 +139,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             if (mItems.get(position) instanceof LocalDepot) {
                 headerHolder.mHomeDeliveryLayout.setVisibility(View.VISIBLE);
                 headerHolder.mSelectButton.setVisibility(View.VISIBLE);
+                headerHolder.mSelectButton.setText(Application.getInstance().getString(R.string.change_address));
                 headerHolder.mWarningImage.setImageResource(R.mipmap.local_deposit);
                 headerHolder.mWarningTextView.setText("Some text for local depot packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
@@ -163,6 +177,13 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             headerHolder.mTotalPrice.setText(headerHolder.mProcessingParcel.getCurrency() + ""
                     + headerHolder.mProcessingParcel.getTotalPrice());
             headerHolder.mShippingBy.setText(headerHolder.mProcessingParcel.getShippingMethod().getName());
+            String description = headerHolder.mProcessingParcel.getName();
+            if (description == null || description.equals("null") || description.equals("")) {
+                headerHolder.mDescriptionlabel.setText(Application.getInstance().getString(R.string.no_description));
+                headerHolder.mDescriptionlabel.setTextColor(Application.getInstance().getResources().getColor(android.R.color.darker_gray));
+            } else {
+                headerHolder.mDescriptionlabel.setText(headerHolder.mProcessingParcel.getName());
+            }
 //            headerHolder.mTrackingNumber.setText(headerHolder.mProcessingParcel.getTrackingNumber());
         } else if (mItems.get(position) instanceof Product) {
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
@@ -177,6 +198,19 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                 itemHolder.mPhotosList.setAdapter(imagesAdapter);
             } else {
                 itemHolder.mPhotosList.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    //Recycling GoogleMap for list item
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        if (holder.getClass() == HeaderViewHolder.class) {
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+            // Cleanup MapView here?
+            if (headerViewHolder.mGoogleMap != null) {
+                headerViewHolder.mGoogleMap.clear();
+                headerViewHolder.mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
             }
         }
     }
@@ -199,7 +233,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         }
     }
 
-    class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback {
         final TextView mParcelId, mGoodsPrice, mCustomsClearance, mShippingPrice,
                 mTotalPrice, mShippingBy, mTrackingNumber;
         final ImageView mDepositIcon;
@@ -214,7 +248,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final LinearLayout mProhibitionLayout;
         final RelativeLayout mSentParcelLayout;
         final RelativeLayout mReturnButton;
-        final RelativeLayout mConfirmAddressButton;
         final RelativeLayout mHomeDeliveryLayout;
         final RelativeLayout mReceivedOnMapLayout;
         final LinearLayout mToDeliveryDetails;
@@ -226,10 +259,23 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final TextView mDebtLabel;
         final ImageView mWarningImage;
         final TextView mWarningTextView;
+        final TextView mDescriptionlabel;
+        final MapView mMapView;
+        GoogleMap mGoogleMap;
         T mProcessingParcel;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
+            mMapView = (MapView) itemView.findViewById(R.id.courierMapView);
+            if (mShowMap) {
+                // map
+                if (mMapView != null) {
+                    mMapView.onCreate(null);
+                    mMapView.onResume();
+                    mMapView.getMapAsync(this);
+                }
+            }
+
             // address
             mClientName = (TextView) itemView.findViewById(R.id.secondStepItemNameLabel);
             mStreet = (TextView) itemView.findViewById(R.id.secondStepAddressLabel);
@@ -246,6 +292,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mAddToFavorite = (ImageButton) itemView.findViewById(R.id.secondStepAddToFavoritesAddressButton);
             // pus parcel id
             mParcelId = (TextView) itemView.findViewById(R.id.inProcessingDetailsParcelIdLabel);
+            mDescriptionlabel = (TextView) itemView.findViewById(R.id.heldByProhibitionDescriptionLabel);
             // price layout
             mGoodsPrice = (TextView) itemView.findViewById(R.id.inProcessingDetailsGoodsPriceLabel);
             mCustomsClearance = (TextView) itemView.findViewById(R.id.inProcessingDetailsCustomsClearanceLabel);
@@ -263,7 +310,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             // held by prohibition layout
             mProhibitionLayout = (LinearLayout) itemView.findViewById(R.id.heldByProhibitionHeaderLayout);
             mReturnButton = (RelativeLayout) itemView.findViewById(R.id.heldByProhibitionReturnBtn);
-            mConfirmAddressButton = (RelativeLayout) itemView.findViewById(R.id.heldByProhibitionConfirmAddressBtn);
             // sent parcel layout
             mSentParcelLayout = (RelativeLayout) itemView.findViewById(R.id.sentParcelHeaderLayout);
             // local depot layout
@@ -284,7 +330,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mCallCourierBtn.setOnClickListener(this);
             mHomeDeliveryLayout.setOnClickListener(this);
             mReturnButton.setOnClickListener(this);
-            mConfirmAddressButton.setOnClickListener(this);
             mPayTheDebtLayout.setOnClickListener(this);
             mSignature.setOnClickListener(this);
             mGeolocation.setOnClickListener(this);
@@ -318,9 +363,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                 case R.id.heldByProhibitionReturnBtn:
                     mOnItemClickListener.onReturnToSenderClick(mProcessingParcel, getAdapterPosition());
                     break;
-                case R.id.heldByProhibitionConfirmAddressBtn:
-                    mOnItemClickListener.onConfirmAddressClick(mProcessingParcel, getAdapterPosition());
-                    break;
                 case R.id.orderHomeDeliveryLayout:
                     mOnItemClickListener.onOrderDeliveryClick(mProcessingParcel, getAdapterPosition());
                     break;
@@ -343,6 +385,21 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                     mOnItemClickListener.onStartTrackingClick(mProcessingParcel, getAdapterPosition());
                     break;
             }
+        }
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            MapsInitializer.initialize(Application.getInstance().getApplicationContext());
+            mGoogleMap = googleMap;
+
+            final double LATITUDE = 47.043252904877306;
+            final double LONGITUDE = 28.868207931518555;
+
+            LatLng latLng = new LatLng(LATITUDE, LONGITUDE);
+            googleMap.addMarker(new MarkerOptions().position(latLng).title("Courier Location"));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            // googleMap in the Google Map
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         }
     }
 
@@ -371,7 +428,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         <T extends PUSParcel> void onUploadDocumentClick(T item, int position);
         <T extends PUSParcel> void onTakePictureClick(T item, int position);
         <T extends PUSParcel> void onReturnToSenderClick(T item, int position);
-        <T extends PUSParcel> void onConfirmAddressClick(T item, int position);
         <T extends PUSParcel> void onOrderDeliveryClick(T item, int position);
         <T extends PUSParcel> void onSelectAddressClick(T item, int position);
         <T extends PUSParcel> void onCallCourierClick(T item, int position);

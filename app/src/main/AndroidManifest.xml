@@ -87,6 +87,10 @@
         </activity>
         <activity android:name=".ui.addresses.WarehouseAddressesActivity">
         </activity>
+        <activity android:name=".ui.contact.ChatActivity">
+        </activity>
+        <activity android:name=".ui.contact.NewMessageActivity">
+        </activity>
     </application>
 
 </manifest>

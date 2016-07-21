@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
+    android:background="@android:color/white"
+    tools:context="com.softranger.bayshopmf.ui.contact.ChatActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbarAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:navigationIcon="@mipmap/ic_back_24dp">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Chat theme"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"/>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/sendMessageLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="2.5dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:layout_width="0dp"
+            android:background="@android:color/white"
+            android:padding="16dp"
+            android:hint="@string/write_a_message"
+            android:layout_height="wrap_content"
+            android:maxHeight="100dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:id="@+id/sendMessageInput"/>
+
+        <ImageButton
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:onClick="sendMessage"
+            android:src="@mipmap/ic_send_24dp"
+            android:id="@+id/sendMessageGoBtn"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/messageRecyclerView"
+        android:layout_above="@id/sendMessageLayout"
+        android:layout_below="@id/toolbarAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/outgoing_message"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@id/sendMessageLayout"
+        android:background="#b1b1b1"/>
+
+
+</RelativeLayout>

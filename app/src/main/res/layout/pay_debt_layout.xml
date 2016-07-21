@@ -10,6 +10,13 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
 
+    <View
+        android:id="@+id/topSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentTop="true"
+        android:background="#b1b1b1"/>
+
     <TextView
         android:id="@+id/textView24"
         android:layout_width="wrap_content"

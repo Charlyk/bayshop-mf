@@ -72,13 +72,13 @@ public class ToDeliveryDetails extends ParentFragment implements OnMapReadyCallb
         mMapView = (MapView) view.findViewById(R.id.toDeliveryDetailsMapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.setClickable(false);
+        mMapView.getMapAsync(this);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.getMapAsync(this);
         mMapView.onResume();
     }
 
@@ -117,8 +117,8 @@ public class ToDeliveryDetails extends ParentFragment implements OnMapReadyCallb
 
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
-        JSONObject data = response.getJSONObject("data");
-        mToDelivery = buildParcelDetails(data);
+//        JSONObject data = response.getJSONObject("data");
+//        mToDelivery = buildParcelDetails(data);
     }
 
 //    @Override

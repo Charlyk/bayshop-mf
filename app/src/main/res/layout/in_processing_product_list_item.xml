@@ -3,17 +3,22 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginBottom="10dp"
               android:background="@android:color/white"
               android:clipToPadding="false"
               android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
 
     <TextView
         android:id="@+id/inProcessingDetailsProductMfId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:paddingTop="10dp"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
@@ -23,8 +28,8 @@
         android:id="@+id/inProcessingDetailsProductNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         tools:text="Used Mac Book"/>
@@ -32,9 +37,9 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:stretchColumns="1">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:stretchColumns="2">
 
         <TableRow
             android:layout_width="match_parent"
@@ -54,11 +59,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
+                android:paddingEnd="15dp"
+                android:paddingRight="15dp"
                 android:paddingLeft="10dp"
-                android:paddingRight="5dp"
                 android:paddingTop="5dp"
                 android:text="@string/price"/>
 
+            <TextView
+                android:id="@+id/inProcessingDetailsProductWeightTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="@string/weight"/>
         </TableRow>
 
         <TableRow
@@ -73,7 +88,7 @@
                 android:paddingEnd="15dp"
                 android:paddingRight="15dp"
                 android:paddingTop="5dp"
-                android:text="2"
+                tools:text="2"
                 android:textColor="@android:color/black"/>
 
             <TextView
@@ -83,9 +98,24 @@
                 android:layout_column="1"
                 android:paddingEnd="5dp"
                 android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
-                android:text="$ 200"
+                tools:text="$ 200"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/inProcessingDetailsProductWeightLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:paddingEnd="5dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="@string/place_holder"
+                tools:text="21kg"
                 android:textColor="@android:color/black"/>
         </TableRow>
     </TableLayout>
@@ -100,8 +130,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="3dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="#b1b1b1"/>
+        android:background="@drawable/drop_shadow"/>
 </LinearLayout>

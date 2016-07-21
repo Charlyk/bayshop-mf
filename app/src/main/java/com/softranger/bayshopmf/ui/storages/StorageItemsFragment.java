@@ -389,6 +389,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
      */
     @Override
     public <T extends PUSParcel> void onInProcessingProductClick(T processingPackage, int position) {
+
         mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
     }
 

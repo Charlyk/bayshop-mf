@@ -120,9 +120,7 @@ public class MailAdapter extends RecyclerView.Adapter<MailAdapter.ViewHolder> {
                     mViewAnimator.flip(mMailIcon);
                     break;
                 default:
-                    if (mMailMessage != null) {
-                        mOnMailClickListener.onMessageClicked(mMailMessage, getAdapterPosition(), true);
-                    }
+                    mOnMailClickListener.onMessageClicked(mMailMessage, getAdapterPosition(), true);
                     break;
             }
         }

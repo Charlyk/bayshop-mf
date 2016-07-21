@@ -169,7 +169,7 @@ public class SplashActivity extends AppCompatActivity {
                             Iterator<String> keys = data.keys();
                             while (keys.hasNext()) {
                                 String key = keys.next();
-                                Application.counters.put(key, data.getInt(key));
+                                Application.counters.put(key, data.optInt(key, 0));
                             }
                             startActivity(mIntent);
                         } else {

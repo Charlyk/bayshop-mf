@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Photo;
@@ -75,6 +76,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Photo photo = mImages.get(position);
+        if (photo.getBigBitmap() != null) {
+            holder.mProgressBar.setVisibility(View.GONE);
+        }
         holder.mProductImage.setImageBitmap(mImages.get(position).getBigBitmap());
     }
 
@@ -85,10 +90,12 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView mProductImage;
+        final ProgressBar mProgressBar;
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mProductImage = (ImageView) itemView.findViewById(R.id.productImageListItem);
+            mProgressBar = (ProgressBar) itemView.findViewById(R.id.productImageListItemProgress);
         }
 
         @Override

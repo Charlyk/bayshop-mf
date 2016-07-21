@@ -111,7 +111,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             productHolder.mProduct = (Product) mInStockItems.get(position);
             productHolder.mItemName.setText(productHolder.mProduct.getProductName());
             productHolder.mItemId.setText(productHolder.mProduct.getProductId());
-            productHolder.mTrackingNumber.setText(productHolder.mProduct.getTrackingNumber());
         } else if (mInStockItems.get(position) instanceof PUSParcel) {
             InProcessingViewHolder<PUSParcel> processingHolder = (InProcessingViewHolder) holder;
             processingHolder.mProduct = (PUSParcel) mInStockItems.get(position);
@@ -196,9 +195,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
             if (days > 0) {
-                formattedDate = formattedDate + " (" + days + " days ago)"; // TODO: 7/18/16 replace with string id
+                formattedDate = formattedDate + " (" + days + " " + mContext.getString(R.string.days_ago) + ")";
             } else {
-                formattedDate = formattedDate + "(Today)"; // TODO: 7/18/16 replace with string id
+                formattedDate = formattedDate + " (" + mContext.getString(R.string.today) + ")";
             }
         }
         return formattedDate;
@@ -301,7 +300,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mItemId;
         final TextView mItemName;
-        final TextView mTrackingNumber;
         final TextView mCreatedDateLabel;
         final ImageButton mDeleteButton;
         Product mProduct;
@@ -311,7 +309,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener(this);
             mItemId = (TextView) itemView.findViewById(R.id.itemIdLabel);
             mItemName = (TextView) itemView.findViewById(R.id.itemNameLabel);
-            mTrackingNumber = (TextView) itemView.findViewById(R.id.itemTrackingLabel);
             mCreatedDateLabel = (TextView) itemView.findViewById(R.id.itemDateLabel);
             mDeleteButton = (ImageButton) itemView.findViewById(R.id.itemDeleteButton);
             mDeleteButton.setOnClickListener(this);

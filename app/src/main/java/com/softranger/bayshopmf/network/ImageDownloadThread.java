@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 
+import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.util.Imageble;
 
@@ -54,7 +55,7 @@ public class ImageDownloadThread<T extends Imageble> extends Thread {
                     BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
                     BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(image));
                     byte[] buffer = new byte[1024];
-                    int byteCount = 0;
+                    int byteCount;
                     while ((byteCount = inputStream.read(buffer)) != -1) {
                         outputStream.write(buffer, 0, byteCount);
                     }
@@ -62,10 +63,15 @@ public class ImageDownloadThread<T extends Imageble> extends Thread {
                     outputStream.flush();
                     outputStream.close();
                 }
-                object.setImage(BitmapFactory.decodeFile(image.getAbsolutePath()));
+                Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
+                object.setImage(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                if (object.getImage() == null) {
+                    Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.no_image);
+                    object.setImage(image);
+                }
                 Message message = mHandler.obtainMessage();
                 message.obj = object;
                 mHandler.sendMessage(message);

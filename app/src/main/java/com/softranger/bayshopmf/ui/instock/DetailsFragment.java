@@ -95,7 +95,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         mNoPhotoLayout = (LinearLayout) mRootView.findViewById(R.id.noPhotoLayoutHolder);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mInStockItem = getArguments().getParcelable(ITEM_ARG);
-        mImagesAdapter = new ImagesAdapter(R.layout.in_stock_detailed_image);
+        mImagesAdapter = new ImagesAdapter(R.layout.product_image_list_item);
         mImagesAdapter.setOnImageClickListener(this);
         mRecyclerView.setAdapter(mImagesAdapter);
         ApiClient.getInstance().getRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);

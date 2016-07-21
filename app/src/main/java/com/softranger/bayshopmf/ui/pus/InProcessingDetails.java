@@ -25,6 +25,7 @@ import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.model.packages.Received;
+import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
@@ -258,6 +259,9 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
         JSONObject data = response.getJSONObject("data");
         mPackage = buildParcelDetails(data);
         mAdapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
+        if (mPackage instanceof ToDelivery) {
+            mAdapter.setShowMap(true);
+        }
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -279,11 +283,6 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
 
     @Override
     public <P extends PUSParcel> void onReturnToSenderClick(P item, int position) {
-
-    }
-
-    @Override
-    public <P extends PUSParcel> void onConfirmAddressClick(P item, int position) {
 
     }
 

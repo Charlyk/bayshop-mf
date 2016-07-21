@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/takeToDeliveryDetailsHeaderLayout"
-              android:layout_marginBottom="10dp"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
         android:layout_height="0.5dp"
         android:background="#b1b1b1"/>
 
@@ -39,13 +37,11 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
         android:layout_height="0.5dp"
         android:background="#b1b1b1"/>
 
-    <fragment
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/courierMapView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="com.softranger.bayshopmf.ui.pus.ToDeliveryDetails"
-        tools:layout="@layout/fragment_to_delivery_details"/>
+        android:layout_height="200dp"/>
 </LinearLayout>

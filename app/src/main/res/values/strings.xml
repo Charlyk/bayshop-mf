@@ -278,4 +278,18 @@
     <string name="parcel_confirmation">Parcel confirmation</string>
     <string name="parcel_in_process">Your parcel is in process.</string>
     <string name="parcel_in_place">The parcel will be packed shortly, you will be notified once it\'s done.</string>
+    <string name="place_holder">---</string>
+    <string name="change_address">Change address</string>
+    <string name="days_ago">days ago</string>
+    <string name="attach_file">Attach file</string>
+    <string name="close_ticket">Close current ticket</string>
+    <string name="write_a_message">Write a message...</string>
+    <string name="subject">Subject</string>
+    <string name="category">Category</string>
+    <string name="priority">Priority</string>
+    <string name="type_your_message">Type your message...</string>
+    <string name="new_message">New message</string>
+    <string name="low">Low</string>
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
 </resources>

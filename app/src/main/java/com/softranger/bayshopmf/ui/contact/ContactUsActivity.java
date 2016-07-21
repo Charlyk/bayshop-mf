@@ -114,7 +114,8 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
     }
 
     public void composeMail(View view) {
-
+        Intent compose = new Intent(this, NewMessageActivity.class);
+        startActivity(compose);
     }
 
     //------------------------ Mails list callbacks ------------------------//
@@ -140,7 +141,11 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
 
     @Override
     public void onMessageClicked(MailMessage message, int position, boolean isSelected) {
-
+        if (!isEditMode) {
+            Intent chat = new Intent(this, ChatActivity.class);
+            chat.putExtra("message", message);
+            startActivity(chat);
+        }
     }
 
     //------------------------ Menu click ------------------------//

@@ -22,12 +22,19 @@
 
     <include layout="@layout/take_to_delivery_header"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingTop="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <ImageView
             android:id="@+id/inProcessingDetailsStorageIcon"
@@ -44,15 +51,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"
+            android:textSize="18sp"
             tools:text="MF3121241412"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/heldByProhibitionDescriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
+        tools:text="MacBook Pro Late 2016"
+        android:textColor="@android:color/black"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:background="#b1b1b1"/>
 
     <include layout="@layout/second_step_list_item"/>
@@ -61,7 +77,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:stretchColumns="0">
 
         <TableRow>
@@ -137,14 +154,18 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="#b1b1b1"/>
 
     <LinearLayout
+        android:id="@+id/shippingByLayoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingTop="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -158,8 +179,8 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="5dp"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
+            android:layout_marginBottom="10dp"
             android:stretchColumns="0">
 
             <TableRow>
@@ -177,7 +198,7 @@
                     android:layout_gravity="end"
                     android:layout_marginBottom="5dp"
                     android:textColor="@color/colorAccent"
-                    tools:text="tracking21323122432"/>
+                    android:text="tracking21323122432"/>
             </TableRow>
 
         </TableLayout>
@@ -185,16 +206,16 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="#b1b1b1"/>
+        android:layout_height="3dp"
+        android:background="@drawable/drop_shadow"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="#f1f1f1"
+        android:gravity="center_vertical"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
         android:text="@string/parcel_components"
         android:textColor="@android:color/black"
         android:textSize="20sp"/>

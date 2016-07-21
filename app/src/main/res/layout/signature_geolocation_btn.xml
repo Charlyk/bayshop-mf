@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?actionBarSize"
     android:id="@+id/receivedSignatureOnMapLayout">
     <View
         android:id="@+id/topSeparator"
@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:text="@string/signature"
         android:id="@+id/signatureButton"
-        android:layout_below="@id/topSeparator"
         android:textColor="@color/colorGreenAction"
         android:background="?selectableItemBackground"
         android:drawableLeft="@mipmap/ic_place_24dp"
@@ -34,7 +33,6 @@
         android:layout_height="wrap_content"
         android:text="@string/geolocation"
         android:id="@+id/geolocationButton"
-        android:layout_below="@id/topSeparator"
         android:drawableLeft="@mipmap/ic_place_24dp"
         android:drawableStart="@mipmap/ic_place_24dp"
         android:background="?selectableItemBackground"
@@ -44,10 +42,4 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@+id/geolocationButton"
-        android:background="#b1b1b1"/>
 </RelativeLayout>
