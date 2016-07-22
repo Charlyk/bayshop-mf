@@ -16,7 +16,7 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="40dp"
-        android:src="@mipmap/logo_toolbar"/>
+        android:src="@mipmap/ic_logo_48dp"/>
 
     <TextView
         android:layout_width="wrap_content"

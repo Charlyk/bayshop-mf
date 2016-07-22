@@ -57,6 +57,14 @@ public class Application extends android.app.Application {
         preferences.edit().putBoolean("is logged in", isLoggedIn).apply();
     }
 
+    public void setUserId(String userId) {
+        preferences.edit().putString("userId", userId).apply();
+    }
+
+    public String getUserId() {
+        return preferences.getString("userId", "");
+    }
+
     public boolean isLoggedIn() {
         return preferences.getBoolean("is logged in", false);
     }

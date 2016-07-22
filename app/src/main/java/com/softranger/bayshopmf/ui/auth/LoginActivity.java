@@ -168,12 +168,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
                         String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
+                        if (message.equalsIgnoreCase("Ok")) {
                             JSONObject data = response.getJSONObject("data");
                             Application.currentToken = data.optString("access_token");
+                            Application.getInstance().setUserId(data.getString("uid").toUpperCase());
                             Application.user = new User.Builder()
-                                    .userId(data.getString("id"))
+                                    .userId(Application.getInstance().getUserId())
                                     .build();
                             Application.getInstance().setLoginStatus(true);
                             Application.getInstance().setAuthToken(Application.currentToken);
@@ -220,8 +220,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
                         String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
+                        if (message.equalsIgnoreCase("ok")) {
                             JSONObject data = response.getJSONObject("data");
                             Application.user.setFirstName(data.getString("name"));
                             Application.user.setLastName(data.getString("surname"));
@@ -277,8 +276,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     try {
                         JSONObject response = new JSONObject((String) msg.obj);
                         String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
+                        if (message.equalsIgnoreCase("ok")) {
                             JSONObject data = response.getJSONObject("data");
                             Iterator<String> keys = data.keys();
                             while (keys.hasNext()) {

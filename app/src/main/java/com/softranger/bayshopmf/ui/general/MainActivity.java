@@ -168,7 +168,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (Application.user != null) {
             String fullName = Application.user.getFirstName() + " " + Application.user.getLastName();
             userNameLabel.setText(fullName);
-            userIdLabel.setText(Application.user.getUserId());
+            userIdLabel.setText(Application.getInstance().getUserId());
         }
         LinearLayout addAwaiting = (LinearLayout) navHeaderView.findViewById(R.id.add_packageButtonIcon);
         addAwaiting.setOnClickListener(this);
