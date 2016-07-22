@@ -32,44 +32,44 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/tabsHolder"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:gravity="center_vertical"
-        android:background="@android:color/white"
-        android:layout_below="@id/toolbarAppBarLayout"
-        app:layout_scrollFlags="scroll|enterAlways"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/tabsHolder"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?actionBarSize"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:layout_below="@id/toolbarAppBarLayout"-->
+        <!--app:layout_scrollFlags="scroll|enterAlways"-->
+        <!--android:orientation="horizontal">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:text="@string/warehouse"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="@string/warehouse"/>-->
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/mailActivityTabBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@android:color/white"
-            app:tabIndicatorColor="@color/colorAccent"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@android:color/black"
-            app:tabTextColor="#898989"/>
-    </LinearLayout>
+        <!--<android.support.design.widget.TabLayout-->
+            <!--android:id="@+id/mailActivityTabBarLayout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?actionBarSize"-->
+            <!--android:background="@android:color/white"-->
+            <!--app:tabIndicatorColor="@color/colorAccent"-->
+            <!--app:tabMode="fixed"-->
+            <!--app:tabSelectedTextColor="@android:color/black"-->
+            <!--app:tabTextColor="#898989"/>-->
+    <!--</LinearLayout>-->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mailActivityViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tabsHolder"
+        android:layout_below="@id/toolbarAppBarLayout"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/tabsHolder"
-        android:background="@drawable/drop_shadow"/>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:layout_below="@id/toolbarAppBarLayout"-->
+        <!--android:background="@drawable/drop_shadow"/>-->
 </RelativeLayout>

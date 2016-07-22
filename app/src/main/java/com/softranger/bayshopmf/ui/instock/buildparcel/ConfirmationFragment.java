@@ -246,7 +246,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
             for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
                 fm.popBackStack();
             }
-            mActivity.setToolbarTitle(getString(R.string.in_stock), true);
+            mActivity.setToolbarTitle(getString(R.string.warehouse_usa), true);
             mActivity.removeActionButtons();
             mActivity.mActionMenu.setVisibility(View.VISIBLE);
             mActivity.setToolbarToInitialState();

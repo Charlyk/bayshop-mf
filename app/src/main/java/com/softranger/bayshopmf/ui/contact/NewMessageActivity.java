@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.ui.contact;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class NewMessageActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener,
         SpinnerAdapter.OnCountryClickListener {
 
+    private static final int UPLOAD_RESULT_CODE = 13;
     private SpinnerAdapter<MailCategory> mSpinnerAdapter;
     private Spinner mSpinner;
     private TextView mCategoryName;
@@ -73,6 +75,16 @@ public class NewMessageActivity extends AppCompatActivity implements MenuItem.On
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.attachFile:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                startActivityForResult(intent, UPLOAD_RESULT_CODE);
+                return true;
+            case R.id.sendMessage:
+
+                break;
+        }
         return false;
     }
 

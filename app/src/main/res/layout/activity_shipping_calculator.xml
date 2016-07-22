@@ -36,44 +36,44 @@
         android:layout_height="4dp"
         android:background="@drawable/drop_shadow"/>
 
-        <RadioGroup
-            android:id="@+id/calculatorStorageSelector"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:gravity="center"
-            android:orientation="horizontal">
+        <!--<RadioGroup-->
+            <!--android:id="@+id/calculatorStorageSelector"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?actionBarSize"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal">-->
 
-            <RadioButton
-                android:id="@+id/calculatorUsaSelector"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginEnd="70dp"
-                android:layout_marginRight="70dp"
-                android:background="@drawable/us_storage_selection"
-                android:button="@null"
-                android:checked="true"/>
+            <!--<RadioButton-->
+                <!--android:id="@+id/calculatorUsaSelector"-->
+                <!--android:layout_width="35dp"-->
+                <!--android:layout_height="35dp"-->
+                <!--android:layout_marginEnd="70dp"-->
+                <!--android:layout_marginRight="70dp"-->
+                <!--android:background="@drawable/us_storage_selection"-->
+                <!--android:button="@null"-->
+                <!--android:checked="true"/>-->
 
-            <RadioButton
-                android:id="@+id/calculatorUkSelector"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginEnd="70dp"
-                android:layout_marginRight="70dp"
-                android:background="@drawable/uk_storage_selection"
-                android:button="@null"/>
+            <!--<RadioButton-->
+                <!--android:id="@+id/calculatorUkSelector"-->
+                <!--android:layout_width="35dp"-->
+                <!--android:layout_height="35dp"-->
+                <!--android:layout_marginEnd="70dp"-->
+                <!--android:layout_marginRight="70dp"-->
+                <!--android:background="@drawable/uk_storage_selection"-->
+                <!--android:button="@null"/>-->
 
-            <RadioButton
-                android:id="@+id/calculatorDeSelector"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/de_storage_selection"
-                android:button="@null"/>
-        </RadioGroup>
+            <!--<RadioButton-->
+                <!--android:id="@+id/calculatorDeSelector"-->
+                <!--android:layout_width="35dp"-->
+                <!--android:layout_height="35dp"-->
+                <!--android:background="@drawable/de_storage_selection"-->
+                <!--android:button="@null"/>-->
+        <!--</RadioGroup>-->
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0.5dp"-->
+        <!--android:background="#b1b1b1"/>-->
 
     <RelativeLayout
         android:layout_width="match_parent"

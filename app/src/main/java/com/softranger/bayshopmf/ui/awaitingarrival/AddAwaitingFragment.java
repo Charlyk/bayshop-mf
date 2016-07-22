@@ -31,14 +31,14 @@ import okhttp3.RequestBody;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddAwaitingFragment extends ParentFragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener, View.OnFocusChangeListener {
+public class AddAwaitingFragment extends ParentFragment implements View.OnClickListener, View.OnFocusChangeListener {
 
     private EditText mProductUrlInput;
     private EditText mProductTrackingNumInput;
     private EditText mProductNameInput;
     private EditText mProductPriceInput;
 
-    private RadioButton mUsaSelector, mUkSelector, mDeSelector;
+//    private RadioButton mUsaSelector, mUkSelector, mDeSelector;
 
     private MainActivity mActivity;
     private Product mProduct;
@@ -65,32 +65,32 @@ public class AddAwaitingFragment extends ParentFragment implements RadioGroup.On
         mProductUrlInput.setOnFocusChangeListener(this);
         mProductPriceInput.setOnFocusChangeListener(this);
 
-        RadioGroup storageSelector = (RadioGroup) mRootView.findViewById(R.id.addAwaitingStorageSelectorGroup);
-        storageSelector.setOnCheckedChangeListener(this);
+//        RadioGroup storageSelector = (RadioGroup) mRootView.findViewById(R.id.addAwaitingStorageSelectorGroup);
+//        storageSelector.setOnCheckedChangeListener(this);
         Button addParcelBtn = (Button) mRootView.findViewById(R.id.addAwaitingAddParcelButton);
         addParcelBtn.setOnClickListener(this);
         mProduct = new Product.Builder().build();
-        mUsaSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingUsaSelector);
-        mUkSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingUkSelector);
-        mDeSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingDeSelector);
-        mUsaSelector.setChecked(true);
+//        mUsaSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingUsaSelector);
+//        mUkSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingUkSelector);
+//        mDeSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingDeSelector);
+//        mUsaSelector.setChecked(true);
         mProduct.setDeposit(Constants.USA);
         return mRootView;
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.addAwaitingUsaSelector:
-                mProduct.setDeposit(Constants.USA);
-                break;
-            case R.id.addAwaitingUkSelector:
-            case R.id.addAwaitingDeSelector:
-                Snackbar.make(mRootView, getString(R.string.not_suported), Snackbar.LENGTH_SHORT).show();
-                mUsaSelector.setChecked(true);
-                break;
-        }
-    }
+//    @Override
+//    public void onCheckedChanged(RadioGroup group, int checkedId) {
+//        switch (checkedId) {
+//            case R.id.addAwaitingUsaSelector:
+//                mProduct.setDeposit(Constants.USA);
+//                break;
+//            case R.id.addAwaitingUkSelector:
+//            case R.id.addAwaitingDeSelector:
+//                Snackbar.make(mRootView, getString(R.string.not_suported), Snackbar.LENGTH_SHORT).show();
+//                mUsaSelector.setChecked(true);
+//                break;
+//        }
+//    }
 
     @Override
     public void onClick(View v) {

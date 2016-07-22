@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="UploadProgress" parent="AppTheme">
+        <item name="colorAccent">@color/colorGreenAction</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppThemeNoToolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->

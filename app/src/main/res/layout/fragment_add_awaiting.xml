@@ -23,67 +23,68 @@
             android:text="@string/add_awaiting_alert"
             android:textColor="@color/colorAccent"/>
 
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:background="#FFE0E0E0"/>-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="16dp"-->
+            <!--android:paddingRight="16dp">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textView8"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/warehouse"/>-->
+
+            <!--<RadioGroup-->
+                <!--android:id="@+id/addAwaitingStorageSelectorGroup"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/addAwaitingUsaSelector"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginEnd="30dp"-->
+                    <!--android:layout_marginRight="30dp"-->
+                    <!--android:background="@drawable/us_storage_selection"-->
+                    <!--android:button="@null"/>-->
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/addAwaitingUkSelector"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginEnd="30dp"-->
+                    <!--android:layout_marginRight="30dp"-->
+                    <!--android:background="@drawable/uk_storage_selection"-->
+                    <!--android:button="@null"/>-->
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/addAwaitingDeSelector"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginEnd="30dp"-->
+                    <!--android:layout_marginRight="30dp"-->
+                    <!--android:background="@drawable/de_storage_selection"-->
+                    <!--android:button="@null"/>-->
+            <!--</RadioGroup>-->
+        <!--</LinearLayout>-->
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:background="#FFE0E0E0"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/warehouse"/>
-
-            <RadioGroup
-                android:id="@+id/addAwaitingStorageSelectorGroup"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/addAwaitingUsaSelector"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginRight="30dp"
-                    android:background="@drawable/us_storage_selection"
-                    android:button="@null"/>
-
-                <RadioButton
-                    android:id="@+id/addAwaitingUkSelector"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginRight="30dp"
-                    android:background="@drawable/uk_storage_selection"
-                    android:button="@null"/>
-
-                <RadioButton
-                    android:id="@+id/addAwaitingDeSelector"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginRight="30dp"
-                    android:background="@drawable/de_storage_selection"
-                    android:button="@null"/>
-            </RadioGroup>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#b1b1b1"/>
 
@@ -104,7 +105,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="10dp"
             android:background="@android:color/white"
-            android:hint="http://ebay.com/ipad-mini"
+            android:hint="@string/http_ebay_com"
             android:inputType="textUri"
             android:padding="3dp"
             android:singleLine="true"/>

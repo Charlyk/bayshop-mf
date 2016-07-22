@@ -42,7 +42,7 @@
         android:textColor="@android:color/white"
         android:background="@drawable/additional_btns_bg"
         android:gravity="start|center_vertical"
-        android:text="@string/check_product"/>
+        android:text="Pre-order checking"/>
 
     <Button
         android:id="@+id/awaitingDetailsAdditionalPhotosBtn"
@@ -61,7 +61,7 @@
         android:textSize="16sp"
         android:gravity="start|center_vertical"
         android:background="@drawable/additional_btns_bg"
-        android:text="@string/additional_photo"/>
+        android:text="Pre-order photos"/>
 
     <View
         android:layout_width="match_parent"

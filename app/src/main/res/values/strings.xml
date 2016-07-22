@@ -8,7 +8,7 @@
     <string name="facebook_app_id">1448296545440676</string>
     <string name="fb_login_protocol_scheme">1448296545440676</string>
 
-    <string name="in_stock">In stock</string>
+    <string name="warehouse_usa">Warehouse USA</string>
     <string name="in_processing">In processing</string>
     <string name="awaiting_sending">Awaiting sending</string>
     <string name="held_due_to_debt">Held due to debt</string>
@@ -292,4 +292,12 @@
     <string name="low">Low</string>
     <string name="high">High</string>
     <string name="medium">Medium</string>
+    <string name="http_ebay_com">http://ebay.com/ipad-mini</string>
+    <string name="upload_wait">Please wait until the Customs Officer reviews it.</string>
+    <string name="document_uploaded">Document uploaded</string>
+    <string name="thank_you_for_document">Thank you for uploading the document.</string>
+    <string name="photo_taken">Photo taken</string>
+    <string name="thank_you_for_photo">Thank you for taking photo.</string>
+    <string name="send">Send message</string>
+    <string name="uploading_file">Uploading file...</string>
 </resources>

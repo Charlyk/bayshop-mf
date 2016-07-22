@@ -17,8 +17,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,14 +26,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -526,7 +519,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                 setToolbarToInitialState();
                 switch (selectedFragment) {
                     case IN_STOCK:
-                        setToolbarTitle(getString(R.string.in_stock), true);
+                        setToolbarTitle(getString(R.string.warehouse_usa), true);
                         break;
                     case AWAITING_ARRIVAL:
                         setToolbarTitle(getString(R.string.awaiting_arrival), true);

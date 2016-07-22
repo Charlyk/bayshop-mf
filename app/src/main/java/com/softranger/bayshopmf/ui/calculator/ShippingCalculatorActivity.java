@@ -27,8 +27,7 @@ import java.io.IOException;
 
 import okhttp3.Response;
 
-public class ShippingCalculatorActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener,
-        TextWatcher, View.OnClickListener {
+public class ShippingCalculatorActivity extends AppCompatActivity implements TextWatcher, View.OnClickListener {
 
     private EditText mWeightInput;
     private EditText mXInput;
@@ -67,8 +66,8 @@ public class ShippingCalculatorActivity extends AppCompatActivity implements Rad
         mZInput.addTextChangedListener(this);
 
         mCountryNameLabel = (TextView) findViewById(R.id.calculatorCountryNameLabel);
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.calculatorStorageSelector);
-        radioGroup.setOnCheckedChangeListener(this);
+//        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.calculatorStorageSelector);
+//        radioGroup.setOnCheckedChangeListener(this);
 
         mAdapter = new CalculatorAdapter();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.calculatorShippingList);
@@ -83,20 +82,20 @@ public class ShippingCalculatorActivity extends AppCompatActivity implements Rad
     }
 
     //------------------- Storage selector -------------------//
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.calculatorUsaSelector:
-                selectedStorage = Constants.US;
-                break;
-            case R.id.calculatorUkSelector:
-                selectedStorage = Constants.UK;
-                break;
-            case R.id.calculatorDeSelector:
-                selectedStorage = Constants.DE;
-                break;
-        }
-    }
+//    @Override
+//    public void onCheckedChanged(RadioGroup group, int checkedId) {
+//        switch (checkedId) {
+//            case R.id.calculatorUsaSelector:
+//                selectedStorage = Constants.US;
+//                break;
+//            case R.id.calculatorUkSelector:
+//                selectedStorage = Constants.UK;
+//                break;
+//            case R.id.calculatorDeSelector:
+//                selectedStorage = Constants.DE;
+//                break;
+//        }
+//    }
 
     //------------------- Inputs listener -------------------//
     @Override

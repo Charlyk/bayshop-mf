@@ -33,6 +33,7 @@ import java.util.ArrayList;
 public class ChatActivity extends ParentActivity implements TextWatcher, ChatAdapter.OnMessageClickListener,
         MenuItem.OnMenuItemClickListener {
 
+    private static final int UPLOAD_RESULT_CODE = 12;
     private TextView mToolbarTitle;
     private ImageButton mSendButton;
     private EditText mMessageInput;
@@ -137,6 +138,16 @@ public class ChatActivity extends ParentActivity implements TextWatcher, ChatAda
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.closeTicket:
+
+                break;
+            case R.id.attachFile:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                startActivityForResult(intent, UPLOAD_RESULT_CODE);
+                return true;
+        }
         return false;
     }
 
@@ -179,5 +190,9 @@ public class ChatActivity extends ParentActivity implements TextWatcher, ChatAda
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+    }
 }
