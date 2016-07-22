@@ -301,4 +301,7 @@
     <string name="send">Send message</string>
     <string name="uploading_file">Uploading file...</string>
     <string name="declaration_not_filled">Declaration not filled</string>
+    <string name="check_parcel_details">CHECK PARCEL DETAILS</string>
+    <string name="additional_services">ADDITIONAL SERVICES</string>
+    <string name="terms_and_conditions">TERMS AND CONDITIONS</string>
 </resources>
