@@ -179,6 +179,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE};
 
+        updateParcelCounters(null);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -192,7 +193,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
         }
-        updateParcelCounters(null);
     }
 
     /**
