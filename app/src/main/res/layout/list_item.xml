@@ -62,7 +62,7 @@
                 android:layout_marginEnd="5dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                tools:text="@string/tracking"/>
+                android:text="@string/tracking"/>
 
             <TextView
                 android:id="@+id/tracking_number"
