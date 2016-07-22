@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.adapter;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -104,7 +105,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
             inStockViewHolder.mUIDLabel.setText(inStockViewHolder.mInStockItem.getParcelId());
-            inStockViewHolder.mProductName.setText(inStockViewHolder.mInStockItem.getName());
+            String name = inStockViewHolder.mInStockItem.getName();
+            @ColorRes int color = android.R.color.black;
+            if (name == null || name.equals("null") || name.equals("")) {
+                name = mContext.getString(R.string.declaration_not_filled);
+                color = android.R.color.darker_gray;
+            }
+            inStockViewHolder.mProductName.setText(name);
+            inStockViewHolder.mProductName.setTextColor(mContext.getResources().getColor(color));
             inStockViewHolder.mTrackingLabel.setText(inStockViewHolder.mInStockItem.getTrackingNumber());
         } else if (mInStockItems.get(position) instanceof Product) {
             ProductViewHolder productHolder = (ProductViewHolder) holder;

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.ColorRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -159,7 +160,14 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                 }
 
                 uid.setText(detailed.getParcelId());
-                description.setText(detailed.getDescription());
+                String strDescription = mInStockItem.getName();
+                @ColorRes int textColor = android.R.color.black;
+                if (strDescription == null || strDescription.equals("null") || strDescription.equals("")) {
+                    strDescription = getString(R.string.declaration_not_filled);
+                    textColor = android.R.color.darker_gray;
+                }
+                description.setText(strDescription);
+                description.setTextColor(getResources().getColor(textColor));
                 storage.setImageResource(getStorageIcon(detailed.getDeposit()));
 
                 tracking.setText(detailed.getTrackingNumber());
@@ -285,9 +293,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Photo photo = (Photo) msg.obj;
-
-                    if (photo != null && photo.getImage() != null) {
+                    if (msg.what == ImageDownloadThread.FINISHED) {
                         mImagesAdapter.notifyDataSetChanged();
                     }
                 }
