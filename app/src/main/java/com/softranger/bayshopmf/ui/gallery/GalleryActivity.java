@@ -24,8 +24,9 @@ public class GalleryActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.galleryViewPager);
         viewPager.setOffscreenPageLimit(3);
         GalleryPagerAdapter adapter = new GalleryPagerAdapter(this, getSupportFragmentManager());
+        String from = getString(R.string.from);
         for (int i = 0; i < images.size(); i++) {
-            adapter.addFragment(GalleryImageFragment.newInstance(images.get(i)), (i + 1) + " from " + images.size());
+            adapter.addFragment(GalleryImageFragment.newInstance(images.get(i)), (i + 1) + " " + from + " " + images.size());
         }
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(position);

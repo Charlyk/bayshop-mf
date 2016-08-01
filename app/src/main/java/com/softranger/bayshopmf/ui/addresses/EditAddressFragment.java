@@ -32,6 +32,7 @@ import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.SpinnerObj;
@@ -54,7 +55,7 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
 
     private static final String ADDRESS_ARG = "address argument";
     public static final String ACTION_REFRESH_ADDRESS = "REFRESH ADDRESSES LIST";
-    private MainActivity mActivity;
+    private ParentActivity mActivity;
     private Address mAddress;
     private View mRootView;
     private ArrayList<CountryCode> mCountryCodes;
@@ -107,7 +108,7 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_edit_address, container, false);
-        mActivity = (MainActivity) getActivity();
+        mActivity = (ParentActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
         mCountryCodes = new ArrayList<>();

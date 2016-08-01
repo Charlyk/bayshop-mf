@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="settings_list">
+        <item>Информация пользователя</item>
+        <item>Список адресов</item>
+        <item>Сменить пароль</item>
+        <item>Региональные настройки</item>
+        <item>Auto Packaging</item>
+        <item>Уведомления</item>
+        <item>Подписаться</item>
+        <item>Выйти</item>
+    </array>
+
+    <array name="currency_list">
+        <item>USD</item>
+        <item>Euro</item>
+        <item>GBP</item>
+        <item>Все</item>
+    </array>
+</resources>

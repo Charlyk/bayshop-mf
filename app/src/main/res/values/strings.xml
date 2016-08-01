@@ -1,13 +1,11 @@
 <resources>
     <string name="app_name">BayShop MF</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="server_client_id">675996002572-a8ubjajrhundd08o76cipt37l9ngeqqh.apps.googleusercontent.com</string>
     <string name="google_api_key">675996002572-el6qlu6q7jtolhmk89smsi000drtq9me.apps.googleusercontent.com</string>
     <string name="facebook_app_id">1448296545440676</string>
     <string name="fb_login_protocol_scheme">1448296545440676</string>
-
     <string name="warehouse_usa">Warehouse USA</string>
     <string name="in_processing">In processing</string>
     <string name="awaiting_sending">Awaiting sending</string>
@@ -53,12 +51,10 @@
     <string name="units_quantity">Units quantity</string>
     <string name="product_name">Product name:</string>
     <string name="url_to_the_product">Url to the product</string>
-
     <string name="declaration_alert">It\'s important to fill in all the declaration fields by authentic information for each product</string>
     <string name="general_description">General description</string>
     <string name="add_item">Add fields</string>
     <string name="save">Save</string>
-
     <string name="awaiting_arrival">Awaiting arrival</string>
     <string name="delete_item">Delete item</string>
     <string name="link">Link</string>
@@ -71,7 +67,6 @@
     <string name="held_by_prohibition">Held by prohibition</string>
     <string name="created_on">"Created: "</string>
     <string name="complete">" complete"</string>
-
     <string name="cancel">Cancel</string>
     <string name="shipping_address">Shipping address:</string>
     <string name="goods_price">Goods price:</string>
@@ -79,7 +74,6 @@
     <string name="shipping_price">Shipping price:</string>
     <string name="parcel_components">Parcel components</string>
     <string name="item">Item:</string>
-
     <string name="add_parcel">Add parcel</string>
     <string name="add_awaiting_alert">It\'s important to enter the tracking number, there is no use in parcel processing without it. That\'s alright if you don\'t know the tracking number, your parcel won\'t be lost.</string>
     <string name="add_awaiting_package">Add awaiting package</string>
@@ -200,9 +194,6 @@
     <string name="done">Done</string>
     <string name="insurance_agreement">Insurance agreement</string>
     <string name="_400">$ 400</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="current_password">Current password</string>
     <string name="must_contain">Password must contain at least 6 characters</string>
     <string name="language">Language</string>
@@ -283,11 +274,11 @@
     <string name="days_ago">days ago</string>
     <string name="attach_file">Attach file</string>
     <string name="close_ticket">Close current ticket</string>
-    <string name="write_a_message">Write a message...</string>
+    <string name="write_a_message">Write a message…</string>
     <string name="subject">Subject</string>
     <string name="category">Category</string>
     <string name="priority">Priority</string>
-    <string name="type_your_message">Type your message...</string>
+    <string name="type_your_message">Type your message…</string>
     <string name="new_message">New message</string>
     <string name="low">Low</string>
     <string name="high">High</string>
@@ -299,9 +290,12 @@
     <string name="photo_taken">Photo taken</string>
     <string name="thank_you_for_photo">Thank you for taking photo.</string>
     <string name="send">Send message</string>
-    <string name="uploading_file">Uploading file...</string>
+    <string name="uploading_file">Uploading file…</string>
     <string name="declaration_not_filled">Declaration not filled</string>
     <string name="check_parcel_details">CHECK PARCEL DETAILS</string>
     <string name="additional_services">ADDITIONAL SERVICES</string>
     <string name="terms_and_conditions">TERMS AND CONDITIONS</string>
+    <string name="from">from</string>
+    <string name="shipping_by">Shipping by:</string>
+    <string name="create_parcel">Create parcel</string>
 </resources>

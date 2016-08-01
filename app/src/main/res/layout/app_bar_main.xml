@@ -66,7 +66,7 @@
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="#FFC03E41"
             fab:fab_plusIconColor="@android:color/white"
-            fab:fab_title="Create parcel"
+            fab:fab_title="@string/create_parcel"
             fab:fab_icon="@mipmap/ic_add_white_18dp"
             fab:fab_size="mini"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
