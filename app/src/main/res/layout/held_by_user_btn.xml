@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/heldByUserBtnLayout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:visibility="gone">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <Button
+        android:id="@+id/heldByUserSendBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawableLeft="@mipmap/send_parcel_24dp"
+        android:drawablePadding="10dp"
+        android:drawableStart="@mipmap/send_parcel_24dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/send_parcel"
+        android:textColor="@color/colorGreenAction"
+        android:textSize="16sp"/>
+</LinearLayout>

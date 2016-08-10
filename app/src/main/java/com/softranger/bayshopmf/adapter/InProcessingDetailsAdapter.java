@@ -22,7 +22,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Address;
+import com.softranger.bayshopmf.model.packages.AwaitingDeclaration;
 import com.softranger.bayshopmf.model.packages.CustomsHeld;
+import com.softranger.bayshopmf.model.packages.DamageRecorded;
+import com.softranger.bayshopmf.model.packages.HeldByUser;
 import com.softranger.bayshopmf.model.packages.HeldDueToDebt;
 import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.Product;
@@ -100,36 +103,36 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.mProcessingParcel = (T) mItems.get(position);
             headerHolder.mWarningWithImage.setVisibility(View.VISIBLE);
-
+            // set top icon and text for in processing status
             if (mItems.get(position) instanceof InProcessing) {
                 headerHolder.mWarningImage.setImageResource(R.mipmap.ic_in_processing);
                 headerHolder.mWarningTextView.setText("Some text for in processing packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
-
+            // set top icon and text for packed status
             if (mItems.get(position) instanceof Packed) {
                 headerHolder.mWarningImage.setImageResource(R.mipmap.awaiting_sending);
                 headerHolder.mWarningTextView.setText("Some text for awaiting sending packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
-
+            // show pay the debt btn, set the debt text, set top icon and text for held due to debt status
             if (mItems.get(position) instanceof HeldDueToDebt) {
                 headerHolder.mPayTheDebtLayout.setVisibility(View.VISIBLE);
                 headerHolder.mDebtLabel.setText("$4030"); // TODO: 7/18/16 replace text
                 headerHolder.mWarningImage.setImageResource(R.mipmap.held_due_to_debt);
                 headerHolder.mWarningTextView.setText("Some text for held due to debt packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
-
+            // show track parcel btn, set top icon and text for sent status
             if (mItems.get(position) instanceof Sent) {
                 headerHolder.mSentParcelLayout.setVisibility(View.VISIBLE);
                 headerHolder.mWarningImage.setImageResource(R.mipmap.sent);
                 headerHolder.mWarningTextView.setText("Some text for sent packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
-
+            // show upload and take picture btn, set top icon and text for customs held status
             if (mItems.get(position) instanceof CustomsHeld) {
                 headerHolder.mUploadLayout.setVisibility(View.VISIBLE);
                 headerHolder.mWarningImage.setImageResource(R.mipmap.ic_vama_leuseni_48dp);
                 headerHolder.mWarningTextView.setText("Some text for held by customs packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
-
+            // show
             if (mItems.get(position) instanceof Prohibited) {
                 headerHolder.mProhibitionLayout.setVisibility(View.VISIBLE);
                 headerHolder.mWarningImage.setImageResource(R.mipmap.ic_held_prohibition);
@@ -153,6 +156,24 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             if (mItems.get(position) instanceof ToDelivery) {
                 headerHolder.mToDeliveryDetails.setVisibility(View.VISIBLE);
                 headerHolder.mWarningImage.setImageResource(R.mipmap.take_to_delivery);
+                headerHolder.mWarningTextView.setText("Some text for taken to delivery packages description will go here at the top"); // TODO: 7/18/16 replace text
+            }
+
+            if (mItems.get(position) instanceof AwaitingDeclaration) {
+                headerHolder.mAwaitingDeclarationLayout.setVisibility(View.VISIBLE);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.awaiting_declaration_44dp);
+                headerHolder.mWarningTextView.setText("Some text for taken to delivery packages description will go here at the top"); // TODO: 7/18/16 replace text
+            }
+
+            if (mItems.get(position) instanceof HeldByUser) {
+                headerHolder.mHeldByUserLayout.setVisibility(View.VISIBLE);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.held_by_user_44dp);
+                headerHolder.mWarningTextView.setText("Some text for taken to delivery packages description will go here at the top"); // TODO: 7/18/16 replace text
+            }
+
+            if (mItems.get(position) instanceof DamageRecorded) {
+                headerHolder.mDamageRecordedLayout.setVisibility(View.VISIBLE);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_held_by_damage_44dp);
                 headerHolder.mWarningTextView.setText("Some text for taken to delivery packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
 
@@ -247,7 +268,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final LinearLayout mUploadLayout;
         final LinearLayout mProhibitionLayout;
         final RelativeLayout mSentParcelLayout;
-        final RelativeLayout mReturnButton;
         final RelativeLayout mHomeDeliveryLayout;
         final RelativeLayout mReceivedOnMapLayout;
         final LinearLayout mToDeliveryDetails;
@@ -261,6 +281,26 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final TextView mDescriptionlabel;
         final Button mLeaveFeedback;
         final MapView mMapView;
+
+        // awaiting declaration
+        final LinearLayout mAwaitingDeclarationLayout;
+        final Button mEditDeclarationBtn;
+
+        // held by prohibition
+        final Button mReturnToSeller;
+        final Button mToDisband;
+
+        // held by user
+        final LinearLayout mHeldByUserLayout;
+        final Button mUserHeldSendBtn;
+
+        // damage recorded
+        final LinearLayout mDamageRecordedLayout;
+        final Button mAllowShipping;
+        final Button mDamageToDisband;
+        final ImageButton mAllowShippingDetails;
+        final ImageButton mDamageToDisbandDetails;
+
         GoogleMap mGoogleMap;
         T mProcessingParcel;
 
@@ -309,7 +349,8 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mUploadDocument = (Button) itemView.findViewById(R.id.prohibitionHeldUploadDocumentBtn);
             // held by prohibition layout
             mProhibitionLayout = (LinearLayout) itemView.findViewById(R.id.heldByProhibitionHeaderLayout);
-            mReturnButton = (RelativeLayout) itemView.findViewById(R.id.heldByProhibitionReturnBtn);
+            mReturnToSeller = (Button) itemView.findViewById(R.id.heldByProhibitionReturnBtn);
+            mToDisband = (Button) itemView.findViewById(R.id.heldByProhibitionToDisbandBtn);
             // sent parcel layout
             mSentParcelLayout = (RelativeLayout) itemView.findViewById(R.id.sentParcelHeaderLayout);
             // local depot layout
@@ -317,6 +358,18 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             // received layout
             mReceivedOnMapLayout = (RelativeLayout) itemView.findViewById(R.id.receivedSignatureOnMapLayout);
             mGeolocation = (Button) itemView.findViewById(R.id.geolocationButton);
+            // awaiting declaration items
+            mAwaitingDeclarationLayout = (LinearLayout) itemView.findViewById(R.id.awaitingDeclarationButtonLayout);
+            mEditDeclarationBtn = (Button) itemView.findViewById(R.id.editAwaitingDeclarationBtn);
+            // held by user
+            mHeldByUserLayout = (LinearLayout) itemView.findViewById(R.id.heldByUserBtnLayout);
+            mUserHeldSendBtn = (Button) itemView.findViewById(R.id.heldByUserSendBtn);
+            // damage recorded
+            mDamageRecordedLayout = (LinearLayout) itemView.findViewById(R.id.damageRecordedLayout);
+            mAllowShipping = (Button) itemView.findViewById(R.id.damageAllowShipping);
+            mDamageToDisband = (Button) itemView.findViewById(R.id.damageToDisband);
+            mAllowShippingDetails = (ImageButton) itemView.findViewById(R.id.damageAllowShippingDetails);
+            mDamageToDisbandDetails = (ImageButton) itemView.findViewById(R.id.damageToDisbandDetails);
 
             mToDeliveryDetails = (LinearLayout) itemView.findViewById(R.id.takeToDeliveryDetailsHeaderLayout);
             mCallCourierBtn = (LinearLayout) itemView.findViewById(R.id.takeToDeliveryDetailsCallBtn);
@@ -327,13 +380,20 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mDebtLabel = (TextView) itemView.findViewById(R.id.payTheDebtAmountLabel);
             mLeaveFeedback = (Button) itemView.findViewById(R.id.leaveReviewButton);
 
+            mAllowShipping.setOnClickListener(this);
+            mDamageToDisband.setOnClickListener(this);
+            mAllowShippingDetails.setOnClickListener(this);
+            mDamageToDisbandDetails.setOnClickListener(this);
+            mUserHeldSendBtn.setOnClickListener(this);
+            mEditDeclarationBtn.setOnClickListener(this);
             mLeaveFeedback.setOnClickListener(this);
             mCallCourierBtn.setOnClickListener(this);
             mHomeDeliveryLayout.setOnClickListener(this);
-            mReturnButton.setOnClickListener(this);
+            mReturnToSeller.setOnClickListener(this);
             mPayTheDebtLayout.setOnClickListener(this);
             mGeolocation.setOnClickListener(this);
             mSentParcelLayout.setOnClickListener(this);
+            mToDisband.setOnClickListener(this);
 
             mReceivedOnMapLayout.setVisibility(View.GONE);
             mTakePicture.setOnClickListener(this);
@@ -383,6 +443,27 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                     break;
                 case R.id.leaveReviewButton:
                     mOnItemClickListener.onLeaveFeedbackClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.editAwaitingDeclarationBtn:
+                    mOnItemClickListener.onEditDeclarationClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.heldByProhibitionToDisbandBtn:
+                    mOnItemClickListener.onToDisbandClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.heldByUserSendBtn:
+                    mOnItemClickListener.onUserHeldSendClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.damageAllowShipping:
+                    mOnItemClickListener.onAllowShippingClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.damageAllowShippingDetails:
+                    mOnItemClickListener.onAllowShippingDetailsClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.damageToDisband:
+                    mOnItemClickListener.onDamageToDisbandClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.damageToDisbandDetails:
+                    mOnItemClickListener.onDamageToDisbandDetailsClick(mProcessingParcel, getAdapterPosition());
                     break;
             }
         }
@@ -435,5 +516,12 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         <T extends PUSParcel> void onGeolocationClick(T item, int position);
         <T extends PUSParcel> void onStartTrackingClick(T item, int position);
         <T extends PUSParcel> void onLeaveFeedbackClick(T item, int position);
+        <T extends PUSParcel> void onEditDeclarationClick(T item, int position);
+        <T extends PUSParcel> void onToDisbandClick(T item, int position);
+        <T extends PUSParcel> void onUserHeldSendClick(T item, int position);
+        <T extends PUSParcel> void onAllowShippingClick(T item, int position);
+        <T extends PUSParcel> void onAllowShippingDetailsClick(T item, int position);
+        <T extends PUSParcel> void onDamageToDisbandClick(T item, int position);
+        <T extends PUSParcel> void onDamageToDisbandDetailsClick(T item, int position);
     }
 }

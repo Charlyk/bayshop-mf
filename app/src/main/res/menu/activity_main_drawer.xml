@@ -20,10 +20,20 @@
             app:actionLayout="@layout/nav_counter"
             android:title="@string/in_forming"/>
         <item
+            android:id="@+id/nav_awaitingDeclaration"
+            android:icon="@mipmap/ic_in_forming"
+            app:actionLayout="@layout/nav_counter"
+            android:title="@string/in_forming"/>
+        <item
             android:id="@+id/nav_inProcessing"
             android:icon="@mipmap/ic_in_processing"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/in_processing"/>
+        <item
+            android:id="@+id/nav_packing"
+            android:icon="@mipmap/ic_in_forming"
+            app:actionLayout="@layout/nav_counter"
+            android:title="@string/in_forming"/>
         <item
             android:id="@+id/nav_awaitingSending"
             android:icon="@mipmap/awaiting_sending"
@@ -39,6 +49,11 @@
             android:icon="@mipmap/ic_held_prohibition"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/held_by_prohibition"/>
+        <item
+            android:id="@+id/nav_heldByUser"
+            android:icon="@mipmap/ic_in_forming"
+            app:actionLayout="@layout/nav_counter"
+            android:title="@string/in_forming"/>
         <item
             android:id="@+id/nav_sent"
             android:icon="@mipmap/ic_sent_black_24dp"

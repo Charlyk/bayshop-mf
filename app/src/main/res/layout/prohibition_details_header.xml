@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:id="@+id/heldByProhibitionHeaderLayout"
               android:background="@android:color/white"
               android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/heldByProhibitionReturnBtn"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+    <Button
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:drawableLeft="@mipmap/ic_replay_24dp"
+        android:drawableStart="@mipmap/ic_replay_24dp"
         android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:drawablePadding="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorGreenAction"
+        android:text="@string/return_to_seller_s_address"
+        android:id="@+id/heldByProhibitionReturnBtn"/>
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/return_to_seller_s_address"
-            android:textColor="@android:color/black"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
 
-        <ImageButton
-            android:id="@+id/heldByPRohibitionReturnToSender"
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="?selectableItemBackground"
-            android:src="@mipmap/ic_replay_24dp"/>
-    </RelativeLayout>
+    <Button
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to_disband"
+        android:gravity="start|center_vertical"
+        android:textColor="@color/colorGreenAction"
+        android:background="?selectableItemBackground"
+        android:drawableLeft="@mipmap/ic_disband_24dp"
+        android:drawableStart="@mipmap/ic_disband_24dp"
+        android:textSize="16sp"
+        android:drawablePadding="10dp"
+        android:id="@+id/heldByProhibitionToDisbandBtn"/>
 </LinearLayout>

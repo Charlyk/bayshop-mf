@@ -297,4 +297,7 @@
     <string name="shipping_by">Доставка посредством:</string>
     <string name="create_parcel">Создать посылку</string>
     <string name="leave_feedback">Оставить отзыв</string>
+    <string name="to_disband">To disband</string>
+    <string name="send_parcel">Send parcel</string>
+    <string name="allow_shipping">Allow shipping</string>
 </resources>
