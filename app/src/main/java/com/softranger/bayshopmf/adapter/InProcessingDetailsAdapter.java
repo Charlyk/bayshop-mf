@@ -253,13 +253,13 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         final LinearLayout mToDeliveryDetails;
         final LinearLayout mCallCourierBtn;
         final LinearLayout mWarningWithImage;
-        final Button mSignature;
         final Button mGeolocation;
         final RelativeLayout mPayTheDebtLayout;
         final TextView mDebtLabel;
         final ImageView mWarningImage;
         final TextView mWarningTextView;
         final TextView mDescriptionlabel;
+        final Button mLeaveFeedback;
         final MapView mMapView;
         GoogleMap mGoogleMap;
         T mProcessingParcel;
@@ -316,7 +316,6 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mHomeDeliveryLayout = (RelativeLayout) itemView.findViewById(R.id.orderHomeDeliveryLayout);
             // received layout
             mReceivedOnMapLayout = (RelativeLayout) itemView.findViewById(R.id.receivedSignatureOnMapLayout);
-            mSignature = (Button) itemView.findViewById(R.id.signatureButton);
             mGeolocation = (Button) itemView.findViewById(R.id.geolocationButton);
 
             mToDeliveryDetails = (LinearLayout) itemView.findViewById(R.id.takeToDeliveryDetailsHeaderLayout);
@@ -326,12 +325,13 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             mWarningTextView = (TextView) itemView.findViewById(R.id.warningWithIconLabel);
             mPayTheDebtLayout = (RelativeLayout) itemView.findViewById(R.id.payTheDebtLayout);
             mDebtLabel = (TextView) itemView.findViewById(R.id.payTheDebtAmountLabel);
+            mLeaveFeedback = (Button) itemView.findViewById(R.id.leaveReviewButton);
 
+            mLeaveFeedback.setOnClickListener(this);
             mCallCourierBtn.setOnClickListener(this);
             mHomeDeliveryLayout.setOnClickListener(this);
             mReturnButton.setOnClickListener(this);
             mPayTheDebtLayout.setOnClickListener(this);
-            mSignature.setOnClickListener(this);
             mGeolocation.setOnClickListener(this);
             mSentParcelLayout.setOnClickListener(this);
 
@@ -375,14 +375,14 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                 case R.id.payTheDebtLayout:
                     mOnItemClickListener.onPayTheDebtClick(mProcessingParcel, getAdapterPosition());
                     break;
-                case R.id.signatureButton:
-                    mOnItemClickListener.onSignatureClick(mProcessingParcel, getAdapterPosition());
-                    break;
                 case R.id.geolocationButton:
                     mOnItemClickListener.onGeolocationClick(mProcessingParcel, getAdapterPosition());
                     break;
                 case R.id.sentParcelHeaderLayout:
                     mOnItemClickListener.onStartTrackingClick(mProcessingParcel, getAdapterPosition());
+                    break;
+                case R.id.leaveReviewButton:
+                    mOnItemClickListener.onLeaveFeedbackClick(mProcessingParcel, getAdapterPosition());
                     break;
             }
         }
@@ -432,8 +432,8 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
         <T extends PUSParcel> void onSelectAddressClick(T item, int position);
         <T extends PUSParcel> void onCallCourierClick(T item, int position);
         <T extends PUSParcel> void onPayTheDebtClick(T item, int position);
-        <T extends PUSParcel> void onSignatureClick(T item, int position);
         <T extends PUSParcel> void onGeolocationClick(T item, int position);
         <T extends PUSParcel> void onStartTrackingClick(T item, int position);
+        <T extends PUSParcel> void onLeaveFeedbackClick(T item, int position);
     }
 }

@@ -414,11 +414,6 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
     }
 
     @Override
-    public <P extends PUSParcel> void onSignatureClick(P item, int position) {
-
-    }
-
-    @Override
     public <P extends PUSParcel> void onGeolocationClick(P item, int position) {
         mActivity.addFragment(ReceivedSignature.newInstance((Received) item), false);
     }
@@ -426,6 +421,11 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
     @Override
     public <P extends PUSParcel> void onStartTrackingClick(P item, int position) {
 
+    }
+
+    @Override
+    public <P extends PUSParcel> void onLeaveFeedbackClick(P item, int position) {
+        // TODO: 8/10/16 open leave feedback screen
     }
 
     @Override

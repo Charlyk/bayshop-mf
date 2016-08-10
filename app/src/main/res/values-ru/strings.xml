@@ -241,7 +241,7 @@
     <string name="take_to_delivery_alert">Этот товар был передан курьеру, и скоро он доставит его вам.</string>
     <string name="pay_the_debt">Оплатить долг</string>
     <string name="geolocation">Геолокация</string>
-    <string name="signature">Подпись</string>
+    <string name="signature">Подпись и геолокация</string>
     <string name="track_parcel">Отследить посылку</string>
     <string name="volume">Объем (см)</string>
     <string name="z">Z</string>
@@ -296,4 +296,5 @@
     <string name="from">из</string>
     <string name="shipping_by">Доставка посредством:</string>
     <string name="create_parcel">Создать посылку</string>
+    <string name="leave_feedback">Оставить отзыв</string>
 </resources>

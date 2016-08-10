@@ -241,7 +241,7 @@
     <string name="take_to_delivery_alert">This product was taken by courier and it will soon be delivered to you.</string>
     <string name="pay_the_debt">Pay the debt</string>
     <string name="geolocation">Geolocation</string>
-    <string name="signature">Signature</string>
+    <string name="signature">Signature and geolocation</string>
     <string name="track_parcel">Track the parcel</string>
     <string name="volume">Volume (cm)</string>
     <string name="z">Z</string>
@@ -296,4 +296,5 @@
     <string name="from">from</string>
     <string name="shipping_by">Shipping by:</string>
     <string name="create_parcel">Create parcel</string>
+    <string name="leave_feedback">Leave feedback</string>
 </resources>
