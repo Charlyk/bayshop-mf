@@ -300,4 +300,14 @@
     <string name="to_disband">To disband</string>
     <string name="send_parcel">Send parcel</string>
     <string name="allow_shipping">Allow shipping</string>
+    <string name="awaiting_declaration">Awaiting declaration</string>
+    <string name="in_the_way">In the way</string>
+    <string name="inner_mail">Inner mail</string>
+    <string name="held_by_damage">Held by damage</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="replenish_your_account">Enter the recharge amount and choose payment method in order to replenish your account</string>
+    <string name="recharge_amount">Recharge amount:</string>
+    <string name="choose_payment_method">Choose payment method</string>
 </resources>

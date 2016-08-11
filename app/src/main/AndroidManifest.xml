@@ -14,7 +14,6 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true"/>
@@ -95,6 +94,10 @@
         <activity android:name=".ui.contact.ChatActivity">
         </activity>
         <activity android:name=".ui.contact.NewMessageActivity">
+        </activity>
+        <activity android:name=".ui.services.ReplenishmentActivity">
+        </activity>
+        <activity android:name=".ui.general.ResultActivity">
         </activity>
     </application>
 

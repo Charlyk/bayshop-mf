@@ -41,6 +41,10 @@ public class Constants {
         public static final String CUSTOMS_HELD = "customs-held";
         public static final String DEPT = "dept";
         public static final String HELD_BY_PROHIBITION = "held-by-prohibition";
+        public static final String AWAITING_DECLARATION = "awaiting-declaration";
+        public static final String PACKING = "packing";
+        public static final String HELD_BY_USER = "held-by-user";
+        public static final String DAMAGE_RECORDED = "damage-recorded";
     }
 
     public static class Api {

@@ -212,6 +212,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             setMenuCounter(R.id.nav_localDeposit, Application.counters.get(Constants.ParcelStatus.LOCAL_DEPO));
             setMenuCounter(R.id.nav_takeToDelivery, Application.counters.get(Constants.ParcelStatus.TAKEN_TO_DELIVERY));
             setMenuCounter(R.id.nav_received, Application.counters.get(Constants.ParcelStatus.RECEIVED));
+//            setMenuCounter(R.id.nav_awaitingDeclaration, Application.counters.get(Constants.ParcelStatus.AWAITING_DECLARATION));
+//            setMenuCounter(R.id.nav_packing, Application.counters.get(Constants.ParcelStatus.PACKING));
+//            setMenuCounter(R.id.nav_heldByDamageRecord, Application.counters.get(Constants.ParcelStatus.DAMAGE_RECORDED));
+//            setMenuCounter(R.id.nav_heldByUser, Application.counters.get(Constants.ParcelStatus.HELD_BY_USER));
             return;
         }
 
@@ -252,6 +256,18 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case Constants.ParcelStatus.RECEIVED:
                 setMenuCounter(R.id.nav_received, Application.counters.get(parcelStatus));
                 break;
+//            case Constants.ParcelStatus.AWAITING_DECLARATION:
+//                setMenuCounter(R.id.nav_awaitingDeclaration, Application.counters.get(Constants.ParcelStatus.AWAITING_DECLARATION));
+//                break;
+//            case Constants.ParcelStatus.PACKING:
+//                setMenuCounter(R.id.nav_packing, Application.counters.get(Constants.ParcelStatus.PACKING));
+//                break;
+//            case Constants.ParcelStatus.DAMAGE_RECORDED:
+//                setMenuCounter(R.id.nav_heldByDamageRecord, Application.counters.get(Constants.ParcelStatus.DAMAGE_RECORDED));
+//                break;
+//            case Constants.ParcelStatus.HELD_BY_USER:
+//                setMenuCounter(R.id.nav_heldByUser, Application.counters.get(Constants.ParcelStatus.HELD_BY_USER));
+//                break;
         }
     }
 
@@ -412,72 +428,84 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         boolean closeDrawer = true;
+        boolean isStorageFragment = true;
         switch (id) {
-            case R.id.nav_inStock:
-                selectedFragment = SelectedFragment.IN_STOCK;
-                changeList(StorageHolderFragment.newInstance(), true);
-                break;
-            case R.id.nav_waitingArrival:
-                selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_inProcessing:
-                selectedFragment = SelectedFragment.IN_PROCESSING;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_inForming:
-                selectedFragment = SelectedFragment.IN_FORMING;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_awaitingSending:
-                selectedFragment = SelectedFragment.AWAITING_SENDING;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_sent:
-                selectedFragment = SelectedFragment.SENT;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_received:
-                selectedFragment = SelectedFragment.RECEIVED;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_localDeposit:
-                selectedFragment = SelectedFragment.LOCAL_DEPO;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_heldByCustoms:
-                selectedFragment = SelectedFragment.CUSTOMS_HELD;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
-            case R.id.nav_takeToDelivery:
-                selectedFragment = SelectedFragment.TAKEN_TO_DELIVERY;
-                changeList(StorageHolderFragment.newInstance(), false);
-                break;
             case R.id.nav_profileSettings:
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
                 closeDrawer = false;
+                isStorageFragment = false;
                 break;
             case R.id.nav_paymentHistory:
                 Intent payment = new Intent(this, PaymentActivity.class);
                 startActivity(payment);
                 closeDrawer = false;
+                isStorageFragment = false;
                 break;
             case R.id.nav_shippingCalculator:
                 Intent calculator = new Intent(this, ShippingCalculatorActivity.class);
                 startActivity(calculator);
                 closeDrawer = false;
+                isStorageFragment = false;
                 break;
             case R.id.nav_contactUs:
                 Intent contactUs = new Intent(this, ContactUsActivity.class);
                 startActivity(contactUs);
                 closeDrawer = false;
+                isStorageFragment = false;
                 break;
             case R.id.nav_addresses:
                 Intent addresses = new Intent(this, WarehouseAddressesActivity.class);
                 startActivity(addresses);
                 closeDrawer = false;
+                isStorageFragment = false;
                 break;
+            case R.id.nav_inStock:
+                selectedFragment = SelectedFragment.IN_STOCK;
+                break;
+            case R.id.nav_waitingArrival:
+                selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
+                break;
+            case R.id.nav_inProcessing:
+                selectedFragment = SelectedFragment.IN_PROCESSING;
+                break;
+            case R.id.nav_inForming:
+                selectedFragment = SelectedFragment.IN_FORMING;
+                break;
+            case R.id.nav_awaitingSending:
+                selectedFragment = SelectedFragment.AWAITING_SENDING;
+                break;
+            case R.id.nav_sent:
+                selectedFragment = SelectedFragment.SENT;
+                break;
+            case R.id.nav_received:
+                selectedFragment = SelectedFragment.RECEIVED;
+                break;
+            case R.id.nav_localDeposit:
+                selectedFragment = SelectedFragment.LOCAL_DEPO;
+                break;
+            case R.id.nav_heldByCustoms:
+                selectedFragment = SelectedFragment.CUSTOMS_HELD;
+                break;
+            case R.id.nav_takeToDelivery:
+                selectedFragment = SelectedFragment.TAKEN_TO_DELIVERY;
+                break;
+            case R.id.nav_awaitingDeclaration:
+                selectedFragment = SelectedFragment.AWAITING_DECLARATION;
+                break;
+            case R.id.nav_packing:
+                selectedFragment = SelectedFragment.PACKING;
+                break;
+            case R.id.nav_heldByDamageRecord:
+                selectedFragment = SelectedFragment.DAMAGE_RECORDED;
+                break;
+            case R.id.nav_heldByUser:
+                selectedFragment = SelectedFragment.HELD_BY_USER;
+                break;
+        }
+
+        if (isStorageFragment) {
+            changeList(StorageHolderFragment.newInstance(), false);
         }
 
         if (closeDrawer)
@@ -664,6 +692,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     public enum SelectedFragment {
         IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED,
-        LOCAL_DEPO, TAKEN_TO_DELIVERY, CUSTOMS_HELD
+        LOCAL_DEPO, TAKEN_TO_DELIVERY, AWAITING_DECLARATION, PACKING, DAMAGE_RECORDED, HELD_BY_USER, CUSTOMS_HELD
     }
 }

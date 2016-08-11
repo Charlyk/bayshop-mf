@@ -125,8 +125,7 @@ public class ShippingCalculatorActivity extends AppCompatActivity implements Tex
 
     }
 
-    public void getShippingPriceFromServer(String weight, String x, String y, String z,
-                                           String countryName, String storage) {
+    public void getShippingPriceFromServer(String weight, String x, String y, String z, String countryName, String storage) {
 
     }
 

@@ -300,4 +300,7 @@
     <string name="to_disband">To disband</string>
     <string name="send_parcel">Send parcel</string>
     <string name="allow_shipping">Allow shipping</string>
+    <string name="awaiting_declaration">Awaiting declaration</string>
+    <string name="in_the_way">In the way</string>
+    <string name="inner_mail">Inner mail</string>
 </resources>

@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:clickable="true"
+              android:background="@android:color/white"
+              tools:context="com.softranger.bayshopmf.ui.auth.ForgotResultFragment">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/restore_password"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/resultFragmentTopTitle"
+        android:layout_gravity="center_horizontal"/>
+
+    <ImageView
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        tools:src="@drawable/ic_mail"
+        android:id="@+id/resultFragmentImage"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/email_has_been_sent"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/resultFragmentSecondTitle"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        tools:text="@string/reset_your_password"
+        android:id="@+id/resultFragmentDescription"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:text="@string/done"
+        android:background="@drawable/green_button_bg"
+        android:textColor="@android:color/white"
+        android:id="@+id/registerResultDoneButton"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

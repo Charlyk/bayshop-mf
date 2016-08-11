@@ -429,6 +429,41 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
     }
 
     @Override
+    public <P extends PUSParcel> void onEditDeclarationClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onToDisbandClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onUserHeldSendClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onAllowShippingClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onAllowShippingDetailsClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onDamageToDisbandClick(P item, int position) {
+
+    }
+
+    @Override
+    public <P extends PUSParcel> void onDamageToDisbandDetailsClick(P item, int position) {
+
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mActivity.unregisterReceiver(mTitleReceiver);

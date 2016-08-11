@@ -5,63 +5,68 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_waitingArrival"
-            android:icon="@mipmap/ic_awaiting_arrival"
+            android:icon="@mipmap/awaiting_arrival_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/awaiting_arrival"/>
         <item
             android:id="@+id/nav_inStock"
             android:checked="true"
-            android:icon="@mipmap/in_stock"
+            android:icon="@mipmap/warehouse_usa_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/warehouse_usa"/>
         <item
             android:id="@+id/nav_inForming"
-            android:icon="@mipmap/ic_in_forming"
+            android:icon="@mipmap/in_forming_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/in_forming"/>
         <item
             android:id="@+id/nav_awaitingDeclaration"
-            android:icon="@mipmap/ic_in_forming"
+            android:icon="@mipmap/awaiting_declaration_24dp"
             app:actionLayout="@layout/nav_counter"
-            android:title="@string/in_forming"/>
+            android:title="@string/awaiting_declaration"/>
         <item
             android:id="@+id/nav_inProcessing"
-            android:icon="@mipmap/ic_in_processing"
+            android:icon="@mipmap/processing_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/in_processing"/>
         <item
             android:id="@+id/nav_packing"
-            android:icon="@mipmap/ic_in_forming"
+            android:icon="@mipmap/packing_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/in_forming"/>
         <item
             android:id="@+id/nav_awaitingSending"
-            android:icon="@mipmap/awaiting_sending"
+            android:icon="@mipmap/awaiting_sending_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/awaiting_sending"/>
         <item
-            android:id="@+id/nav_heldDueToDebt"
-            android:icon="@mipmap/held_due_to_debt"
-            app:actionLayout="@layout/nav_counter"
-            android:title="@string/held_due_to_debt"/>
-        <item
             android:id="@+id/nav_heldByProhibition"
-            android:icon="@mipmap/ic_held_prohibition"
+            android:icon="@mipmap/held_by_prohibition_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/held_by_prohibition"/>
         <item
+            android:id="@+id/nav_heldByDamageRecord"
+            android:icon="@mipmap/held_by_damage_24dp"
+            app:actionLayout="@layout/nav_counter"
+            android:title="@string/held_by_damage"/>
+        <item
+            android:id="@+id/nav_heldDueToDebt"
+            android:icon="@mipmap/held_due_to_debt_24dp"
+            app:actionLayout="@layout/nav_counter"
+            android:title="@string/held_due_to_debt"/>
+        <item
             android:id="@+id/nav_heldByUser"
-            android:icon="@mipmap/ic_in_forming"
+            android:icon="@mipmap/held_by_user_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/in_forming"/>
         <item
             android:id="@+id/nav_sent"
-            android:icon="@mipmap/ic_sent_black_24dp"
+            android:icon="@mipmap/send_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/sent"/>
         <item
             android:id="@+id/nav_heldByCustoms"
-            android:icon="@mipmap/ic_held_by_customs_24dp"
+            android:icon="@mipmap/held_by_customs_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/held_by_customs"/>
         <item
@@ -71,12 +76,12 @@
             android:title="@string/local_deposit"/>
         <item
             android:id="@+id/nav_takeToDelivery"
-            android:icon="@mipmap/take_to_delivery"
+            android:icon="@mipmap/in_the_way_24dp"
             app:actionLayout="@layout/nav_counter"
-            android:title="@string/take_to_delivery"/>
+            android:title="@string/in_the_way"/>
         <item
             android:id="@+id/nav_received"
-            android:icon="@mipmap/received"
+            android:icon="@mipmap/received_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/received"/>
     </group>
@@ -85,28 +90,28 @@
         <menu>
             <item
                 android:id="@+id/nav_profileSettings"
-                android:icon="@mipmap/prof_settings"
+                android:icon="@mipmap/profile_settings_24dp"
                 android:title="@string/profile_settings"/>
             <item
                 android:id="@+id/nav_paymentHistory"
-                android:icon="@mipmap/payment_history"
+                android:icon="@mipmap/payment_history_24dp"
                 android:title="@string/payment_history"/>
             <item
                 android:id="@+id/nav_accountReplenishment"
-                android:icon="@mipmap/account_replenishment"
+                android:icon="@mipmap/account_repleshment_24dp"
                 android:title="@string/account_replenishment"/>
             <item
                 android:id="@+id/nav_addresses"
-                android:icon="@mipmap/addresses"
+                android:icon="@mipmap/addresses_24dp"
                 android:title="@string/addresses"/>
             <item
                 android:id="@+id/nav_shippingCalculator"
-                android:icon="@mipmap/shipping_calculator"
+                android:icon="@mipmap/shipping_calculator_24dp"
                 android:title="@string/shipping_calculator"/>
             <item
                 android:id="@+id/nav_contactUs"
-                android:icon="@mipmap/contact_us"
-                android:title="@string/contact_us"/>
+                android:icon="@mipmap/inner_mail_24dp"
+                android:title="@string/inner_mail"/>
         </menu>
     </item>
 </menu>
