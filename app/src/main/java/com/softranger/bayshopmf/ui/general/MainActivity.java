@@ -44,6 +44,7 @@ import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
 import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
+import com.softranger.bayshopmf.ui.services.ReplenishmentFragment;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
@@ -502,6 +503,11 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case R.id.nav_heldByUser:
                 selectedFragment = SelectedFragment.HELD_BY_USER;
                 break;
+            case R.id.nav_accountReplenishment:
+                selectedFragment = SelectedFragment.ACCOUNT_REPLENISHMENT;
+                isStorageFragment = false;
+                changeList(new ReplenishmentFragment(), false);
+                break;
         }
 
         if (isStorageFragment) {
@@ -692,6 +698,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     public enum SelectedFragment {
         IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED,
-        LOCAL_DEPO, TAKEN_TO_DELIVERY, AWAITING_DECLARATION, PACKING, DAMAGE_RECORDED, HELD_BY_USER, CUSTOMS_HELD
+        LOCAL_DEPO, TAKEN_TO_DELIVERY, AWAITING_DECLARATION, PACKING, DAMAGE_RECORDED, HELD_BY_USER, ACCOUNT_REPLENISHMENT, CUSTOMS_HELD
     }
 }
