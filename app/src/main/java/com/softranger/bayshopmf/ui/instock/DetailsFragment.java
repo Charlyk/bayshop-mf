@@ -282,9 +282,9 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             mInStockDetailed.setPhotoUrls(photos);
 
             mImagesAdapter.refreshList(mInStockDetailed.getPhotoUrls());
-            showDetails(mRootView, mInStockDetailed);
             new ImageDownloadThread<>(mInStockDetailed.getPhotoUrls(), mImageDownloadHandler, mActivity).start();
         }
+        showDetails(mRootView, mInStockDetailed);
     }
 
     private Handler mImageDownloadHandler = new Handler(Looper.getMainLooper()) {

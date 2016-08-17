@@ -463,6 +463,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                 break;
             case R.id.nav_inStock:
                 selectedFragment = SelectedFragment.IN_STOCK;
+
                 break;
             case R.id.nav_waitingArrival:
                 selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
@@ -491,18 +492,18 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case R.id.nav_takeToDelivery:
                 selectedFragment = SelectedFragment.TAKEN_TO_DELIVERY;
                 break;
-            case R.id.nav_awaitingDeclaration:
-                selectedFragment = SelectedFragment.AWAITING_DECLARATION;
-                break;
+//            case R.id.nav_awaitingDeclaration:
+//                selectedFragment = SelectedFragment.AWAITING_DECLARATION;
+//                break;
             case R.id.nav_packing:
                 selectedFragment = SelectedFragment.PACKING;
                 break;
-            case R.id.nav_heldByDamageRecord:
-                selectedFragment = SelectedFragment.DAMAGE_RECORDED;
-                break;
-            case R.id.nav_heldByUser:
-                selectedFragment = SelectedFragment.HELD_BY_USER;
-                break;
+//            case R.id.nav_heldByDamageRecord:
+//                selectedFragment = SelectedFragment.DAMAGE_RECORDED;
+//                break;
+//            case R.id.nav_heldByUser:
+//                selectedFragment = SelectedFragment.HELD_BY_USER;
+//                break;
             case R.id.nav_accountReplenishment:
                 selectedFragment = SelectedFragment.ACCOUNT_REPLENISHMENT;
                 isStorageFragment = false;
@@ -511,7 +512,8 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         }
 
         if (isStorageFragment) {
-            changeList(StorageHolderFragment.newInstance(), false);
+            boolean showBtn = selectedFragment == SelectedFragment.IN_STOCK;
+            changeList(StorageHolderFragment.newInstance(), showBtn);
         }
 
         if (closeDrawer)
