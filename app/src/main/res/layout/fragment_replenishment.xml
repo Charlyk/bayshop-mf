@@ -95,8 +95,26 @@
         android:layout_height="0.5dp"
         android:background="#b1b1b1"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/replenishmentMethodsList"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/replenishmentMethodsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <Button
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/replenish"
+            android:id="@+id/button3"
+            android:background="@drawable/green_button_bg"
+            android:textColor="@android:color/white"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
 </LinearLayout>

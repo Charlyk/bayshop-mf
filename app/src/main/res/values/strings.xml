@@ -310,4 +310,10 @@
     <string name="replenish_your_account">Enter the recharge amount and choose payment method in order to replenish your account</string>
     <string name="recharge_amount">Recharge amount:</string>
     <string name="choose_payment_method">Choose payment method</string>
+    <string name="pre_order_photos">Pre-order photos</string>
+    <string name="url_example">http://shop.com/product</string>
+    <string name="tracking_example">12345678901234567890</string>
+    <string name="divide_parcel">Divide parcel</string>
+    <string name="repacking">Repacking</string>
+    <string name="replenish">Replenish account</string>
 </resources>
