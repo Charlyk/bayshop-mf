@@ -105,7 +105,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             headerHolder.mWarningWithImage.setVisibility(View.VISIBLE);
             // set top icon and text for in processing status
             if (mItems.get(position) instanceof InProcessing) {
-                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_in_processing);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_packing_44dp);
                 headerHolder.mWarningTextView.setText("Some text for in processing packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
             // set top icon and text for packed status
@@ -117,25 +117,25 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             if (mItems.get(position) instanceof HeldDueToDebt) {
                 headerHolder.mPayTheDebtLayout.setVisibility(View.VISIBLE);
                 headerHolder.mDebtLabel.setText("$4030"); // TODO: 7/18/16 replace text
-                headerHolder.mWarningImage.setImageResource(R.mipmap.held_due_to_debt_24dp);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_held_due_to_debt_44dp);
                 headerHolder.mWarningTextView.setText("Some text for held due to debt packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
             // show track parcel btn, set top icon and text for sent status
             if (mItems.get(position) instanceof Sent) {
                 headerHolder.mSentParcelLayout.setVisibility(View.VISIBLE);
-                headerHolder.mWarningImage.setImageResource(R.mipmap.send_24dp);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_sent_44dp);
                 headerHolder.mWarningTextView.setText("Some text for sent packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
             // show upload and take picture btn, set top icon and text for customs held status
             if (mItems.get(position) instanceof CustomsHeld) {
                 headerHolder.mUploadLayout.setVisibility(View.VISIBLE);
-                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_vama_leuseni_48dp);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_held_by_customs_60dp);
                 headerHolder.mWarningTextView.setText("Some text for held by customs packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
             // show
             if (mItems.get(position) instanceof Prohibited) {
                 headerHolder.mProhibitionLayout.setVisibility(View.VISIBLE);
-                headerHolder.mWarningImage.setImageResource(R.mipmap.held_by_prohibition_24dp);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_held_by_prohibition_44dp);
                 headerHolder.mWarningTextView.setText("Some text for held by prohibition packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
 
@@ -143,19 +143,19 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
                 headerHolder.mHomeDeliveryLayout.setVisibility(View.VISIBLE);
                 headerHolder.mSelectButton.setVisibility(View.VISIBLE);
                 headerHolder.mSelectButton.setText(Application.getInstance().getString(R.string.change_address));
-                headerHolder.mWarningImage.setImageResource(R.mipmap.local_deposit);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_local_deposit_44dp);
                 headerHolder.mWarningTextView.setText("Some text for local depot packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
 
             if (mItems.get(position) instanceof Received) {
                 headerHolder.mReceivedOnMapLayout.setVisibility(View.VISIBLE);
-                headerHolder.mWarningImage.setImageResource(R.mipmap.received_24dp);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_received_44dp);
                 headerHolder.mWarningTextView.setText("Some text for received packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
 
             if (mItems.get(position) instanceof ToDelivery) {
                 headerHolder.mToDeliveryDetails.setVisibility(View.VISIBLE);
-                headerHolder.mWarningImage.setImageResource(R.mipmap.take_to_delivery);
+                headerHolder.mWarningImage.setImageResource(R.mipmap.ic_take_to_delivery_44dp);
                 headerHolder.mWarningTextView.setText("Some text for taken to delivery packages description will go here at the top"); // TODO: 7/18/16 replace text
             }
 

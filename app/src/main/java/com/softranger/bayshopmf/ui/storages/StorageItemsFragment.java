@@ -445,7 +445,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
     private void deleteItem(final Product product, final int position) {
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
-                        + product.getProductName() + "?", R.mipmap.ic_delete_box_24dpi,
+                        + product.getProductName() + "?", R.mipmap.ic_delete_box_24dp,
                 getString(R.string.yes), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

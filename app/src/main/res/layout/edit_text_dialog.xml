@@ -19,7 +19,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="16dp"
             android:contentDescription="@null"
-            tools:src="@mipmap/ic_delete_box_24dpi"/>
+            tools:src="@mipmap/ic_delete_box_24dp"/>
 
         <TextView
             android:id="@+id/editDialogTitleLabel"

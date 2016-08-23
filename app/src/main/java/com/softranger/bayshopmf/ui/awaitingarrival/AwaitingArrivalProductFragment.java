@@ -45,14 +45,16 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     private static final String PRODUCT_ARG = "product";
     public static final String ACTION_UPDATE = "update data";
 
-    private TextView mProductId, mProductName, mProductTracking, mProductDate, mProductPrice, mPhotoState;
-    private Button mGoToUrl, mEditDetails, mCheckProduct, mAdditionalPhoto;
-    private ImageView mStorageIcon, mPhotoPreview;
+    private TextView mProductId;
+    private TextView mProductName;
+    private TextView mProductTracking;
+    private TextView mProductDate;
+    private TextView mProductPrice;
+    private Button mCheckProduct;
+    private Button mAdditionalPhoto;
+    private ImageView mStorageIcon;
     private MainActivity mActivity;
     private Product mProduct;
-    private View mRootView;
-    private RecyclerView mRecyclerView;
-    private LinearLayout mNoPhotosLayout;
 
     private static boolean isDeleteClicked;
 
@@ -72,7 +74,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
@@ -83,13 +85,13 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mProduct = getArguments().getParcelable(PRODUCT_ARG);
 
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.awaitingArrivalDetailsImageList);
-        mNoPhotosLayout = (LinearLayout) mRootView.findViewById(R.id.noPhotoLayoutHolder);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.awaitingArrivalDetailsImageList);
+        LinearLayout noPhotosLayout = (LinearLayout) rootView.findViewById(R.id.noPhotoLayoutHolder);
 
-        mRecyclerView.setVisibility(View.GONE);
-        mNoPhotosLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        noPhotosLayout.setVisibility(View.VISIBLE);
 
-        bindViews(mRootView);
+        bindViews(rootView);
         mProductId.setText(mProduct.getProductId());
         mProductName.setText(mProduct.getProductName());
         mProductTracking.setText(mProduct.getTrackingNumber());
@@ -98,7 +100,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         mStorageIcon.setImageResource(getStorageIcon(mProduct.getDeposit()));
         mActivity.toggleLoadingProgress(true);
         ApiClient.getInstance().getRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mProduct.getID())), mHandler);
-        return mRootView;
+        return rootView;
     }
 
     private BroadcastReceiver mStatusReceiver = new BroadcastReceiver() {
@@ -182,14 +184,11 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         mProductTracking = (TextView) view.findViewById(R.id.awaitingDetailsProductTracking);
         mProductDate = (TextView) view.findViewById(R.id.awaitingDetailsDate);
         mProductPrice = (TextView) view.findViewById(R.id.awaitingDetailsPrice);
-        mPhotoState = (TextView) view.findViewById(R.id.awaitingDetailsStateDescription);
 
         // Buttons
-        mGoToUrl = (Button) view.findViewById(R.id.awaitingDetailsGoToUrlBtn);
-        mGoToUrl.setOnClickListener(this);
 
-        mEditDetails = (Button) view.findViewById(R.id.awaitingDetailsEditButton);
-        mEditDetails.setOnClickListener(this);
+        Button editDetails = (Button) view.findViewById(R.id.awaitingDetailsEditButton);
+        editDetails.setOnClickListener(this);
 
         ImageButton deleteProduct = (ImageButton) view.findViewById(R.id.awaitingDetailsDeleteButton);
         deleteProduct.setOnClickListener(this);
@@ -202,19 +201,11 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
 
         // Image views
         mStorageIcon = (ImageView) view.findViewById(R.id.awaitingDetailsStorageIcon);
-        mPhotoPreview = (ImageView) view.findViewById(R.id.awaitingDetailsPhotoPreview);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.awaitingDetailsGoToUrlBtn:
-                if (mProduct.getProductUrl() == null || mProduct.getProductUrl().equals("")) {
-                    Snackbar.make(mRootView, "There is no url for this product", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                mActivity.addFragment(WebViewFragment.newInstance(mProduct.getProductUrl()), true);
-                break;
             case R.id.awaitingDetailsEditButton:
                 mActivity.addFragment(EditAwaitingFragment.newInstance(mProduct), true);
                 break;
@@ -235,7 +226,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     AlertDialog dialog = null;
     private void deleteItem(final Product product) {
         dialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
-                + mProduct.getProductName() + "?", R.mipmap.ic_delete_box_24dpi,
+                + mProduct.getProductName() + "?", R.mipmap.ic_delete_box_24dp,
                 getString(R.string.yes), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

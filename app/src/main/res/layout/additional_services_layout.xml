@@ -16,129 +16,89 @@
         android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
-        android:id="@+id/leftLayout"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/inStockAddsAdditionalPhotosBtn"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1">
-            
-            <LinearLayout
-                android:id="@+id/inStockAddsCombineParcelsBtn"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:layout_weight="1"
-                android:layout_marginBottom="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@mipmap/ic_aditional_photo_85dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/additional_photo"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/box_img"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginEnd="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/you_can_combine_several_parcels_in_one"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/inStockAddsOrderCheckBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/magnifier_img"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginEnd="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/you_can_order_product_checking"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/rightLayout"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/inStockAddsOrderCheckBtn"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/inStockAddsDivideParcelsBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:layout_weight="1"
-                android:layout_marginBottom="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_devide_50dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginEnd="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/divide_parcels"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/inStockAddsAdditionalPhotosBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/camera_img"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginEnd="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/and_receive_the_additional_photos"/>
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/ic_check_product_75dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/check_product"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/inStockAddsDivideParcelsBtn"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@mipmap/ic_devide_parcel_80dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:drawablePadding="10dp"
+            android:text="@string/divide_parcel"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/inStockAddsCombineParcelsBtn"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@mipmap/ic_packing_80dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/repacking"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

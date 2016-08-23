@@ -375,12 +375,12 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
     @Override
     public <P extends PUSParcel> void onOrderDeliveryClick(P item, int position) {
         mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
-                        + " " + item.getAddress().getClientName(), R.mipmap.ic_white_magic_kamaz_24dp,
+                        + " " + item.getAddress().getClientName(), R.mipmap.ic_order_delivery_white_30dp,
                 getString(R.string.confirm), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
-                                R.drawable.ic_sent, getString(R.string.thank_you), getString(R.string.please_wait_call),
+                                R.mipmap.ic_order_sent_75dp, getString(R.string.thank_you), getString(R.string.please_wait_call),
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -440,7 +440,28 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
 
     @Override
     public <P extends PUSParcel> void onUserHeldSendClick(P item, int position) {
-
+        mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
+                        + " " + item.getAddress().getClientName(), R.mipmap.send_parcel_white_30dp,
+                getString(R.string.confirm), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
+                                R.mipmap.ic_confirm_25dp, getString(R.string.thank_you), getString(R.string.please_wait_call),
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mActivity.onBackPressed();
+                                    }
+                                }), false);
+                        mAlertDialog.dismiss();
+                    }
+                }, getString(R.string.cancel), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAlertDialog.dismiss();
+                    }
+                }, R.color.colorGreenAction);
+        mAlertDialog.show();
     }
 
     @Override
@@ -496,12 +517,12 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
         switch (action) {
             case UPLOAD_RESULT_CODE:
                 topMessage = getString(R.string.document_uploaded);
-                image = R.mipmap.ic_dosar_35;
+                image = R.mipmap.ic_doc_55dp;
                 middleMessage = getString(R.string.thank_you_for_document);
                 break;
             case TAKE_PICTURE_CODE:
                 topMessage = getString(R.string.photo_taken);
-                image = R.mipmap.ic_nikon_35dp;
+                image = R.mipmap.ic_photo_55dp;
                 middleMessage = getString(R.string.thank_you_for_photo);
                 break;
         }

@@ -12,61 +12,68 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:gravity="start|center_vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:layout_marginTop="16dp"
         android:textSize="16sp"
-        android:drawableLeft="@mipmap/ic_edit_parcel_26dp"
-        android:drawableStart="@mipmap/ic_edit_parcel_26dp"
+        android:drawableLeft="@mipmap/ic_edit_declaration_30dp"
+        android:drawableStart="@mipmap/ic_edit_declaration_30dp"
         android:drawablePadding="16dp"
-        android:background="@drawable/green_button_bg"
-        android:textColor="@android:color/white"
+        android:background="?selectableItemBackground"
+        android:textColor="@color/colorAccent"
         android:text="@string/edit_details"
         android:id="@+id/awaitingDetailsEditButton"/>
-
-    <Button
-        android:id="@+id/awaitingDetailsCheckProductBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:textSize="16sp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_gravity="center_horizontal"
-        android:drawableLeft="@drawable/check_product_icon"
-        android:drawableStart="@drawable/check_product_icon"
-        android:drawablePadding="16dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/additional_btns_bg"
-        android:gravity="start|center_vertical"
-        android:text="Pre-order checking"/>
-
-    <Button
-        android:id="@+id/awaitingDetailsAdditionalPhotosBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="5dp"
-        android:drawableLeft="@drawable/additional_photo_btn_icon"
-        android:drawableStart="@drawable/additional_photo_btn_icon"
-        android:drawablePadding="16dp"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:gravity="start|center_vertical"
-        android:background="@drawable/additional_btns_bg"
-        android:text="Pre-order photos"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
+        android:background="#b1b1b1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:id="@+id/awaitingDetailsAdditionalPhotosBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:drawableTop="@mipmap/ic_aditional_photo_85dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/black"
+            android:background="?selectableItemBackground"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="@string/pre_order_photos"/>
+
+        <Button
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:id="@+id/awaitingDetailsCheckProductBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:drawablePadding="10dp"
+            android:textSize="16sp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_gravity="center_horizontal"
+            android:drawableTop="@mipmap/ic_check_product_75dp"
+            android:textColor="@android:color/black"
+            android:background="?selectableItemBackground"
+            android:gravity="center"
+            android:text="Pre-order checking"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
         android:layout_marginBottom="10dp"
         android:background="#b1b1b1"/>
 
@@ -203,42 +210,29 @@
                 android:id="@+id/awaitingDetailsPrice"/>
         </LinearLayout>
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical">-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="12sp"-->
-                <!--android:text="@string/weight"-->
-                <!--android:id="@+id/awaitingDetailsWeightTitle"/>-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textColor="@android:color/black"-->
-                <!--android:text="@string/kg"-->
-                <!--android:id="@+id/awaitingDetailsWeight"/>-->
-        <!--</LinearLayout>-->
-
-        <Button
-            style="@style/Base.Widget.AppCompat.ActionButton"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="?selectableItemBackground"
-            android:textColor="@color/colorGreenAction"
-            android:drawableLeft="@mipmap/ic_link_26dp"
-            android:drawableStart="@mipmap/ic_link_26dp"
-            android:text="@string/link"
-            android:textSize="16sp"
-            android:id="@+id/awaitingDetailsGoToUrlBtn"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/weight"
+                android:id="@+id/awaitingDetailsWeightTitle"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:text="@string/kg"
+                android:id="@+id/awaitingDetailsWeight"/>
+        </LinearLayout>
     </LinearLayout>
 
     <View

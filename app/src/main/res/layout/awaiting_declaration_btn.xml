@@ -18,10 +18,10 @@
         android:background="?selectableItemBackground"
         android:gravity="start|center_vertical"
         android:text="@string/edit_declaration"
-        android:drawableLeft="@mipmap/ic_edit_declaration_24dp"
-        android:drawableStart="@mipmap/ic_edit_declaration_24dp"
+        android:drawableLeft="@mipmap/ic_edit_declaration_30dp"
+        android:drawableStart="@mipmap/ic_edit_declaration_30dp"
         android:drawablePadding="10dp"
         android:textSize="16sp"
-        android:textColor="@color/colorGreenAction"
+        android:textColor="@color/colorAccent"
         android:id="@+id/editAwaitingDeclarationBtn"/>
 </LinearLayout>

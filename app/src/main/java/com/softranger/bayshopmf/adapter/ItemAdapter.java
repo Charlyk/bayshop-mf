@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -97,7 +98,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             InStockViewHolder inStockViewHolder = (InStockViewHolder) holder;
             inStockViewHolder.mInStockItem = (InStockItem) mInStockItems.get(position);
 
-            @DrawableRes int image = inStockViewHolder.mInStockItem.isHasDeclaration() ? R.mipmap.parcel_active : R.mipmap.unactive_parcel;
+            @DrawableRes int image = inStockViewHolder.mInStockItem.isHasDeclaration() ? R.mipmap.ic_uncheck_45dp : R.mipmap.ic_uncheck_invisible_45dp;
             inStockViewHolder.mImageView.setImageResource(image);
 
             if (!inStockViewHolder.mInStockItem.isSelected()) {
@@ -300,7 +301,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void onAnimationFinished() {
-            @DrawableRes int image = mInStockItem.isSelected() ? R.mipmap.parcel_selected : R.mipmap.parcel_active;
+            @DrawableRes int image = mInStockItem.isSelected() ? R.mipmap.ic_check_45dp : R.mipmap.ic_uncheck_45dp;
             mImageView.setImageResource(image);
         }
     }
@@ -401,15 +402,15 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final LinearLayout mCombineBtn;
-        final LinearLayout mCheckBtn;
-        final LinearLayout mPhotosBtn;
+        final Button mCombineBtn;
+        final Button mCheckBtn;
+        final Button mPhotosBtn;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
-            mCombineBtn = (LinearLayout) itemView.findViewById(R.id.inStockAddsCombineParcelsBtn);
-            mCheckBtn = (LinearLayout) itemView.findViewById(R.id.inStockAddsOrderCheckBtn);
-            mPhotosBtn = (LinearLayout) itemView.findViewById(R.id.inStockAddsAdditionalPhotosBtn);
+            mCombineBtn = (Button) itemView.findViewById(R.id.inStockAddsCombineParcelsBtn);
+            mCheckBtn = (Button) itemView.findViewById(R.id.inStockAddsOrderCheckBtn);
+            mPhotosBtn = (Button) itemView.findViewById(R.id.inStockAddsAdditionalPhotosBtn);
 
             mCombineBtn.setOnClickListener(this);
             mCheckBtn.setOnClickListener(this);

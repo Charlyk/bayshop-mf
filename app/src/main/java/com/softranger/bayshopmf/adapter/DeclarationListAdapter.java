@@ -202,6 +202,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         final EditText mProductUrl;
         final EditText mProductQuantity;
         final EditText mProductPrice;
+        final ImageButton mGoToUrlBtn;
         final ImageButton mItemDeleteButton;
         Product mProduct;
 
@@ -217,13 +218,25 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             mProductPrice.setOnFocusChangeListener(this);
             mItemDeleteButton = (ImageButton) itemView.findViewById(R.id.declarationItemDeleteButton);
             mItemDeleteButton.setOnClickListener(this);
+            mGoToUrlBtn = (ImageButton) itemView.findViewById(R.id.declarationOpenUrlBtn);
+            mGoToUrlBtn.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            removeItem(mProduct);
-            if (mOnActionButtonsClick != null) {
-                mOnActionButtonsClick.onDeleteClick(getAdapterPosition());
+            switch (v.getId()) {
+                case R.id.declarationOpenUrlBtn:
+                    String productUrl = String.valueOf(mProductUrl.getText());
+                    if (productUrl != null && !productUrl.equals("") && mOnActionButtonsClick != null) {
+                        mOnActionButtonsClick.onOpenUrl(productUrl, getAdapterPosition());
+                    }
+                    break;
+                case R.id.declarationItemDeleteButton:
+                    removeItem(mProduct);
+                    if (mOnActionButtonsClick != null) {
+                        mOnActionButtonsClick.onDeleteClick(getAdapterPosition());
+                    }
+                    break;
             }
         }
 
@@ -374,5 +387,6 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         void onAddFieldsClick();
         void onSaveItemsClick(InStockDetailed inStockDetailed, ArrayList<Product> products);
         void onDeleteClick(int position);
+        void onOpenUrl(String url, int position);
     }
 }

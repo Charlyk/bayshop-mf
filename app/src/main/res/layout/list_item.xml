@@ -16,7 +16,7 @@
         android:layout_marginStart="16dp"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:src="@mipmap/parcel_active"/>
+        android:src="@mipmap/ic_uncheck_45dp"/>
 
     <LinearLayout
         android:id="@+id/inStockItemDataLayout"

@@ -1,58 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
     <Button
         android:id="@+id/fill_declarationButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_edit_declaration_26dp"
-        android:drawableStart="@mipmap/ic_edit_declaration_26dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
+        android:background="?selectableItemBackground"
+        android:drawableLeft="@mipmap/ic_edit_declaration_30dp"
         android:drawablePadding="16dp"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/declaration_btn_background"
-        android:layout_gravity="center_horizontal"
+        android:drawableStart="@mipmap/ic_edit_declaration_30dp"
         android:gravity="start|center_vertical"
-        android:text="@string/fill_in_the_declaration"/>
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/fill_in_the_declaration"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"/>
 
-    <Button
-        android:id="@+id/check_productButton"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"/>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:textSize="16sp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:layout_gravity="center_horizontal"
-        android:drawableLeft="@drawable/check_product_icon"
-        android:drawableStart="@drawable/check_product_icon"
-        android:drawablePadding="16dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/additional_btns_bg"
-        android:gravity="start|center_vertical"
-        android:text="@string/check_product"/>
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/additional_photoButton"
+        <Button
+            android:id="@+id/additional_photoButton"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@mipmap/ic_aditional_photo_85dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/additional_photo"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/check_productButton"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/ic_check_product_75dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/check_product"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:layout_marginTop="5dp"
-        android:drawableLeft="@drawable/additional_photo_btn_icon"
-        android:drawableStart="@drawable/additional_photo_btn_icon"
-        android:drawablePadding="16dp"
-        android:textSize="16sp"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@android:color/white"
-        android:gravity="start|center_vertical"
-        android:background="@drawable/additional_btns_bg"
-        android:text="@string/additional_photo"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/divide_photoButton"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@mipmap/ic_devide_parcel_80dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:drawablePadding="10dp"
+            android:text="@string/divide_parcel"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/repack_productButton"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@mipmap/ic_packing_80dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/repacking"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+    </LinearLayout>
 </LinearLayout>

@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
@@ -37,6 +39,10 @@ public class AddAwaitingFragment extends ParentFragment implements View.OnClickL
     private EditText mProductTrackingNumInput;
     private EditText mProductNameInput;
     private EditText mProductPriceInput;
+
+    private CheckBox mAdditionalPhoto;
+    private CheckBox mCheckProduct;
+    private CheckBox mRepacking;
 
 //    private RadioButton mUsaSelector, mUkSelector, mDeSelector;
 
@@ -75,6 +81,19 @@ public class AddAwaitingFragment extends ParentFragment implements View.OnClickL
 //        mDeSelector = (RadioButton) mRootView.findViewById(R.id.addAwaitingDeSelector);
 //        mUsaSelector.setChecked(true);
         mProduct.setDeposit(Constants.USA);
+
+        mCheckProduct = (CheckBox) mRootView.findViewById(R.id.checkCheckBtn);
+        mAdditionalPhoto = (CheckBox) mRootView.findViewById(R.id.photosCheckBtn);
+        mRepacking = (CheckBox) mRootView.findViewById(R.id.repackingCheckBtn);
+
+        RelativeLayout photosBtn = (RelativeLayout) mRootView.findViewById(R.id.addAwaitingAdditionalPhotoBtn);
+        RelativeLayout checkBtn = (RelativeLayout) mRootView.findViewById(R.id.addAwaitingParcelPrecheckBtn);
+        RelativeLayout repackBtn = (RelativeLayout) mRootView.findViewById(R.id.addAwaitingRepackingBtn);
+
+        photosBtn.setOnClickListener(this);
+        checkBtn.setOnClickListener(this);
+        repackBtn.setOnClickListener(this);
+
         return mRootView;
     }
 
@@ -94,44 +113,55 @@ public class AddAwaitingFragment extends ParentFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.addAwaitingAddParcelButton) {
-            String productUrl = String.valueOf(mProductUrlInput.getText());
-            if (productUrl.equals("") || !URLUtil.isValidUrl(productUrl)) {
-                mProductUrlInput.setError("Please specify a valid product url");
-                return;
-            }
-            String trackingNum = String.valueOf(mProductTrackingNumInput.getText());
-            if (productUrl.equals("")) {
-                mProductTrackingNumInput.setError("Please specify product tracking number");
-                return;
-            }
-            String productName = String.valueOf(mProductNameInput.getText());
-            if (productUrl.equals("")) {
-                mProductNameInput.setError("Please specify product name");
-                return;
-            }
-            String productPrice = String.valueOf(mProductPriceInput.getText());
-            if (productPrice.equals("")) {
-                mProductPriceInput.setError("Please specify product price");
-                return;
-            }
-            if (mProduct.getDeposit() == null) {
-                Snackbar.make(mRootView, "Please select depot.", Snackbar.LENGTH_SHORT).show();
-                return;
-            }
-            mProduct.setProductPrice(productPrice);
-            mProduct.setTrackingNumber(trackingNum);
-            mProduct.setProductName(productName);
-            mProduct.setProductUrl(productUrl);
-            RequestBody body = new FormBody.Builder()
-                    .add("storage", mProduct.getDeposit())
-                    .add("tracking", mProduct.getTrackingNumber())
-                    .add("title", mProduct.getProductName())
-                    .add("url", mProduct.getProductUrl())
-                    .add("packagePrice", mProduct.getProductPrice())
-                    .build();
-            ApiClient.getInstance().postRequest(body, Constants.Api.urlAddWaitingArrivalItem(), mHandler);
-            mActivity.toggleLoadingProgress(true);
+        switch (v.getId()) {
+            case R.id.addAwaitingAdditionalPhotoBtn:
+                mAdditionalPhoto.setChecked(!mAdditionalPhoto.isChecked());
+                break;
+            case R.id.addAwaitingParcelPrecheckBtn:
+                mCheckProduct.setChecked(!mCheckProduct.isChecked());
+                break;
+            case R.id.addAwaitingRepackingBtn:
+                mRepacking.setChecked(!mRepacking.isChecked());
+                break;
+            case R.id.addAwaitingAddParcelButton:
+                String productUrl = String.valueOf(mProductUrlInput.getText());
+                if (productUrl.equals("") || !URLUtil.isValidUrl(productUrl)) {
+                    mProductUrlInput.setError("Please specify a valid product url");
+                    return;
+                }
+                String trackingNum = String.valueOf(mProductTrackingNumInput.getText());
+                if (productUrl.equals("")) {
+                    mProductTrackingNumInput.setError("Please specify product tracking number");
+                    return;
+                }
+                String productName = String.valueOf(mProductNameInput.getText());
+                if (productUrl.equals("")) {
+                    mProductNameInput.setError("Please specify product name");
+                    return;
+                }
+                String productPrice = String.valueOf(mProductPriceInput.getText());
+                if (productPrice.equals("")) {
+                    mProductPriceInput.setError("Please specify product price");
+                    return;
+                }
+                if (mProduct.getDeposit() == null) {
+                    Snackbar.make(mRootView, "Please select depot.", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                mProduct.setProductPrice(productPrice);
+                mProduct.setTrackingNumber(trackingNum);
+                mProduct.setProductName(productName);
+                mProduct.setProductUrl(productUrl);
+                RequestBody body = new FormBody.Builder()
+                        .add("storage", mProduct.getDeposit())
+                        .add("tracking", mProduct.getTrackingNumber())
+                        .add("title", mProduct.getProductName())
+                        .add("url", mProduct.getProductUrl())
+                        .add("packagePrice", mProduct.getProductPrice())
+                        .build();
+                ApiClient.getInstance().postRequest(body, Constants.Api.urlAddWaitingArrivalItem(), mHandler);
+                mActivity.toggleLoadingProgress(true);
+                break;
         }
     }
 

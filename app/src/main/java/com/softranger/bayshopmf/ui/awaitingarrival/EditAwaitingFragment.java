@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.ui.storages.StorageHolderFragment;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -98,6 +100,9 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         mUsaSelector = (RadioButton) view.findViewById(R.id.editAwaitingUsaSelector);
         mUkSelector = (RadioButton) view.findViewById(R.id.editAwaitingUkSelector);
         mDeSelector = (RadioButton) view.findViewById(R.id.editAwaitingDeSelector);
+
+        ImageButton openUrlBtn = (ImageButton) view.findViewById(R.id.openUrlArrivalBtn);
+        openUrlBtn.setOnClickListener(this);
     }
 
     @Override
@@ -123,17 +128,6 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        String productName = String.valueOf(mNameInput.getText());
-        if (productName == null || productName.equals("")) {
-            mNameInput.setError("please specify a name for this item");
-            return;
-        }
-
-        String trackingNumber = String.valueOf(mTrackingInput.getText());
-        if (trackingNumber == null || trackingNumber.equals("")) {
-            mTrackingInput.setError("please specify a track number for this item");
-            return;
-        }
 
         String urlToProduct = String.valueOf(mUrlInput.getText());
         if (urlToProduct == null || urlToProduct.equals("")) {
@@ -141,25 +135,41 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
             return;
         }
 
-        String price = String.valueOf(mPriceInput.getText());
-        if (price == null || price.equals("")) {
-            mPriceInput.setError("please specify a price for this item");
-            return;
-        }
+        if (v.getId() == R.id.openUrlArrivalBtn) {
+            mActivity.addFragment(WebViewFragment.newInstance(urlToProduct), true);
+        } else {
+            String productName = String.valueOf(mNameInput.getText());
+            if (productName == null || productName.equals("")) {
+                mNameInput.setError("please specify a name for this item");
+                return;
+            }
 
-        product.setProductName(productName);
-        product.setTrackingNumber(trackingNumber);
-        product.setProductUrl(urlToProduct);
-        product.setProductPrice(price);
-        RequestBody body = new FormBody.Builder()
-                .add("storage", product.getDeposit())
-                .add("tracking", product.getTrackingNumber())
-                .add("title", product.getProductName())
-                .add("url", product.getProductUrl())
-                .add("packagePrice", product.getProductPrice())
-                .build();
-        ApiClient.getInstance().postRequest(body, Constants.Api.urlEditWaitingArrivalItem(String.valueOf(product.getID())), mHandler);
-        mActivity.toggleLoadingProgress(true);
+            String trackingNumber = String.valueOf(mTrackingInput.getText());
+            if (trackingNumber == null || trackingNumber.equals("")) {
+                mTrackingInput.setError("please specify a track number for this item");
+                return;
+            }
+
+            String price = String.valueOf(mPriceInput.getText());
+            if (price == null || price.equals("")) {
+                mPriceInput.setError("please specify a price for this item");
+                return;
+            }
+
+            product.setProductName(productName);
+            product.setTrackingNumber(trackingNumber);
+            product.setProductUrl(urlToProduct);
+            product.setProductPrice(price);
+            RequestBody body = new FormBody.Builder()
+                    .add("storage", product.getDeposit())
+                    .add("tracking", product.getTrackingNumber())
+                    .add("title", product.getProductName())
+                    .add("url", product.getProductUrl())
+                    .add("packagePrice", product.getProductPrice())
+                    .build();
+            ApiClient.getInstance().postRequest(body, Constants.Api.urlEditWaitingArrivalItem(String.valueOf(product.getID())), mHandler);
+            mActivity.toggleLoadingProgress(true);
+        }
     }
 
     @Override

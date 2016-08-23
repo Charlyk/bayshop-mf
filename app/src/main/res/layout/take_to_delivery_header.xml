@@ -26,11 +26,11 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:textSize="16sp"
-            android:drawableLeft="@mipmap/ic_call_24dp"
-            android:drawableStart="@mipmap/ic_call_24dp"
+            android:drawableLeft="@mipmap/ic_call_30dp"
+            android:drawableStart="@mipmap/ic_call_30dp"
             android:drawablePadding="10dp"
             android:gravity="center"
-            android:textColor="@color/colorGreenAction"
+            android:textColor="@color/colorAccent"
             android:text="@string/call_courier"
             android:id="@+id/textView16"/>
     </LinearLayout>

@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/colorDivider"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -192,20 +192,148 @@
 
         <View
             android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/drop_shadow"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/colorDivider"/>
+
+        <View
+            android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#b1b1b1"/>
 
-        <Button
-            android:id="@+id/addAwaitingAddParcelButton"
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="16dp"
-            android:layout_gravity="end"
-            android:text="@string/add_parcel"
-            android:background="@drawable/green_button_bg"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"/>
+        <RelativeLayout
+            android:id="@+id/addAwaitingParcelPrecheckBtn"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="?selectableItemBackground"
+            android:padding="16dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkCheckBtn"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/check_product"
+                android:id="@+id/textView41"
+                android:drawableLeft="@mipmap/ic_check_24dp"
+                android:drawableStart="@mipmap/ic_check_24dp"
+                android:gravity="center_vertical"
+                android:drawablePadding="10dp"
+                android:textColor="@android:color/black"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:id="@+id/addAwaitingAdditionalPhotoBtn"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:padding="16dp"
+            android:background="?selectableItemBackground"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/additional_photo"
+                android:id="@+id/textView42"
+                android:textColor="@android:color/black"
+                android:layout_centerVertical="true"
+                android:drawableLeft="@mipmap/ic_aditional_24dp"
+                android:drawableStart="@mipmap/ic_aditional_24dp"
+                android:gravity="center_vertical"
+                android:drawablePadding="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/photosCheckBtn"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#b1b1b1"/>
+
+        <RelativeLayout
+            android:id="@+id/addAwaitingRepackingBtn"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:padding="16dp"
+            android:background="?selectableItemBackground"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="@string/repacking"
+                android:gravity="center_vertical"
+                android:drawableLeft="@mipmap/ic_repack_24dp"
+                android:drawableStart="@mipmap/ic_repack_24dp"
+                android:drawablePadding="10dp"
+                android:id="@+id/textView43"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/repackingCheckBtn"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/drop_shadow"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorDivider"
+            android:padding="16dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/addAwaitingAddParcelButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:text="@string/add_parcel"
+                android:background="@drawable/green_button_bg"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
 

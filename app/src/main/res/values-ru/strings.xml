@@ -303,4 +303,8 @@
     <string name="awaiting_declaration">Awaiting declaration</string>
     <string name="in_the_way">In the way</string>
     <string name="inner_mail">Inner mail</string>
+    <string name="pre_order_photos">Pre-order photos</string>
+    <string name="url_example">http://shop.com/product</string>
+    <string name="tracking_example">12345678901234567890</string>
+    <string name="divide_parcel">Divide parcel</string>
 </resources>

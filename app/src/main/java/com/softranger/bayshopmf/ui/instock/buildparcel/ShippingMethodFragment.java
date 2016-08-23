@@ -108,7 +108,7 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
     @Override
     public void onSelectClick(ShippingMethod shippingMethod, int position) {
         mInForming.setShippingMethod(shippingMethod);
-        mActivity.addFragment(CheckDeclarationFragment.newInstance(mInForming), true);
+        mActivity.addFragment(InsuranceFragment.newInstance(mInForming), true);
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {

@@ -16,6 +16,7 @@ import com.softranger.bayshopmf.adapter.DeclarationListAdapter;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
@@ -108,6 +109,11 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     @Override
     public void onDeleteClick(int position) {
         mActivity.hideKeyboard();
+    }
+
+    @Override
+    public void onOpenUrl(String url, int position) {
+        mActivity.addFragment(WebViewFragment.newInstance(url), true);
     }
 
     private JSONArray buildProductsArray(ArrayList<Product> products) {

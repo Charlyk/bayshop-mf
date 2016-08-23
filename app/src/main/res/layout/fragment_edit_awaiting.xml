@@ -69,25 +69,41 @@
             android:background="#b1b1b1"/>
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
-            android:text="@string/product_name"/>
+            android:text="@string/link_to_the_product_ordered_by_you"/>
 
-        <EditText
-            android:id="@+id/editAwaitingNameInput"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:singleLine="true"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginBottom="10dp"
-            android:background="@android:color/white"
-            android:hint="@string/ipad_mini"
-            android:padding="3dp"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editAwaitingUrlInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:inputType="textUri"
+                android:background="@android:color/white"
+                android:hint="@string/url_example"
+                android:padding="3dp"/>
+
+            <ImageButton
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_link_26dp"
+                android:background="?selectableItemBackground"
+                android:id="@+id/openUrlArrivalBtn"/>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -108,11 +124,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="10dp"
             android:singleLine="true"
             android:background="@android:color/white"
-            android:hint="12345678901234567890"
+            android:hint="@string/tracking_example"
             android:padding="3dp"/>
 
         <View
@@ -121,25 +138,25 @@
             android:background="#b1b1b1"/>
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
-            android:text="@string/link_to_the_product_ordered_by_you"/>
+            android:text="@string/product_name"/>
 
         <EditText
-            android:id="@+id/editAwaitingUrlInput"
+            android:id="@+id/editAwaitingNameInput"
             android:layout_width="match_parent"
+            android:singleLine="true"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="10dp"
-            android:singleLine="true"
-            android:inputType="textUri"
             android:background="@android:color/white"
-            android:hint="http://example-shop.com/example-product"
+            android:hint="@string/ipad_mini"
             android:padding="3dp"/>
 
         <View
@@ -162,6 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:singleLine="true"
             android:background="@android:color/white"

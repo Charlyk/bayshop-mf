@@ -104,12 +104,11 @@ public class InsuranceFragment extends ParentFragment implements View.OnClickLis
         mInForming = getArguments().getParcelable(IN_FORMING_ARG);
 
         mActivity.toggleLoadingProgress(true);
+
         RequestBody body = new FormBody.Builder()
-                .add("autocomplete", String.valueOf(mInForming.isAutoFilling() ? 0 : 1)) // 1 = false, 0 = true
-                .add("declarationName", mInForming.getGeneralDescription())
-                .add("declarations", String.valueOf(buildProductsArray(mInForming.getProducts())))
+                .add("shipperMeasureId", String.valueOf(mInForming.getShippingMethod().getId()))
                 .build();
-        ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(5, String.valueOf(mInForming.getId())), mHandler);
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(4, String.valueOf(mInForming.getId())), mHandler);
         return mRootView;
     }
 

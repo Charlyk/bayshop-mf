@@ -24,12 +24,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:drawableLeft="@mipmap/ic_document_24dp"
-            android:drawableStart="@mipmap/ic_document_24dp"
+            android:drawableLeft="@mipmap/ic_document_30dp"
+            android:drawableStart="@mipmap/ic_document_30dp"
             android:drawablePadding="6dp"
             android:background="?selectableItemBackground"
             android:text="@string/upload_document"
-            android:textColor="@color/colorGreenAction"
+            android:textColor="@color/colorAccent"
             android:textSize="16sp"/>
 
         <Button
@@ -38,14 +38,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:drawableStart="@mipmap/ic_photo_24dp"
-            android:drawableLeft="@mipmap/ic_photo_24dp"
+            android:drawableStart="@mipmap/ic_take_photo_30dp"
+            android:drawableLeft="@mipmap/ic_take_photo_30dp"
             android:drawablePadding="6dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="?selectableItemBackground"
             android:text="@string/take_photo"
-            android:textColor="@color/colorGreenAction"
+            android:textColor="@color/colorAccent"
             android:textSize="16sp"/>
     </RelativeLayout>
 </LinearLayout>
