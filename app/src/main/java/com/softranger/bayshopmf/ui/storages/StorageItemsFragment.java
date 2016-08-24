@@ -34,6 +34,7 @@ import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.packages.LocalDepot;
 import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.model.packages.Packed;
+import com.softranger.bayshopmf.model.packages.Prohibited;
 import com.softranger.bayshopmf.model.packages.Received;
 import com.softranger.bayshopmf.model.packages.Sent;
 import com.softranger.bayshopmf.model.packages.ToDelivery;
@@ -300,6 +301,13 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                             mObjects.add(buildGeneralPackage(object, inProcessing));
                         }
                         break;
+                    }
+                    case HELD_BY_PROHIBITION: {
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            JSONObject object = arrayData.getJSONObject(i);
+                            Prohibited prohibited = new Prohibited();
+                            mObjects.add(buildGeneralPackage(object, prohibited));
+                        }
                     }
                 }
             }

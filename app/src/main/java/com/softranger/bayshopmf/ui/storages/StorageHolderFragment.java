@@ -110,6 +110,11 @@ public class StorageHolderFragment extends Fragment {
                 mActivity.setToolbarTitle(mActivity.getString(R.string.held_by_customs), true);
                 break;
             }
+            case HELD_BY_PROHIBITION: {
+                initializeTabs(StorageItemsFragment.newInstance(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.HELD_BY_PROHIBITION), Constants.US));
+                mActivity.setToolbarTitle(getString(R.string.held_by_prohibition), true);
+                break;
+            }
         }
         return view;
     }

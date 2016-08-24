@@ -369,7 +369,7 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
 
     @Override
     public <P extends PUSParcel> void onReturnToSenderClick(P item, int position) {
-
+        mActivity.addFragment(new ReturnAddressFragment(), true);
     }
 
     @Override

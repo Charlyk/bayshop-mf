@@ -492,6 +492,9 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case R.id.nav_takeToDelivery:
                 selectedFragment = SelectedFragment.TAKEN_TO_DELIVERY;
                 break;
+            case R.id.nav_heldByProhibition:
+                selectedFragment = SelectedFragment.HELD_BY_PROHIBITION;
+                break;
 //            case R.id.nav_awaitingDeclaration:
 //                selectedFragment = SelectedFragment.AWAITING_DECLARATION;
 //                break;
@@ -700,6 +703,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     public enum SelectedFragment {
         IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED,
-        LOCAL_DEPO, TAKEN_TO_DELIVERY, AWAITING_DECLARATION, PACKING, DAMAGE_RECORDED, HELD_BY_USER, ACCOUNT_REPLENISHMENT, CUSTOMS_HELD
+        LOCAL_DEPO, TAKEN_TO_DELIVERY, AWAITING_DECLARATION, PACKING, DAMAGE_RECORDED, HELD_BY_USER, ACCOUNT_REPLENISHMENT, HELD_BY_PROHIBITION, CUSTOMS_HELD
     }
 }

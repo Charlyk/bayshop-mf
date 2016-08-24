@@ -316,4 +316,5 @@
     <string name="divide_parcel">Divide parcel</string>
     <string name="repacking">Repacking</string>
     <string name="replenish">Replenish account</string>
+    <string name="address_and_house">Address and building number</string>
 </resources>
