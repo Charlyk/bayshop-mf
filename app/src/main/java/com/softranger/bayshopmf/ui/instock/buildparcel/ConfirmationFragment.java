@@ -22,6 +22,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
+import com.softranger.bayshopmf.ui.general.ResultActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -252,6 +253,16 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
             mActivity.setToolbarToInitialState();
             Application.counters.put(Constants.ParcelStatus.LIVE, Application.counters.get(Constants.ParcelStatus.LIVE) - 1);
             mActivity.updateParcelCounters(Constants.ParcelStatus.LIVE);
+
+            Intent showResult = new Intent(mActivity, ResultActivity.class);
+            showResult.putExtra(ResultActivity.TOP_TITLE, getString(R.string.parcel_added));
+            showResult.putExtra(ResultActivity.SECOND_TITLE, getString(R.string.parcel_was_added) + " "
+                    + mInForming.getUid());
+            showResult.putExtra(ResultActivity.IMAGE_ID, R.mipmap.ic_parcel_process_44dp);
+            showResult.putExtra(ResultActivity.DESCRIPTION, getString(R.string.thank_you_awaiting));
+
+            // show result activity
+            startActivity(showResult);
         } else {
             JSONObject data = response.getJSONObject("data");
             mInForming.setGoodsPrice(data.getDouble("totalPriceBoxes"));

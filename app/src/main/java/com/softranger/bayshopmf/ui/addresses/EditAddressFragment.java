@@ -1,6 +1,7 @@
 package com.softranger.bayshopmf.ui.addresses;
 
 
+import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +50,8 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
 public class EditAddressFragment extends ParentFragment implements View.OnClickListener,
-        CodesSpinnerAdapter.OnCountryClickListener, SpinnerAdapter.OnCountryClickListener {
+        CodesSpinnerAdapter.OnCountryClickListener, SpinnerAdapter.OnCountryClickListener,
+        View.OnFocusChangeListener {
 
     public static final String ADD_NEW = "add new address";
     public static final String EDIT = "edit an address";
@@ -61,7 +65,7 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
     private ArrayList<CountryCode> mCountryCodes;
     private ArrayList<Country> mCountries;
     private CodesSpinnerAdapter mSpinnerAdapter;
-    private LinearLayout mHolderLayout;
+    private RelativeLayout mHolderLayout;
 
     private static boolean isSaveClicked;
 
@@ -69,6 +73,12 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
 
     private TextInputEditText mFirstNameInput, mLastNameInput, mStreetNameInput,
             mPhoneInput, mCityInput, mPostalCodeInput, mEmailInput;
+
+    private TextInputLayout mFirstNameLayout, mLastNameLayout, mStreetLayout,
+            mPhoneLayout, mCityLayout, mPostalCodeLayout, mEmailLayout;
+
+    private View mFocusIndicator;
+
     private TextView mPhoneCode, mCountryLabel;
     private Spinner mCodeSpinner, mCountriesSpinner;
     private static int addressId;
@@ -156,18 +166,37 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
 
     private void bindAddressInputs(View view) {
         mFirstNameInput = (TextInputEditText) view.findViewById(R.id.addAddressFirstNameInput);
+        mFirstNameInput.setOnFocusChangeListener(this);
         mLastNameInput = (TextInputEditText) view.findViewById(R.id.addAddressLastNameInput);
+        mLastNameInput.setOnFocusChangeListener(this);
         mEmailInput = (TextInputEditText) view.findViewById(R.id.addAddressEmailInput);
+        mEmailInput.setOnFocusChangeListener(this);
         mStreetNameInput = (TextInputEditText) view.findViewById(R.id.addAddressStreetInput);
+        mStreetNameInput.setOnFocusChangeListener(this);
         mPhoneInput = (TextInputEditText) view.findViewById(R.id.addAddressPhoneNumberInput);
+        mPhoneInput.setOnFocusChangeListener(this);
         mPhoneInput.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         mCityInput = (TextInputEditText) view.findViewById(R.id.addAddressCityInput);
+        mCityInput.setOnFocusChangeListener(this);
         mPostalCodeInput = (TextInputEditText) view.findViewById(R.id.addAddressPostalCodeInput);
+        mPostalCodeInput.setOnFocusChangeListener(this);
         mPhoneCode = (TextView) view.findViewById(R.id.phoneCodeTextlabel);
         mCodeSpinner = (Spinner) view.findViewById(R.id.phoneCodeSpinner);
         mCountryLabel = (TextView) view.findViewById(R.id.addAddressCountrylabel);
         mCountriesSpinner = (Spinner) view.findViewById(R.id.countrySpinner);
-        mHolderLayout = (LinearLayout) view.findViewById(R.id.editAddressLayoutHolder);
+        mHolderLayout = (RelativeLayout) view.findViewById(R.id.editAddressLayoutHolder);
+
+        // bind inputs layout
+        mFirstNameLayout = (TextInputLayout) view.findViewById(R.id.editAddressFirstNameInputLayout);
+        mLastNameLayout = (TextInputLayout) view.findViewById(R.id.editAddressLastNameLayout);
+        mStreetLayout = (TextInputLayout) view.findViewById(R.id.editAddressStreetLayout);
+        mPhoneLayout = (TextInputLayout) view.findViewById(R.id.editAddressPhoneNumberLayout);
+        mCityLayout = (TextInputLayout) view.findViewById(R.id.editAddressCityLayout);
+        mPostalCodeLayout = (TextInputLayout) view.findViewById(R.id.editAddressPostalCodeLayout);
+        mEmailLayout = (TextInputLayout) view.findViewById(R.id.editAddressEmailLayout);
+
+        // bind indicator
+        mFocusIndicator = view.findViewById(R.id.editAddressInputFocusIndicator);
     }
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
@@ -185,6 +214,7 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
     public void onDestroyView() {
         super.onDestroyView();
         mActivity.unregisterReceiver(mTitleReceiver);
+        mActivity.hideKeyboard();
     }
 
     @Override
@@ -250,7 +280,8 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
                 if (postalCode.equals("")) {
                     mPostalCodeInput.setError(getString(R.string.enter_postal_code));
                     return;
-                };
+                }
+                ;
 
                 RequestBody requestBody = new FormBody.Builder()
                         .add("shipping_first_name", firstName)
@@ -386,6 +417,40 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
             mAddress.setCountry(country.getName());
             mAddress.setCountryId(country.getId());
             mCountryLabel.setText(country.getName());
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.addAddressFirstNameInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mFirstNameLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.addAddressLastNameInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mLastNameLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.addAddressEmailInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mEmailLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.addAddressStreetInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mStreetLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.addAddressPhoneNumberInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mPhoneLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.addAddressCityInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mCityLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.addAddressPostalCodeInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mPostalCodeLayout.getY()).setDuration(300).start();
+                break;
         }
     }
 }

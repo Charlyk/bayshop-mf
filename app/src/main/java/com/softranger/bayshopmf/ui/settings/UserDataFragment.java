@@ -1,12 +1,14 @@
 package com.softranger.bayshopmf.ui.settings;
 
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,13 +43,16 @@ import okhttp3.RequestBody;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserDataFragment extends ParentFragment implements View.OnClickListener {
+public class UserDataFragment extends ParentFragment implements View.OnClickListener, View.OnFocusChangeListener {
 
     private SettingsActivity mActivity;
 
     private TextInputEditText mFirstNameInput;
     private TextInputEditText mLastNameInput;
     private TextInputEditText mPhoneInput;
+    private TextInputLayout mFirstNameLayout;
+    private TextInputLayout mLastNameLayout;
+    private TextInputLayout mPhoneLayout;
 
     private LinearLayout mPhoneCodeBtn;
     private LinearLayout mCountryBtn;
@@ -64,6 +69,8 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     private ArrayList<Country> mCountries;
     private ArrayList<Language> mLanguages;
     private ArrayList<CountryCode> mCountryCodes;
+
+    private View mFocusIndicator;
 
     private Button mSaveButton;
 
@@ -83,6 +90,8 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_data, container, false);
         mActivity = (SettingsActivity) getActivity();
+
+        mFocusIndicator = view.findViewById(R.id.inputFocusIndicator);
         // create lists
         mCountries = new ArrayList<>();
         mLanguages = new ArrayList<>();
@@ -97,9 +106,17 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
         mLanguageLabel = (TextView) view.findViewById(R.id.userDataLanguagelabel);
         // bind inputs
         mFirstNameInput = (TextInputEditText) view.findViewById(R.id.userDataFirstNameInput);
+        mFirstNameInput.requestFocus();
+        mFirstNameInput.setOnFocusChangeListener(this);
         mLastNameInput = (TextInputEditText) view.findViewById(R.id.userDataLastNameInput);
+        mLastNameInput.setOnFocusChangeListener(this);
         mPhoneInput = (TextInputEditText) view.findViewById(R.id.userDataPhoneNumberInput);
+        mPhoneInput.setOnFocusChangeListener(this);
         mPhoneInput.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        // input layouts
+        mFirstNameLayout = (TextInputLayout) view.findViewById(R.id.userDataFirstNameInputLayout);
+        mLastNameLayout = (TextInputLayout) view.findViewById(R.id.userDataLastNameInputLayout);
+        mPhoneLayout = (TextInputLayout) view.findViewById(R.id.userDataPhoneNumberInputLayout);
         // bind buttons
         mPhoneCodeBtn = (LinearLayout) view.findViewById(R.id.userDataPhoneCodeLayout);
         mCountryBtn = (LinearLayout) view.findViewById(R.id.userDataCountryLayout);
@@ -130,6 +147,7 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     public void onDestroyView() {
         super.onDestroyView();
         mActivity.setToolbarTitle(mActivity.getString(R.string.settings), true);
+        mActivity.hideKeyboard();
     }
 
     @Override
@@ -294,4 +312,22 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
             }
         }
     };
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.userDataFirstNameInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mFirstNameLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.userDataLastNameInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mLastNameLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.userDataPhoneNumberInput:
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mPhoneLayout.getY()).setDuration(300).start();
+                break;
+        }
+    }
 }

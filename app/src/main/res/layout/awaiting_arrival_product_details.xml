@@ -14,7 +14,6 @@
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:layout_marginTop="16dp"
         android:textSize="16sp"
         android:drawableLeft="@mipmap/ic_edit_declaration_30dp"
         android:drawableStart="@mipmap/ic_edit_declaration_30dp"

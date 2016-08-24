@@ -14,12 +14,16 @@ import android.widget.RelativeLayout;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.general.ResultActivity;
 import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
+
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReturnAddressFragment extends Fragment implements View.OnFocusChangeListener, View.OnClickListener {
+public class ReturnAddressFragment extends ParentFragment implements View.OnFocusChangeListener, View.OnClickListener {
 
     private ParentActivity mActivity;
     private View mFocusIndicator;
@@ -85,6 +89,10 @@ public class ReturnAddressFragment extends Fragment implements View.OnFocusChang
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
+        if (mFocusIndicator.getVisibility() != View.VISIBLE) {
+            mFocusIndicator.setVisibility(View.VISIBLE);
+        }
+
         switch (v.getId()) {
             case R.id.returnFirstNameInput:
                 ObjectAnimator.ofFloat(mFocusIndicator, "y", mFirstNameLayout.getY()).setDuration(300).start();
@@ -115,7 +123,20 @@ public class ReturnAddressFragment extends Fragment implements View.OnFocusChang
 
     @Override
     public void onClick(View v) {
+        mFocusIndicator.setVisibility(View.GONE);
+        // TODO: 8/24/16 replace with translated text
+        // build intent for result activity
+        Intent showResult = new Intent(mActivity, ResultActivity.class);
+        showResult.putExtra(ResultActivity.TOP_TITLE, "Request received");
+        showResult.putExtra(ResultActivity.SECOND_TITLE, "Your request was received by our manager.");
+        showResult.putExtra(ResultActivity.IMAGE_ID, R.mipmap.ic_parcel_25dp);
+        showResult.putExtra(ResultActivity.DESCRIPTION, "Thanks for providing information about seller, we will send the parcel back shortly.");
 
+        // close fragment
+        mActivity.onBackPressed();
+
+        // show result activity
+        startActivity(showResult);
     }
 
     @Override
@@ -124,5 +145,10 @@ public class ReturnAddressFragment extends Fragment implements View.OnFocusChang
         mActivity.hideKeyboard();
         Intent intent = new Intent(MainActivity.ACTION_UPDATE_TITLE);
         mActivity.sendBroadcast(intent);
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+
     }
 }

@@ -1,6 +1,7 @@
 package com.softranger.bayshopmf.ui.settings;
 
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.TextInputEditText;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -23,9 +25,13 @@ public class ChangePassFragment extends ParentFragment implements View.OnClickLi
     private EditText mCurrentPassInput;
     private EditText mNewPassInput;
     private EditText mConfirmPassInput;
-    private SettingsActivity mActivity;
 
-    private View mCurrentIndicator, mNewIndicator, mConfirmIndicator;
+    private RelativeLayout mCurrentPassLayout;
+    private RelativeLayout mNewPassLayout;
+    private RelativeLayout mConfirmPassLayout;
+
+    private SettingsActivity mActivity;
+    private View mFocusIndicator;
 
     public ChangePassFragment() {
         // Required empty public constructor
@@ -55,9 +61,11 @@ public class ChangePassFragment extends ParentFragment implements View.OnClickLi
         mNewPassInput.setOnFocusChangeListener(this);
         mConfirmPassInput.setOnFocusChangeListener(this);
 
-        mCurrentIndicator = view.findViewById(R.id.currentPassInputFocusIndicator);
-        mNewIndicator = view.findViewById(R.id.newPassInputFocusIndicator);
-        mConfirmIndicator = view.findViewById(R.id.confirmPassInputFocusIndicator);
+        mCurrentPassLayout = (RelativeLayout) view.findViewById(R.id.currentPassLayout);
+        mNewPassLayout = (RelativeLayout) view.findViewById(R.id.newPassLayout);
+        mConfirmPassLayout = (RelativeLayout) view.findViewById(R.id.confirmPassLayout);
+
+        mFocusIndicator = view.findViewById(R.id.changePassFocusIndicator);
 
         Button save = (Button) view.findViewById(R.id.changePassSaveButton);
         save.setOnClickListener(this);
@@ -103,20 +111,18 @@ public class ChangePassFragment extends ParentFragment implements View.OnClickLi
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-            mCurrentIndicator.setVisibility(View.GONE);
-            mNewIndicator.setVisibility(View.GONE);
-            mConfirmIndicator.setVisibility(View.GONE);
-        }
         switch (v.getId()) {
             case R.id.currentPassInput:
-                mCurrentIndicator.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mCurrentPassLayout.getY()).setDuration(300).start();
                 break;
             case R.id.newPassInput:
-                mNewIndicator.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mNewPassLayout.getY()).setDuration(300).start();
                 break;
             case R.id.confirmPassInput:
-                mConfirmIndicator.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
+                if (hasFocus)
+                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mConfirmPassLayout.getY()).setDuration(300).start();
                 break;
         }
     }

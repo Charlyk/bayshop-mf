@@ -223,7 +223,7 @@
     <string name="this_product_is_held_by_customs">Данный товар задержан таможней, т.к. информации о нем недостаточно, пожалуйста, загрузите документ или фото, подтверждающее содержание вашей посылки</string>
     <string name="confirm_delivery">Пожалуйста, подтвердите выбор доставки в</string>
     <string name="order_sent">Заказ отправлен</string>
-    <string name="thank_you">Спасибо за то, что выбрали доставку</string>
+    <string name="thank_you_delivery">Спасибо за то, что выбрали доставку</string>
     <string name="please_wait_call">Подождите до тех пор, пока наш курьер позвонит вам</string>
     <string name="at_least_six">Описание должно состоять из минимум 6 символов</string>
     <string name="call_courier">Позвонить курьеру</string>
@@ -307,4 +307,6 @@
     <string name="url_example">http://shop.com/product</string>
     <string name="tracking_example">12345678901234567890</string>
     <string name="divide_parcel">Divide parcel</string>
+    <string name="parcel_added">Parcel added</string>
+    <string name="thank_you_awaiting">Thanks for adding an awaiting parcel, we will notify you when it will arrive to our warehouse.</string>
 </resources>

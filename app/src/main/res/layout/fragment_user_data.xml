@@ -2,19 +2,21 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
             android:background="@android:color/white">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/userDataFirstNameInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginRight="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/userDataFirstNameInput"
@@ -26,16 +28,19 @@
         </android.support.design.widget.TextInputLayout>
 
         <View
+            android:layout_below="@id/userDataFirstNameInputLayout"
+            android:id="@+id/fNameDivider"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#b1b1b1"/>
 
         <android.support.design.widget.TextInputLayout
+            android:layout_below="@id/fNameDivider"
+            android:id="@+id/userDataLastNameInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginRight="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/userDataLastNameInput"
@@ -47,6 +52,8 @@
         </android.support.design.widget.TextInputLayout>
 
         <View
+            android:id="@+id/lNameDivider"
+            android:layout_below="@id/userDataLastNameInputLayout"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#b1b1b1"/>
@@ -56,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="?selectableItemBackground"
+            android:layout_below="@id/lNameDivider"
             android:clickable="true"
             android:orientation="vertical"
             android:paddingEnd="16dp"
@@ -91,16 +99,19 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/userDataPhoneCodeDivider"
+            android:layout_below="@id/userDataPhoneCodeLayout"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#b1b1b1"/>
 
         <android.support.design.widget.TextInputLayout
+            android:layout_below="@id/userDataPhoneCodeDivider"
+            android:id="@+id/userDataPhoneNumberInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginRight="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/userDataPhoneNumberInput"
@@ -112,6 +123,8 @@
         </android.support.design.widget.TextInputLayout>
 
         <View
+            android:id="@+id/userDataPhoneNumberDivider"
+            android:layout_below="@id/userDataPhoneNumberInputLayout"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#b1b1b1"/>
@@ -119,6 +132,7 @@
         <LinearLayout
             android:id="@+id/userDataCountryLayout"
             android:layout_width="match_parent"
+            android:layout_below="@id/userDataPhoneNumberDivider"
             android:layout_height="?actionBarSize"
             android:background="?selectableItemBackground"
             android:clickable="true"
@@ -156,6 +170,8 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/userDataCountryDivider"
+            android:layout_below="@id/userDataCountryLayout"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#b1b1b1"/>
@@ -164,6 +180,7 @@
             android:id="@+id/userDataLanguageLayout"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:layout_below="@id/userDataCountryDivider"
             android:background="?selectableItemBackground"
             android:clickable="true"
             android:orientation="vertical"
@@ -200,20 +217,32 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/userDataLanguageDivider"
+            android:layout_below="@id/userDataLanguageLayout"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#b1b1b1"/>
 
         <Button
             android:id="@+id/userDataSaveButton"
+            android:layout_below="@id/userDataLanguageDivider"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_margin="16dp"
-            android:layout_gravity="end"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:text="@string/save"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:background="@drawable/green_button_bg"
             style="@style/Base.Widget.AppCompat.ActionButton"/>
-    </LinearLayout>
+
+        <View
+            android:id="@+id/inputFocusIndicator"
+            android:layout_width="5dp"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/colorAccent"/>
+    </RelativeLayout>
 </ScrollView>

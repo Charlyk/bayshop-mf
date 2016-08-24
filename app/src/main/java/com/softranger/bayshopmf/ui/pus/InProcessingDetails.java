@@ -2,7 +2,6 @@ package com.softranger.bayshopmf.ui.pus;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,9 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -380,7 +377,7 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
                     @Override
                     public void onClick(View v) {
                         mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
-                                R.mipmap.ic_order_sent_75dp, getString(R.string.thank_you), getString(R.string.please_wait_call),
+                                R.mipmap.ic_order_sent_75dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -446,7 +443,7 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
                     @Override
                     public void onClick(View v) {
                         mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
-                                R.mipmap.ic_confirm_25dp, getString(R.string.thank_you), getString(R.string.please_wait_call),
+                                R.mipmap.ic_confirm_25dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

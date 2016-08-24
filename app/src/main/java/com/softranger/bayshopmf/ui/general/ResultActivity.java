@@ -13,6 +13,11 @@ import com.softranger.bayshopmf.R;
 
 public class ResultActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String TOP_TITLE = "topTitle";
+    public static final String SECOND_TITLE = "secondTitle";
+    public static final String DESCRIPTION = "description";
+    public static final String IMAGE_ID = "imageId";
+
     private String mTopTitle;
     private String mSecondTitle;
     private String mDescription;
@@ -30,12 +35,12 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        if (intent.hasExtra("topTitle") && intent.hasExtra("secondTitle")
-                && intent.hasExtra("description") && intent.hasExtra("imageId")) {
-            mTopTitle = intent.getExtras().getString("topTitle");
-            mSecondTitle = intent.getExtras().getString("secondTitle");
-            mDescription = intent.getExtras().getString("description");
-            mImageId = intent.getExtras().getInt("imageId");
+        if (intent.hasExtra(TOP_TITLE) && intent.hasExtra(SECOND_TITLE)
+                && intent.hasExtra(DESCRIPTION) && intent.hasExtra(IMAGE_ID)) {
+            mTopTitle = intent.getExtras().getString(TOP_TITLE);
+            mSecondTitle = intent.getExtras().getString(SECOND_TITLE);
+            mDescription = intent.getExtras().getString(DESCRIPTION);
+            mImageId = intent.getExtras().getInt(IMAGE_ID);
         } else {
             finish();
         }

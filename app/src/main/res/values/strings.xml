@@ -223,7 +223,7 @@
     <string name="this_product_is_held_by_customs">This product is held by Customs because of insufficient product data, please upload a document or a photo confirming your parcel contents</string>
     <string name="confirm_delivery">Please confirm your ordering delivery to</string>
     <string name="order_sent">Order sent</string>
-    <string name="thank_you">Thank you for ordering delivery</string>
+    <string name="thank_you_delivery">Thank you for ordering delivery</string>
     <string name="please_wait_call">Please wait until our courier calls you</string>
     <string name="at_least_six">Description must contain at least 6 characters</string>
     <string name="call_courier">Call the courier</string>
@@ -317,4 +317,7 @@
     <string name="repacking">Repacking</string>
     <string name="replenish">Replenish account</string>
     <string name="address_and_house">Address and building number</string>
+    <string name="parcel_added">Parcel added</string>
+    <string name="parcel_was_added">Your parcel is added with code</string>
+    <string name="thank_you_awaiting">Thanks for adding an awaiting parcel, we will notify you when it will arrive to our warehouse.</string>
 </resources>

@@ -2,7 +2,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-    android:background="@color/colorDivider">
+    android:background="#f1f1f1">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0.5dp"
-            android:layout_below="@id/returnFirstNameLayout">
+            android:layout_below="@+id/returnFirstNameLayout">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -31,6 +31,8 @@
                     android:layout_height="match_parent"
                     android:nextFocusDown="@+id/returnAddressInput"
                     android:background="@android:color/white"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
                     android:hint="@string/last_name"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
@@ -56,6 +58,8 @@
                     android:layout_height="match_parent"
                     android:nextFocusDown="@+id/returnLastNameInput"
                     android:background="@android:color/white"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
                     android:hint="@string/first_name"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
@@ -81,6 +85,8 @@
                     android:layout_height="match_parent"
                     android:nextFocusDown="@+id/returnCityInput"
                     android:background="@android:color/white"
+                    android:inputType="textPostalAddress"
+                    android:singleLine="true"
                     android:hint="@string/address_and_house"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
@@ -106,6 +112,8 @@
                     android:layout_height="match_parent"
                     android:nextFocusDown="@+id/returnCountryInput"
                     android:background="@android:color/white"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
                     android:hint="@string/city"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
@@ -131,6 +139,8 @@
                     android:layout_height="match_parent"
                     android:nextFocusDown="@+id/returnStateInput"
                     android:background="@android:color/white"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
                     android:hint="@string/country"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
@@ -156,6 +166,8 @@
                     android:layout_height="match_parent"
                     android:nextFocusDown="@+id/returnPostalCodeInput"
                     android:background="@android:color/white"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
                     android:hint="@string/state"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
@@ -181,6 +193,8 @@
                     android:layout_height="match_parent"
                     android:nextFocusDown="@+id/returnPhoneInput"
                     android:background="@android:color/white"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
                     android:hint="@string/postal_code"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
@@ -205,6 +219,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/white"
+                    android:inputType="phone"
+                    android:singleLine="true"
                     android:hint="@string/phone_number"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>

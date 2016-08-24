@@ -12,13 +12,12 @@ import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.ResultActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -167,10 +166,26 @@ public class AddAwaitingFragment extends ParentFragment implements View.OnClickL
 
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
+        JSONObject data = response.getJSONObject("data");
         Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
         intent.putExtra("deposit", mProduct.getDeposit());
         mActivity.sendBroadcast(intent);
+
+        // build the intent for result activity
+        Intent showResult = new Intent(mActivity, ResultActivity.class);
+        showResult.putExtra(ResultActivity.TOP_TITLE, getString(R.string.parcel_added));
+        showResult.putExtra(ResultActivity.SECOND_TITLE, getString(R.string.parcel_was_added) + " "
+                + data.optString("barCode", ""));
+        showResult.putExtra(ResultActivity.IMAGE_ID, R.mipmap.ic_parcel_25dp);
+        showResult.putExtra(ResultActivity.DESCRIPTION, getString(R.string.thank_you_awaiting));
+
+        // close fragment
         mActivity.onBackPressed();
+
+        // show result activity
+        startActivity(showResult);
+
+
         int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
         count += 1;
         Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);

@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="@string/replenish"
-            android:id="@+id/button3"
+            android:id="@+id/replenishAccountBtn"
             android:background="@drawable/green_button_bg"
             android:textColor="@android:color/white"
             android:layout_margin="16dp"
