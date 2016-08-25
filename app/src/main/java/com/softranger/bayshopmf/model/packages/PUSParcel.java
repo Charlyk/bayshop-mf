@@ -37,6 +37,7 @@ public class PUSParcel implements Parcelable {
     protected String mProhibitionHeldReason;
     protected String mTakenToDeliveryTime;
     protected String mCustomsHeldTime;
+    protected String mCustomsHeldReason;
     protected boolean mIsSelected;
 
     public PUSParcel() {
@@ -69,6 +70,7 @@ public class PUSParcel implements Parcelable {
         mProhibitionHeldReason = in.readString();
         mTakenToDeliveryTime = in.readString();
         mCustomsHeldTime = in.readString();
+        mCustomsHeldReason = in.readString();
         mIsSelected = in.readByte() != 0;
     }
 
@@ -220,6 +222,14 @@ public class PUSParcel implements Parcelable {
         mIsSelected = selected;
     }
 
+    public String getCustomsHeldReason() {
+        return mCustomsHeldReason;
+    }
+
+    public void setCustomsHeldReason(String customsHeldReason) {
+        mCustomsHeldReason = customsHeldReason;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -252,6 +262,7 @@ public class PUSParcel implements Parcelable {
         dest.writeString(mProhibitionHeldReason);
         dest.writeString(mTakenToDeliveryTime);
         dest.writeString(mCustomsHeldTime);
+        dest.writeString(mCustomsHeldReason);
         dest.writeByte((byte) (mIsSelected ? 1 : 0));
     }
 
@@ -384,6 +395,11 @@ public class PUSParcel implements Parcelable {
 
         public Builder<T> isSelected(boolean isSelected) {
             mParcel.mIsSelected = isSelected;
+            return this;
+        }
+
+        public Builder<T> customsHeldReason(String customsHeldReason) {
+            mParcel.mCustomsHeldReason = customsHeldReason;
             return this;
         }
 

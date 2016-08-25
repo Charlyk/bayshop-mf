@@ -130,7 +130,7 @@ public class InProcessingDetailsAdapter<T extends PUSParcel> extends RecyclerVie
             if (mItems.get(position) instanceof CustomsHeld) {
                 headerHolder.mUploadLayout.setVisibility(View.VISIBLE);
                 headerHolder.mWarningImage.setImageResource(R.mipmap.ic_held_by_customs_60dp);
-                headerHolder.mWarningTextView.setText("Some text for held by customs packages description will go here at the top"); // TODO: 7/18/16 replace text
+                headerHolder.mWarningTextView.setText(headerHolder.mProcessingParcel.getCustomsHeldReason());
             }
             // show
             if (mItems.get(position) instanceof Prohibited) {

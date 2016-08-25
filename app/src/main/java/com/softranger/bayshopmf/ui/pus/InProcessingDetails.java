@@ -130,6 +130,7 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
                     .name(data.getString("generalDescription"))
                     .insuranceCommission(data.optDouble("insuranceCommission", 0))
                     .status(data.getString("status"))
+                    .customsHeldReason(data.optString("customsCause", ""))
                     .address(address)
                     .shippingMethod(shippingMethod)
                     .products(products)
@@ -277,6 +278,9 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
     public void onServerResponse(JSONObject response) throws Exception {
         JSONObject data = response.getJSONObject("data");
         mPackage = buildParcelDetails(data);
+        if (mPackage != null) {
+            mActivity.updateParcelCounters(mPackage.getStatus());
+        }
         mAdapter = new InProcessingDetailsAdapter<>(mPackage, InProcessingDetails.this);
         if (mPackage instanceof ToDelivery) {
             mAdapter.setShowMap(true);
