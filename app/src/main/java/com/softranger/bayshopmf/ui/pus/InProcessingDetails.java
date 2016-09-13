@@ -164,7 +164,7 @@ public class InProcessingDetails<T extends PUSParcel> extends ParentFragment imp
 
                     break;
                 case Constants.ParcelStatus.HELD_BY_PROHIBITION:
-                    packageBuilder.prohibitionHeldReason(data.getString("prohibitionHeldReason"));
+                    packageBuilder.prohibitionHeldReason(data.optString("prohibitionHeldReason", ""));
                     break;
             }
             return packageBuilder.build();
