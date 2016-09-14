@@ -41,6 +41,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.ui.BlankFragment;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
 import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
@@ -175,7 +176,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         addAwaiting.setOnClickListener(this);
 
         selectedFragment = SelectedFragment.IN_STOCK;
-        replaceFragment(StorageHolderFragment.newInstance());
+        replaceFragment(BlankFragment.newInstance());
 
         permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE};
