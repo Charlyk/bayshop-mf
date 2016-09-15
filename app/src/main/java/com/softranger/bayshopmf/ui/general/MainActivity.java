@@ -41,7 +41,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.ui.BlankFragment;
+import com.softranger.bayshopmf.ui.PUSParcelsFragment;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
 import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
@@ -176,7 +176,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         addAwaiting.setOnClickListener(this);
 
         selectedFragment = SelectedFragment.IN_STOCK;
-        replaceFragment(BlankFragment.newInstance());
+        replaceFragment(StorageHolderFragment.newInstance());
 
         permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -204,15 +204,15 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (parcelStatus == null) {
             setMenuCounter(R.id.nav_waitingArrival, Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL));
             setMenuCounter(R.id.nav_inStock, Application.counters.get(Constants.ParcelStatus.IN_STOCK));
-            setMenuCounter(R.id.nav_inForming, Application.counters.get(Constants.ParcelStatus.LIVE));
-            setMenuCounter(R.id.nav_inProcessing, Application.counters.get(Constants.ParcelStatus.IN_PROCESSING));
-            setMenuCounter(R.id.nav_awaitingSending, Application.counters.get(Constants.ParcelStatus.PACKED));
-            setMenuCounter(R.id.nav_heldDueToDebt, Application.counters.get(Constants.ParcelStatus.DEPT));
-            setMenuCounter(R.id.nav_heldByProhibition, Application.counters.get(Constants.ParcelStatus.HELD_BY_PROHIBITION));
-            setMenuCounter(R.id.nav_sent, Application.counters.get(Constants.ParcelStatus.SENT));
-            setMenuCounter(R.id.nav_heldByCustoms, Application.counters.get(Constants.ParcelStatus.CUSTOMS_HELD));
-            setMenuCounter(R.id.nav_localDeposit, Application.counters.get(Constants.ParcelStatus.LOCAL_DEPO));
-            setMenuCounter(R.id.nav_takeToDelivery, Application.counters.get(Constants.ParcelStatus.TAKEN_TO_DELIVERY));
+//            setMenuCounter(R.id.nav_inForming, Application.counters.get(Constants.ParcelStatus.LIVE));
+//            setMenuCounter(R.id.nav_inProcessing, Application.counters.get(Constants.ParcelStatus.IN_PROCESSING));
+//            setMenuCounter(R.id.nav_awaitingSending, Application.counters.get(Constants.ParcelStatus.PACKED));
+//            setMenuCounter(R.id.nav_heldDueToDebt, Application.counters.get(Constants.ParcelStatus.DEPT));
+//            setMenuCounter(R.id.nav_heldByProhibition, Application.counters.get(Constants.ParcelStatus.HELD_BY_PROHIBITION));
+//            setMenuCounter(R.id.nav_sent, Application.counters.get(Constants.ParcelStatus.SENT));
+//            setMenuCounter(R.id.nav_heldByCustoms, Application.counters.get(Constants.ParcelStatus.CUSTOMS_HELD));
+//            setMenuCounter(R.id.nav_localDeposit, Application.counters.get(Constants.ParcelStatus.LOCAL_DEPO));
+//            setMenuCounter(R.id.nav_takeToDelivery, Application.counters.get(Constants.ParcelStatus.TAKEN_TO_DELIVERY));
             setMenuCounter(R.id.nav_received, Application.counters.get(Constants.ParcelStatus.RECEIVED));
 //            setMenuCounter(R.id.nav_awaitingDeclaration, Application.counters.get(Constants.ParcelStatus.AWAITING_DECLARATION));
 //            setMenuCounter(R.id.nav_packing, Application.counters.get(Constants.ParcelStatus.PACKING));
@@ -228,33 +228,33 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case Constants.ParcelStatus.IN_STOCK:
                 setMenuCounter(R.id.nav_inStock, Application.counters.get(parcelStatus));
                 break;
-            case Constants.ParcelStatus.LIVE:
-                setMenuCounter(R.id.nav_inForming, Application.counters.get(parcelStatus));
-                break;
-            case Constants.ParcelStatus.IN_PROCESSING:
-                setMenuCounter(R.id.nav_inProcessing, Application.counters.get(parcelStatus));
-                break;
-            case Constants.ParcelStatus.PACKED:
-                setMenuCounter(R.id.nav_awaitingSending, Application.counters.get(parcelStatus));
-                break;
-            case Constants.ParcelStatus.DEPT:
-                setMenuCounter(R.id.nav_heldDueToDebt, Application.counters.get(parcelStatus));
-                break;
-            case Constants.ParcelStatus.HELD_BY_PROHIBITION:
-                setMenuCounter(R.id.nav_heldByProhibition, Application.counters.get(parcelStatus));
-                break;
-            case Constants.ParcelStatus.SENT:
-                setMenuCounter(R.id.nav_sent, Application.counters.get(parcelStatus));
-                break;
-            case Constants.ParcelStatus.CUSTOMS_HELD:
-                setMenuCounter(R.id.nav_heldByCustoms, Application.counters.get(parcelStatus));
-                break;
-            case Constants.ParcelStatus.LOCAL_DEPO:
-                setMenuCounter(R.id.nav_localDeposit, Application.counters.get(parcelStatus));
-                break;
-            case Constants.ParcelStatus.TAKEN_TO_DELIVERY:
-                setMenuCounter(R.id.nav_takeToDelivery, Application.counters.get(parcelStatus));
-                break;
+//            case Constants.ParcelStatus.LIVE:
+//                setMenuCounter(R.id.nav_inForming, Application.counters.get(parcelStatus));
+//                break;
+//            case Constants.ParcelStatus.IN_PROCESSING:
+//                setMenuCounter(R.id.nav_inProcessing, Application.counters.get(parcelStatus));
+//                break;
+//            case Constants.ParcelStatus.PACKED:
+//                setMenuCounter(R.id.nav_awaitingSending, Application.counters.get(parcelStatus));
+//                break;
+//            case Constants.ParcelStatus.DEPT:
+//                setMenuCounter(R.id.nav_heldDueToDebt, Application.counters.get(parcelStatus));
+//                break;
+//            case Constants.ParcelStatus.HELD_BY_PROHIBITION:
+//                setMenuCounter(R.id.nav_heldByProhibition, Application.counters.get(parcelStatus));
+//                break;
+//            case Constants.ParcelStatus.SENT:
+//                setMenuCounter(R.id.nav_sent, Application.counters.get(parcelStatus));
+//                break;
+//            case Constants.ParcelStatus.CUSTOMS_HELD:
+//                setMenuCounter(R.id.nav_heldByCustoms, Application.counters.get(parcelStatus));
+//                break;
+//            case Constants.ParcelStatus.LOCAL_DEPO:
+//                setMenuCounter(R.id.nav_localDeposit, Application.counters.get(parcelStatus));
+//                break;
+//            case Constants.ParcelStatus.TAKEN_TO_DELIVERY:
+//                setMenuCounter(R.id.nav_takeToDelivery, Application.counters.get(parcelStatus));
+//                break;
             case Constants.ParcelStatus.RECEIVED:
                 setMenuCounter(R.id.nav_received, Application.counters.get(parcelStatus));
                 break;
@@ -469,39 +469,44 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             case R.id.nav_waitingArrival:
                 selectedFragment = SelectedFragment.AWAITING_ARRIVAL;
                 break;
-            case R.id.nav_inProcessing:
-                selectedFragment = SelectedFragment.IN_PROCESSING;
-                break;
-            case R.id.nav_inForming:
-                selectedFragment = SelectedFragment.IN_FORMING;
-                break;
-            case R.id.nav_awaitingSending:
-                selectedFragment = SelectedFragment.AWAITING_SENDING;
-                break;
-            case R.id.nav_sent:
-                selectedFragment = SelectedFragment.SENT;
+//            case R.id.nav_inProcessing:
+//                selectedFragment = SelectedFragment.IN_PROCESSING;
+//                break;
+//            case R.id.nav_inForming:
+//                selectedFragment = SelectedFragment.IN_FORMING;
+//                break;
+//            case R.id.nav_awaitingSending:
+//                selectedFragment = SelectedFragment.AWAITING_SENDING;
+//                break;
+//            case R.id.nav_sent:
+//                selectedFragment = SelectedFragment.SENT;
+//                break;
+            case R.id.nav_parcels:
+                selectedFragment = SelectedFragment.parcels;
+                isStorageFragment = false;
+                changeList(PUSParcelsFragment.newInstance(), false);
                 break;
             case R.id.nav_received:
                 selectedFragment = SelectedFragment.RECEIVED;
                 break;
-            case R.id.nav_localDeposit:
-                selectedFragment = SelectedFragment.LOCAL_DEPO;
-                break;
-            case R.id.nav_heldByCustoms:
-                selectedFragment = SelectedFragment.CUSTOMS_HELD;
-                break;
-            case R.id.nav_takeToDelivery:
-                selectedFragment = SelectedFragment.TAKEN_TO_DELIVERY;
-                break;
-            case R.id.nav_heldByProhibition:
-                selectedFragment = SelectedFragment.HELD_BY_PROHIBITION;
-                break;
+//            case R.id.nav_localDeposit:
+//                selectedFragment = SelectedFragment.LOCAL_DEPO;
+//                break;
+//            case R.id.nav_heldByCustoms:
+//                selectedFragment = SelectedFragment.CUSTOMS_HELD;
+//                break;
+//            case R.id.nav_takeToDelivery:
+//                selectedFragment = SelectedFragment.TAKEN_TO_DELIVERY;
+//                break;
+//            case R.id.nav_heldByProhibition:
+//                selectedFragment = SelectedFragment.HELD_BY_PROHIBITION;
+//                break;
 //            case R.id.nav_awaitingDeclaration:
 //                selectedFragment = SelectedFragment.AWAITING_DECLARATION;
 //                break;
-            case R.id.nav_packing:
-                selectedFragment = SelectedFragment.PACKING;
-                break;
+//            case R.id.nav_packing:
+//                selectedFragment = SelectedFragment.PACKING;
+//                break;
 //            case R.id.nav_heldByDamageRecord:
 //                selectedFragment = SelectedFragment.DAMAGE_RECORDED;
 //                break;
@@ -704,6 +709,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     public enum SelectedFragment {
         IN_STOCK, AWAITING_ARRIVAL, IN_PROCESSING, IN_FORMING, AWAITING_SENDING, SENT, RECEIVED,
-        LOCAL_DEPO, TAKEN_TO_DELIVERY, AWAITING_DECLARATION, PACKING, DAMAGE_RECORDED, HELD_BY_USER, ACCOUNT_REPLENISHMENT, HELD_BY_PROHIBITION, CUSTOMS_HELD
+        LOCAL_DEPO, TAKEN_TO_DELIVERY, AWAITING_DECLARATION, PACKING, DAMAGE_RECORDED, HELD_BY_USER, ACCOUNT_REPLENISHMENT, HELD_BY_PROHIBITION, parcels, CUSTOMS_HELD
     }
 }

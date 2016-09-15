@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+              android:id="@+id/pusItemHolder"
+                android:background="@drawable/selectable_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
+        android:id="@+id/pusItemStatusBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            tools:text="PUS2131432133"
+            android:id="@+id/pusItemCodeNumberLabel"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date"
+            android:id="@+id/textView45"
+            android:layout_below="@+id/pusItemCodeNumberLabel"
+            android:layout_alignLeft="@+id/pusItemCodeNumberLabel"
+            android:layout_alignStart="@+id/pusItemCodeNumberLabel"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="12.10.16 (3 days ago)"
+            android:textColor="@android:color/black"
+            android:id="@+id/pusItemDateLabel"
+            android:layout_below="@+id/textView45"
+            android:layout_alignLeft="@+id/textView45"
+            android:layout_alignStart="@+id/textView45"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/weight"
+            android:id="@+id/textView47"
+            android:layout_alignTop="@+id/textView45"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            tools:text="10kg"
+            android:id="@+id/pusItemWeightLabel"
+            android:layout_below="@+id/textView47"
+            android:layout_alignLeft="@+id/textView47"
+            android:layout_alignStart="@+id/textView47"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            tools:text="$450"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/pusItemPriceLabel"
+            android:layout_below="@+id/textView47"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price"
+            android:id="@+id/textView50"
+            android:layout_alignTop="@+id/textView47"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"/>
+
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#b1b1b1"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

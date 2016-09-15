@@ -1,21 +1,23 @@
 package com.softranger.bayshopmf.util.widget;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v4.content.res.ResourcesCompat;
+import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.PUSParcel;
 
 import java.util.HashMap;
 
@@ -37,7 +39,12 @@ public class ParcelStatusBarView extends RelativeLayout {
     private Interpolator mInterpolator;
     private static float parentLeft;
     private static float parentRight;
+    private boolean mIsReady;
     private HashMap<Integer, BarColor> mColors;
+    private OnStatusBarReadyListener mOnStatusBarReadyListener;
+    private ValueAnimator mIndicatorAnimation;
+    private ValueAnimator mTextAnimation;
+    private float mToWidth;
 
     public ParcelStatusBarView(Context context) {
         super(context);
@@ -85,8 +92,6 @@ public class ParcelStatusBarView extends RelativeLayout {
 
         mStatusIndicator = rootView.findViewById(R.id.statusBarStatusIndicator);
         mStatusNameLabel = (TextView) rootView.findViewById(R.id.statusViewNameLabel);
-
-        setProgress(mCurrentProgress, "");
     }
 
     @Override
@@ -100,6 +105,17 @@ public class ParcelStatusBarView extends RelativeLayout {
         mStatusBarHolder.getGlobalVisibleRect(parentRect);
         parentLeft = parentRect.left;
         parentRight = parentRect.right;
+
+        if (mOnStatusBarReadyListener != null && !mIsReady) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mOnStatusBarReadyListener.onStatusBarReady();
+                }
+            }, 500);
+        }
+
+        mIsReady = true;
     }
 
     @Override
@@ -113,54 +129,57 @@ public class ParcelStatusBarView extends RelativeLayout {
 
         mStatusIndicator = findViewById(R.id.statusBarStatusIndicator);
         mStatusNameLabel = (TextView) findViewById(R.id.statusViewNameLabel);
-
-        setProgress(mCurrentProgress, "");
     }
 
     public void setStatusesCount(int statusesCount) {
         mStatusesCount = statusesCount;
     }
 
-    public void setProgress(int progress, String statusName) {
+    public void setProgress(PUSParcel pusParcel) {
         // check if given progress is not greater then max progress
         // if it is greater just set it equal to max progress
+        int progress = pusParcel.getParcelStatus().index();
         if (progress > mStatusesCount) progress = mStatusesCount;
         // set current progress for get method
         mCurrentProgress = progress;
 
         switch (mColors.get(progress)) {
             case red:
-                mStatusNameLabel.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.red_status_bg));
+                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_red_bg));
                 break;
             case green:
-                mStatusNameLabel.setTextColor(mContext.getResources().getColor(R.color.colorGreenAction));
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.green_status_bg));
+                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_green_bg));
                 break;
         }
 
         // compute the width which we should get at the end
-        float toWidth = mOneStatusWidth * progress;
+        mToWidth = mOneStatusWidth * progress;
         // get indicator current width
         float fromWidth = mStatusIndicator.getLayoutParams().width;
         // if we have already max width just stop here
-        if (fromWidth == toWidth) return;
+        if (fromWidth == mToWidth) return;
         // create a value animator to animate the indicator progress
-        ValueAnimator indicatorAnimator = ValueAnimator.ofFloat(fromWidth, toWidth);
-        indicatorAnimator.addUpdateListener(mIndicatorAnimatorListener);
+        mIndicatorAnimation = ValueAnimator.ofFloat(0, mToWidth);
+        mIndicatorAnimation.addUpdateListener(mIndicatorAnimatorListener);
+        mIndicatorAnimation.setDuration(500);
+        mIndicatorAnimation.addListener(mAnimationListener);
+        mIndicatorAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        mIndicatorAnimation.start();
 
-        // create a value animator to move the text view
-        float translationX = mStatusNameLabel.getTranslationX();
-        ValueAnimator textAnimator = ValueAnimator.ofFloat(translationX, fromWidth); // set from width so the indicator will be at the center of text view
-        textAnimator.addUpdateListener(mNameAnimatorListener);
-
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(indicatorAnimator, textAnimator);
-        set.setDuration(500);
-        set.setInterpolator(mInterpolator);
-        set.start();
         // set stetus title
-        mStatusNameLabel.setText(statusName);
+        mStatusNameLabel.setText(pusParcel.getParcelStatus().statusName());
+        pusParcel.setWasAnimated(true);
+    }
+
+    public void stopAnimations() {
+        if (mIndicatorAnimation != null) mIndicatorAnimation.cancel();
+        if (mTextAnimation != null) mTextAnimation.cancel();
+    }
+
+    public void setOnStatusBarReadyListener(OnStatusBarReadyListener onStatusBarReadyListener) {
+        mOnStatusBarReadyListener = onStatusBarReadyListener;
     }
 
     public int getCurrentProgress() {
@@ -190,17 +209,50 @@ public class ParcelStatusBarView extends RelativeLayout {
         @Override
         public void onAnimationUpdate(ValueAnimator valueAnimator) {
             float animatedValue = (float) valueAnimator.getAnimatedValue();
-            // get text rectangle
-            Rect textRect = new Rect();
-            mStatusNameLabel.getGlobalVisibleRect(textRect);
             // check if the rectangle is not at the edge of the screen
-            if (textRect.right < parentRight && textRect.left >= parentLeft) {
-                mStatusNameLabel.setTranslationX(animatedValue);
+            if (animatedValue >= parentLeft && animatedValue <= parentRight) {
+                Rect rect = new Rect();
+                mStatusNameLabel.getGlobalVisibleRect(rect);
+                mStatusNameLabel.setX(animatedValue - (rect.width() / 2));
             }
+        }
+    };
+
+    private Animator.AnimatorListener mAnimationListener = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(Animator animator) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animator) {
+            Rect textRect = new Rect();
+            Rect indicatorRect = new Rect();
+            mStatusIndicator.getGlobalVisibleRect(indicatorRect);
+            mStatusNameLabel.getGlobalVisibleRect(textRect);
+            float halfTextWidth = textRect.centerX();
+            mTextAnimation = ValueAnimator.ofFloat(halfTextWidth, mToWidth);
+            mTextAnimation.addUpdateListener(mNameAnimatorListener);
+            mTextAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+            mTextAnimation.start();
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animator) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animator) {
+
         }
     };
 
     public enum BarColor {
         green, red
+    }
+
+    public interface OnStatusBarReadyListener {
+        void onStatusBarReady();
     }
 }

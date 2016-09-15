@@ -44,7 +44,7 @@ public class Constants {
         public static final String AWAITING_DECLARATION = "awaiting-declaration";
         public static final String PACKING = "packing";
         public static final String HELD_BY_USER = "held-by-user";
-        public static final String DAMAGE_RECORDED = "damage-recorded";
+        public static final String DAMAGE_RECORDED = "held-by-damage";
     }
 
     public static class Api {
@@ -170,7 +170,11 @@ public class Constants {
          * @return a url to obtain a list of parcels
          */
         public static String urlOutgoing(String depot, String parcelStatus) {
-            return URL + PARCELS + depot + "/" + parcelStatus;
+            return URL + PARCELS + depot + File.separator + parcelStatus;
+        }
+
+        public static String urlOutgoing() {
+            return URL + PARCELS + Constants.US;
         }
 
         /**
