@@ -19,8 +19,10 @@ public class PUSParcel implements Parcelable {
     @JsonProperty("fieldTime") String fieldTime;
     @JsonProperty("totalPrice") String mPrice;
     @JsonProperty("currency") String mCurrency;
-    private PUSStatus mParcelStatus;
-    private boolean mWasAnimated;
+    @JsonProperty("generalDescription") String mGeneralDescription;
+    PUSStatus mParcelStatus;
+    boolean mWasAnimated;
+    boolean mIsSelected;
 
     public PUSParcel() {
 
@@ -76,6 +78,18 @@ public class PUSParcel implements Parcelable {
         return mParcelStatus;
     }
 
+    public String getGeneralDescription() {
+        return mGeneralDescription;
+    }
+
+    public boolean isSelected() {
+        return mIsSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        mIsSelected = selected;
+    }
+
     public void setParcelStatus(String parcelStatus) {
         for (PUSStatus status : PUSStatus.values()) {
             if (status.toString().equalsIgnoreCase(parcelStatus)) {
@@ -117,7 +131,8 @@ public class PUSParcel implements Parcelable {
         sent(R.string.sent, "sent", 6),
         held_by_customs(R.string.held_by_customs, "customs-held", 7),
         local_depot(R.string.local_deposit, "local-depo", 8),
-        in_the_way(R.string.take_to_delivery, "taken-to-delivery", 9);
+        in_the_way(R.string.take_to_delivery, "taken-to-delivery", 9),
+        received(R.string.received, "received", 10);
 
         private final String formatted;
         private final int index;

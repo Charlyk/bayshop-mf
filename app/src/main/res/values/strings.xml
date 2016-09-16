@@ -12,7 +12,7 @@
     <string name="held_due_to_debt">Held due to debt</string>
     <string name="sent">Sent</string>
     <string name="held_by_customs">Held by Customs</string>
-    <string name="local_deposit">Local depot</string>
+    <string name="local_deposit">At local depot</string>
     <string name="take_to_delivery">Courier delivery</string>
     <string name="received">Received</string>
     <string name="settings">Settings</string>
@@ -251,7 +251,7 @@
     <string name="parcels">Parcels</string>
     <string name="personal">Personal</string>
     <string name="system">System</string>
-    <string name="read_status">Change status</string>
+    <string name="read_status">Change stringStatus</string>
     <string name="search_mails">Search mails</string>
     <string name="warehouse_addresses">Warehouse addresses</string>
     <string name="copy">Copy</string>

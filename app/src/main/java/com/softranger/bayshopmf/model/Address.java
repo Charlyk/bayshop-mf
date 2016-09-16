@@ -3,6 +3,8 @@ package com.softranger.bayshopmf.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by Eduard Albu on 5/13/16, 05, 2016
  * for project BayShop MF
@@ -10,16 +12,16 @@ import android.os.Parcelable;
  */
 public class Address implements Parcelable {
     private String mClientName;
-    private String mFirstName;
-    private String mLastName;
+    @JsonProperty("first_name") String mFirstName;
+    @JsonProperty("last_name") String mLastName;
     private String mEmail;
-    private String mStreet;
-    private String mCity;
-    private String mCountry;
-    private String mPostalCode;
-    private String mPhoneNumber;
+    @JsonProperty("address") String mStreet;
+    @JsonProperty("city") String mCity;
+    @JsonProperty("country") String mCountry;
+    @JsonProperty("zip") String mPostalCode;
+    @JsonProperty("phone") String mPhoneNumber;
     private String mPhoneCode;
-    private String mState;
+    @JsonProperty("state") String mState;
     private int mCountryId;
     private int mId = -1;
     private boolean mIsInFavorites;

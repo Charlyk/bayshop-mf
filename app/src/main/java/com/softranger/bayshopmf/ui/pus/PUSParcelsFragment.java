@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui;
+package com.softranger.bayshopmf.ui.pus;
 
 
 import android.os.Bundle;
@@ -7,12 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PUSParcelsAdapter;
-import com.softranger.bayshopmf.adapter.ParcelListAdapter;
 import com.softranger.bayshopmf.model.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.util.Constants;
@@ -24,12 +22,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 
 public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdapter.OnPusItemClickListener {
 
+    private Unbinder mUnbinder;
     private ParentActivity mActivity;
     private ArrayList<PUSParcel> mPUSParcels;
     private PUSParcelsAdapter mAdapter;
+
+    @BindView(R.id.pusItemsRecyclerView) RecyclerView mRecyclerView;
 
     public PUSParcelsFragment() {
         // Required empty public constructor
@@ -47,14 +52,14 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pusparcels, container, false);
+        mUnbinder = ButterKnife.bind(this, view);
         mActivity = (ParentActivity) getActivity();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.pusItemsRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mPUSParcels = new ArrayList<>();
         mAdapter = new PUSParcelsAdapter(mPUSParcels, mActivity);
         mAdapter.setOnPusItemClickListener(this);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         mActivity.toggleLoadingProgress(true);
         ApiClient.getInstance().getRequest(Constants.Api.urlOutgoing(), mHandler);
         return view;
@@ -65,16 +70,19 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         JSONObject data = response.getJSONObject("data");
 
         for (PUSParcel.PUSStatus status : PUSParcel.PUSStatus.values()) {
-            JSONArray parcelsArray = data.getJSONArray(status.toString());
-            for (int i = 0; i < parcelsArray.length(); i++) {
-                JSONObject parcelJson = parcelsArray.getJSONObject(i);
-                PUSParcel pusParcel = new ObjectMapper().readValue(parcelJson.toString(), PUSParcel.class);
-                pusParcel.setParcelStatus(status.toString());
-                mPUSParcels.add(pusParcel);
+            JSONArray parcelsArray = data.optJSONArray(status.toString());
+            if (parcelsArray != null) {
+                for (int i = 0; i < parcelsArray.length(); i++) {
+                    JSONObject parcelJson = parcelsArray.getJSONObject(i);
+                    PUSParcel pusParcel = new ObjectMapper().readValue(parcelJson.toString(), PUSParcel.class);
+                    pusParcel.setParcelStatus(status.toString());
+                    mPUSParcels.add(pusParcel);
+                }
             }
         }
 
         mAdapter.notifyDataSetChanged();
+        mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
     }
 
     @Override
@@ -84,6 +92,12 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
 
     @Override
     public void onPusItemClick(PUSParcel pusParcel, int position) {
+        mActivity.addFragment(InProcessingDetails.newInstance(pusParcel), true);
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }

@@ -1,16 +1,16 @@
 package com.softranger.bayshopmf.util.widget;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,6 +45,7 @@ public class ParcelStatusBarView extends RelativeLayout {
     private ValueAnimator mIndicatorAnimation;
     private ValueAnimator mTextAnimation;
     private float mToWidth;
+    private Handler mUpdateHandler;
 
     public ParcelStatusBarView(Context context) {
         super(context);
@@ -63,7 +64,9 @@ public class ParcelStatusBarView extends RelativeLayout {
 
     private void initializeView(Context context) {
         mContext = context;
+        mUpdateHandler = new Handler();
 
+        // below are initial statuses for the status bar
         mColors = new HashMap<>();
         mColors.put(0, BarColor.green); // initial state
         mColors.put(1, BarColor.green); // processing
@@ -97,25 +100,41 @@ public class ParcelStatusBarView extends RelativeLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        // get holder width
         mTotalWidth = mStatusBarHolder.getWidth();
-
+        // compute the with for one status
         mOneStatusWidth = mTotalWidth / mStatusesCount;
-
+        // get parent left and right sides position
         Rect parentRect = new Rect();
         mStatusBarHolder.getGlobalVisibleRect(parentRect);
-        parentLeft = parentRect.left;
-        parentRight = parentRect.right;
-
+        parentLeft = parentRect.left - getPixelsFromDp(10);
+        parentRight = parentRect.right - getPixelsFromDp(10);
+        // tell to listeners that we are ready for animations
         if (mOnStatusBarReadyListener != null && !mIsReady) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mOnStatusBarReadyListener.onStatusBarReady();
-                }
-            }, 500);
+            mUpdateHandler.postDelayed(mUpdateRunnable, 200);
         }
-
+        // set this to true so the animations will work
         mIsReady = true;
+    }
+
+    /**
+     * Runnable to send message to listener about animation ready status
+     */
+    private Runnable mUpdateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mOnStatusBarReadyListener.onStatusBarReady();
+        }
+    };
+
+    /**
+     * Convert dp to pixels
+     * @param dp to convert
+     * @return value of passed dp in pixels
+     */
+    private int getPixelsFromDp(int dp) {
+        Resources r = mContext.getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 
     @Override
@@ -125,12 +144,17 @@ public class ParcelStatusBarView extends RelativeLayout {
         mInterpolator = new AccelerateDecelerateInterpolator();
         mStatusBarHolder = (LinearLayout) findViewById(R.id.statusBarHolderLayout);
 
+        // set the initial maximum statuses
         mStatusesCount = 9;
 
         mStatusIndicator = findViewById(R.id.statusBarStatusIndicator);
         mStatusNameLabel = (TextView) findViewById(R.id.statusViewNameLabel);
     }
 
+    /**
+     * Change maximum statuses number (default is 9, so status bar will be divided in 9 parts)
+     * @param statusesCount new max statuses count
+     */
     public void setStatusesCount(int statusesCount) {
         mStatusesCount = statusesCount;
     }
@@ -138,11 +162,13 @@ public class ParcelStatusBarView extends RelativeLayout {
     public void setProgress(PUSParcel pusParcel) {
         // check if given progress is not greater then max progress
         // if it is greater just set it equal to max progress
+        if (!mIsReady) return;
         int progress = pusParcel.getParcelStatus().index();
         if (progress > mStatusesCount) progress = mStatusesCount;
         // set current progress for get method
         mCurrentProgress = progress;
 
+        // update status indicator and text view backgrounds based on status color
         switch (mColors.get(progress)) {
             case red:
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.red_status_bg));
@@ -163,16 +189,36 @@ public class ParcelStatusBarView extends RelativeLayout {
         // create a value animator to animate the indicator progress
         mIndicatorAnimation = ValueAnimator.ofFloat(0, mToWidth);
         mIndicatorAnimation.addUpdateListener(mIndicatorAnimatorListener);
-        mIndicatorAnimation.setDuration(500);
-        mIndicatorAnimation.addListener(mAnimationListener);
-        mIndicatorAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        mIndicatorAnimation.start();
+
+        // create a value animator for text view position
+        // get text rate to compute it's center
+        Rect textRect = new Rect();
+        mStatusNameLabel.getGlobalVisibleRect(textRect);
+        // get text view center
+        float halfTextWidth = textRect.centerX();
+        // create animator
+        mTextAnimation = ValueAnimator.ofFloat(halfTextWidth, mToWidth);
+        mTextAnimation.addUpdateListener(mNameAnimatorListener);
+
+        // create an animator to update text view alpha value
+        ValueAnimator alphaAnimator = ValueAnimator.ofFloat(mStatusNameLabel.getAlpha(), 1.0f);
+        alphaAnimator.addUpdateListener(mAlphaUpdateListener);
+
+        // add all created animators to a set and play them together
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(300);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.playTogether(alphaAnimator, mIndicatorAnimation, mTextAnimation);
+        set.start();
 
         // set stetus title
         mStatusNameLabel.setText(pusParcel.getParcelStatus().statusName());
         pusParcel.setWasAnimated(true);
     }
 
+    /**
+     * Stop position and width changing animations
+     */
     public void stopAnimations() {
         if (mIndicatorAnimation != null) mIndicatorAnimation.cancel();
         if (mTextAnimation != null) mTextAnimation.cancel();
@@ -182,18 +228,34 @@ public class ParcelStatusBarView extends RelativeLayout {
         mOnStatusBarReadyListener = onStatusBarReadyListener;
     }
 
+    /**
+     * Get the current progress
+     * @return how many positions of the indicator were changed
+     */
     public int getCurrentProgress() {
         return mCurrentProgress;
     }
 
+    /**
+     * Chenge a color for any status in the lost or add a new status
+     * @param position of the status in the list
+     * @param color for that position as {@link BarColor}
+     */
     public void setColor(int position, BarColor color) {
         mColors.put(position, color);
     }
 
+    /**
+     * Change the animation interpolator
+     * @param interpolator new interpolator for animations
+     */
     public void setInterpolator(Interpolator interpolator) {
         mInterpolator = interpolator;
     }
 
+    /**
+     * Listener below will update the width of the progress indicator
+     */
     private ValueAnimator.AnimatorUpdateListener mIndicatorAnimatorListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -205,49 +267,38 @@ public class ParcelStatusBarView extends RelativeLayout {
         }
     };
 
+    /**
+     * Listener below will update the position of status name text view
+     */
     private ValueAnimator.AnimatorUpdateListener mNameAnimatorListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator valueAnimator) {
             float animatedValue = (float) valueAnimator.getAnimatedValue();
             // check if the rectangle is not at the edge of the screen
-            if (animatedValue >= parentLeft && animatedValue <= parentRight) {
-                Rect rect = new Rect();
-                mStatusNameLabel.getGlobalVisibleRect(rect);
+            Rect rect = new Rect();
+            mStatusNameLabel.getGlobalVisibleRect(rect);
+            // if text right or left side is not greater the parent right or left side,
+            // update text position
+            if (rect.left >= parentLeft && rect.right <= parentRight) {
                 mStatusNameLabel.setX(animatedValue - (rect.width() / 2));
             }
         }
     };
 
-    private Animator.AnimatorListener mAnimationListener = new Animator.AnimatorListener() {
+    /**
+     * Listener below will update status text view alpha value from fully transparent to fully visible
+     */
+    private ValueAnimator.AnimatorUpdateListener mAlphaUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
-        public void onAnimationStart(Animator animator) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animator) {
-            Rect textRect = new Rect();
-            Rect indicatorRect = new Rect();
-            mStatusIndicator.getGlobalVisibleRect(indicatorRect);
-            mStatusNameLabel.getGlobalVisibleRect(textRect);
-            float halfTextWidth = textRect.centerX();
-            mTextAnimation = ValueAnimator.ofFloat(halfTextWidth, mToWidth);
-            mTextAnimation.addUpdateListener(mNameAnimatorListener);
-            mTextAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-            mTextAnimation.start();
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animator) {
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animator) {
-
+        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            float animatedValue = (float) valueAnimator.getAnimatedValue();
+            mStatusNameLabel.setAlpha(animatedValue);
         }
     };
 
+    /**
+     * Used to set status indicator and text background color
+     */
     public enum BarColor {
         green, red
     }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softranger.bayshopmf.util.Imageble;
 
 /**
@@ -12,8 +13,8 @@ import com.softranger.bayshopmf.util.Imageble;
  * email eduard.albu@gmail.com
  */
 public class Photo implements Parcelable, Imageble {
-    private String mSmallImage;
-    private String mBigImage;
+    @JsonProperty("photoThumbnail") String mSmallImage;
+    @JsonProperty("photo") String mBigImage;
     private Bitmap mSmallBitmap;
     private Bitmap mBigBitmap;
 

@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.PUSParcelDetailed;
 import com.softranger.bayshopmf.model.packages.Received;
 
 import java.text.SimpleDateFormat;
@@ -44,8 +45,7 @@ public class ReceivedSignature extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
-    public static ReceivedSignature newInstance(Received received) {
-
+    public static ReceivedSignature newInstance(PUSParcelDetailed received) {
         Bundle args = new Bundle();
         args.putParcelable(RECEIVED_ARG, received);
         ReceivedSignature fragment = new ReceivedSignature();
@@ -79,14 +79,14 @@ public class ReceivedSignature extends Fragment implements OnMapReadyCallback {
         mMapView.onCreate(savedInstanceState);
         mMapView.setClickable(false);
 
-        Received received = getArguments().getParcelable(RECEIVED_ARG);
+        PUSParcelDetailed received = getArguments().getParcelable(RECEIVED_ARG);
         setDataOnPosition(received);
         return view;
     }
 
-    private void setDataOnPosition(Received received) {
+    private void setDataOnPosition(PUSParcelDetailed received) {
         mUidLabel.setText(received.getCodeNumber());
-        mDescriptionlabel.setText(received.getName());
+        mDescriptionlabel.setText(received.getGeneralDescription());
 
         Date date = new Date();
         try {

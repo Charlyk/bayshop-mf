@@ -390,25 +390,8 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         mActivity.addFragment(AwaitingArrivalProductFragment.newInstance(product), true);
     }
 
-    /**
-     * Called when any child of {@link PUSParcel} is clicked
-     * @param processingPackage which was clicked
-     * @param position within the adapter for the clicked item
-     */
     @Override
-    public <T extends PUSParcel> void onInProcessingProductClick(T processingPackage, int position) {
-
-        mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
-    }
-
-    /**
-     * Called when checkbox of an {@link LocalDepot} item was clicked
-     * @param localDepotItem which state was changed
-     * @param position within the adapter for clicked item
-     * @param isChecked show if either item is selected or deselected
-     */
-    @Override
-    public <T extends PUSParcel> void onLocalDepoItemSelected(T localDepotItem, int position, boolean isChecked) {
+    public void onInProcessingProductClick(com.softranger.bayshopmf.model.PUSParcel processingPackage, int position) {
 
     }
 

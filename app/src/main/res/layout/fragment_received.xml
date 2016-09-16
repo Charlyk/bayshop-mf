@@ -2,12 +2,11 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@android:color/white"
-             android:clickable="true"
-             tools:context=".ui.pus.PUSParcelsFragment">
+             tools:context="com.softranger.bayshopmf.ui.pus.ReceivedFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/pusItemsRecyclerView"
+        android:id="@+id/receivedParcelsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 </FrameLayout>

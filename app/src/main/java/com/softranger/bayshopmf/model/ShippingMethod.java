@@ -3,20 +3,22 @@ package com.softranger.bayshopmf.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by Eduard Albu on 5/26/16, 05, 2016
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
 public class ShippingMethod implements Parcelable {
-    private int mId;
-    private String mName;
-    private String mEstimatedTime;
+    @JsonProperty("id") int mId;
+    @JsonProperty("title") String mName;
+    @JsonProperty("time") String mEstimatedTime;
     private double mMaxWeight;
     private double mCalculatedPrice;
     private int mRank;
     private String mCurrency;
-    private String mDescription;
+    @JsonProperty("description") String mDescription;
 
     private ShippingMethod() {
     }

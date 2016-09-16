@@ -9,21 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.model.PUSParcel;
+import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.packages.InProcessing;
-import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.packages.LocalDepot;
-import com.softranger.bayshopmf.model.packages.PUSParcel;
 import com.softranger.bayshopmf.model.packages.Packed;
 import com.softranger.bayshopmf.util.ViewAnimator;
 
@@ -121,7 +119,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             productHolder.mItemName.setText(productHolder.mProduct.getProductName());
             productHolder.mItemId.setText(productHolder.mProduct.getProductId());
         } else if (mInStockItems.get(position) instanceof PUSParcel) {
-            InProcessingViewHolder<PUSParcel> processingHolder = (InProcessingViewHolder) holder;
+            InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
             processingHolder.mProduct = (PUSParcel) mInStockItems.get(position);
             // check if item is an instance of local depot object
             // and if it's true then we need to show the checkbox used to select multiple items
@@ -153,18 +151,19 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             // set name id and date in position
             processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
-            String name = processingHolder.mProduct.getName();
+            String name = processingHolder.mProduct.getGeneralDescription();
             if (name == null || name.equals("") || name.equals("null")) {
                 processingHolder.mProductName.setText(mContext.getString(R.string.no_description));
                 processingHolder.mProductName.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
             } else {
-                processingHolder.mProductName.setText(processingHolder.mProduct.getName());
+                processingHolder.mProductName.setText(processingHolder.mProduct.getGeneralDescription());
                 processingHolder.mProductName.setTextColor(mContext.getResources().getColor(android.R.color.black));
             }
-            processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getCreated()));
+            processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getFieldTime()));
 
             // compute kilos from grams and set the result in weight label
-            double kg = processingHolder.mProduct.getRealWeght() / 1000;
+            double realWeight = Double.parseDouble(processingHolder.mProduct.getRealWeight());
+            double kg = realWeight / 1000;
             processingHolder.mWeight.setText(kg + "kg.");
 
         } else if (mInStockItems.get(position) instanceof InForming) {
@@ -337,13 +336,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    class InProcessingViewHolder<T extends PUSParcel> extends RecyclerView.ViewHolder implements View.OnClickListener,
-            CompoundButton.OnCheckedChangeListener {
+    class InProcessingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle, mWeightTitle, mCreatedDateTitle;
         final ProgressBar mProcessingProgressBar;
         final LinearLayout mProgressLayout;
-        T mProduct;
+        PUSParcel mProduct;
 
         public InProcessingViewHolder(View itemView) {
             super(itemView);
@@ -364,14 +362,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
                 mOnItemClickListener.onInProcessingProductClick(mProduct, getAdapterPosition());
-            }
-        }
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            mProduct.setSelected(isChecked);
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onLocalDepoItemSelected(mProduct, getAdapterPosition(), isChecked);
             }
         }
     }
@@ -448,9 +438,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onProductClick(Product product, int position);
 
-        <T extends PUSParcel> void onInProcessingProductClick(T processingPackage, int position);
-
-        <T extends PUSParcel> void onLocalDepoItemSelected(T localDepotItem, int position, boolean isChecked);
+        void onInProcessingProductClick(PUSParcel processingPackage, int position);
 
         void onInFormingClick(InForming inForming, int position);
 
