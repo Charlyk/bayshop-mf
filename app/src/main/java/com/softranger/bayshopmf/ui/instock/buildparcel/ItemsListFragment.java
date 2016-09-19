@@ -27,6 +27,7 @@ import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
@@ -85,9 +86,6 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_build_parcel_first_step, container, false);
         mActivity = (MainActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        intentFilter.addAction(MainActivity.ACTION_ITEM_DELETED);
-        mActivity.registerReceiver(mTitleReceiver, intentFilter);
 
         mInParcelItems = new ArrayList<>();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.buildFirstStepItemsList);
@@ -105,7 +103,6 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         nextButton.setOnClickListener(this);
 
         String listItems = getString(R.string.list_items);
-        mActivity.setToolbarTitle(listItems, true);
         mDeposit = getArguments().getString(DEPOSIT_ARG);
         boolean addNewBoxes = getArguments().getBoolean(ADD_ARG);
 
@@ -238,31 +235,6 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
         mTotalWeight.setText(String.valueOf(getTotalWeight(items)) + "kg.");
     }
 
-    private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.list_items), true);
-                    break;
-                case MainActivity.ACTION_ITEM_DELETED:
-//                    boolean hasParcels = intent.getExtras().getBoolean("hasMoreItems");
-//                    if (removedPos > -1) {
-//                        mAdapter.removeItem(removedPos);
-//                        removedPos = -1;
-//                        updateTotals(mInParcelItems);
-//                    }
-                    break;
-            }
-        }
-    };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mActivity.unregisterReceiver(mTitleReceiver);
-    }
-
     /**
      * Called when delete button within an item is clicked
      * @param inStockItem which item is to be deleted
@@ -379,5 +351,15 @@ public class ItemsListFragment extends ParentFragment implements View.OnClickLis
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
         MainActivity.inStockItems.clear();
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.list_items);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.items_list;
     }
 }

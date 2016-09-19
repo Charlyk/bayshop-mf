@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.ui.pus;
 
 
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.softranger.bayshopmf.model.PUSParcel;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -40,7 +42,8 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     private ArrayList<Object> mPUSParcels;
     private ItemAdapter mAdapter;
 
-    @BindView(R.id.receivedParcelsRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.receivedParcelsRecyclerView)
+    RecyclerView mRecyclerView;
 
     public ReceivedFragment() {
         // Required empty public constructor
@@ -76,24 +79,28 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
         JSONArray data = response.getJSONArray("data");
-
-        for (PUSParcel.PUSStatus status : PUSParcel.PUSStatus.values()) {
-            if (data != null) {
-                for (int i = 0; i < data.length(); i++) {
-                    JSONObject parcelJson = data.getJSONObject(i);
-                    PUSParcel pusParcel = new ObjectMapper().readValue(parcelJson.toString(), PUSParcel.class);
-                    pusParcel.setParcelStatus(status.toString());
-                    mPUSParcels.add(pusParcel);
-                }
-            }
+        for (int i = 0; i < data.length(); i++) {
+            JSONObject parcelJson = data.getJSONObject(i);
+            PUSParcel pusParcel = new ObjectMapper().readValue(parcelJson.toString(), PUSParcel.class);
+            pusParcel.setParcelStatus(Constants.ParcelStatus.RECEIVED);
+            mPUSParcels.add(pusParcel);
         }
-
         mAdapter.refreshList(mPUSParcels);
     }
 
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.received);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.received;
     }
 
     @Override

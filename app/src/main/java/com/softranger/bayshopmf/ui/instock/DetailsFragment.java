@@ -306,4 +306,14 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         mHolderLayout.setVisibility(View.VISIBLE);
         mActivity.toggleLoadingProgress(false);
     }
+
+    @Override
+    public String getFragmentTitle() {
+        return mInStockItem.getParcelId() + getString(R.string.details);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.in_stock_details;
+    }
 }

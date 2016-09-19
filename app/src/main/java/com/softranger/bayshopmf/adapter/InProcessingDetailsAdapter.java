@@ -194,7 +194,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             } else {
                 headerHolder.mDescriptionlabel.setText(headerHolder.mProcessingParcel.getGeneralDescription());
             }
-//            headerHolder.mTrackingNumber.setText(headerHolder.mProcessingParcel.getTrackingNumber());
+            headerHolder.mTrackingNumber.setText(headerHolder.mProcessingParcel.getTrackingNum());
         } else if (mItems.get(position) instanceof Box) {
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
             itemHolder.mProduct = (Box) mItems.get(position);
@@ -290,6 +290,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.takeToDeliveryDetailsHeaderLayout) LinearLayout mToDeliveryDetails;
         @BindView(R.id.takeToDeliveryDetailsCallBtn) LinearLayout mCallCourierBtn;
         @BindView(R.id.warningLayoutWithIcon) LinearLayout mWarningWithImage;
+        @BindView(R.id.shippingByLayoutButton) LinearLayout mShippingByLayout;
 
         @BindView(R.id.sentParcelHeaderLayout) RelativeLayout mSentParcelLayout;
         @BindView(R.id.orderHomeDeliveryLayout) RelativeLayout mHomeDeliveryLayout;
@@ -328,6 +329,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             mGeolocation.setOnClickListener(this);
             mSentParcelLayout.setOnClickListener(this);
             mToDisband.setOnClickListener(this);
+            mShippingByLayout.setOnClickListener(this);
 
             mReceivedOnMapLayout.setVisibility(View.GONE);
             mTakePicture.setOnClickListener(this);
@@ -372,6 +374,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                 case R.id.geolocationButton:
                     mOnItemClickListener.onGeolocationClick(mProcessingParcel, getAdapterPosition());
                     break;
+                case R.id.shippingByLayoutButton:
                 case R.id.sentParcelHeaderLayout:
                     mOnItemClickListener.onStartTrackingClick(mProcessingParcel, getAdapterPosition());
                     break;

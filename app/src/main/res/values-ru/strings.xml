@@ -269,7 +269,7 @@
     <string name="parcel_in_place">Ваша посылка скоро будет упакована, мы уведомим вас, когда она будет готова.</string>
     <string name="place_holder">---</string>
     <string name="change_address">Изменить адрес</string>
-    <string name="days_ago">дня(дней) назад</string>
+    <string name="days_ago">дней назад</string>
     <string name="attach_file">Прикрепить файл</string>
     <string name="close_ticket">Закрыть текущую заявку</string>
     <string name="write_a_message">Написать сообщение…</string>
@@ -309,4 +309,8 @@
     <string name="divide_parcel">Divide parcel</string>
     <string name="parcel_added">Parcel added</string>
     <string name="thank_you_awaiting">Thanks for adding an awaiting parcel, we will notify you when it will arrive to our warehouse.</string>
+    <string name="send_comment">Send comment</string>
+    <string name="hated_it">Hated it</string>
+    <string name="disliked_it">Disliked it</string>
+    <string name="loved_it">Loved it</string>
 </resources>

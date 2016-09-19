@@ -26,6 +26,7 @@ import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -74,9 +75,6 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_check_declaration, container, false);
         mActivity = (MainActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        mActivity.registerReceiver(mTitleReceiver, intentFilter);
-        mActivity.setToolbarTitle(getString(R.string.check_list), true);
         mProducts = new ArrayList<>();
         mInStock = new ArrayList<>();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.buildFourthStepDeclarationList);
@@ -113,23 +111,6 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
 
         mTotalPriceLabel.setText("$" + String.valueOf(price));
         mTotalWeightLabel.setText(String.valueOf(((float) (weight / 1000))) + "kg.");
-    }
-
-    private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.check_list), true);
-                    break;
-            }
-        }
-    };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mActivity.unregisterReceiver(mTitleReceiver);
     }
 
     /**
@@ -258,5 +239,15 @@ public class CheckDeclarationFragment extends ParentFragment implements View.OnC
     @Override
     public void onServerError(String message) {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.check_list);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.check_declaration;
     }
 }

@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.MailAdapter;
 import com.softranger.bayshopmf.model.MailMessage;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -54,4 +58,5 @@ public class SystemMailsFragment extends Fragment implements SwipeRefreshLayout.
     public void onRefresh() {
         mRefreshLayout.setRefreshing(false);
     }
+
 }

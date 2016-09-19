@@ -1,11 +1,16 @@
 package com.softranger.bayshopmf.util;
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -25,15 +30,23 @@ import com.softranger.bayshopmf.ui.general.MainActivity;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public abstract class ParentActivity extends AppCompatActivity {
+public abstract class ParentActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
-    public abstract void setToolbarTitle(String title, boolean showIcon);
+    public static SelectedFragment selectedFragment;
 
-    public abstract void addFragment(Fragment fragment, boolean showAnimation);
+    public abstract void setToolbarTitle(String title);
+
+    public abstract void addFragment(ParentFragment fragment, boolean showAnimation);
 
     public abstract void toggleLoadingProgress(boolean show);
 
     public abstract void replaceFragment(Fragment fragment);
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        getFragmentManager().addOnBackStackChangedListener(this);
+    }
 
     /**
      * Create an alert dialog with BayShop design
@@ -149,6 +162,62 @@ public abstract class ParentActivity extends AppCompatActivity {
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public void expandTextView(TextView tv) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(tv, "maxLines", 300);
+        animation.setDuration(200).start();
+    }
+
+    public void collapseTextView(TextView tv, int numLines) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(tv, "maxLines", numLines);
+        animation.setDuration(200).start();
+    }
+
+    public enum SelectedFragment {
+        in_stock(R.string.warehouse_usa),
+        awaiting_arrival(R.string.awaiting_arrival),
+        parcels(R.string.parcels),
+        account_replenishment(R.string.account_replenishment),
+        add_awaiting_parcel(R.string.add_awaiting_package),
+        addresses_list(R.string.addresses_list),
+        add_address(R.string.add_new_address),
+        edit_awaiting_arrival(R.string.edit_details),
+        edit_declaration(R.string.edit_declaration),
+        in_stock_details(R.string.details),
+        parcel_details(R.string.parcel_details),
+        leave_feedback(R.string.leave_feedback),
+        signature_and_location(R.string.signature_of_geolocation),
+        return_to_seller(R.string.return_to_seller_s_address),
+        check_product(R.string.check_product),
+        additional_photos(R.string.additional_photo),
+        autopacking(R.string.autopacking),
+        change_password(R.string.change_password),
+        notifications(R.string.notifications),
+        regional(R.string.regional),
+        settings(R.string.settings),
+        user_data(R.string.user_data),
+        forgot_password(R.string.forgot_password),
+        check_declaration(R.string.declaration),
+        confirmation(R.string.check_parcel_details),
+        register_user(R.string.register),
+        insurance(R.string.insurance),
+        items_list(R.string.list_items),
+        shipping_method(R.string.shipping_method),
+        received(R.string.received),
+        storage(R.string.storage);
+
+        @StringRes
+        private int mFragmentName;
+
+        SelectedFragment(int fragmentName) {
+            mFragmentName = fragmentName;
+        }
+
+        @StringRes
+        public int fragmentName() {
+            return mFragmentName;
         }
     }
 }

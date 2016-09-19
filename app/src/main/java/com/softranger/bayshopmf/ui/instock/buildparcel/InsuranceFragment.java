@@ -24,6 +24,7 @@ import com.softranger.bayshopmf.model.Insurance;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -76,9 +77,6 @@ public class InsuranceFragment extends ParentFragment implements View.OnClickLis
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_insurance, container, false);
         mActivity = (MainActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        mActivity.registerReceiver(mTitleReceiver, intentFilter);
-        mActivity.setToolbarTitle(getString(R.string.select_insurance), true);
 
         needInsurance = true;
 
@@ -110,40 +108,6 @@ public class InsuranceFragment extends ParentFragment implements View.OnClickLis
                 .build();
         ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(4, String.valueOf(mInForming.getId())), mHandler);
         return mRootView;
-    }
-
-    private JSONArray buildProductsArray(ArrayList<Product> products) {
-        JSONArray productsJSON = new JSONArray();
-        try {
-            for (Product product : products) {
-                JSONObject object = new JSONObject();
-                object.put("declarationItemId", product.getID())
-                        .put("declarationItemName", product.getProductName())
-                        .put("declarationItemQuantity", product.getProductQuantity())
-                        .put("declarationItemPrice", product.getProductPrice());
-                productsJSON.put(object);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return productsJSON;
-    }
-
-    private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.select_insurance), true);
-                    break;
-            }
-        }
-    };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mActivity.unregisterReceiver(mTitleReceiver);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -210,5 +174,15 @@ public class InsuranceFragment extends ParentFragment implements View.OnClickLis
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.select_insurance);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.insurance;
     }
 }

@@ -2,72 +2,39 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context=".ui.general.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_scrollFlags="scroll|enterAlways"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="false"
+        app:layout_scrollFlags="scroll|enterAlways">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:theme="@style/ToolbarColoredBackArrow"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <ImageView
-                android:id="@+id/toolbar_logo"
-                android:layout_width="wrap_content"
-                android:contentDescription="@string/logo"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:transitionName="@string/transition_image_view"
-                android:src="@mipmap/logo_toolbar"/>
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:theme="@style/ToolbarColoredBackArrow">
 
             <TextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
                 android:layout_gravity="center"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:singleLine="true"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"/>
-            </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main"/>
-
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:fab_addButtonSize="normal"
-        app:fab_expandDirection="up"
-        fab:fab_labelStyle="@style/menu_labels_style"
-        fab:fab_addButtonColorNormal="@color/colorAccent"
-        app:fab_addButtonColorPressed="@color/colorAccentDark"
-        android:layout_margin="@dimen/fab_margin">
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/buildParcelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/colorAccent"
-            fab:fab_colorPressed="#FFC03E41"
-            fab:fab_plusIconColor="@android:color/white"
-            fab:fab_title="@string/create_parcel"
-            fab:fab_icon="@mipmap/ic_add_white_18dp"
-            fab:fab_size="mini"/>
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </android.support.design.widget.CoordinatorLayout>

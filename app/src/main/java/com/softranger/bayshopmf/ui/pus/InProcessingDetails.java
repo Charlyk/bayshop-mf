@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,23 +32,17 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
-import com.softranger.bayshopmf.model.Address;
+import com.softranger.bayshopmf.model.PUSParcel;
 import com.softranger.bayshopmf.model.PUSParcelDetailed;
 import com.softranger.bayshopmf.model.Photo;
-import com.softranger.bayshopmf.model.Product;
-import com.softranger.bayshopmf.model.ShippingMethod;
-import com.softranger.bayshopmf.model.packages.PUSParcel;
-import com.softranger.bayshopmf.model.packages.Received;
-import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
-import com.softranger.bayshopmf.util.ParentFragment;
+import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentFragment;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -70,10 +65,12 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     private MainActivity mActivity;
     private RecyclerView mRecyclerView;
-    private com.softranger.bayshopmf.model.PUSParcel mPackage;
+    private PUSParcel mPackage;
     private PUSParcelDetailed mPUSParcelDetailed;
     private AlertDialog mAlertDialog;
     private InProcessingDetailsAdapter mAdapter;
+    private CustomTabsIntent mTabsIntent;
+
 
     public InProcessingDetails() {
         // Required empty public constructor
@@ -93,17 +90,27 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_in_processing_details, container, false);
         mActivity = (MainActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        intentFilter.addAction(Constants.ACTION_CHANGE_ADDRESS);
-//        mActivity.registerReceiver(mTitleReceiver, intentFilter);
+        IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mPackage = getArguments().getParcelable(PRODUCT_ARG);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inProcessingDetailsList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ApiClient.getInstance().getRequest(Constants.Api.urlViewParcelDetails(String
                 .valueOf(mPackage.getId())), mHandler);
         mActivity.toggleLoadingProgress(true);
+
+        CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
+        tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorPrimary));
+        mTabsIntent = tabsBuilder.build();
         return view;
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mAdapter.notifyItemChanged(0);
+        }
+    };
 
     @Override
     public void onImageClick(ArrayList<Photo> images, int position) {
@@ -116,6 +123,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
         mPUSParcelDetailed = new ObjectMapper().readValue(response.getJSONObject("data").toString(), PUSParcelDetailed.class);
+        mPUSParcelDetailed.setRealWeight(mPackage.getRealWeight());
 
         mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, InProcessingDetails.this);
         if (mPUSParcelDetailed.getParcelStatus() == com.softranger.bayshopmf.model.PUSParcel.PUSStatus.in_the_way) {
@@ -128,6 +136,16 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(mPackage.getParcelStatus().statusName());
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.parcel_details;
     }
 
 
@@ -145,8 +163,10 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         }
     }
 
-    String mCurrentPhotoPath;
-
+    /**
+     * Crete a *.jpg file from taken picture
+     * @throws IOException if file was not created
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
@@ -160,12 +180,12 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
         Bitmap mphoto = BitmapFactory.decodeFile(image.getAbsolutePath());
         Log.d(this.getClass().getSimpleName(), "Take picture done");
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
 
+    /**
+     * Start camera to take a picture for feedback
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -185,12 +205,6 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
                 startActivityForResult(takePictureIntent, TAKE_PICTURE_CODE);
             }
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        mActivity.unregisterReceiver(mTitleReceiver);
     }
 
     @Override
@@ -308,12 +322,14 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     @Override
     public void onStartTrackingClick(PUSParcelDetailed item, int position) {
-
+        if (item.getTrackingUrl() != null) {
+            mTabsIntent.launchUrl(mActivity, Uri.parse(item.getTrackingUrl()));
+        }
     }
 
     @Override
     public void onLeaveFeedbackClick(PUSParcelDetailed item, int position) {
-        // TODO: 8/10/16 open leave feedback screen
+        mActivity.addFragment(LeaveFeedbackFragment.newInstance(item), true);
     }
 
     @Override

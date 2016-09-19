@@ -52,7 +52,6 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     private static final String SHOW_SELECT_ARG = "show select button argument";
     private ParentActivity mActivity;
     private SecondStepAdapter mAdapter;
-    private RecyclerView mRecyclerView;
     private InForming mInForming;
     private ArrayList<Address> mAddresses;
     private static boolean isPost;
@@ -116,15 +115,13 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
         View view = inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
         mActivity = (ParentActivity) getActivity();
 
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        intentFilter.addAction(EditAddressFragment.ACTION_REFRESH_ADDRESS);
+        IntentFilter intentFilter = new IntentFilter(EditAddressFragment.ACTION_REFRESH_ADDRESS);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
         ColorGroupSectionTitleIndicator indicator = (ColorGroupSectionTitleIndicator)
                 view.findViewById(R.id.buildSecondStepFastScrollerSectionIndicator);
 
-        mActivity.setToolbarTitle(getString(R.string.addresses_list), true);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.buildSecondStepList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.buildSecondStepList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAddresses = new ArrayList<>();
         mAdapter = new SecondStepAdapter(mAddresses, mButtonType);
         mAdapter.setOnAddressClickListener(this);
@@ -133,16 +130,12 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
             mInForming = getArguments().getParcelable(IN_FORMING_ARG);
         }
 
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
         VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) view.findViewById(R.id.buildSecondStepFastScroller);
-        fastScroller.setRecyclerView(mRecyclerView);
-        mRecyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
+        fastScroller.setRecyclerView(recyclerView);
+        recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
         fastScroller.setSectionIndicator(indicator);
-        if (mInForming != null) {
-            isPost = true;
-        } else {
-            isPost = false;
-        }
+        isPost = mInForming != null;
 
         getAddressesList(isPost);
         return view;
@@ -164,9 +157,6 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.addresses_list), true);
-                    break;
                 case EditAddressFragment.ACTION_REFRESH_ADDRESS:
                     getAddressesList(isPost);
                     break;
@@ -310,5 +300,15 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     @Override
     public void finallyMethod() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.addresses_list);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.addresses_list;
     }
 }

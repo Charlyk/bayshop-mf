@@ -42,9 +42,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            tools:text="10kg"
+            android:id="@+id/pusItemWeightLabel"
+            android:layout_below="@+id/textView47"
+            android:layout_alignLeft="@+id/textView47"
+            android:layout_alignStart="@+id/textView47"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             tools:text="12.10.16 (3 days ago)"
             android:textColor="@android:color/black"
             android:id="@+id/pusItemDateLabel"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_toLeftOf="@id/pusItemWeightLabel"
+            android:layout_toStartOf="@id/pusItemWeightLabel"
             android:layout_below="@+id/textView45"
             android:layout_alignLeft="@+id/textView45"
             android:layout_alignStart="@+id/textView45"/>
@@ -56,16 +70,6 @@
             android:id="@+id/textView47"
             android:layout_alignTop="@+id/textView45"
             android:layout_centerHorizontal="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            tools:text="10kg"
-            android:id="@+id/pusItemWeightLabel"
-            android:layout_below="@+id/textView47"
-            android:layout_alignLeft="@+id/textView47"
-            android:layout_alignStart="@+id/textView47"/>
 
         <TextView
             android:layout_width="wrap_content"

@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.ui.contact;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +15,13 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.SpinnerAdapter;
 import com.softranger.bayshopmf.model.MailCategory;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.SpinnerObj;
 
 import java.util.ArrayList;
 
-public class NewMessageActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener,
+public class NewMessageActivity extends ParentActivity implements MenuItem.OnMenuItemClickListener,
         SpinnerAdapter.OnCountryClickListener {
 
     private static final int UPLOAD_RESULT_CODE = 13;
@@ -91,5 +94,30 @@ public class NewMessageActivity extends AppCompatActivity implements MenuItem.On
     @Override
     public <T extends SpinnerObj> void onCountryClick(T country, int position) {
         mCategoryName.setText(country.getName());
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+
+    }
+
+    @Override
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
+
+    }
+
+    @Override
+    public void toggleLoadingProgress(boolean show) {
+
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment) {
+
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
     }
 }

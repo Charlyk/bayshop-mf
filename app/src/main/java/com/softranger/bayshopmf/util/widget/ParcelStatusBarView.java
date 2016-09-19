@@ -78,7 +78,7 @@ public class ParcelStatusBarView extends RelativeLayout {
 //        mColors.put(6, BarColor.red); // held by user
         mColors.put(6, BarColor.green); // sent
         mColors.put(7, BarColor.red); // held by customs
-        mColors.put(8, BarColor.green); // local depot
+        mColors.put(8, BarColor.yellow); // local depot
         mColors.put(9, BarColor.green); // in the way;
 
         mInterpolator = new AccelerateDecelerateInterpolator();
@@ -178,6 +178,10 @@ public class ParcelStatusBarView extends RelativeLayout {
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.green_status_bg));
                 mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_green_bg));
                 break;
+            case yellow:
+                mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.yellow_status_bg));
+                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_yellow_bg));
+                break;
         }
 
         // compute the width which we should get at the end
@@ -207,8 +211,9 @@ public class ParcelStatusBarView extends RelativeLayout {
         // add all created animators to a set and play them together
         AnimatorSet set = new AnimatorSet();
         set.setDuration(300);
-        set.setInterpolator(new AccelerateDecelerateInterpolator());
-        set.playTogether(alphaAnimator, mIndicatorAnimation, mTextAnimation);
+        set.setInterpolator(mInterpolator);
+        set.play(mIndicatorAnimation);
+        set.playTogether(mTextAnimation, alphaAnimator);
         set.start();
 
         // set stetus title
@@ -300,7 +305,7 @@ public class ParcelStatusBarView extends RelativeLayout {
      * Used to set status indicator and text background color
      */
     public enum BarColor {
-        green, red
+        green, red, yellow
     }
 
     public interface OnStatusBarReadyListener {

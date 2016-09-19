@@ -128,7 +128,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 processingHolder.mCreatedDateTitle.setText(mContext.getString(R.string.created_on) + " ");
             }
 
-            // check if the item is an instance of either InProcessing or packed object
+            // check if the item is an instance of either  or packed object
             // if true we need to show the progress bar and percentage text which shows
             // how much time it needs to finish packing, other wise hide the progressbar and
             // percentage text

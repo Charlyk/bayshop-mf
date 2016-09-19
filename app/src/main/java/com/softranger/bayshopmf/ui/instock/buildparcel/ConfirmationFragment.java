@@ -24,6 +24,7 @@ import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
 import com.softranger.bayshopmf.ui.general.ResultActivity;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -73,9 +74,6 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_confirmation, container, false);
         mActivity = (MainActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        mActivity.registerReceiver(mTitleReceiver, intentFilter);
-        mActivity.setToolbarTitle(getString(R.string.confirm), true);
         bindViews(mRootView);
         mInForming = getArguments().getParcelable(IN_FORMING_ARG);
         mActivity.toggleLoadingProgress(true);
@@ -128,29 +126,12 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
         mAgreeTerms = (CheckBox) view.findViewById(R.id.confirmAgreeTermsCheckBox);
     }
 
-    private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.confirm), true);
-                    break;
-            }
-        }
-    };
-
     private void setDataInPosition(InForming inForming) {
         mGoodsPrice.setText(String.valueOf(inForming.getCurrency() + inForming.getGoodsPrice()));
         mDeliveryPrice.setText(String.valueOf(inForming.getCurrency() + inForming.getShippingPrice()));
         mInsurancePrice.setText(String.valueOf(inForming.getCurrency() + inForming.getInsurancePrice()));
         mDeclarationPrice.setText(String.valueOf(inForming.getCurrency() + inForming.getDeclarationPrice()));
         mTotalPrice.setText(String.valueOf(inForming.getCurrency() + inForming.getTotalPrice()));
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mActivity.unregisterReceiver(mTitleReceiver);
     }
 
     private AlertDialog mAlertDialog;
@@ -247,9 +228,7 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
             for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
                 fm.popBackStack();
             }
-            mActivity.setToolbarTitle(getString(R.string.warehouse_usa), true);
-            mActivity.removeActionButtons();
-            mActivity.mActionMenu.setVisibility(View.VISIBLE);
+
             mActivity.setToolbarToInitialState();
             Application.counters.put(Constants.ParcelStatus.LIVE, Application.counters.get(Constants.ParcelStatus.LIVE) - 1);
             mActivity.updateParcelCounters(Constants.ParcelStatus.LIVE);
@@ -279,5 +258,15 @@ public class ConfirmationFragment extends ParentFragment implements View.OnClick
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
         isButtonClicked = false;
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.confirm);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.confirmation;
     }
 }

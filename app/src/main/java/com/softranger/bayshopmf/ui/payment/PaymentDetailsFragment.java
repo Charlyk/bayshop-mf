@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.History;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +22,7 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PaymentDetailsFragment extends Fragment {
+public class PaymentDetailsFragment extends ParentFragment {
 
     private static final String HISTORY_ARG = "history argument";
 
@@ -82,4 +86,18 @@ public class PaymentDetailsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return null;
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return null;
+    }
 }

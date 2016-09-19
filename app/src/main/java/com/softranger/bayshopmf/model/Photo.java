@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.Imageble;
 
 /**
@@ -44,7 +45,7 @@ public class Photo implements Parcelable, Imageble {
     }
 
     public void setSmallImage(String smallImage) {
-        mSmallImage = "http://md.bay-dev.tk" + smallImage;
+        mSmallImage = Constants.Api.BASE_URL + smallImage;
     }
 
     public String getBigImage() {
@@ -52,7 +53,7 @@ public class Photo implements Parcelable, Imageble {
     }
 
     public void setBigImage(String bigImage) {
-        mBigImage = "http://md.bay-dev.tk" + bigImage;
+        mBigImage = Constants.Api.BASE_URL + bigImage;
     }
 
     public Bitmap getSmallBitmap() {

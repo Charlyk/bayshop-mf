@@ -5,7 +5,9 @@ import android.os.Parcelable;
 import android.support.annotation.StringRes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 /**
  * Created by Eduard Albu on 9/14/16, 09, 2016
@@ -15,12 +17,12 @@ import com.softranger.bayshopmf.R;
 public class PUSParcel implements Parcelable {
     @JsonProperty("id") String mId;
     @JsonProperty("codeNumber") String mCodeNumber;
-    @JsonProperty("realWeight") String mRealWeight;
     @JsonProperty("fieldTime") String fieldTime;
     @JsonProperty("totalPrice") String mPrice;
     @JsonProperty("currency") String mCurrency;
     @JsonProperty("generalDescription") String mGeneralDescription;
     PUSStatus mParcelStatus;
+    String mRealWeight;
     boolean mWasAnimated;
     boolean mIsSelected;
 
@@ -49,6 +51,11 @@ public class PUSParcel implements Parcelable {
             return new PUSParcel[size];
         }
     };
+
+    @JsonSetter("realWeight")
+    public void setRealWeight(String realWeight) {
+        mRealWeight = realWeight;
+    }
 
     public String getId() {
         return mId;

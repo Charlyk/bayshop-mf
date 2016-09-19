@@ -53,6 +53,12 @@ public class AddAwaitingFragment extends ParentFragment implements View.OnClickL
         // Required empty public constructor
     }
 
+    public static AddAwaitingFragment newInstance() {
+        Bundle args = new Bundle();
+        AddAwaitingFragment fragment = new AddAwaitingFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -195,6 +201,16 @@ public class AddAwaitingFragment extends ParentFragment implements View.OnClickL
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.add_awaiting_package);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.add_awaiting_parcel;
     }
 
     @Override

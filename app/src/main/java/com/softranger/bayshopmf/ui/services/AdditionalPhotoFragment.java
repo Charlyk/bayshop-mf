@@ -142,4 +142,14 @@ public class AdditionalPhotoFragment extends ParentFragment implements View.OnCl
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
     }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.additional_photo);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.additional_photos;
+    }
 }

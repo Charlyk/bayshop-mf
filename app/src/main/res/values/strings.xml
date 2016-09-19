@@ -269,7 +269,7 @@
     <string name="parcel_in_place">The parcel will be packed soon, you\’ll be notified, when it\'s done.</string>
     <string name="place_holder">---</string>
     <string name="change_address">Change address</string>
-    <string name="days_ago">day(s) ago</string>
+    <string name="days_ago">day ago</string>
     <string name="attach_file">Attach file</string>
     <string name="close_ticket">Close current ticket</string>
     <string name="write_a_message">Write a message…</string>
@@ -321,4 +321,16 @@
     <string name="parcel_was_added">Your parcel is added with code</string>
     <string name="thank_you_awaiting">Thanks for adding an awaiting parcel, we will notify you when it will arrive to our warehouse.</string>
     <string name="processing">Processing</string>
+    <string name="enter_your_comment">Enter your comment...</string>
+    <string name="send_comment">Send comment</string>
+    <string name="hated_it">Hated it</string>
+    <string name="disliked_it">Disliked it</string>
+    <string name="it_is_ok">It\'s OK</string>
+    <string name="liked_it">Liked it</string>
+    <string name="loved_it">Loved it</string>
+    <string name="upload_photo">Upload photo</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="parcel_details">Parcel details</string>
+    <string name="storage">Storage</string>
+    <string name="services">Services</string>
 </resources>

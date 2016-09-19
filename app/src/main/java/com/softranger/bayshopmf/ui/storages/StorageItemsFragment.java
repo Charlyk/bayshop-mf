@@ -23,30 +23,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
-import com.softranger.bayshopmf.model.packages.CustomsHeld;
 import com.softranger.bayshopmf.model.packages.InForming;
-import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
-import com.softranger.bayshopmf.model.packages.LocalDepot;
-import com.softranger.bayshopmf.model.packages.PUSParcel;
-import com.softranger.bayshopmf.model.packages.Packed;
-import com.softranger.bayshopmf.model.packages.Prohibited;
-import com.softranger.bayshopmf.model.packages.Received;
-import com.softranger.bayshopmf.model.packages.Sent;
-import com.softranger.bayshopmf.model.packages.ToDelivery;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
-import com.softranger.bayshopmf.ui.pus.InProcessingDetails;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,13 +48,17 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import okhttp3.Response;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItemClickListener,
+public class StorageItemsFragment extends ParentFragment implements ItemAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     public static final String ACTION_ITEM_CHANGED = "item was changed from a top fragment";
@@ -74,9 +72,11 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     private TextView mNoValueText;
     private ArrayList<InForming> mInFormingItems;
     private SwipeRefreshLayout mRefreshLayout;
-    private Button mOrderDeliveryBtn;
     private AlertDialog mAlertDialog;
     private boolean isDeleteClicked;
+    private Unbinder mUnbinder;
+
+    @BindView(R.id.buildParcelButton) FloatingActionButton mActionButton;
 
     public StorageItemsFragment() {
         // Required empty public constructor
@@ -97,13 +97,14 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_storage, container, false);
         mActivity = (MainActivity) getActivity();
+        mUnbinder = ButterKnife.bind(this, view);
 
         // create an intent filter to get broadcast messages to update the list
         IntentFilter intentFilter = new IntentFilter(ACTION_ITEM_CHANGED);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
-        mOrderDeliveryBtn = (Button) view.findViewById(R.id.storageItemsOrderDeliveryBtn);
-        mOrderDeliveryBtn.setOnClickListener(this);
+        Button orderDeliveryBtn = (Button) view.findViewById(R.id.storageItemsOrderDeliveryBtn);
+        orderDeliveryBtn.setOnClickListener(this);
 
         // bind the recycler view which will hold all lists in this fragment
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.storage_itemsList);
@@ -138,6 +139,11 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
             ApiClient.getInstance().getRequest(url, mHandler);
             mActivity.toggleLoadingProgress(true);
         }
+
+        if (MainActivity.selectedFragment != ParentActivity.SelectedFragment.awaiting_arrival) {
+            mActionButton.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
@@ -148,6 +154,11 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
      */
     private void showNoValueText(boolean show) {
         mNoValueText.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @OnClick(R.id.buildParcelButton)
+    void addAwaitingParcel() {
+        mActivity.addFragment(AddAwaitingFragment.newInstance(), false);
     }
 
 
@@ -184,7 +195,7 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         try {
             mObjects.clear();
             mInFormingItems.clear();
-            if (MainActivity.selectedFragment == MainActivity.SelectedFragment.IN_STOCK) {
+            if (MainActivity.selectedFragment == MainActivity.SelectedFragment.in_stock) {
                 mInFormingItems = new ArrayList<>();
                 mObjects.add(new Object());
                 JSONObject jsonData = response.getJSONObject("data");
@@ -214,12 +225,10 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                             .build();
                     mInFormingItems.add(inForming);
                 }
-                if (mInFormingItems.size() > 0)
-                    mActivity.addActionButtons(mInFormingItems);
             } else {
                 JSONArray arrayData = response.getJSONArray("data");
                 switch (MainActivity.selectedFragment) {
-                    case AWAITING_ARRIVAL: {
+                    case awaiting_arrival: {
                         for (int i = 0; i < arrayData.length(); i++) {
                             JSONObject jsonItem = arrayData.getJSONObject(i);
                             Product inStockItem = new Product.Builder()
@@ -232,82 +241,6 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
                             mObjects.add(inStockItem);
                         }
                         break;
-                    }
-                    case IN_FORMING: {
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject o = arrayData.getJSONObject(i);
-                            InForming inForming = new InForming.Builder()
-                                    .id(o.getInt("id"))
-                                    .codeNumber(o.optString("codeNumber", ""))
-                                    .createdDate(o.optString("created", ""))
-                                    .weight(o.getInt("realWeight"))
-                                    .name(o.optString("name", ""))
-                                    .deposit(mDeposit)
-                                    .build();
-                            mObjects.add(inForming);
-                        }
-                        int count = arrayData.length();
-                        Application.counters.put(Constants.ParcelStatus.LIVE, count);
-                        mActivity.updateParcelCounters(Constants.ParcelStatus.LIVE);
-                        if (mObjects.size() == 0) mActivity.removeActionButtons();
-                        break;
-                    }
-                    case LOCAL_DEPO:
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject object = arrayData.getJSONObject(i);
-                            LocalDepot localDepot = new LocalDepot();
-                            mObjects.add(buildGeneralPackage(object, localDepot));
-                        }
-                        break;
-                    case TAKEN_TO_DELIVERY:
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject object = arrayData.getJSONObject(i);
-                            ToDelivery toDelivery = new ToDelivery();
-                            mObjects.add(buildGeneralPackage(object, toDelivery));
-                        }
-                        break;
-                    case CUSTOMS_HELD:
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject object = arrayData.getJSONObject(i);
-                            CustomsHeld customsHeld = new CustomsHeld();
-                            mObjects.add(buildGeneralPackage(object, customsHeld));
-                        }
-                        break;
-                    case RECEIVED:
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject object = arrayData.getJSONObject(i);
-                            Received received = new Received();
-                            mObjects.add(buildGeneralPackage(object, received));
-                        }
-                        break;
-                    case SENT:
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject object = arrayData.getJSONObject(i);
-                            Sent sent = new Sent();
-                            mObjects.add(buildGeneralPackage(object, sent));
-                        }
-                        break;
-                    case AWAITING_SENDING:
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject object = arrayData.getJSONObject(i);
-                            Packed packed = new Packed();
-                            mObjects.add(buildGeneralPackage(object, packed));
-                        }
-                        break;
-                    case IN_PROCESSING: {
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject object = arrayData.getJSONObject(i);
-                            InProcessing inProcessing = new InProcessing();
-                            mObjects.add(buildGeneralPackage(object, inProcessing));
-                        }
-                        break;
-                    }
-                    case HELD_BY_PROHIBITION: {
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject object = arrayData.getJSONObject(i);
-                            Prohibited prohibited = new Prohibited();
-                            mObjects.add(buildGeneralPackage(object, prohibited));
-                        }
                     }
                 }
             }
@@ -329,28 +262,10 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
     }
 
     /**
-     * Build a general pus parcel item
-     * @param jsonItem parcel in json format
-     * @param parcel you want to build (Must extend {@link PUSParcel})
-     * @throws Exception usually JSONException
-     */
-    private <T extends PUSParcel> T buildGeneralPackage(JSONObject jsonItem, T parcel) throws Exception {
-        parcel = new T.Builder<>(parcel)
-                .created(jsonItem.optString("fieldTime", ""))
-                .percentage(jsonItem.optInt("percent", 0))
-                .id(jsonItem.getInt("id"))
-                .codeNumber(jsonItem.optString("codeNumber", ""))
-                .name(jsonItem.optString("name", ""))
-                .realWeight(jsonItem.getInt("realWeight"))
-                .deposit(mDeposit)
-                .build();
-        return parcel;
-    }
-
-    /**
      * Called for {@link InStockItem} item click
+     *
      * @param inStockItem which was clicked within the adapter
-     * @param position in the list for clicked item
+     * @param position    in the list for clicked item
      */
     @Override
     public void onRowClick(final InStockItem inStockItem, int position) {
@@ -359,8 +274,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
     /**
      * Called if an item without declaration was selected
+     *
      * @param inStockItem which was selected
-     * @param position in the list for selected item
+     * @param position    in the list for selected item
      */
     @Override
     public void onNoDeclarationItemSelected(final InStockItem inStockItem, int position) {
@@ -370,9 +286,10 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
     /**
      * Called if InStock item icon was clicked
+     *
      * @param inStockItem which icon was clicked
-     * @param isSelected shows if item was either selected or deselected
-     * @param position for the item in the list
+     * @param isSelected  shows if item was either selected or deselected
+     * @param position    for the item in the list
      */
     @Override
     public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
@@ -382,7 +299,8 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
     /**
      * Called if an awaiting arrival item was clicked
-     * @param product which was clicked
+     *
+     * @param product  which was clicked
      * @param position within the adapter for clicked item
      */
     @Override
@@ -397,8 +315,9 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
 
     /**
      * Called when an {@link InForming} item is clicked
+     *
      * @param inForming which was clicked
-     * @param position within the adapter
+     * @param position  within the adapter
      */
     @Override
     public void onInFormingClick(InForming inForming, int position) {
@@ -481,56 +400,28 @@ public class StorageItemsFragment extends Fragment implements ItemAdapter.OnItem
         }
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            if (!isDeleteClicked) {
-                                buildItemsList(response);
-                            } else {
-                                isDeleteClicked = false;
-                            }
-                        } else {
-                            Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                    mActivity.toggleLoadingProgress(false);
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = mActivity.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+        if (!isDeleteClicked) {
+            buildItemsList(response);
+        } else {
+            isDeleteClicked = false;
         }
-    };
+    }
+
+    @Override
+    public void onHandleMessageEnd() {
+        mActivity.toggleLoadingProgress(false);
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(MainActivity.selectedFragment.fragmentName());
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.selectedFragment;
+    }
 }

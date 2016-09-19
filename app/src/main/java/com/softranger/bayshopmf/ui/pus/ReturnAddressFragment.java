@@ -151,4 +151,14 @@ public class ReturnAddressFragment extends ParentFragment implements View.OnFocu
     public void onServerResponse(JSONObject response) throws Exception {
 
     }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.return_to_seller_s_address);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.return_to_seller;
+    }
 }

@@ -13,6 +13,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PUSParcelsAdapter;
 import com.softranger.bayshopmf.model.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 
 public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdapter.OnPusItemClickListener {
 
@@ -88,6 +88,16 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.parcels);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.parcels;
     }
 
     @Override

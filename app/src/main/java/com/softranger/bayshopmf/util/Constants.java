@@ -15,6 +15,7 @@ public class Constants {
 
     public static final String USA = "usa";
     public static final String UK = "uk";
+    public static final String PARCELS = "PARCELS";
 
     public static Character[] ALPHABET = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
@@ -49,6 +50,7 @@ public class Constants {
 
     public static class Api {
         private static final String URL = "http://md.bay-dev.tk/api/";
+        public static final String BASE_URL = "http://md.bay-dev.tk";
         private static final String STORAGE = "storage/";
         private static final String MF_LIST = "mf-list/";
         private static final String IN_STOCK = "in-stock/";

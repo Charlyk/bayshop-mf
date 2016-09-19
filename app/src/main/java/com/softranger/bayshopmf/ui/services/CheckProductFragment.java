@@ -141,4 +141,14 @@ public class CheckProductFragment extends ParentFragment implements View.OnClick
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
     }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.check_product);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.check_product;
+    }
 }

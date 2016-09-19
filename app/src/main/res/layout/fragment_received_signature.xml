@@ -3,6 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:clickable="true"
+             tools:background="@android:color/holo_green_dark"
              tools:context="com.softranger.bayshopmf.ui.pus.ReceivedSignature">
 
     <com.google.android.gms.maps.MapView
@@ -80,7 +81,7 @@
                 android:id="@+id/receivedSignatureWeightLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.5 kg"
+                tools:text="2.5 kg"
                 android:textColor="@android:color/black"/>
         </LinearLayout>
     </LinearLayout>
@@ -93,6 +94,18 @@
         android:clickable="true"
         android:orientation="vertical"
         android:paddingBottom="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="35dp"
+            android:minHeight="35dp"
+            android:id="@+id/receivedSignatureClientSignature"
+            tools:src="@mipmap/ic_pay_the_debt_35dp"
+            android:layout_margin="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
         <TextView
             android:id="@+id/receivedSignatureClientNameLagel"
@@ -225,5 +238,18 @@
             android:layout_toRightOf="@id/secondStepPostalCodeTitle"
             android:textColor="@android:color/black"
             tools:text="Moldova"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:id="@+id/clientSignatureDownloadProgress"
+            android:layout_alignBottom="@+id/receivedSignatureClientSignature"
+            android:layout_alignRight="@+id/receivedSignatureClientSignature"
+            android:layout_alignEnd="@+id/receivedSignatureClientSignature"
+            android:layout_alignTop="@id/receivedSignatureClientSignature"
+            android:layout_alignLeft="@id/receivedSignatureClientSignature"
+            android:layout_alignStart="@id/receivedSignatureClientSignature"/>
     </RelativeLayout>
 </FrameLayout>

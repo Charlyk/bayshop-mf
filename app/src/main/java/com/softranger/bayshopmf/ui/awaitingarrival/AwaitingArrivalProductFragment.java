@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,14 +21,13 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
-import com.softranger.bayshopmf.ui.general.WebViewFragment;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
 
@@ -80,7 +78,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
-        intentFilter.addAction(MainActivity.ACTION_UPDATE_TITLE);
         intentFilter.addAction(ACTION_UPDATE);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
         mProduct = getArguments().getParcelable(PRODUCT_ARG);
@@ -132,9 +129,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
                     Intent refresh = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
                     mActivity.sendBroadcast(refresh);
                     break;
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.awaiting_arrival), true);
-                    break;
             }
         }
     };
@@ -164,7 +158,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
             e.printStackTrace();
         }
         mProductDate.setText(output.format(date));
-        mProductPrice.setText(product.getCurrency() + product.getProductPrice());
+        String productPrice = product.getCurrency() + product.getProductPrice();
+        mProductPrice.setText(productPrice);
 
         mCheckProduct.setSelected(product.isCheckInProgress());
         if (mCheckProduct.isSelected()) {
@@ -280,5 +275,15 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     public void onHandleMessageEnd() {
         isDeleteClicked = false;
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.awaiting_arrival);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.awaiting_arrival;
     }
 }

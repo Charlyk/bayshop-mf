@@ -22,6 +22,7 @@ import com.softranger.bayshopmf.adapter.ShippingMethodAdapter;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.ShippingMethod;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -40,7 +41,7 @@ import okhttp3.RequestBody;
 public class ShippingMethodFragment extends ParentFragment implements ShippingMethodAdapter.OnShippingClickListener {
 
     private static final String IN_FORMING_ARG = "in forming object arg";
-    private MainActivity mActivity;
+    private ParentActivity mActivity;
     private ShippingMethodAdapter mAdapter;
     private InForming mInForming;
     private ArrayList<ShippingMethod> mMethods;
@@ -77,10 +78,7 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shipping_method, container, false);
-        mActivity = (MainActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        mActivity.registerReceiver(mTitleReceiver, intentFilter);
-        mActivity.setToolbarTitle(getString(R.string.shipping_method), true);
+        mActivity = (ParentActivity) getActivity();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.buildShippingMethodList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mMethods = new ArrayList<>();
@@ -111,24 +109,6 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
         mActivity.addFragment(InsuranceFragment.newInstance(mInForming), true);
     }
 
-    private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.shipping_method), true);
-                    break;
-            }
-        }
-    };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mActivity.unregisterReceiver(mTitleReceiver);
-    }
-
-
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
         mMethods.clear();
@@ -153,5 +133,15 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.shipping_method);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.shipping_method;
     }
 }

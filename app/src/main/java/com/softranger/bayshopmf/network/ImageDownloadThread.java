@@ -49,21 +49,7 @@ public class ImageDownloadThread<T extends Imageble> extends Thread {
             try {
                 String strUrl = object.getImageUrl();
                 URL url = new URL(strUrl);
-                File image = new File(mContext.getCacheDir(), urlToFileName(strUrl));
-                if (!image.exists()) {
-                    image.createNewFile();
-                    BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
-                    BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(image));
-                    byte[] buffer = new byte[1024];
-                    int byteCount;
-                    while ((byteCount = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, byteCount);
-                    }
-                    inputStream.close();
-                    outputStream.flush();
-                    outputStream.close();
-                }
-                Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
+                Bitmap bitmap = downloadImage(url);
                 object.setImage(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -78,6 +64,24 @@ public class ImageDownloadThread<T extends Imageble> extends Thread {
             }
         }
         mHandler.sendEmptyMessage(FINISHED);
+    }
+
+    private Bitmap downloadImage(URL url) throws Exception {
+        File image = new File(mContext.getCacheDir(), urlToFileName(url.toString()));
+        if (!image.exists()) {
+            image.createNewFile();
+            BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
+            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(image));
+            byte[] buffer = new byte[1024];
+            int byteCount;
+            while ((byteCount = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, byteCount);
+            }
+            inputStream.close();
+            outputStream.flush();
+            outputStream.close();
+        }
+        return BitmapFactory.decodeFile(image.getAbsolutePath());
     }
 
     private String urlToFileName(String url) {

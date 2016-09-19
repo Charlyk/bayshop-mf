@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -66,9 +68,6 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
         RelativeLayout pushNotify = (RelativeLayout) view.findViewById(R.id.notificationsPushNotifButton);
         RelativeLayout emails = (RelativeLayout) view.findViewById(R.id.notificationsEmailsButton);
 
-//        mSaveButton = (Button) view.findViewById(R.id.notificationsSaveButton);
-//        mSaveButton.setOnClickListener(this);
-
         internalMail.setOnClickListener(this);
         sms.setOnClickListener(this);
         pushNotify.setOnClickListener(this);
@@ -94,8 +93,17 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
 
     @Override
     public void onHandleMessageEnd() {
-//        mProgressBar.setVisibility(View.GONE);
-//        mSaveButton.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.notifications);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.notifications;
     }
 
     @Override
@@ -121,14 +129,7 @@ public class NotificationsFragment extends ParentFragment implements View.OnClic
                 .add("obtainGcm", String.valueOf(mPushNotifications.isChecked() ? 1 : 0))
                 .add("obtainMails", String.valueOf(mEmails.isChecked() ? 1 : 0))
                 .build();
-//        mSaveButton.setVisibility(View.GONE);
-//        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         ApiClient.getInstance().postRequest(body, Constants.Api.urlMailOptions(), mHandler);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mActivity.setToolbarTitle(mActivity.getString(R.string.settings), true);
     }
 }

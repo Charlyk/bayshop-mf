@@ -14,11 +14,14 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.util.ParentFragment;
+
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WebViewFragment extends Fragment {
+public class WebViewFragment extends ParentFragment {
 
     private static final String URL_ARG = "url";
 
@@ -56,6 +59,21 @@ public class WebViewFragment extends Fragment {
         }
         mWebView.loadUrl(productUrl);
         return view;
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return null;
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return null;
     }
 
 

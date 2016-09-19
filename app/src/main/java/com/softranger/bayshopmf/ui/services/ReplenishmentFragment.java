@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.general.ResultActivity;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -32,7 +33,7 @@ public class ReplenishmentFragment extends ParentFragment implements View.OnClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_replenishment, container, false);
         mActivity = (ParentActivity) getActivity();
-        mActivity.setToolbarTitle(getString(R.string.account_replenishment), true);
+        mActivity.setToolbarTitle(getString(R.string.account_replenishment));
 
         Button replenishBtn = (Button) view.findViewById(R.id.replenishAccountBtn);
         replenishBtn.setOnClickListener(this);
@@ -42,6 +43,16 @@ public class ReplenishmentFragment extends ParentFragment implements View.OnClic
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
 
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return null;
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return null;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.ui.calculator;
 
+import android.app.Fragment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.CalculatorAdapter;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
 
@@ -27,7 +30,7 @@ import java.io.IOException;
 
 import okhttp3.Response;
 
-public class ShippingCalculatorActivity extends AppCompatActivity implements TextWatcher, View.OnClickListener {
+public class ShippingCalculatorActivity extends ParentActivity implements TextWatcher, View.OnClickListener {
 
     private EditText mWeightInput;
     private EditText mXInput;
@@ -174,4 +177,29 @@ public class ShippingCalculatorActivity extends AppCompatActivity implements Tex
             }
         }
     };
+
+    @Override
+    public void setToolbarTitle(String title) {
+
+    }
+
+    @Override
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
+
+    }
+
+    @Override
+    public void toggleLoadingProgress(boolean show) {
+
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment) {
+
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
+    }
 }

@@ -16,6 +16,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.HistoryAdapter;
 import com.softranger.bayshopmf.model.History;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -178,6 +179,16 @@ public class PaymentHistoryFragment extends ParentFragment implements RadioGroup
     public void onHandleMessageEnd() {
         mProgressBar.setVisibility(View.GONE);
         mRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return null;
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return null;
     }
 
     @Override

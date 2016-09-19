@@ -15,7 +15,11 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.PUSParcel;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,11 +35,16 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
     private OnPusItemClickListener mOnPusItemClickListener;
     private Context mContext;
     private SparseBooleanArray mAnimatedItems;
+    private static SimpleDateFormat serverFormat;
+    private static SimpleDateFormat friendlyFormat;
 
     public PUSParcelsAdapter(ArrayList<PUSParcel> pusParcels, Context context) {
         mPUSParcels = pusParcels;
         mContext = context;
         mAnimatedItems = new SparseBooleanArray();
+
+        serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
     }
 
     public void setOnPusItemClickListener(OnPusItemClickListener onPusItemClickListener) {
@@ -54,10 +63,39 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
 
         holder.mStatusBarView.setProgress(holder.mPUSParcel);
 
-        holder.mDateLabel.setText(holder.mPUSParcel.getFieldTime());
+        holder.mDateLabel.setText(getFormattedDate(holder.mPUSParcel.getFieldTime()));
+
         holder.mCodeLabel.setText(holder.mPUSParcel.getCodeNumber());
-        holder.mWeightLabel.setText(holder.mPUSParcel.getRealWeight());
+
+        // compute kilos from grams and set the result in weight label
+        double realWeight = Double.parseDouble(holder.mPUSParcel.getRealWeight());
+        double kg = realWeight / 1000;
+        holder.mWeightLabel.setText(kg + "kg.");
+
         holder.mPriceLabel.setText(holder.mPUSParcel.getCurrency() + holder.mPUSParcel.getPrice());
+    }
+
+    private String getFormattedDate(String createdDate) {
+        Date today  = new Date();
+        Date date = new Date();
+        String formattedDate = "";
+        try {
+            if (createdDate != null && !createdDate.equals(""))
+                date = serverFormat.parse(createdDate);
+            formattedDate = friendlyFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            long diff = today.getTime() - date.getTime();
+            long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+            if (days > 0) {
+                formattedDate = formattedDate + " (" + days + " " + mContext.getString(R.string.days_ago) + ")";
+            } else {
+                formattedDate = formattedDate + " (" + mContext.getString(R.string.today) + ")";
+            }
+        }
+        return formattedDate;
     }
 
     @Override

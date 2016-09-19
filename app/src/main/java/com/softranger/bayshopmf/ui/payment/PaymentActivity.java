@@ -15,10 +15,12 @@ import android.widget.Spinner;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PaymentSelectorAdapter;
 import com.softranger.bayshopmf.model.Currency;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import java.util.ArrayList;
 
-public class PaymentActivity extends AppCompatActivity implements
+public class PaymentActivity extends ParentActivity implements
         View.OnClickListener {
 
     private PaymentHistoryFragment mHistoryFragment;
@@ -81,7 +83,13 @@ public class PaymentActivity extends AppCompatActivity implements
         }
     }
 
-    public void addFragment(Fragment fragment, boolean showAnimation) {
+    @Override
+    public void setToolbarTitle(String title) {
+
+    }
+
+    @Override
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (showAnimation)
@@ -90,6 +98,11 @@ public class PaymentActivity extends AppCompatActivity implements
         transaction.add(R.id.paymentFragmentContainer, fragment);
         transaction.addToBackStack("DetailsFragment");
         transaction.commit();
+    }
+
+    @Override
+    public void toggleLoadingProgress(boolean show) {
+
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -103,5 +116,10 @@ public class PaymentActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         mSpinner.performClick();
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
     }
 }

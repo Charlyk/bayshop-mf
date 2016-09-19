@@ -26,6 +26,8 @@ import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.model.Language;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -146,7 +148,6 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mActivity.setToolbarTitle(mActivity.getString(R.string.settings), true);
         mActivity.hideKeyboard();
     }
 
@@ -219,7 +220,7 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
         Application.user.setLanguageName(languageName);
         Application.user.setCountryName(countryName);
         Application.user.setCountries(mCountries);
-        Application.user.setLanguages(mLanguages);
+//        Application.user.setLanguages(mLanguages);
         Application.user.setCountryCodes(mCountryCodes);
 
         // set up spinners
@@ -297,6 +298,16 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     @Override
     public void onHandleMessageEnd() {
         isSaveClicked = false;
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.user_data);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.user_data;
     }
 
     @Override

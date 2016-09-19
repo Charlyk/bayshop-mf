@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Constants;
 
@@ -85,5 +87,15 @@ public class ForogtPasswordFragment extends ParentFragment implements View.OnCli
     public void onHandleMessageEnd() {
         mProgressBar.setVisibility(View.GONE);
         mRestoreBtn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.forgot_password);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.forgot_password;
     }
 }

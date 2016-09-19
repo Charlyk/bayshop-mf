@@ -20,6 +20,7 @@ import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
@@ -157,6 +158,16 @@ public class RegisterFragment extends ParentFragment implements View.OnClickList
     public void finallyMethod() {
         mConfirmButton.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.register);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.register_user;
     }
 
     enum RequestStep {

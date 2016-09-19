@@ -13,11 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
+
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ForgotResultFragment extends Fragment {
+public class ForgotResultFragment extends ParentFragment {
 
     private View.OnClickListener mOnClickListener;
     private String mTopTitle;
@@ -63,5 +67,20 @@ public class ForgotResultFragment extends Fragment {
         description.setText(mDescription);
         imageView.setImageResource(mImageId);
         return view;
+    }
+
+    @Override
+    public void onServerResponse(JSONObject response) throws Exception {
+
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return null;
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return null;
     }
 }

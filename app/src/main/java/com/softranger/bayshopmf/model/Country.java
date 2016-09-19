@@ -3,14 +3,16 @@ package com.softranger.bayshopmf.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softranger.bayshopmf.util.SpinnerObj;
 
 /**
  * Created by macbook on 6/17/16.
  */
 public class Country implements Parcelable, SpinnerObj {
-    private int mId;
-    private String mName;
+    @JsonProperty("id") int mId;
+    @JsonProperty("title") String mName;
+    @JsonProperty("code") String mCode;
 
     private Country() {
 
@@ -19,6 +21,7 @@ public class Country implements Parcelable, SpinnerObj {
     protected Country(Parcel in) {
         mId = in.readInt();
         mName = in.readString();
+        mCode = in.readString();
     }
 
     public static final Creator<Country> CREATOR = new Creator<Country>() {
@@ -51,6 +54,9 @@ public class Country implements Parcelable, SpinnerObj {
         mName = name;
     }
 
+    public String getCode() {
+        return mCode;
+    }
 
     @Override
     public int describeContents() {
@@ -61,11 +67,13 @@ public class Country implements Parcelable, SpinnerObj {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mId);
         dest.writeString(mName);
+        dest.writeString(mCode);
     }
 
     public static class Builder {
         private int mId;
         private String mName;
+        private String mCode;
 
         public Builder id(int id) {
             mId = id;
@@ -77,10 +85,16 @@ public class Country implements Parcelable, SpinnerObj {
             return this;
         }
 
+        public Builder code(String code) {
+            mCode = code;
+            return this;
+        }
+
         public Country build() {
             Country country = new Country();
             country.mId = this.mId;
             country.mName = this.mName;
+            country.mCode = this.mCode;
             return country;
         }
     }

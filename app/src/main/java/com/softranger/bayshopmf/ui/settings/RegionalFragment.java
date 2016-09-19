@@ -17,6 +17,8 @@ import com.softranger.bayshopmf.adapter.SpinnerAdapter;
 import com.softranger.bayshopmf.model.Country;
 import com.softranger.bayshopmf.model.Language;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.SpinnerObj;
@@ -182,8 +184,12 @@ public class RegionalFragment extends ParentFragment implements View.OnClickList
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mActivity.setToolbarTitle(mActivity.getString(R.string.settings), true);
+    public String getFragmentTitle() {
+        return getString(R.string.regional);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.regional;
     }
 }

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
@@ -103,9 +105,18 @@ public class ChangePassFragment extends ParentFragment implements View.OnClickLi
     }
 
     @Override
+    public String getFragmentTitle() {
+        return getString(R.string.change_password);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.change_password;
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mActivity.setToolbarTitle(mActivity.getString(R.string.settings), true);
         mActivity.hideKeyboard();
     }
 

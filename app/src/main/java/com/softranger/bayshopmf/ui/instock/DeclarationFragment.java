@@ -3,7 +3,9 @@ package com.softranger.bayshopmf.ui.instock;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +44,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     private RecyclerView mRecyclerView;
     private InStockDetailed mInStockDetailed;
     private static boolean isSaveClicked;
+    private CustomTabsIntent mTabsIntent;
 
     public DeclarationFragment() {
         // Required empty public constructor
@@ -69,6 +72,9 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         mDeclarationAdapter.setOnActionButtonsClickListener(this);
         mRecyclerView.setAdapter(mDeclarationAdapter);
         mActivity.toggleLoadingProgress(true);
+        CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
+        tabsBuilder.setToolbarColor(mActivity.getResources().getColor(R.color.colorPrimary));
+        mTabsIntent = tabsBuilder.build();
         ApiClient.getInstance().getRequest(Constants.Api.urlMfDeclaration(String.valueOf(mInStockDetailed.getID())), mHandler);
         return view;
     }
@@ -113,7 +119,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
 
     @Override
     public void onOpenUrl(String url, int position) {
-        mActivity.addFragment(WebViewFragment.newInstance(url), true);
+        mTabsIntent.launchUrl(mActivity, Uri.parse(url));
     }
 
     private JSONArray buildProductsArray(ArrayList<Product> products) {
@@ -175,5 +181,15 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     @Override
     public void finallyMethod() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.edit_declaration);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.edit_declaration;
     }
 }

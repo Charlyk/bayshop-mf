@@ -2,10 +2,7 @@ package com.softranger.bayshopmf.ui.addresses;
 
 
 import android.animation.ObjectAnimator;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.CodesSpinnerAdapter;
 import com.softranger.bayshopmf.adapter.SpinnerAdapter;
@@ -35,9 +33,9 @@ import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
-import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.SpinnerObj;
 
 import org.json.JSONArray;
@@ -66,6 +64,8 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
     private ArrayList<Country> mCountries;
     private CodesSpinnerAdapter mSpinnerAdapter;
     private RelativeLayout mHolderLayout;
+
+    private boolean mIsEditingAddress;
 
     private static boolean isSaveClicked;
 
@@ -119,8 +119,6 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_edit_address, container, false);
         mActivity = (ParentActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        mActivity.registerReceiver(mTitleReceiver, intentFilter);
         mCountryCodes = new ArrayList<>();
         mCountries = new ArrayList<>();
 
@@ -132,15 +130,18 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
         mActivity.toggleLoadingProgress(true);
 
         if (getArguments().containsKey(ADDRESS_ARG)) {
+
             mAddress = getArguments().getParcelable(ADDRESS_ARG);
-            addressId = mAddress.getId();
-            mActivity.setToolbarTitle(getString(R.string.edit_address), true);
-            setDataOnPosition(mAddress);
-            ApiClient.getInstance().getRequest(Constants.Api.urlGetAddress(String.valueOf(addressId)), mHandler);
+            if (mAddress != null) {
+                addressId = mAddress.getId();
+                setDataOnPosition(mAddress);
+                ApiClient.getInstance().getRequest(Constants.Api.urlGetAddress(String.valueOf(addressId)), mHandler);
+                mIsEditingAddress = true;
+            } else {
+                buildNewAddress();
+            }
         } else {
-            mAddress = new Address.Builder().build();
-            mActivity.setToolbarTitle(getString(R.string.add_new_address), true);
-            ApiClient.getInstance().getRequest(Constants.Api.urlGetPhoneCodes(), mHandler);
+            buildNewAddress();
         }
 
         Button saveButton = (Button) mRootView.findViewById(R.id.addAddressSaveAddressButton);
@@ -150,6 +151,12 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
         LinearLayout countryLayout = (LinearLayout) mRootView.findViewById(R.id.countryLayout);
         countryLayout.setOnClickListener(this);
         return mRootView;
+    }
+
+    private void buildNewAddress() {
+        mIsEditingAddress = false;
+        mAddress = new Address.Builder().build();
+        ApiClient.getInstance().getRequest(Constants.Api.urlGetPhoneCodes(), mHandler);
     }
 
     private void setDataOnPosition(Address address) {
@@ -199,21 +206,9 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
         mFocusIndicator = view.findViewById(R.id.editAddressInputFocusIndicator);
     }
 
-    private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.addresses_list), true);
-                    break;
-            }
-        }
-    };
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mActivity.unregisterReceiver(mTitleReceiver);
         mActivity.hideKeyboard();
     }
 
@@ -312,16 +307,7 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
     private void buildCountryCodes(JSONArray countryCodes) throws Exception {
         for (int i = 0; i < countryCodes.length(); i++) {
             JSONObject jsonCode = countryCodes.getJSONObject(i);
-            CountryCode countryCode = new CountryCode.Builder()
-                    .id(jsonCode.getInt("id"))
-                    .countryId(jsonCode.getInt("countryId"))
-                    .code(jsonCode.getString("code"))
-                    .format(jsonCode.getString("format"))
-                    .flagUrl(jsonCode.getString("flag"))
-                    .countryCode(jsonCode.getString("countryCode"))
-                    .name(jsonCode.getString("title"))
-                    .build();
-            mCountryCodes.add(countryCode);
+            mCountryCodes.add(new ObjectMapper().readValue(jsonCode.toString(), CountryCode.class));
         }
         new ImageDownloadThread<>(mCountryCodes, mDownloadHandler, mActivity).start();
         mSpinnerAdapter = new CodesSpinnerAdapter(mActivity, R.layout.spinner_list_item, mCountryCodes);
@@ -408,6 +394,20 @@ public class EditAddressFragment extends ParentFragment implements View.OnClickL
         mActivity.toggleLoadingProgress(false);
         mHolderLayout.setVisibility(View.VISIBLE);
         isSaveClicked = false;
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        if (mIsEditingAddress) {
+            return getString(R.string.edit_address);
+        } else {
+            return getString(R.string.add_new_address);
+        }
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.add_address;
     }
 
     @Override

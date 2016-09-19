@@ -3,24 +3,35 @@ package com.softranger.bayshopmf.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.softranger.bayshopmf.util.Application;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by macbook on 6/29/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Parcelable {
     private String mUserId;
-    private String mFirstName;
-    private String mLastName;
-    private int mCountryId;
-    private String mPhoneCode;
-    private String mPhoneNumber;
-    private int mLanguageId;
-    private String mLanguageName;
-    private String mCountryName;
-    private ArrayList<Country> mCountries;
-    private ArrayList<Language> mLanguages;
-    private ArrayList<CountryCode> mCountryCodes;
+    @JsonProperty("name") String mFirstName;
+    @JsonProperty("surname") String mLastName;
+    @JsonProperty("countryId") int mCountryId;
+    @JsonProperty("phoneCode") String mPhoneCode;
+    @JsonProperty("phone") String mPhoneNumber;
+    @JsonProperty("languageId")
+    @JsonIgnore int mLanguageId;
+    @JsonIgnore String mLanguageName;
+    @JsonIgnore String mCountryName;
+    @JsonProperty("countries") ArrayList<Country> mCountries;
+    @JsonIgnore ArrayList<Language> mLanguages;
+    @JsonProperty("phoneFormats") ArrayList<CountryCode> mCountryCodes;
 
     private User() {
 
@@ -137,8 +148,20 @@ public class User implements Parcelable {
         return mLanguages;
     }
 
-    public void setLanguages(ArrayList<Language> languages) {
-        mLanguages = languages;
+    @JsonIgnore
+    public void setLanguages(JSONObject jsonLanguages) throws Exception {
+        mLanguages = new ArrayList<>();
+        Iterator<String> keys = jsonLanguages.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            Language language = new Language.Builder()
+                    .id(Integer.parseInt(key))
+                    .name(jsonLanguages.getString(key))
+                    .build();
+            if (getLanguageId() == language.getId())
+                setLanguageName(language.getName());
+            mLanguages.add(language);
+        }
     }
 
     public ArrayList<CountryCode> getCountryCodes() {

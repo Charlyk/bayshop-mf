@@ -27,6 +27,7 @@ import com.softranger.bayshopmf.model.ChatMessage;
 import com.softranger.bayshopmf.model.MailMessage;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import java.util.ArrayList;
 
@@ -171,12 +172,12 @@ public class ChatActivity extends ParentActivity implements TextWatcher, ChatAda
 
     //------------------- Parent activity methods -------------------//
     @Override
-    public void setToolbarTitle(String title, boolean showIcon) {
+    public void setToolbarTitle(String title) {
 
     }
 
     @Override
-    public void addFragment(Fragment fragment, boolean showAnimation) {
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
 
     }
 
@@ -193,6 +194,11 @@ public class ChatActivity extends ParentActivity implements TextWatcher, ChatAda
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
+    public void onBackStackChanged() {
 
     }
 }

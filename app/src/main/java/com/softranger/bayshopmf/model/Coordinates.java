@@ -14,6 +14,10 @@ public class Coordinates implements Parcelable {
     @JsonProperty("latitude") double mLatitude;
     @JsonProperty("longitude") double mLongitude;
 
+    public Coordinates() {
+        // empty constructor used by jackson
+    }
+
     protected Coordinates(Parcel in) {
         mLatitude = in.readDouble();
         mLongitude = in.readDouble();

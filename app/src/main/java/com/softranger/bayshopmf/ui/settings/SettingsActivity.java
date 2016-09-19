@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
-public class SettingsActivity extends ParentActivity {
+public class SettingsActivity extends ParentActivity implements FragmentManager.OnBackStackChangedListener {
 
     public static final String ACTION_LOG_OUT = "action log out";
 
@@ -47,7 +48,7 @@ public class SettingsActivity extends ParentActivity {
     }
 
     @Override
-    public void setToolbarTitle(final String title, boolean showIcon) {
+    public void setToolbarTitle(final String title) {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -57,7 +58,7 @@ public class SettingsActivity extends ParentActivity {
     }
 
     @Override
-    public void addFragment(Fragment fragment, boolean showAnimation) {
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (showAnimation)
@@ -85,5 +86,21 @@ public class SettingsActivity extends ParentActivity {
         transaction.replace(R.id.settingsActivityContainer, fragment);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        FragmentManager manager = getFragmentManager();
+        // get index of the last fragment to be able to get it's tag
+        int currentStackIndex = manager.getBackStackEntryCount() - 1;
+        // if we don't have fragments in back stack just return
+        if (manager.getBackStackEntryCount() == 0) return;
+        // otherwise get the framgent from backstack and cast it to ParentFragment so we could get it's title
+        ParentFragment fragment = (ParentFragment) manager.findFragmentByTag(
+                manager.getBackStackEntryAt(currentStackIndex).getName());
+        // finaly set the title in the toolbar
+        setToolbarTitle(fragment.getFragmentTitle());
+        // now we need to update the current selected fragment
+        selectedFragment = fragment.getSelectedFragment();
     }
 }

@@ -22,6 +22,7 @@ import com.softranger.bayshopmf.model.Address;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
@@ -57,8 +58,7 @@ public class AutopackingFragment extends ParentFragment implements View.OnClickL
         View view = inflater.inflate(R.layout.fragment_autopacking, container, false);
         mActivity = (SettingsActivity) getActivity();
 
-        IntentFilter intentFilter = new IntentFilter(MainActivity.ACTION_UPDATE_TITLE);
-        intentFilter.addAction(Constants.ACTION_CHANGE_ADDRESS);
+        IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
 
         mLinearLayout = (LinearLayout) view.findViewById(R.id.autopackingItemsLayout);
@@ -88,9 +88,6 @@ public class AutopackingFragment extends ParentFragment implements View.OnClickL
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case MainActivity.ACTION_UPDATE_TITLE:
-                    mActivity.setToolbarTitle(getString(R.string.autopacking), true);
-                    break;
                 case Constants.ACTION_CHANGE_ADDRESS:
                     Address address = intent.getExtras().getParcelable("address");
                     mAddressesLabel.setText(address.getClientName());
@@ -132,9 +129,19 @@ public class AutopackingFragment extends ParentFragment implements View.OnClickL
     }
 
     @Override
+    public String getFragmentTitle() {
+        return getString(R.string.autopacking);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.autopacking;
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mActivity.setToolbarTitle(mActivity.getString(R.string.settings), true);
+        mActivity.setToolbarTitle(mActivity.getString(R.string.settings));
     }
 
     @Override

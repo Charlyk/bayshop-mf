@@ -19,6 +19,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.MailAdapter;
 import com.softranger.bayshopmf.model.MailMessage;
 import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import java.util.ArrayList;
 
@@ -55,12 +56,12 @@ public class SearchMailActivity extends ParentActivity implements MenuItemCompat
     }
 
     @Override
-    public void setToolbarTitle(String title, boolean showIcon) {
+    public void setToolbarTitle(String title) {
 
     }
 
     @Override
-    public void addFragment(Fragment fragment, boolean showAnimation) {
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
 
     }
 
@@ -129,6 +130,11 @@ public class SearchMailActivity extends ParentActivity implements MenuItemCompat
 
     @Override
     public void onMessageClicked(MailMessage message, int position, boolean isSelected) {
+
+    }
+
+    @Override
+    public void onBackStackChanged() {
 
     }
 }

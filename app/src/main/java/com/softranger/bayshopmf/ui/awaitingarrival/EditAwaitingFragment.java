@@ -3,7 +3,9 @@ package com.softranger.bayshopmf.ui.awaitingarrival;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +19,10 @@ import android.widget.RadioGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.general.WebViewFragment;
-import com.softranger.bayshopmf.ui.storages.StorageHolderFragment;
-import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
-import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
 
@@ -43,6 +43,7 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
     private static Product product;
     private MainActivity mActivity;
     private View mRootView;
+    private CustomTabsIntent mTabsIntent;
 
     public EditAwaitingFragment() {
         // Required empty public constructor
@@ -68,7 +69,10 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         mTrackingInput.setText(product.getTrackingNumber());
         mUrlInput.setText(product.getProductUrl());
         mPriceInput.setText(product.getProductPrice());
-        mActivity.setToolbarTitle(getString(R.string.edit_details), true);
+
+        CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
+        tabsBuilder.setToolbarColor(mActivity.getResources().getColor(R.color.colorPrimary));
+        mTabsIntent = tabsBuilder.build();
 
         switch (product.getDeposit()) {
             case Constants.USA:
@@ -120,13 +124,6 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        Intent updateTitle = new Intent(MainActivity.ACTION_UPDATE_TITLE);
-        mActivity.sendBroadcast(updateTitle);
-    }
-
-    @Override
     public void onClick(View v) {
 
         String urlToProduct = String.valueOf(mUrlInput.getText());
@@ -136,7 +133,7 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         }
 
         if (v.getId() == R.id.openUrlArrivalBtn) {
-            mActivity.addFragment(WebViewFragment.newInstance(urlToProduct), true);
+            mTabsIntent.launchUrl(mActivity, Uri.parse(urlToProduct));
         } else {
             String productName = String.valueOf(mNameInput.getText());
             if (productName == null || productName.equals("")) {
@@ -192,5 +189,15 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
     @Override
     public void onHandleMessageEnd() {
         mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.edit_details);
+    }
+
+    @Override
+    public MainActivity.SelectedFragment getSelectedFragment() {
+        return MainActivity.SelectedFragment.edit_awaiting_arrival;
     }
 }

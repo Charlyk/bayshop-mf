@@ -1,6 +1,5 @@
 package com.softranger.bayshopmf.util;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +8,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 
 import org.json.JSONObject;
 
@@ -22,13 +21,14 @@ import okhttp3.Response;
  */
 public abstract class ParentFragment extends Fragment {
 
-    private Activity mActivity;
+    private ParentActivity mActivity;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mActivity = getActivity();
+        mActivity = (ParentActivity) getActivity();
     }
+
 
     protected Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -86,7 +86,7 @@ public abstract class ParentFragment extends Fragment {
     public abstract void onServerResponse(JSONObject response) throws Exception;
 
     public void onServerError(String message) {
-//        mActivity.onBackPressed();
+
     }
 
     public void finallyMethod() {
@@ -96,4 +96,8 @@ public abstract class ParentFragment extends Fragment {
     public void onHandleMessageEnd() {
 
     }
+
+    public abstract String getFragmentTitle();
+
+    public abstract ParentActivity.SelectedFragment getSelectedFragment();
 }

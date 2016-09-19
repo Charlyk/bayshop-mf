@@ -27,6 +27,7 @@ import com.softranger.bayshopmf.adapter.StorageTabAdapter;
 import com.softranger.bayshopmf.model.MailMessage;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 public class ContactUsActivity extends ParentActivity implements MailAdapter.OnMailClickListener,
         MenuItem.OnMenuItemClickListener {
@@ -73,7 +74,7 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
     }
 
     @Override
-    public void setToolbarTitle(String title, boolean showIcon) {
+    public void setToolbarTitle(String title) {
         mToolbarTitle.setText(title);
     }
 
@@ -99,7 +100,7 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
     }
 
     @Override
-    public void addFragment(Fragment fragment, boolean showAnimation) {
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
 
     }
 
@@ -134,7 +135,7 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
 
         mToolbar.setBackgroundColor(getResources().getColor(color));
         mToolbar.setNavigationIcon(navIcon);
-        setToolbarTitle(title, false);
+        setToolbarTitle(title);
 
         invalidateOptionsMenu();
     }
@@ -168,5 +169,10 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
     }
 }
