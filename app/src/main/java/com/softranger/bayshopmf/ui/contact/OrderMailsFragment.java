@@ -39,10 +39,10 @@ public class OrderMailsFragment extends Fragment implements SwipeRefreshLayout.O
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (ContactUsActivity) getActivity();
         mMessages = new ArrayList<>();
-        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragmentRecyclerView);
+        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragmentSwipeRefreshLayout);
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentSwipeRefreshLayout);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter = new MailAdapter(mMessages);
         mAdapter.setOnMailClickListener(mActivity);

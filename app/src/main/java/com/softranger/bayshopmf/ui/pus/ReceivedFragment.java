@@ -36,15 +36,15 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnItemClickListener {
+public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
     private ArrayList<Object> mPUSParcels;
     private ItemAdapter mAdapter;
 
-    @BindView(R.id.fragmentSwipeRefreshLayout) RecyclerView mRecyclerView;
-    @BindView(R.id.fragmentRecyclerView) SwipeRefreshLayout mRefreshLayout;
+    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
 
     public ReceivedFragment() {
         // Required empty public constructor
@@ -158,5 +158,10 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     @Override
     public void onProductItemDeleteClick(AwaitingArrival product, int position) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        mRefreshLayout.setRefreshing(false);
     }
 }
