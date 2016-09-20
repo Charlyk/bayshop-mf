@@ -14,6 +14,7 @@ import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.util.Constants;
 
 import java.net.URL;
 
@@ -82,7 +83,7 @@ public class GalleryImageFragment extends Fragment {
         public void run() {
             Looper.prepare();
             try {
-                URL biImageUlr = new URL(mPhoto.getBigImage());
+                URL biImageUlr = new URL(Constants.Api.BASE_URL + mPhoto.getBigImage());
                 mPhoto.setBigBitmap(BitmapFactory.decodeStream(biImageUlr.openStream()));
                 mGalleryActivity.runOnUiThread(new Runnable() {
                     @Override

@@ -1,13 +1,9 @@
 package com.softranger.bayshopmf.ui.settings;
 
 
-import android.app.FragmentManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,8 +15,6 @@ import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.adapter.SettingsAdapter;
 import com.softranger.bayshopmf.model.Setting;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
-import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
@@ -45,10 +39,10 @@ public class SettingsFragment extends ParentFragment implements SettingsAdapter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (SettingsActivity) getActivity();
         mSettingItems = mActivity.getResources().getStringArray(R.array.settings_list);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentSettingsRecyclerView);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentSwipeRefreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         SettingsAdapter adapter = new SettingsAdapter(buildSettingsList());
         adapter.setOnSettingClickListener(this);

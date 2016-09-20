@@ -2,8 +2,8 @@ package com.softranger.bayshopmf.ui.pus;
 
 
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
+import com.softranger.bayshopmf.model.AwaitingArrival;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.PUSParcel;
 import com.softranger.bayshopmf.model.Product;
@@ -42,8 +43,8 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     private ArrayList<Object> mPUSParcels;
     private ItemAdapter mAdapter;
 
-    @BindView(R.id.receivedParcelsRecyclerView)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentSwipeRefreshLayout) RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentRecyclerView) SwipeRefreshLayout mRefreshLayout;
 
     public ReceivedFragment() {
         // Required empty public constructor
@@ -60,7 +61,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_received, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (ParentActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
         mPUSParcels = new ArrayList<>();
@@ -125,7 +126,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     }
 
     @Override
-    public void onProductClick(Product product, int position) {
+    public void onProductClick(AwaitingArrival product, int position) {
 
     }
 
@@ -155,7 +156,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     }
 
     @Override
-    public void onProductItemDeleteClick(Product product, int position) {
+    public void onProductItemDeleteClick(AwaitingArrival product, int position) {
 
     }
 }

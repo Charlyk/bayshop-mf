@@ -88,12 +88,12 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_in_processing_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mPackage = getArguments().getParcelable(PRODUCT_ARG);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.inProcessingDetailsList);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragmentSwipeRefreshLayout);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ApiClient.getInstance().getRequest(Constants.Api.urlViewParcelDetails(String
                 .valueOf(mPackage.getId())), mHandler);
@@ -271,7 +271,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     @Override
     public void onReturnToSenderClick(PUSParcelDetailed item, int position) {
-        mActivity.addFragment(new ReturnAddressFragment(), true);
+        mActivity.addFragment(ReturnAddressFragment.newInstance(item), true);
     }
 
     @Override

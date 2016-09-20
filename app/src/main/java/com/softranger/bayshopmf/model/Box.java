@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Eduard Albu on 9/16/16, 09, 2016
@@ -17,13 +18,15 @@ public class Box implements Parcelable {
     @JsonProperty("id") String mId;
     @JsonProperty("uid") String mUid;
     @JsonProperty("title") String mTitle;
+    @JsonProperty("tracking") String mTracking;
     @JsonProperty("price") String mPrice;
     @JsonProperty("quantity") int mQuantity;
     @JsonProperty("weight") String mWeight;
     @JsonProperty("photos") ArrayList<Photo> mPhotos;
+    @JsonProperty("createdDate") Date mCreatedDate;
 
     public Box() {
-
+        // empty constructor for jackson
     }
 
     protected Box(Parcel in) {
@@ -34,6 +37,8 @@ public class Box implements Parcelable {
         mQuantity = in.readInt();
         mWeight = in.readString();
         mPhotos = in.createTypedArrayList(Photo.CREATOR);
+        mTracking = in.readString();
+        mCreatedDate = (Date) in.readSerializable();
     }
 
     public static final Creator<Box> CREATOR = new Creator<Box>() {
@@ -76,6 +81,14 @@ public class Box implements Parcelable {
         return mPhotos;
     }
 
+    public String getTracking() {
+        return mTracking;
+    }
+
+    public Date getCreatedDate() {
+        return mCreatedDate;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -90,5 +103,7 @@ public class Box implements Parcelable {
         parcel.writeInt(mQuantity);
         parcel.writeString(mWeight);
         parcel.writeTypedList(mPhotos);
+        parcel.writeString(mTracking);
+        parcel.writeSerializable(mCreatedDate);
     }
 }

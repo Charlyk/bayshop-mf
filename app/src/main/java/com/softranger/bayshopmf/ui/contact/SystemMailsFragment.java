@@ -13,10 +13,6 @@ import android.view.ViewGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.MailAdapter;
 import com.softranger.bayshopmf.model.MailMessage;
-import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.util.ParentFragment;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -40,13 +36,13 @@ public class SystemMailsFragment extends Fragment implements SwipeRefreshLayout.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_order_mails, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (ContactUsActivity) getActivity();
         mMessages = new ArrayList<>();
-        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.mailSwipeRefreshLayout);
+        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragmentRecyclerView);
         mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setColorSchemeColors(R.color.colorAccent);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mailsRecyclerView);
+        mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentSwipeRefreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter = new MailAdapter(mMessages);
         mAdapter.setOnMailClickListener(mActivity);

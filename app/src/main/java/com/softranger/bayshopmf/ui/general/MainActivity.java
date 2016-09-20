@@ -42,6 +42,7 @@ import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
+import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
 import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
@@ -65,8 +66,7 @@ import java.util.ArrayList;
 
 import okhttp3.Response;
 
-public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener {
+public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String ACTION_ITEM_DELETED = "ITEM_DELETED";
     private static final int PERMISSION_REQUEST_CODE = 1535;
@@ -148,14 +148,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             userNameLabel.setText(fullName);
             userIdLabel.setText(Application.getInstance().getUserId());
         }
-        // set header add awaiting btn click listener
-        LinearLayout addAwaiting = (LinearLayout) navHeaderView.findViewById(R.id.add_packageButtonIcon);
-        addAwaiting.setOnClickListener(this);
 
         // add first fragment to container
         selectedFragment = SelectedFragment.awaiting_arrival;
-        replaceFragment(StorageItemsFragment.newInstance(Constants.Api.urlWaitingArrival(Constants.US),
-                Constants.US));
+        replaceFragment(AwaitingArrivalFragment.newInstance());
         mFirstToolbarTitle = getString(selectedFragment.fragmentName());
         setToolbarTitle(mFirstToolbarTitle);
 
@@ -337,8 +333,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                 break;
             case R.id.nav_waitingArrival:
                 selectedFragment = SelectedFragment.awaiting_arrival;
-                replaceFragment(StorageItemsFragment.newInstance(Constants.Api.urlWaitingArrival(Constants.US),
-                        Constants.US));
+                replaceFragment(AwaitingArrivalFragment.newInstance());
                 mFirstToolbarTitle = getString(selectedFragment.fragmentName());
                 setToolbarTitle(mFirstToolbarTitle);
                 break;
@@ -390,19 +385,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             }
         } else {
             super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.add_packageButtonIcon:
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-                addFragment(new AddAwaitingFragment(), true);
-                setToolbarTitle(getString(R.string.add_awaiting_package));
-                break;
-            default:
-                break;
         }
     }
 

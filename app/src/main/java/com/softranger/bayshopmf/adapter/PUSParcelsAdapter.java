@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.PUSParcel;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 import java.text.SimpleDateFormat;
@@ -35,16 +36,13 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
     private OnPusItemClickListener mOnPusItemClickListener;
     private Context mContext;
     private SparseBooleanArray mAnimatedItems;
-    private static SimpleDateFormat serverFormat;
-    private static SimpleDateFormat friendlyFormat;
 
     public PUSParcelsAdapter(ArrayList<PUSParcel> pusParcels, Context context) {
         mPUSParcels = pusParcels;
         mContext = context;
         mAnimatedItems = new SparseBooleanArray();
 
-        serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+
     }
 
     public void setOnPusItemClickListener(OnPusItemClickListener onPusItemClickListener) {
@@ -61,9 +59,11 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mPUSParcel = mPUSParcels.get(position);
 
-        holder.mStatusBarView.setProgress(holder.mPUSParcel);
+        holder.mStatusBarView.setProgress(holder.mPUSParcel.getParcelStatus().index(),
+                mContext.getString(holder.mPUSParcel.getParcelStatus().statusName()));
 
-        holder.mDateLabel.setText(getFormattedDate(holder.mPUSParcel.getFieldTime()));
+        // TODO: 9/20/16 set parcel date
+        holder.mDateLabel.setText(Application.getFormattedDate(new Date()));
 
         holder.mCodeLabel.setText(holder.mPUSParcel.getCodeNumber());
 
@@ -73,29 +73,6 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
         holder.mWeightLabel.setText(kg + "kg.");
 
         holder.mPriceLabel.setText(holder.mPUSParcel.getCurrency() + holder.mPUSParcel.getPrice());
-    }
-
-    private String getFormattedDate(String createdDate) {
-        Date today  = new Date();
-        Date date = new Date();
-        String formattedDate = "";
-        try {
-            if (createdDate != null && !createdDate.equals(""))
-                date = serverFormat.parse(createdDate);
-            formattedDate = friendlyFormat.format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            long diff = today.getTime() - date.getTime();
-            long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-
-            if (days > 0) {
-                formattedDate = formattedDate + " (" + days + " " + mContext.getString(R.string.days_ago) + ")";
-            } else {
-                formattedDate = formattedDate + " (" + mContext.getString(R.string.today) + ")";
-            }
-        }
-        return formattedDate;
     }
 
     @Override
@@ -143,7 +120,8 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
         @Override
         public void onStatusBarReady() {
             if (mPUSParcel != null) {
-                mStatusBarView.setProgress(mPUSParcel);
+                mStatusBarView.setProgress(mPUSParcel.getParcelStatus().index(),
+                        mContext.getString(mPUSParcel.getParcelStatus().statusName()));
             }
         }
     }

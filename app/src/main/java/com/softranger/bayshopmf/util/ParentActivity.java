@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.ColorRes;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.general.ResultActivity;
 
 /**
  * Created by Eduard Albu on 7/1/16, 07, 2016
@@ -173,6 +175,18 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
     public void collapseTextView(TextView tv, int numLines) {
         ObjectAnimator animation = ObjectAnimator.ofInt(tv, "maxLines", numLines);
         animation.setDuration(200).start();
+    }
+
+    public void showResultActivity(@NonNull String topTitle, @NonNull String secondTitle,
+                                   @DrawableRes int image, @NonNull String descriptiom) {
+        // build intent for result activity
+        Intent showResult = new Intent(this, ResultActivity.class);
+        showResult.putExtra(ResultActivity.TOP_TITLE, topTitle);
+        showResult.putExtra(ResultActivity.SECOND_TITLE, secondTitle);
+        showResult.putExtra(ResultActivity.IMAGE_ID, image);
+        showResult.putExtra(ResultActivity.DESCRIPTION, descriptiom);
+        // show result activity
+        startActivity(showResult);
     }
 
     public enum SelectedFragment {

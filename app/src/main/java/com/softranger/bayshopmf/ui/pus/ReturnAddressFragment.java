@@ -3,97 +3,175 @@ package com.softranger.bayshopmf.ui.pus;
 
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.PUSParcelDetailed;
+import com.softranger.bayshopmf.model.ServerResponse;
+import com.softranger.bayshopmf.network.BayShopApiInterface;
 import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.ui.general.ResultActivity;
+import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnFocusChange;
+import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReturnAddressFragment extends ParentFragment implements View.OnFocusChangeListener, View.OnClickListener {
+public class ReturnAddressFragment extends ParentFragment implements Callback<ServerResponse> {
 
+    private static final String DETAILED_PARCEL = "detailed pus parcel";
     private ParentActivity mActivity;
-    private View mFocusIndicator;
-    private TextInputEditText mFirstName;
-    private TextInputEditText mLastName;
-    private TextInputEditText mAddress;
-    private TextInputEditText mCity;
-    private TextInputEditText mCountry;
-    private TextInputEditText mState;
-    private TextInputEditText mPostalCode;
-    private TextInputEditText mPhoneNumber;
+    private Unbinder mUnbinder;
+    private BayShopApiInterface mApiInterface;
+    private PUSParcelDetailed mPUSParcelDetailed;
 
-    private RelativeLayout mFirstNameLayout, mLastNameLayout, mAddressLayout, mCityLayout, mCountryLayout,
-            mStateLayout, mPostalCodeLayout, mPhoneLayout;
+    private Call<ServerResponse> mResponseCall;
+
+    @BindView(R.id.firstNameInputFocusIndicator) View mFocusIndicator;
+    @BindView(R.id.returnFirstNameInput) TextInputEditText mFirstName;
+    @BindView(R.id.returnLastNameInput) TextInputEditText mLastName;
+    @BindView(R.id.returnAddressInput) TextInputEditText mAddress;
+    @BindView(R.id.returnCityInput) TextInputEditText mCity;
+    @BindView(R.id.returnCountryInput) TextInputEditText mCountry;
+    @BindView(R.id.returnStateInput) TextInputEditText mState;
+    @BindView(R.id.returnPostalCodeInput) TextInputEditText mPostalCode;
+    @BindView(R.id.returnPhoneInput) TextInputEditText mPhoneNumber;
+
+    @BindView(R.id.returnFirstNameLayout) RelativeLayout mFirstNameLayout;
+    @BindView(R.id.returnLastNameLayout) RelativeLayout mLastNameLayout;
+    @BindView(R.id.returnAddressLayout) RelativeLayout mAddressLayout;
+    @BindView(R.id.returnCityLayout) RelativeLayout mCityLayout;
+    @BindView(R.id.returnCountryLayout) RelativeLayout mCountryLayout;
+    @BindView(R.id.returnStateLayout) RelativeLayout mStateLayout;
+    @BindView(R.id.returnPostalCodeLayout) RelativeLayout mPostalCodeLayout;
+    @BindView(R.id.returnPhoneNumberLayout) RelativeLayout mPhoneLayout;
 
     public ReturnAddressFragment() {
         // Required empty public constructor
     }
 
+    public static ReturnAddressFragment newInstance(PUSParcelDetailed pusParcelDetailed) {
+        Bundle args = new Bundle();
+        args.putParcelable(DETAILED_PARCEL, pusParcelDetailed);
+        ReturnAddressFragment fragment = new ReturnAddressFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_return_address, container, false);
-
+        mUnbinder = ButterKnife.bind(this, view);
         mActivity = (ParentActivity) getActivity();
 
-        mFocusIndicator = view.findViewById(R.id.firstNameInputFocusIndicator);
+        mPUSParcelDetailed = getArguments().getParcelable(DETAILED_PARCEL);
+
         mFocusIndicator.setVisibility(View.VISIBLE);
 
-        mFirstName = (TextInputEditText) view.findViewById(R.id.returnFirstNameInput);
         mFirstName.requestFocus();
-        mFirstName.setOnFocusChangeListener(this);
-        mLastName = (TextInputEditText) view.findViewById(R.id.returnLastNameInput);
-        mLastName.setOnFocusChangeListener(this);
-        mAddress = (TextInputEditText) view.findViewById(R.id.returnAddressInput);
-        mAddress.setOnFocusChangeListener(this);
-        mCity = (TextInputEditText) view.findViewById(R.id.returnCityInput);
-        mCity.setOnFocusChangeListener(this);
-        mCountry = (TextInputEditText) view.findViewById(R.id.returnCountryInput);
-        mCountry.setOnFocusChangeListener(this);
-        mState = (TextInputEditText) view.findViewById(R.id.returnStateInput);
-        mState.setOnFocusChangeListener(this);
-        mPostalCode = (TextInputEditText) view.findViewById(R.id.returnPostalCodeInput);
-        mPostalCode.setOnFocusChangeListener(this);
-        mPhoneNumber = (TextInputEditText) view.findViewById(R.id.returnPhoneInput);
-        mPhoneNumber.setOnFocusChangeListener(this);
 
-        mFirstNameLayout = (RelativeLayout) view.findViewById(R.id.returnFirstNameLayout);
-        mLastNameLayout = (RelativeLayout) view.findViewById(R.id.returnLastNameLayout);
-        mAddressLayout = (RelativeLayout) view.findViewById(R.id.returnAddressLayout);
-        mCityLayout = (RelativeLayout) view.findViewById(R.id.returnCityLayout);
-        mCountryLayout = (RelativeLayout) view.findViewById(R.id.returnCountryLayout);
-        mStateLayout = (RelativeLayout) view.findViewById(R.id.returnStateLayout);
-        mPostalCodeLayout = (RelativeLayout) view.findViewById(R.id.returnPostalCodeLayout);
-        mPhoneLayout = (RelativeLayout) view.findViewById(R.id.returnPhoneNumberLayout);
+        mApiInterface = Application.apiInterface();
 
-        Button confirmBtn = (Button) view.findViewById(R.id.returnConfirmBtn);
-        confirmBtn.setOnClickListener(this);
         return view;
     }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
+    @OnClick(R.id.returnConfirmBtn)
+    void confirmReturningToSeller() {
+        // get all user inputs
+        String firstName = getTextFrom(mFirstName);
+        String lastName = getTextFrom(mLastName);
+        String address = getTextFrom(mAddress);
+        String city = getTextFrom(mCity);
+        String country = getTextFrom(mCountry);
+        String state = getTextFrom(mState);
+        String postalCode = getTextFrom(mPostalCode);
+        String phoneNumber = getTextFrom(mPhoneNumber);
+
+        // check them if they are filled
+        if (isEmpty(firstName)) {
+            mFirstName.setError(getString(R.string.enter_first_name));
+            return;
+        }
+        if (isEmpty(lastName)) {
+            mLastName.setError(getString(R.string.enter_last_name));
+            return;
+        }
+        if (isEmpty(address)) {
+            mAddress.setError(getString(R.string.enter_street_name));
+            return;
+        }
+        if (isEmpty(city)) {
+            mCity.setError(getString(R.string.enter_city));
+            return;
+        }
+        if (isEmpty(country)) {
+            mCountry.setError(getString(R.string.enter_country_name));
+            return;
+        }
+        if (isEmpty(state)) {
+            mState.setError(getString(R.string.enter_state));
+            return;
+        }
+        if (isEmpty(postalCode)) {
+            mPostalCode.setError(getString(R.string.enter_postal_code));
+            return;
+        }
+        if (isEmpty(phoneNumber)) {
+            mPhoneNumber.setError(getString(R.string.enter_phone_number));
+            return;
+        }
+
+        mResponseCall = mApiInterface.returnToSellerAddress(Application.currentToken,
+                mPUSParcelDetailed.getId(), firstName, lastName,
+                address, city, country, postalCode, phoneNumber, state);
+        mActivity.toggleLoadingProgress(true);
+        mResponseCall.enqueue(this);
+    }
+
+    private String getTextFrom(TextInputEditText inputEditText) {
+        return String.valueOf(inputEditText.getText());
+    }
+
+    private boolean isEmpty(String value) {
+        return value.equals("");
+    }
+
+    @OnFocusChange({R.id.returnFirstNameInput, R.id.returnLastNameInput, R.id.returnAddressInput,
+            R.id.returnCityInput, R.id.returnCountryInput, R.id.returnStateInput,
+            R.id.returnPostalCodeInput, R.id.returnPhoneInput})
+    void onTextFieldsFocusChanged(View view, boolean hasFocus) {
         if (mFocusIndicator.getVisibility() != View.VISIBLE) {
             mFocusIndicator.setVisibility(View.VISIBLE);
         }
 
-        switch (v.getId()) {
+        switch (view.getId()) {
             case R.id.returnFirstNameInput:
                 ObjectAnimator.ofFloat(mFocusIndicator, "y", mFirstNameLayout.getY()).setDuration(300).start();
                 break;
@@ -122,34 +200,10 @@ public class ReturnAddressFragment extends ParentFragment implements View.OnFocu
     }
 
     @Override
-    public void onClick(View v) {
-        mFocusIndicator.setVisibility(View.GONE);
-        // TODO: 8/24/16 replace with translated text
-        // build intent for result activity
-        Intent showResult = new Intent(mActivity, ResultActivity.class);
-        showResult.putExtra(ResultActivity.TOP_TITLE, "Request received");
-        showResult.putExtra(ResultActivity.SECOND_TITLE, "Your request was received by our manager.");
-        showResult.putExtra(ResultActivity.IMAGE_ID, R.mipmap.ic_parcel_25dp);
-        showResult.putExtra(ResultActivity.DESCRIPTION, "Thanks for providing information about seller, we will send the parcel back shortly.");
-
-        // close fragment
-        mActivity.onBackPressed();
-
-        // show result activity
-        startActivity(showResult);
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mActivity.hideKeyboard();
-        Intent intent = new Intent(MainActivity.ACTION_UPDATE_TITLE);
-        mActivity.sendBroadcast(intent);
-    }
-
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-
+        if (mResponseCall != null) mResponseCall.cancel();
     }
 
     @Override
@@ -160,5 +214,28 @@ public class ReturnAddressFragment extends ParentFragment implements View.OnFocu
     @Override
     public MainActivity.SelectedFragment getSelectedFragment() {
         return MainActivity.SelectedFragment.return_to_seller;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+    }
+
+    @Override
+    public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response ) {
+        ServerResponse serverResponse = response.body();
+        if (serverResponse.getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
+            mActivity.showResultActivity("Request received", "Return to seller request received",
+                    R.mipmap.ic_confirm_35dp, "Yeour parcel will soon be sent back to the seller, we will notify you when this happens.");
+        } else {
+            Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        mActivity.toggleLoadingProgress(false);
+    }
+
+    @Override
+    public void onFailure(Call<ServerResponse> call, Throwable t) {
+        mActivity.toggleLoadingProgress(false);
     }
 }

@@ -174,7 +174,7 @@ public class History implements Parcelable {
         }
     }
 
-    public static enum PaymentType {
+    public enum PaymentType {
         minus, plus
     }
 }

@@ -2,19 +2,19 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@android:color/white"
+             android:background="#f1f1f1"
              android:clickable="true"
-             tools:context="com.softranger.bayshopmf.ui.contact.PersonalMailsFragment">
+             tools:context="com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/mailSwipeRefreshLayout"
+        android:id="@+id/fragmentSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/mailsRecyclerView"
+            android:id="@+id/fragmentRecyclerView"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/mail_list_item"/>
+            android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.AwaitingArrival;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.PUSParcel;
 import com.softranger.bayshopmf.model.Product;
@@ -28,6 +29,7 @@ import com.softranger.bayshopmf.util.ViewAnimator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -57,7 +59,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
         if (mInStockItems.get(position) instanceof InStockItem) {
             return IN_STOCK_ITEM;
-        } else if (mInStockItems.get(position) instanceof Product) {
+        } else if (mInStockItems.get(position) instanceof AwaitingArrival) {
             return PRODUCT;
         } else if (mInStockItems.get(position) instanceof PUSParcel) {
             return PUS_PARCEL;
@@ -75,9 +77,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case IN_STOCK_ITEM:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
                 return new InStockViewHolder(view);
-            case PRODUCT:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.arrival_list_item, parent, false);
-                return new ProductViewHolder(view);
             case PUS_PARCEL:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_procesing_list_item, parent, false);
                 return new InProcessingViewHolder(view);
@@ -113,11 +112,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             inStockViewHolder.mProductName.setText(name);
             inStockViewHolder.mProductName.setTextColor(mContext.getResources().getColor(color));
             inStockViewHolder.mTrackingLabel.setText(inStockViewHolder.mInStockItem.getTrackingNumber());
-        } else if (mInStockItems.get(position) instanceof Product) {
-            ProductViewHolder productHolder = (ProductViewHolder) holder;
-            productHolder.mProduct = (Product) mInStockItems.get(position);
-            productHolder.mItemName.setText(productHolder.mProduct.getProductName());
-            productHolder.mItemId.setText(productHolder.mProduct.getProductId());
         } else if (mInStockItems.get(position) instanceof PUSParcel) {
             InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
             processingHolder.mProduct = (PUSParcel) mInStockItems.get(position);
@@ -305,37 +299,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView mItemId;
-        final TextView mItemName;
-        final TextView mCreatedDateLabel;
-        final ImageButton mDeleteButton;
-        Product mProduct;
-
-        public ProductViewHolder(View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-            mItemId = (TextView) itemView.findViewById(R.id.itemIdLabel);
-            mItemName = (TextView) itemView.findViewById(R.id.itemNameLabel);
-            mCreatedDateLabel = (TextView) itemView.findViewById(R.id.itemDateLabel);
-            mDeleteButton = (ImageButton) itemView.findViewById(R.id.itemDeleteButton);
-            mDeleteButton.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (mOnItemClickListener == null) return;
-            switch (v.getId()) {
-                case R.id.itemDeleteButton:
-                    mOnItemClickListener.onProductItemDeleteClick(mProduct, getAdapterPosition());
-                    break;
-                default:
-                    mOnItemClickListener.onProductClick(mProduct, getAdapterPosition());
-                    break;
-            }
-        }
-    }
-
     class InProcessingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle, mWeightTitle, mCreatedDateTitle;
@@ -436,7 +399,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onIconClick(InStockItem inStockItem, boolean isSelected, int position);
 
-        void onProductClick(Product product, int position);
+        void onProductClick(AwaitingArrival product, int position);
 
         void onInProcessingProductClick(PUSParcel processingPackage, int position);
 
@@ -448,6 +411,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onAdditionalPhotosClick();
 
-        void onProductItemDeleteClick(Product product, int position);
+        void onProductItemDeleteClick(AwaitingArrival product, int position);
     }
 }

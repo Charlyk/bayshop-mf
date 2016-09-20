@@ -1,93 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:background="@drawable/selectable_background"
-              android:layout_marginBottom="1dp"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/selectable_background"
+                android:clickable="true"
+                android:orientation="vertical">
 
     <ImageButton
+        android:id="@+id/awaitingDeleteButton"
         style="@style/Base.Widget.AppCompat.ActionButton"
-        android:src="@mipmap/ic_delete_24dpi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
-        android:id="@+id/itemDeleteButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@mipmap/ic_delete_24dpi"/>
+
+    <TextView
+        android:id="@+id/awaitingUidLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        tools:text="MF123141321"/>
+
+    <TextView
+        android:id="@+id/awaitingDescriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/awaitingUidLabel"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_toLeftOf="@id/awaitingDeleteButton"
+        android:layout_toStartOf="@id/awaitingDeleteButton"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        tools:text="Computer shiushit"/>
+
+    <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
+        android:id="@+id/awaitingTrackingStatusBarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@id/awaitingDescriptionLabel"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/date"
+        android:id="@+id/awaitingDateTitle"
+        android:layout_below="@id/awaitingTrackingStatusBarView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weight"
+        android:layout_marginTop="5dp"
+        android:id="@+id/awaitingWeightTitle"
+        android:layout_below="@id/awaitingTrackingStatusBarView"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/price"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/awaitingPriceTitle"
+        android:layout_below="@id/awaitingTrackingStatusBarView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:ellipsize="end"
+        tools:text="$400"
         android:singleLine="true"
-        android:textSize="18sp"
-        android:layout_marginBottom="5dp"
-        tools:text="MF123141321"
-        android:id="@+id/itemIdLabel"/>
+        android:ellipsize="end"
+        android:id="@+id/awaitingPriceLabel"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/awaitingPriceTitle"
+        android:layout_alignRight="@id/awaitingPriceTitle"
+        android:layout_alignEnd="@id/awaitingPriceTitle"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/itemIdLabel"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="5dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@id/itemDeleteButton"
-        android:layout_toStartOf="@id/itemDeleteButton"
-        android:textSize="16sp"
+        tools:text="23.4kg"
+        android:layout_toLeftOf="@id/awaitingPriceLabel"
+        android:layout_toStartOf="@id/awaitingPriceLabel"
         android:textColor="@android:color/black"
-        tools:text="Computer shiushit"
-        android:id="@+id/itemNameLabel"/>
+        android:singleLine="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:id="@+id/awaitingWeightLabel"
+        android:layout_alignLeft="@id/awaitingWeightTitle"
+        android:layout_alignStart="@id/awaitingWeightTitle"
+        android:layout_below="@+id/awaitingWeightTitle"
+        android:layout_centerHorizontal="true"/>
 
-    <LinearLayout
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/itemNameLabel"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textSize="16sp"
-            android:text="@string/created_on"
-            android:id="@+id/itemDateTitle"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="@android:color/black"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textSize="16sp"
-            tools:text="23 Jul 2016 (3 days ago)"
-            android:id="@+id/itemDateLabel"/>
-    </LinearLayout>
+        tools:text="12.10.17 (238 days ago)"
+        android:textColor="@android:color/black"
+        android:id="@+id/awaitingDateLabel"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:singleLine="true"
+        android:layout_toLeftOf="@id/awaitingWeightLabel"
+        android:layout_toStartOf="@id/awaitingWeightLabel"
+        android:ellipsize="end"
+        android:layout_below="@+id/awaitingDateTitle"
+        android:layout_alignLeft="@id/awaitingDateTitle"
+        android:layout_alignStart="@id/awaitingDateTitle"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
-
-
+        android:layout_height="2dp"
+        android:background="@drawable/drop_shadow"
+        android:layout_below="@id/awaitingDateLabel"
+        android:layout_marginTop="16dp"/>
 </RelativeLayout>

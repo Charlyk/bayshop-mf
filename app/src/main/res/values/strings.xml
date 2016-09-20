@@ -333,4 +333,5 @@
     <string name="parcel_details">Parcel details</string>
     <string name="storage">Storage</string>
     <string name="services">Services</string>
+    <string name="enter_state">Please enter seller state name</string>
 </resources>

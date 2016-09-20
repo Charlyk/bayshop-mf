@@ -27,6 +27,7 @@ public class Constants {
         public static final int RESPONSE_OK = 1;
         public static final int RESPONSE_FAILED = -1;
         public static final int RESPONSE_ERROR = 0;
+        public static final String OK_MESSAGE = "Ok";
     }
 
     public static class ParcelStatus {
@@ -49,7 +50,7 @@ public class Constants {
     }
 
     public static class Api {
-        private static final String URL = "http://md.bay-dev.tk/api/";
+        public static final String URL = "http://md.bay-dev.tk/api/";
         public static final String BASE_URL = "http://md.bay-dev.tk";
         private static final String STORAGE = "storage/";
         private static final String MF_LIST = "mf-list/";

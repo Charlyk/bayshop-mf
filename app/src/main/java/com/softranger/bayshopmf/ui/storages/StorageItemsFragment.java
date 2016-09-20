@@ -27,6 +27,7 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
+import com.softranger.bayshopmf.model.AwaitingArrival;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.Product;
@@ -304,8 +305,8 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
      * @param position within the adapter for clicked item
      */
     @Override
-    public void onProductClick(Product product, int position) {
-        mActivity.addFragment(AwaitingArrivalProductFragment.newInstance(product), true);
+    public void onProductClick(AwaitingArrival product, int position) {
+//        mActivity.addFragment(AwaitingArrivalProductFragment.newInstance(product), true);
     }
 
     @Override
@@ -349,13 +350,13 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     }
 
     @Override
-    public void onProductItemDeleteClick(Product product, int position) {
+    public void onProductItemDeleteClick(AwaitingArrival product, int position) {
         deleteItem(product, position);
     }
 
-    private void deleteItem(final Product product, final int position) {
+    private void deleteItem(final AwaitingArrival product, final int position) {
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
-                        + product.getProductName() + "?", R.mipmap.ic_delete_box_24dp,
+                        + product.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
                 getString(R.string.yes), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -363,7 +364,7 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
                         mObjects.remove(product);
                         mAdapter.deleteItem(position);
                         ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(
-                                String.valueOf(product.getID())), mHandler);
+                                String.valueOf(product.getId())), mHandler);
                         mAlertDialog.dismiss();
                         int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
                         count -= 1;

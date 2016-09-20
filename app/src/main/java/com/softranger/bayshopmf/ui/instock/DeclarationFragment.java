@@ -18,7 +18,6 @@ import com.softranger.bayshopmf.adapter.DeclarationListAdapter;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
@@ -63,9 +62,9 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_declaration, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (MainActivity) getActivity();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.declarationItemsList);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragmentSwipeRefreshLayout);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mInStockDetailed = getArguments().getParcelable(IN_STOCK_ARG);
         mDeclarationAdapter = new DeclarationListAdapter(mInStockDetailed);

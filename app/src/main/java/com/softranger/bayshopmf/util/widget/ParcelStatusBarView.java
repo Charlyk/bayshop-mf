@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ public class ParcelStatusBarView extends RelativeLayout {
     private static float parentLeft;
     private static float parentRight;
     private boolean mIsReady;
-    private HashMap<Integer, BarColor> mColors;
+    private SparseArray<BarColor> mColors;
     private OnStatusBarReadyListener mOnStatusBarReadyListener;
     private ValueAnimator mIndicatorAnimation;
     private ValueAnimator mTextAnimation;
@@ -67,19 +68,20 @@ public class ParcelStatusBarView extends RelativeLayout {
         mUpdateHandler = new Handler();
 
         // below are initial statuses for the status bar
-        mColors = new HashMap<>();
-        mColors.put(0, BarColor.green); // initial state
-        mColors.put(1, BarColor.green); // processing
-        mColors.put(2, BarColor.red); // held by prohibition
-        mColors.put(3, BarColor.red); // held by damage
+        mColors = new SparseArray<BarColor>() {{
+            put(0, BarColor.green); // initial state
+            put(1, BarColor.green); // processing
+            put(2, BarColor.red); // held by prohibition
+            put(3, BarColor.red); // held by damage
 //        mColors.put(4, BarColor.green); // packing
-        mColors.put(4, BarColor.green); // awaiting sending
-        mColors.put(5, BarColor.red); // held due to debt
+            put(4, BarColor.green); // awaiting sending
+            put(5, BarColor.red); // held due to debt
 //        mColors.put(6, BarColor.red); // held by user
-        mColors.put(6, BarColor.green); // sent
-        mColors.put(7, BarColor.red); // held by customs
-        mColors.put(8, BarColor.yellow); // local depot
-        mColors.put(9, BarColor.green); // in the way;
+            put(6, BarColor.green); // sent
+            put(7, BarColor.red); // held by customs
+            put(8, BarColor.yellow); // local depot
+            put(9, BarColor.green); // in the way;
+        }};
 
         mInterpolator = new AccelerateDecelerateInterpolator();
 
@@ -145,7 +147,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         mStatusBarHolder = (LinearLayout) findViewById(R.id.statusBarHolderLayout);
 
         // set the initial maximum statuses
-        mStatusesCount = 9;
+        mStatusesCount = mColors.size();
 
         mStatusIndicator = findViewById(R.id.statusBarStatusIndicator);
         mStatusNameLabel = (TextView) findViewById(R.id.statusViewNameLabel);
@@ -159,11 +161,20 @@ public class ParcelStatusBarView extends RelativeLayout {
         mStatusesCount = statusesCount;
     }
 
-    public void setProgress(PUSParcel pusParcel) {
+    public void setNewColorsMap(SparseArray<BarColor> colorsMap) {
+        mColors = colorsMap;
+        // set the initial maximum statuses
+        mStatusesCount = mColors.size();
+        // get holder width
+        mTotalWidth = mStatusBarHolder.getWidth();
+        // compute the with for one status
+        mOneStatusWidth = mTotalWidth / mStatusesCount;
+    }
+
+    public void setProgress(int progress, String progressName) {
         // check if given progress is not greater then max progress
         // if it is greater just set it equal to max progress
         if (!mIsReady) return;
-        int progress = pusParcel.getParcelStatus().index();
         if (progress > mStatusesCount) progress = mStatusesCount;
         // set current progress for get method
         mCurrentProgress = progress;
@@ -172,15 +183,19 @@ public class ParcelStatusBarView extends RelativeLayout {
         switch (mColors.get(progress)) {
             case red:
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.red_status_bg));
-                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_red_bg));
+                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_status_bg_red));
                 break;
             case green:
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.green_status_bg));
-                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_green_bg));
+                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_status_bg_green));
                 break;
             case yellow:
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.yellow_status_bg));
-                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_yellow_bg));
+                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_status_bg_yalow));
+                break;
+            case gray:
+                mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_bar_bg));
+                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_status_bg_silver_for_arrival));
                 break;
         }
 
@@ -217,8 +232,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         set.start();
 
         // set stetus title
-        mStatusNameLabel.setText(pusParcel.getParcelStatus().statusName());
-        pusParcel.setWasAnimated(true);
+        mStatusNameLabel.setText(progressName);
     }
 
     /**
@@ -305,7 +319,7 @@ public class ParcelStatusBarView extends RelativeLayout {
      * Used to set status indicator and text background color
      */
     public enum BarColor {
-        green, red, yellow
+        green, red, yellow, gray
     }
 
     public interface OnStatusBarReadyListener {

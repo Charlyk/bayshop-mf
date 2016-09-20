@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.ui.pus;
 
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,7 +35,8 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
     private ArrayList<PUSParcel> mPUSParcels;
     private PUSParcelsAdapter mAdapter;
 
-    @BindView(R.id.pusItemsRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
 
     public PUSParcelsFragment() {
         // Required empty public constructor
@@ -51,7 +53,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_pusparcels, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (ParentActivity) getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);

@@ -15,10 +15,20 @@ import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.User;
+import com.softranger.bayshopmf.network.BayShopApiInterface;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * Created by eduard on 29.04.16.
@@ -32,7 +42,11 @@ public class Application extends android.app.Application {
     private static SharedPreferences preferences;
     public static String currentToken;
     public static User user;
+    private static SimpleDateFormat serverFormat;
+    private static SimpleDateFormat friendlyFormat;
     public static HashMap<String, Integer> counters;
+
+    private static Retrofit retrofit;
 
     public static Application getInstance() {
         return instance;
@@ -42,6 +56,17 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        ObjectMapper objectMapper = new ObjectMapper();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        objectMapper.setDateFormat(dateFormat);
+        retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.Api.URL)
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .build();
+
+        serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+
         preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         currentToken = preferences.getString(AUTH_TOKEN, "no token");
         counters = new HashMap<>();
@@ -75,5 +100,25 @@ public class Application extends android.app.Application {
 
     public static int getCount(String parcelStatus) {
         return counters.get(parcelStatus);
+    }
+
+    public static BayShopApiInterface apiInterface() {
+        return retrofit.create(BayShopApiInterface.class);
+    }
+
+    public static String getFormattedDate(Date date) {
+        Date today = new Date();
+        String formattedDate = "";
+        formattedDate = friendlyFormat.format(date);
+        long diff = today.getTime() - date.getTime();
+        long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        if (days > 0) {
+            formattedDate = formattedDate + " (" + days + " " + Application.getInstance().getString(R.string.days_ago) + ")";
+        } else {
+            formattedDate = formattedDate + " (" + Application.getInstance().getString(R.string.today) + ")";
+        }
+
+        return formattedDate;
     }
 }

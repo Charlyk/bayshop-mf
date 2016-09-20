@@ -83,7 +83,9 @@ public abstract class ParentFragment extends Fragment {
         }
     };
 
-    public abstract void onServerResponse(JSONObject response) throws Exception;
+    public void onServerResponse(JSONObject response) throws Exception {
+
+    }
 
     public void onServerError(String message) {
 

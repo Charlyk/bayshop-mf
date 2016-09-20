@@ -16,11 +16,11 @@ import com.softranger.bayshopmf.util.Imageble;
 public class Photo implements Parcelable, Imageble {
     @JsonProperty("photoThumbnail") String mSmallImage;
     @JsonProperty("photo") String mBigImage;
-    private Bitmap mSmallBitmap;
-    private Bitmap mBigBitmap;
+    Bitmap mSmallBitmap;
+    Bitmap mBigBitmap;
 
     private Photo() {
-
+        // empty constructor for jackson and builder
     }
 
     protected Photo(Parcel in) {
@@ -44,16 +44,8 @@ public class Photo implements Parcelable, Imageble {
         return mSmallImage;
     }
 
-    public void setSmallImage(String smallImage) {
-        mSmallImage = Constants.Api.BASE_URL + smallImage;
-    }
-
     public String getBigImage() {
         return mBigImage;
-    }
-
-    public void setBigImage(String bigImage) {
-        mBigImage = Constants.Api.BASE_URL + bigImage;
     }
 
     public Bitmap getSmallBitmap() {

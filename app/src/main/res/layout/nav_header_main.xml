@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="208dp"
+                android:layout_height="160dp"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:background="@color/colorAccent"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark">
@@ -46,34 +46,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="android.studio@android.com"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/add_packageButtonIcon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/additional_btns_bg"
-        android:layout_alignParentBottom="true"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/add_awaiting_parcel_24dp"
-            android:contentDescription="@string/add_awaiting_package"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp"
-            android:textColor="@android:color/white"
-            android:text="@string/add_awaiting_package"/>
     </LinearLayout>
 </RelativeLayout>

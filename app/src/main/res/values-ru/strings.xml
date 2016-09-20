@@ -313,4 +313,5 @@
     <string name="hated_it">Hated it</string>
     <string name="disliked_it">Disliked it</string>
     <string name="loved_it">Loved it</string>
+    <string name="enter_state">Please enter seller state name</string>
 </resources>

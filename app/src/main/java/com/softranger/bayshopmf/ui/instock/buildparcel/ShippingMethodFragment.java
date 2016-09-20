@@ -2,10 +2,6 @@ package com.softranger.bayshopmf.ui.instock.buildparcel;
 
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,13 +15,12 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ShippingMethodAdapter;
-import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.ShippingMethod;
+import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
-import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -77,9 +72,9 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_shipping_method, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (ParentActivity) getActivity();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.buildShippingMethodList);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragmentSwipeRefreshLayout);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mMethods = new ArrayList<>();
         mAdapter = new ShippingMethodAdapter(mMethods);

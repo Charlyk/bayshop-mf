@@ -8,6 +8,7 @@ import android.os.Message;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.CountryCode;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.Imageble;
 
 import java.io.BufferedInputStream;
@@ -47,13 +48,14 @@ public class ImageDownloadThread<T extends Imageble> extends Thread {
     public void run() {
         for (T object : mObjects) {
             try {
-                String strUrl = object.getImageUrl();
+                String strUrl = Constants.Api.BASE_URL + object.getImageUrl();
                 URL url = new URL(strUrl);
                 Bitmap bitmap = downloadImage(url);
                 object.setImage(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                // TODO: 9/20/16 set image resource in adapters instead of decoding it
                 if (object.getImage() == null) {
                     Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.no_image);
                     object.setImage(image);
