@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.InStockDetailed;
-import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.product.Product;
 
 import java.util.ArrayList;
 

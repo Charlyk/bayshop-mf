@@ -9,17 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.AwaitingArrival;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.model.PUSParcel;
-import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.packages.InProcessing;
 import com.softranger.bayshopmf.model.packages.LocalDepot;
@@ -29,7 +27,6 @@ import com.softranger.bayshopmf.util.ViewAnimator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -57,11 +54,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (mInStockItems.get(position) instanceof InStockItem) {
-            return IN_STOCK_ITEM;
-        } else if (mInStockItems.get(position) instanceof AwaitingArrival) {
-            return PRODUCT;
-        } else if (mInStockItems.get(position) instanceof PUSParcel) {
+        if (mInStockItems.get(position) instanceof PUSParcel) {
             return PUS_PARCEL;
         } else if (mInStockItems.get(position) instanceof InForming) {
             return IN_FORMING;
@@ -74,9 +67,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
 
         switch (viewType) {
-            case IN_STOCK_ITEM:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-                return new InStockViewHolder(view);
             case PUS_PARCEL:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_procesing_list_item, parent, false);
                 return new InProcessingViewHolder(view);
@@ -91,28 +81,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (mInStockItems.get(position) instanceof InStockItem) {
-            InStockViewHolder inStockViewHolder = (InStockViewHolder) holder;
-            inStockViewHolder.mInStockItem = (InStockItem) mInStockItems.get(position);
-
-            @DrawableRes int image = inStockViewHolder.mInStockItem.isHasDeclaration() ? R.mipmap.ic_uncheck_45dp : R.mipmap.ic_uncheck_invisible_45dp;
-            inStockViewHolder.mImageView.setImageResource(image);
-
-            if (!inStockViewHolder.mInStockItem.isSelected()) {
-                inStockViewHolder.mView.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
-            }
-
-            inStockViewHolder.mUIDLabel.setText(inStockViewHolder.mInStockItem.getParcelId());
-            String name = inStockViewHolder.mInStockItem.getName();
-            @ColorRes int color = android.R.color.black;
-            if (name == null || name.equals("null") || name.equals("")) {
-                name = mContext.getString(R.string.declaration_not_filled);
-                color = android.R.color.darker_gray;
-            }
-            inStockViewHolder.mProductName.setText(name);
-            inStockViewHolder.mProductName.setTextColor(mContext.getResources().getColor(color));
-            inStockViewHolder.mTrackingLabel.setText(inStockViewHolder.mInStockItem.getTrackingNumber());
-        } else if (mInStockItems.get(position) instanceof PUSParcel) {
+        if (mInStockItems.get(position) instanceof PUSParcel) {
             InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
             processingHolder.mProduct = (PUSParcel) mInStockItems.get(position);
             // check if item is an instance of local depot object
@@ -219,84 +188,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void deleteItem(int position) {
         mInStockItems.remove(position);
         notifyItemRemoved(position);
-    }
-
-    class InStockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ViewAnimator.AnimationListener {
-        final TextView mUIDLabel;
-        final TextView mTrackingLabel;
-        final TextView mProductName;
-        final ImageView mImageView;
-        ViewAnimator mViewAnimator;
-        InStockItem mInStockItem;
-        View mView;
-
-        public InStockViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-            mView.setOnLongClickListener(this);
-            mView.setOnClickListener(this);
-            mUIDLabel = (TextView) itemView.findViewById(R.id.product_name);
-            mProductName = (TextView) itemView.findViewById(R.id.productNameLabel);
-            mTrackingLabel = (TextView) itemView.findViewById(R.id.tracking_number);
-            mImageView = (ImageView) itemView.findViewById(R.id.item_image);
-            mImageView.setOnClickListener(this);
-            mViewAnimator = new ViewAnimator();
-            mViewAnimator.setAnimationListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.item_image: {
-                    if (mInStockItem.isHasDeclaration()) {
-                        mInStockItem.setSelected(!mInStockItem.isSelected());
-                        mViewAnimator.flip(mImageView);
-                        if (mOnItemClickListener != null) {
-                            mOnItemClickListener.onIconClick(mInStockItem, mInStockItem.isSelected(), getAdapterPosition());
-                        }
-                    } else {
-                        if (mOnItemClickListener != null) {
-                            mOnItemClickListener.onNoDeclarationItemSelected(mInStockItem, getAdapterPosition());
-                        }
-                    }
-                    break;
-                }
-                default: {
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onRowClick(mInStockItem, getAdapterPosition());
-                    }
-                }
-            }
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            if (mInStockItem.isHasDeclaration()) {
-                mInStockItem.setSelected(!mInStockItem.isSelected());
-                mViewAnimator.flip(mImageView);
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onIconClick(mInStockItem, mInStockItem.isSelected(), getAdapterPosition());
-                }
-            } else {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onNoDeclarationItemSelected(mInStockItem, getAdapterPosition());
-                }
-            }
-            return true;
-        }
-
-        @Override
-        public void onAnimationStarted() {
-            @ColorInt int color = mInStockItem.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
-                    mContext.getResources().getColor(R.color.colorPrimary);
-            mView.setBackgroundColor(color);
-        }
-
-        @Override
-        public void onAnimationFinished() {
-            @DrawableRes int image = mInStockItem.isSelected() ? R.mipmap.ic_check_45dp : R.mipmap.ic_uncheck_45dp;
-            mImageView.setImageResource(image);
-        }
     }
 
     class InProcessingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

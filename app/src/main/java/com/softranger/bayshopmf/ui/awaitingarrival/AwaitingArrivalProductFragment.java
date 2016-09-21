@@ -17,11 +17,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.AwaitingArrival;
-import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
+import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
+import com.softranger.bayshopmf.model.product.Product;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
@@ -32,30 +37,45 @@ import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AwaitingArrivalProductFragment extends ParentFragment implements View.OnClickListener {
+public class AwaitingArrivalProductFragment extends ParentFragment {
 
     private static final String PRODUCT_ARG = "product";
     public static final String ACTION_UPDATE = "update data";
 
-    private TextView mProductId;
-    private TextView mProductName;
-    private TextView mProductTracking;
-    private TextView mProductDate;
-    private TextView mProductPrice;
-    private Button mCheckProduct;
-    private Button mAdditionalPhoto;
-    private ImageView mStorageIcon;
-    private MainActivity mActivity;
-    private AwaitingArrival mAwaitingArrival;
+    @BindView(R.id.awaitingDetailsItemId) TextView mProductId;
+    @BindView(R.id.awaitingDetailsProductName) TextView mProductName;
+    @BindView(R.id.awaitingDetailsProductTracking) TextView mProductTracking;
+    @BindView(R.id.awaitingDetailsDate) TextView mProductDate;
+    @BindView(R.id.awaitingDetailsPrice) TextView mProductPrice;
+    @BindView(R.id.awaitingDetailsCheckProductBtn) Button mCheckProduct;
+    @BindView(R.id.awaitingDetailsAdditionalPhotosBtn) Button mAdditionalPhoto;
+    @BindView(R.id.awaitingDetailsStorageIcon) ImageView mStorageIcon;
+    @BindView(R.id.awaitingArrivalDetailsImageList) RecyclerView mRecyclerView;
+    @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
+    @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
 
-    private static boolean isDeleteClicked;
+    private MainActivity mActivity;
+    private Unbinder mUnbinder;
+    private Call<ServerResponse<AwaitingArrivalDetails>> mCall;
+    private AwaitingArrivalDetails mArrivalDetails;
+    private AwaitingArrival mAwaitingArrival;
+    private AlertDialog mAlertDialog;
 
     public AwaitingArrivalProductFragment() {
         // Required empty public constructor
@@ -75,29 +95,28 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
         mActivity = (MainActivity) getActivity();
+        mUnbinder = ButterKnife.bind(this, rootView);
+
+        // hide all layout while we don't have detailed parcel
+        mHolderLayout.setVisibility(View.GONE);
+
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
         intentFilter.addAction(ACTION_UPDATE);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
+
         mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.awaitingArrivalDetailsImageList);
-        LinearLayout noPhotosLayout = (LinearLayout) rootView.findViewById(R.id.noPhotoLayoutHolder);
+        mRecyclerView.setVisibility(View.GONE);
+        mNoPhotosHolder.setVisibility(View.VISIBLE);
 
-        recyclerView.setVisibility(View.GONE);
-        noPhotosLayout.setVisibility(View.VISIBLE);
+        mStorageIcon.setImageResource(R.mipmap.ic_usa_flag);
 
-        bindViews(rootView);
-        mProductId.setText(mAwaitingArrival.getUid());
-        mProductName.setText(mAwaitingArrival.getTitle());
-        mProductTracking.setText(mAwaitingArrival.getTracking());
-        mProductDate.setText(Application.getFormattedDate(mAwaitingArrival.getCreatedDate()));
-        mProductPrice.setText(mAwaitingArrival.getPrice());
-        mStorageIcon.setImageResource(getStorageIcon(Constants.US));
+        mCall = Application.apiInterface().getAwaitingParcelDetails(Application.currentToken, mAwaitingArrival.getId());
         mActivity.toggleLoadingProgress(true);
-        ApiClient.getInstance().getRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mAwaitingArrival.getId())), mHandler);
+        mCall.enqueue(mResponseCallback);
         return rootView;
     }
 
@@ -106,142 +125,155 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case CheckProductFragment.ACTION_CHECK_IN_PROCESSING:
-//                    mAwaitingArrival.setCheckInProgress(true);
+                    mArrivalDetails.setVerificationRequested(1);
                     mCheckProduct.setSelected(true);
                     mCheckProduct.setText(mActivity.getString(R.string.check_in_progress));
                     break;
                 case AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING:
-//                    mAwaitingArrival.setPhotoInProgress(true);
+                    mArrivalDetails.setPhotoRequested(1);
                     mAdditionalPhoto.setSelected(true);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
                     break;
                 case AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST:
-//                    mAwaitingArrival.setPhotoInProgress(false);
+                    mArrivalDetails.setPhotoRequested(0);
                     mAdditionalPhoto.setSelected(false);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.additional_photo));
                     break;
                 case CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT:
-//                    mAwaitingArrival.setCheckInProgress(false);
+                    mArrivalDetails.setVerificationRequested(0);
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
                 case ACTION_UPDATE:
-                    ApiClient.getInstance().getRequest(Constants.Api.urlWaitingArrivalDetails(String.valueOf(mAwaitingArrival.getId())), mHandler);
-                    Intent refresh = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
+                    mCall = Application.apiInterface().getAwaitingParcelDetails(Application.currentToken, mAwaitingArrival.getId());
+                    mCall.enqueue(mResponseCallback);
+                    Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
                     mActivity.sendBroadcast(refresh);
                     break;
             }
         }
     };
 
-    private int getStorageIcon(String storage) {
-        switch (storage) {
-            case Constants.US:
-                return R.mipmap.ic_usa_flag;
-            case Constants.GB:
-                return R.mipmap.ic_uk_flag;
-            case Constants.DE:
-                return R.mipmap.ic_de_flag;
+    private ResponseCallback<AwaitingArrivalDetails> mResponseCallback = new ResponseCallback<AwaitingArrivalDetails>() {
+        @Override
+        public void onSuccess(AwaitingArrivalDetails data) {
+            mArrivalDetails = data;
+            setDataInPlace(mArrivalDetails);
+            mActivity.toggleLoadingProgress(false);
         }
-        return R.mipmap.ic_usa_flag;
-    }
 
-    private void setDataInPlace(Product product) {
-        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        SimpleDateFormat output = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
-        mProductId.setText(product.getProductId());
-        mProductName.setText(product.getProductName());
-        mProductTracking.setText(product.getTrackingNumber());
-        Date date = new Date();
-        try {
-            date = input.parse(product.getDate());
-        } catch (Exception e) {
-            e.printStackTrace();
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
         }
-        mProductDate.setText(output.format(date));
-        String productPrice = product.getCurrency() + product.getProductPrice();
+
+        @Override
+        public void onError(Call<ServerResponse<AwaitingArrivalDetails>> call, Throwable t) {
+            // TODO: 9/21/16 handle network error
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
+
+    private void setDataInPlace(AwaitingArrivalDetails arrivalDetails) {
+        mProductId.setText(arrivalDetails.getUid());
+        mProductName.setText(arrivalDetails.getTitle());
+        mProductTracking.setText(arrivalDetails.getTracking());
+
+        mProductDate.setText(Application.getFormattedDate(arrivalDetails.getCreatedDate()));
+        String productPrice = arrivalDetails.getCurrency() + arrivalDetails.getPrice();
         mProductPrice.setText(productPrice);
 
-        mCheckProduct.setSelected(product.isCheckInProgress());
+        mCheckProduct.setSelected(arrivalDetails.getVerificationRequested() == 1);
         if (mCheckProduct.isSelected()) {
             mCheckProduct.setText(mActivity.getString(R.string.check_in_progress));
         }
 
-        mAdditionalPhoto.setSelected(product.isPhotoInProgress());
+        mAdditionalPhoto.setSelected(arrivalDetails.getPhotoRequested() == 1);
         if (mAdditionalPhoto.isSelected()) {
             mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
         }
+
+        mHolderLayout.setVisibility(View.VISIBLE);
     }
 
-    private void bindViews(View view) {
-        // Text views
-        mProductId = (TextView) view.findViewById(R.id.awaitingDetailsItemId);
-        mProductName = (TextView) view.findViewById(R.id.awaitingDetailsProductName);
-        mProductTracking = (TextView) view.findViewById(R.id.awaitingDetailsProductTracking);
-        mProductDate = (TextView) view.findViewById(R.id.awaitingDetailsDate);
-        mProductPrice = (TextView) view.findViewById(R.id.awaitingDetailsPrice);
-
-        // Buttons
-
-        Button editDetails = (Button) view.findViewById(R.id.awaitingDetailsEditButton);
-        editDetails.setOnClickListener(this);
-
-        ImageButton deleteProduct = (ImageButton) view.findViewById(R.id.awaitingDetailsDeleteButton);
-        deleteProduct.setOnClickListener(this);
-
-        mCheckProduct = (Button) view.findViewById(R.id.awaitingDetailsCheckProductBtn);
-        mCheckProduct.setOnClickListener(this);
-
-        mAdditionalPhoto = (Button) view.findViewById(R.id.awaitingDetailsAdditionalPhotosBtn);
-        mAdditionalPhoto.setOnClickListener(this);
-
-        // Image views
-        mStorageIcon = (ImageView) view.findViewById(R.id.awaitingDetailsStorageIcon);
+    @OnClick(R.id.awaitingDetailsCheckProductBtn)
+    void toggleCheckProduct() {
+        mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mArrivalDetails.getId()),
+                mArrivalDetails.getVerificationRequested() != 0, true), true);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-//            case R.id.awaitingDetailsEditButton:
-//                mActivity.addFragment(EditAwaitingFragment.newInstance(mAwaitingArrival), true);
-//                break;
-//            case R.id.awaitingDetailsDeleteButton:
-//                isDeleteClicked = true;
-//                deleteItem(mAwaitingArrival);
-//                break;
-//            case R.id.awaitingDetailsCheckProductBtn:
-//                mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mAwaitingArrival.getId()),
-//                        mAwaitingArrival.isCheckInProgress(), true), true);
-//                break;
-//            case R.id.awaitingDetailsAdditionalPhotosBtn:
-//                mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mAwaitingArrival.getId()),
-//                        mAwaitingArrival.isPhotoInProgress(), true), true);
-//                break;
-        }
+    @OnClick(R.id.awaitingDetailsAdditionalPhotosBtn)
+    void toggleAdditionalPhotos() {
+        mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mArrivalDetails.getId()),
+                mArrivalDetails.getPhotoRequested() != 0, true), true);
     }
-    AlertDialog dialog = null;
-    private void deleteItem(final Product product) {
-        dialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
-                + mAwaitingArrival.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
+
+    @OnClick(R.id.awaitingDetailsEditButton)
+    void editParcelDetails() {
+        mActivity.addFragment(EditAwaitingFragment.newInstance(mArrivalDetails), true);
+    }
+
+    @OnClick(R.id.awaitingDetailsDeleteButton)
+    void deleteCurrentParcel() {
+        deleteItem(mArrivalDetails);
+    }
+
+    private void deleteItem(final AwaitingArrival product) {
+        mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
+                        + product.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
                 getString(R.string.yes), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(
-                                String.valueOf(product.getID())), mHandler);
                         mActivity.toggleLoadingProgress(true);
-                        dialog.dismiss();
-                        int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
-                        count -= 1;
-                        Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
-                        mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+
+                        Application.apiInterface().deleteAwaitingParcel(Application.currentToken,
+                                mArrivalDetails.getId()).enqueue(new Callback<ServerResponse>() {
+                            @Override
+                            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                                if (response.body() != null) {
+                                    if (response.body().getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
+                                        Intent intent = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
+                                        mActivity.sendBroadcast(intent);
+                                        mActivity.onBackPressed();
+
+                                        // get parcels count
+                                        int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                                        // decrease it by one
+                                        count -= 1;
+                                        // put it back
+                                        Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
+                                        // update counters from menu
+                                        mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                                    } else {
+                                        Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    try {
+                                        ServerResponse serverResponse = new ObjectMapper().readValue(response.errorBody().string(), ServerResponse.class);
+                                        Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ServerResponse> call, Throwable t) {
+                                // TODO: 9/21/16 handle errors
+                            }
+                        });
+
+                        // close the dialog
+                        mAlertDialog.dismiss();
                     }
                 }, getString(R.string.no), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (dialog != null) dialog.dismiss();
+                        if (mAlertDialog != null) mAlertDialog.dismiss();
                     }
                 }, 0);
-        if (dialog != null) dialog.show();
+        if (mAlertDialog != null) mAlertDialog.show();
     }
 
     @Override
@@ -251,31 +283,10 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Vi
     }
 
     @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-        if (isDeleteClicked) {
-            mActivity.toggleLoadingProgress(true);
-            Intent intent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
-            intent.putExtra("deposit", Constants.US);
-            mActivity.sendBroadcast(intent);
-            mActivity.onBackPressed();
-        } else {
-//            JSONObject data = response.getJSONObject("data");
-//            mAwaitingArrival.setDate(data.getString("createdDate"));
-//            mAwaitingArrival.setCurrency(data.getString("currency"));
-//            mAwaitingArrival.setProductPrice(data.getString("price"));
-//            mAwaitingArrival.setProductUrl(data.getString("productUrl"));
-//            mAwaitingArrival.setCheckInProgress(data.getInt("verificationPackageRequested") == 1);
-//            mAwaitingArrival.setCheckComment(data.getString("verificationPackageRequestedComments"));
-//            mAwaitingArrival.setPhotoInProgress(data.getInt("photosPackageRequested") == 1);
-//            mAwaitingArrival.setPhotoComment(data.getString("photosPackageRequestedComments"));
-//            setDataInPlace(mAwaitingArrival);
-        }
-    }
-
-    @Override
-    public void onHandleMessageEnd() {
-        isDeleteClicked = false;
-        mActivity.toggleLoadingProgress(false);
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mCall != null) mCall.cancel();
+        mUnbinder.unbind();
     }
 
     @Override

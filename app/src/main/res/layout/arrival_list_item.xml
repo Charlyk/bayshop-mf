@@ -61,18 +61,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/date"
-        android:id="@+id/awaitingDateTitle"
-        android:layout_below="@id/awaitingTrackingStatusBarView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/weight"
         android:layout_marginTop="5dp"
         android:id="@+id/awaitingWeightTitle"
@@ -142,4 +130,14 @@
         android:background="@drawable/drop_shadow"
         android:layout_below="@id/awaitingDateLabel"
         android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:id="@+id/awaitingDateTitle"
+        android:layout_alignBaseline="@+id/awaitingWeightTitle"
+        android:layout_alignBottom="@+id/awaitingWeightTitle"
+        android:layout_alignLeft="@+id/awaitingTrackingStatusBarView"
+        android:layout_alignStart="@+id/awaitingTrackingStatusBarView"/>
 </RelativeLayout>

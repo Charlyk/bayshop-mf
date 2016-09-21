@@ -10,7 +10,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.PaymentMethod;
+import com.softranger.bayshopmf.model.payment.PaymentMethod;
 
 import java.util.ArrayList;
 

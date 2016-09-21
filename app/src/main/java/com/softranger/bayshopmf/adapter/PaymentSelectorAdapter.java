@@ -9,8 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.CountryCode;
-import com.softranger.bayshopmf.model.Currency;
+import com.softranger.bayshopmf.model.payment.Currency;
 
 import java.util.List;
 

@@ -1,9 +1,8 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.user;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.softranger.bayshopmf.util.SpinnerObj;
 
 /**

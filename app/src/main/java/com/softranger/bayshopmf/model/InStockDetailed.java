@@ -2,6 +2,9 @@ package com.softranger.bayshopmf.model;
 
 import android.os.Parcel;
 
+import com.softranger.bayshopmf.model.product.Photo;
+import com.softranger.bayshopmf.model.product.Product;
+
 import java.util.ArrayList;
 
 /**

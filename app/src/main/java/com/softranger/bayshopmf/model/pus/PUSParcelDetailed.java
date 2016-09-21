@@ -1,9 +1,13 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.pus;
 
 import android.os.Parcel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.softranger.bayshopmf.model.product.ShippingMethod;
+import com.softranger.bayshopmf.model.address.Address;
+import com.softranger.bayshopmf.model.address.Coordinates;
+import com.softranger.bayshopmf.model.box.Box;
 
 import java.util.ArrayList;
 
@@ -27,14 +31,17 @@ public class PUSParcelDetailed extends PUSParcel {
     @JsonProperty("totalPrice") String mTotalPrice;
     @JsonProperty("deliveryPrice") String mDeliveryPrice;
     @JsonProperty("status") String mStringStatus;
-    @JsonProperty("shipping") ShippingMethod mShippingMethod;
-    @JsonProperty("address") Address mAddress;
+    @JsonProperty("shipping")
+    ShippingMethod mShippingMethod;
+    @JsonProperty("address")
+    Address mAddress;
     @JsonProperty("boxes") ArrayList<Box> mBoxes;
     @JsonProperty("insuranceCommission") String mInsuranceCommission;
     @JsonProperty("percent") int mPercent;
     @JsonProperty("tracking") String mTrackingNum;
     @JsonProperty("trackingUrl") String mTrackingUrl;
-    @JsonProperty("coordinates") Coordinates mCoordinates;
+    @JsonProperty("coordinates")
+    Coordinates mCoordinates;
     @JsonProperty("signature") String mSignatureUrl;
 
     public PUSParcelDetailed() {

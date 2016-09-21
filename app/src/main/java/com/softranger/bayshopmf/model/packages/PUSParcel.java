@@ -3,9 +3,9 @@ package com.softranger.bayshopmf.model.packages;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.softranger.bayshopmf.model.Address;
-import com.softranger.bayshopmf.model.Product;
-import com.softranger.bayshopmf.model.ShippingMethod;
+import com.softranger.bayshopmf.model.address.Address;
+import com.softranger.bayshopmf.model.product.Product;
+import com.softranger.bayshopmf.model.product.ShippingMethod;
 
 import java.util.ArrayList;
 

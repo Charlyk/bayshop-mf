@@ -2,9 +2,9 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             xmlns:fab="http://schemas.android.com/apk/res-auto"
              android:background="#f1f1f1"
-             android:clickable="true"
-             tools:context="com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment">
+             android:clickable="true">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fragmentSwipeRefreshLayout"
@@ -17,4 +17,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addAwaitingFloatingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        fab:fabSize="normal"
+        android:visibility="gone"
+        fab:elevation="4dp"
+        fab:fab_colorNormal="@color/colorGreenAction"
+        fab:fab_colorPressed="@color/colorGreenActionDark"
+        fab:fab_plusIconColor="@android:color/white"
+        fab:fab_icon="@mipmap/ic_add_white_18dp"
+        fab:fab_title="@string/create_parcel"/>
 </FrameLayout>

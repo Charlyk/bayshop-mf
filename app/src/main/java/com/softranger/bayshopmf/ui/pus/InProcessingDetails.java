@@ -32,9 +32,9 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
-import com.softranger.bayshopmf.model.PUSParcel;
-import com.softranger.bayshopmf.model.PUSParcelDetailed;
-import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.model.pus.PUSParcel;
+import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
+import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
@@ -76,12 +76,18 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         // Required empty public constructor
     }
 
-    public static InProcessingDetails newInstance(@NonNull com.softranger.bayshopmf.model.PUSParcel product) {
+    public static InProcessingDetails newInstance(@NonNull PUSParcel product) {
         Bundle args = new Bundle();
         args.putParcelable(PRODUCT_ARG, product);
         InProcessingDetails fragment = new InProcessingDetails();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPackage = getArguments().getParcelable(PRODUCT_ARG);
     }
 
     @Override
@@ -92,7 +98,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
-        mPackage = getArguments().getParcelable(PRODUCT_ARG);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ApiClient.getInstance().getRequest(Constants.Api.urlViewParcelDetails(String
@@ -126,7 +132,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         mPUSParcelDetailed.setRealWeight(mPackage.getRealWeight());
 
         mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, InProcessingDetails.this);
-        if (mPUSParcelDetailed.getParcelStatus() == com.softranger.bayshopmf.model.PUSParcel.PUSStatus.in_the_way) {
+        if (mPUSParcelDetailed.getParcelStatus() == PUSParcel.PUSStatus.in_the_way) {
             mAdapter.setShowMap(true);
         }
         mAdapter.setOnItemClickListener(this);

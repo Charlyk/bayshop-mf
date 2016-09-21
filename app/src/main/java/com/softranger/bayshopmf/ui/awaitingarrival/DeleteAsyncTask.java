@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.adapter.AwaitingArrivalAdapter;
-import com.softranger.bayshopmf.model.AwaitingArrival;
-import com.softranger.bayshopmf.model.ServerResponse;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
+import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;

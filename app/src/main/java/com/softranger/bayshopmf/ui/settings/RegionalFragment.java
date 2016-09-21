@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.SpinnerAdapter;
-import com.softranger.bayshopmf.model.Country;
-import com.softranger.bayshopmf.model.Language;
+import com.softranger.bayshopmf.model.address.Country;
+import com.softranger.bayshopmf.model.user.Language;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ParentActivity;

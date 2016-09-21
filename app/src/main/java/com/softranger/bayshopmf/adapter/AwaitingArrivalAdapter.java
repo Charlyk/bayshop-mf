@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.AwaitingArrival;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 

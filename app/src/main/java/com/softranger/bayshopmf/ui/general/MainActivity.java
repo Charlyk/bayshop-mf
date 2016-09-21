@@ -45,6 +45,7 @@ import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
 import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
+import com.softranger.bayshopmf.ui.instock.InStockFragment;
 import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.ui.payment.PaymentActivity;
 import com.softranger.bayshopmf.ui.pus.PUSParcelsFragment;
@@ -327,7 +328,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                 break;
             case R.id.nav_inStock:
                 selectedFragment = SelectedFragment.in_stock;
-                replaceFragment(StorageItemsFragment.newInstance(Constants.Api.urlInStockItems(Constants.US), Constants.US));
+                replaceFragment(InStockFragment.newInstance());
                 mFirstToolbarTitle = getString(selectedFragment.fragmentName());
                 setToolbarTitle(mFirstToolbarTitle);
                 break;

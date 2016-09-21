@@ -22,11 +22,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Address;
-import com.softranger.bayshopmf.model.Box;
-import com.softranger.bayshopmf.model.PUSParcel;
-import com.softranger.bayshopmf.model.PUSParcelDetailed;
-import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.address.Address;
+import com.softranger.bayshopmf.model.box.Box;
+import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 

@@ -2,16 +2,14 @@ package com.softranger.bayshopmf.adapter;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.ChatMessage;
+import com.softranger.bayshopmf.model.chat.ChatMessage;
 
 import java.util.ArrayList;
 

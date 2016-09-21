@@ -3,10 +3,6 @@ package com.softranger.bayshopmf.ui.instock.buildparcel;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,19 +16,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Insurance;
+import com.softranger.bayshopmf.model.product.Insurance;
 import com.softranger.bayshopmf.model.packages.InForming;
-import com.softranger.bayshopmf.model.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;

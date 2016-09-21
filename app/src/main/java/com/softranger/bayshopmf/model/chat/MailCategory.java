@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.chat;
 
 import com.softranger.bayshopmf.util.SpinnerObj;
 

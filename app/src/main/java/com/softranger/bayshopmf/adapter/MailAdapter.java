@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.MailMessage;
+import com.softranger.bayshopmf.model.chat.MailMessage;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ViewAnimator;
 

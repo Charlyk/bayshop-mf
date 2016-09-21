@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.MailAdapter;
-import com.softranger.bayshopmf.model.MailMessage;
+import com.softranger.bayshopmf.model.chat.MailMessage;
 
 import java.util.ArrayList;
 

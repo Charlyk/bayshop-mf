@@ -2,10 +2,6 @@ package com.softranger.bayshopmf.ui.instock.buildparcel;
 
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -24,7 +20,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PackageDetailsAdapter;
 import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.packages.InForming;
-import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.product.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;

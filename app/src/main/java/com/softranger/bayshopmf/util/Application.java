@@ -1,23 +1,14 @@
 package com.softranger.bayshopmf.util;
 
 import android.content.SharedPreferences;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.User;
+import com.softranger.bayshopmf.model.user.User;
 import com.softranger.bayshopmf.network.BayShopApiInterface;
 
 import java.text.DateFormat;
@@ -112,7 +103,8 @@ public class Application extends android.app.Application {
 
     public static String getFormattedDate(Date date) {
         Date today = new Date();
-        String formattedDate = "";
+        if (date == null) date = new Date();
+        String formattedDate;
         formattedDate = friendlyFormat.format(date);
         long diff = today.getTime() - date.getTime();
         long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);

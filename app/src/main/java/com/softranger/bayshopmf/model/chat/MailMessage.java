@@ -1,9 +1,7 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.chat;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.softranger.bayshopmf.util.SpinnerObj;
 
 /**
  * Created by Eduard Albu on 7/20/16, 07, 2016

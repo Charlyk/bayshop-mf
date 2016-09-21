@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.Imageble;
 

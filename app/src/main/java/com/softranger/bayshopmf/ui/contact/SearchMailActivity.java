@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,7 @@ import android.view.View;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.MailAdapter;
-import com.softranger.bayshopmf.model.MailMessage;
+import com.softranger.bayshopmf.model.chat.MailMessage;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 

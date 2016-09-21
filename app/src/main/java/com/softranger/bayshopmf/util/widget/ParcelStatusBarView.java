@@ -18,9 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.PUSParcel;
-
-import java.util.HashMap;
 
 /**
  * Created by Eduard Albu on 9/14/16, 09, 2016
@@ -298,7 +295,7 @@ public class ParcelStatusBarView extends RelativeLayout {
             mStatusNameLabel.getGlobalVisibleRect(rect);
             // if text right or left side is not greater the parent right or left side,
             // update text position
-            if (rect.left >= parentLeft && rect.right <= parentRight) {
+            if (rect.left > parentLeft && rect.right <= parentRight) {
                 mStatusNameLabel.setX(animatedValue - (rect.width() / 2));
             }
         }

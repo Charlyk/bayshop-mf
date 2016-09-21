@@ -1,7 +1,7 @@
 package com.softranger.bayshopmf.network;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softranger.bayshopmf.model.ServerResponse;
+import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.util.Constants;
 
 import java.io.IOException;

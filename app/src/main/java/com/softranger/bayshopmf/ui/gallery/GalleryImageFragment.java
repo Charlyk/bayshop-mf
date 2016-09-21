@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.util.Constants;
 
 import java.net.URL;

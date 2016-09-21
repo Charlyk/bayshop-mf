@@ -3,13 +3,12 @@ package com.softranger.bayshopmf.ui.gallery;
 import android.app.Fragment;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.GalleryPagerAdapter;
-import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 

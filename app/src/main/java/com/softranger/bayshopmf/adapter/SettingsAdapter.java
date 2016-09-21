@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Setting;
+import com.softranger.bayshopmf.model.app.Setting;
 
 import java.util.ArrayList;
 

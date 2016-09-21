@@ -1,6 +1,10 @@
 package com.softranger.bayshopmf.ui.awaitingarrival;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,13 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.AwaitingArrivalAdapter;
-import com.softranger.bayshopmf.model.AwaitingArrival;
-import com.softranger.bayshopmf.model.ServerResponse;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
@@ -28,16 +33,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefreshLayout.OnRefreshListener,
-        Callback<ServerResponse<ArrayList<AwaitingArrival>>>, AwaitingArrivalAdapter.OnAwaitingClickListener {
+        AwaitingArrivalAdapter.OnAwaitingClickListener {
+
+    public static final String ACTION_SHOW_BTN = "SHOW FLOATING BUTTON";
 
     private MainActivity mActivity;
     private Unbinder mUnbinder;
@@ -49,13 +55,14 @@ public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefr
 
     private static final SparseArray<ParcelStatusBarView.BarColor> COLOR_MAP = new SparseArray<ParcelStatusBarView.BarColor>() {{
         put(1, ParcelStatusBarView.BarColor.green);
-        put(2, ParcelStatusBarView.BarColor.green);
-        put(3, ParcelStatusBarView.BarColor.green);
+        put(2, ParcelStatusBarView.BarColor.gray);
+        put(3, ParcelStatusBarView.BarColor.red);
         put(4, ParcelStatusBarView.BarColor.green);
     }};
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
+    @BindView(R.id.addAwaitingFloatingButton) FloatingActionButton mActionButton;
 
     public AwaitingArrivalFragment() {
         // Required empty public constructor
@@ -74,12 +81,18 @@ public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefr
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (MainActivity) getActivity();
+        IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
+        intentFilter.addAction(ACTION_SHOW_BTN);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mUnbinder = ButterKnife.bind(this, view);
 
         mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems(Application.currentToken);
 
         mActivity.toggleLoadingProgress(true);
-        mWaitingListCall.enqueue(this);
+        mWaitingListCall.enqueue(mResponseCallback);
+
+        // show action button
+        mActionButton.setVisibility(View.VISIBLE);
 
         // Create the adapter for this fragment and pass it to recycler view
         mAwaitingArrivals = new ArrayList<>();
@@ -102,36 +115,63 @@ public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefr
         return ParentActivity.SelectedFragment.awaiting_arrival;
     }
 
+    @OnClick(R.id.addAwaitingFloatingButton)
+    void addNewAwaitingParcel() {
+        mActivity.addFragment(AddAwaitingFragment.newInstance(), false);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mWaitingListCall.cancel();
+        if (mWaitingListCall != null) mWaitingListCall.cancel();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
         mUnbinder.unbind();
     }
 
-    @Override
-    public void onResponse(Call<ServerResponse<ArrayList<AwaitingArrival>>> call,
-                           Response<ServerResponse<ArrayList<AwaitingArrival>>> response) {
-        ServerResponse<ArrayList<AwaitingArrival>> serverResponse = response.body();
-        if (serverResponse.getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
-            mAdapter.refreshList(serverResponse.getData());
+    /**
+     * Awaiting arrival list request callback
+     */
+    private ResponseCallback<ArrayList<AwaitingArrival>> mResponseCallback = new ResponseCallback<ArrayList<AwaitingArrival>>() {
+        @Override
+        public void onSuccess(ArrayList<AwaitingArrival> data) {
+            mAdapter.refreshList(data);
             mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
-        } else {
-            Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
-        mActivity.toggleLoadingProgress(false);
-        mRefreshLayout.setRefreshing(false);
-    }
 
-    @Override
-    public void onFailure(Call<ServerResponse<ArrayList<AwaitingArrival>>> call, Throwable t) {
-        mActivity.toggleLoadingProgress(false);
-        mRefreshLayout.setRefreshing(false);
-    }
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<ArrayList<AwaitingArrival>>> call, Throwable t) {
+            // TODO: 9/21/16 handle errors
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
+        }
+    };
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case AddAwaitingFragment.ACTION_ITEM_ADDED:
+                    onRefresh();
+                    break;
+                case ACTION_SHOW_BTN:
+                    mActionButton.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onRefresh() {
-        mWaitingListCall.clone().enqueue(this);
+        mWaitingListCall.clone().enqueue(mResponseCallback);
     }
 
     @Override

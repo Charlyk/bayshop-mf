@@ -17,10 +17,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
+import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
+import com.softranger.bayshopmf.model.product.Product;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.ui.general.WebViewFragment;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentFragment;
 
@@ -32,15 +33,13 @@ import okhttp3.RequestBody;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EditAwaitingFragment extends ParentFragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class EditAwaitingFragment extends ParentFragment implements View.OnClickListener {
 
     private static final String PRODUCT_ARG = "product argument";
 
     private EditText mNameInput, mTrackingInput, mUrlInput, mPriceInput;
-    private RadioButton mUsaSelector, mUkSelector, mDeSelector;
-    private RadioGroup mStorageSelector;
     private Button mSaveButton;
-    private static Product product;
+    private static AwaitingArrivalDetails product;
     private MainActivity mActivity;
     private View mRootView;
     private CustomTabsIntent mTabsIntent;
@@ -49,9 +48,9 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         // Required empty public constructor
     }
 
-    public static EditAwaitingFragment newInstance(Product product) {
+    public static EditAwaitingFragment newInstance(AwaitingArrivalDetails awaitingArrivalDetails) {
         Bundle args = new Bundle();
-        args.putParcelable(PRODUCT_ARG, product);
+        args.putParcelable(PRODUCT_ARG, awaitingArrivalDetails);
         EditAwaitingFragment fragment = new EditAwaitingFragment();
         fragment.setArguments(args);
         return fragment;
@@ -65,27 +64,16 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         mActivity = (MainActivity) getActivity();
         product = getArguments().getParcelable(PRODUCT_ARG);
         bindViews(mRootView);
-        mNameInput.setText(product.getProductName());
-        mTrackingInput.setText(product.getTrackingNumber());
-        mUrlInput.setText(product.getProductUrl());
-        mPriceInput.setText(product.getProductPrice());
+
+        mNameInput.setText(product.getTitle());
+        mTrackingInput.setText(product.getTracking());
+        mUrlInput.setText(product.getUrl());
+        mPriceInput.setText(product.getPrice());
 
         CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
         tabsBuilder.setToolbarColor(mActivity.getResources().getColor(R.color.colorPrimary));
         mTabsIntent = tabsBuilder.build();
 
-        switch (product.getDeposit()) {
-            case Constants.USA:
-            case Constants.US:
-                mUsaSelector.setChecked(true);
-                break;
-            case Constants.UK:
-            case Constants.GB:
-                mUkSelector.setChecked(true);
-                break;
-            case Constants.DE:
-                mDeSelector.setChecked(true);
-        }
         return mRootView;
     }
 
@@ -98,29 +86,8 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
         mSaveButton = (Button) view.findViewById(R.id.editAwaitingSaveButton);
         mSaveButton.setOnClickListener(this);
 
-        mStorageSelector = (RadioGroup) view.findViewById(R.id.editAwaitingStorageSelectorGroup);
-        mStorageSelector.setOnCheckedChangeListener(this);
-
-        mUsaSelector = (RadioButton) view.findViewById(R.id.editAwaitingUsaSelector);
-        mUkSelector = (RadioButton) view.findViewById(R.id.editAwaitingUkSelector);
-        mDeSelector = (RadioButton) view.findViewById(R.id.editAwaitingDeSelector);
-
         ImageButton openUrlBtn = (ImageButton) view.findViewById(R.id.openUrlArrivalBtn);
         openUrlBtn.setOnClickListener(this);
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.editAwaitingUsaSelector:
-                product.setDeposit(Constants.USA);
-                break;
-            case R.id.editAwaitingUkSelector:
-            case R.id.editAwaitingDeSelector:
-                Snackbar.make(mRootView, getString(R.string.not_suported), Snackbar.LENGTH_SHORT).show();
-                mUsaSelector.setChecked(true);
-                break;
-        }
     }
 
     @Override
@@ -153,32 +120,32 @@ public class EditAwaitingFragment extends ParentFragment implements View.OnClick
                 return;
             }
 
-            product.setProductName(productName);
+            product.setTitle(productName);
             product.setTrackingNumber(trackingNumber);
             product.setProductUrl(urlToProduct);
-            product.setProductPrice(price);
+            product.setPackagePrice(price);
             RequestBody body = new FormBody.Builder()
-                    .add("storage", product.getDeposit())
-                    .add("tracking", product.getTrackingNumber())
-                    .add("title", product.getProductName())
-                    .add("url", product.getProductUrl())
-                    .add("packagePrice", product.getProductPrice())
+                    .add("storage", Constants.USA)
+                    .add("tracking", product.getTracking())
+                    .add("title", product.getTitle())
+                    .add("url", product.getUrl())
+                    .add("packagePrice", product.getPrice())
                     .build();
-            ApiClient.getInstance().postRequest(body, Constants.Api.urlEditWaitingArrivalItem(String.valueOf(product.getID())), mHandler);
+            ApiClient.getInstance().postRequest(body, Constants.Api.urlEditWaitingArrivalItem(String.valueOf(product.getId())), mHandler);
             mActivity.toggleLoadingProgress(true);
         }
     }
 
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
-        JSONObject data = response.getJSONObject("data");
-        product.setProductName(data.getString("packageName"));
-        product.setID(Integer.parseInt(data.getString("id")));
-        product.setDeposit(data.getString("storage").toLowerCase());
-        product.setTrackingNumber(data.getString("tracking"));
-        product.setProductPrice(data.getString("packagePrice"));
-        product.setProductUrl(data.getString("url"));
-        product.setBarcode(data.getString("barCode"));
+//        JSONObject data = response.getJSONObject("data");
+//        product.setTitle(data.getString("packageName"));
+//        product.set(Integer.parseInt(data.getString("id")));
+//        product.setDeposit(data.getString("storage").toLowerCase());
+//        product.setTrackingNumber(data.getString("tracking"));
+//        product.setProductPrice(data.getString("packagePrice"));
+//        product.setProductUrl(data.getString("url"));
+//        product.setBarcode(data.getString("barCode"));
 
         Snackbar.make(mRootView, getString(R.string.saved_succesfuly), Snackbar.LENGTH_SHORT).show();
         Intent update = new Intent(AwaitingArrivalProductFragment.ACTION_UPDATE);

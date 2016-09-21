@@ -6,16 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.ParcelsCount;
-import com.softranger.bayshopmf.model.ServerResponse;
-import com.softranger.bayshopmf.model.User;
+import com.softranger.bayshopmf.model.app.ParcelsCount;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.user.User;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.Constants;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 
 public class SplashActivity extends AppCompatActivity {
 

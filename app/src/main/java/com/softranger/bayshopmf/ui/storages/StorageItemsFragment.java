@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,13 +25,13 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
-import com.softranger.bayshopmf.model.AwaitingArrival;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.model.Product;
+import com.softranger.bayshopmf.model.product.Product;
+import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
-import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalProductFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
@@ -46,14 +44,12 @@ import com.softranger.bayshopmf.util.ParentFragment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.Response;
 
 
 /**
@@ -310,7 +306,7 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     }
 
     @Override
-    public void onInProcessingProductClick(com.softranger.bayshopmf.model.PUSParcel processingPackage, int position) {
+    public void onInProcessingProductClick(PUSParcel processingPackage, int position) {
 
     }
 

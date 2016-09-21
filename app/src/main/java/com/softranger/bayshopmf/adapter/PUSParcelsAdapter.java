@@ -12,15 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.PUSParcel;
+import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

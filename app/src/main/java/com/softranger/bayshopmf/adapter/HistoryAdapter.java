@@ -1,7 +1,6 @@
 package com.softranger.bayshopmf.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.History;
+import com.softranger.bayshopmf.model.payment.History;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

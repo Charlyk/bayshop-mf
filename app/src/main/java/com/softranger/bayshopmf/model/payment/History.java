@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.payment;
 
 import android.os.Parcel;
 import android.os.Parcelable;

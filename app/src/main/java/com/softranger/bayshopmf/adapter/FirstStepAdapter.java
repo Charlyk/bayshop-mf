@@ -8,9 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.InStockDetailed;
 import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.model.Photo;
 
 import java.util.ArrayList;
 

@@ -1,18 +1,12 @@
 package com.softranger.bayshopmf.ui.contact;
 
 import android.app.Fragment;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +18,7 @@ import android.widget.TextView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.MailAdapter;
 import com.softranger.bayshopmf.adapter.StorageTabAdapter;
-import com.softranger.bayshopmf.model.MailMessage;
-import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
+import com.softranger.bayshopmf.model.chat.MailMessage;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 

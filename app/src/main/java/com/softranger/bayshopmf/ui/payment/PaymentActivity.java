@@ -4,17 +4,15 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.annotation.DrawableRes;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PaymentSelectorAdapter;
-import com.softranger.bayshopmf.model.Currency;
+import com.softranger.bayshopmf.model.payment.Currency;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 

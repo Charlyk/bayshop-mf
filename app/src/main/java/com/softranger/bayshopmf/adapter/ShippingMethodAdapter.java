@@ -1,7 +1,6 @@
 package com.softranger.bayshopmf.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.ShippingMethod;
+import com.softranger.bayshopmf.model.product.ShippingMethod;
 
 import java.util.ArrayList;
 

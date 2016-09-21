@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ShippingMethodAdapter;
-import com.softranger.bayshopmf.model.ShippingMethod;
+import com.softranger.bayshopmf.model.product.ShippingMethod;
 import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.util.Constants;

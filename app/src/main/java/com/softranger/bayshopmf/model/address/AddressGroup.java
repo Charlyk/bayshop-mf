@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.address;
 
 /**
  * Created by Eduard Albu on 5/26/16, 05, 2016

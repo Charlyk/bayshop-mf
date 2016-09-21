@@ -11,22 +11,15 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.PUSParcelDetailed;
-import com.softranger.bayshopmf.model.ServerResponse;
+import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
+import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.network.BayShopApiInterface;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
-
-import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +29,6 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.

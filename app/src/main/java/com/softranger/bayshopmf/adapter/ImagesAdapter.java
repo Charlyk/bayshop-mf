@@ -1,6 +1,5 @@
 package com.softranger.bayshopmf.adapter;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -13,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Photo;
+import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.util.Application;
 

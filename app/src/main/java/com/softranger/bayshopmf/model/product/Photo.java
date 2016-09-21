@@ -1,11 +1,10 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.product;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.Imageble;
 
 /**

@@ -5,9 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 
-import com.softranger.bayshopmf.model.Address;
-import com.softranger.bayshopmf.model.AddressGroup;
-
 import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
 
 /**

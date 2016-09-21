@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PUSParcelsAdapter;
-import com.softranger.bayshopmf.model.PUSParcel;
+import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;

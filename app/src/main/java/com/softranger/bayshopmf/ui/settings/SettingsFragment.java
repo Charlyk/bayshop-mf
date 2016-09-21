@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.adapter.SettingsAdapter;
-import com.softranger.bayshopmf.model.Setting;
+import com.softranger.bayshopmf.model.app.Setting;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;

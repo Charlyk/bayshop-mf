@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.ShippingMethod;
+import com.softranger.bayshopmf.model.product.ShippingMethod;
 
 import java.util.ArrayList;
 

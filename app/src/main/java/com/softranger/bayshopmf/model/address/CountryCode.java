@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.address;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;

@@ -5,16 +5,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -24,34 +19,18 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Country;
-import com.softranger.bayshopmf.model.CountryCode;
-import com.softranger.bayshopmf.model.Language;
-import com.softranger.bayshopmf.model.ParcelsCount;
-import com.softranger.bayshopmf.model.ServerResponse;
-import com.softranger.bayshopmf.model.User;
-import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.model.app.ParcelsCount;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.user.User;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.FacebookAuth;
 import com.softranger.bayshopmf.util.FacebookAuth.OnLoginDataReadyListener;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import retrofit2.Call;
-import retrofit2.Callback;
 
 public class LoginActivity extends ParentActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnLoginDataReadyListener {

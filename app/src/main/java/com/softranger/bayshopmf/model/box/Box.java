@@ -1,9 +1,12 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.box;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.softranger.bayshopmf.model.product.Photo;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,21 +18,21 @@ import java.util.Date;
  */
 public class Box implements Parcelable {
 
-    @JsonProperty("id") String mId;
-    @JsonProperty("uid") String mUid;
-    @JsonProperty("title") String mTitle;
-    @JsonProperty("tracking") String mTracking;
-    @JsonProperty("price") String mPrice;
-    @JsonProperty("quantity") int mQuantity;
-    @JsonProperty("weight") String mWeight;
-    @JsonProperty("photos") ArrayList<Photo> mPhotos;
-    @JsonProperty("createdDate") Date mCreatedDate;
+    @JsonProperty("id") private String mId;
+    @JsonProperty("uid") private String mUid;
+    @JsonProperty("title") private String mTitle;
+    @JsonProperty("tracking") private String mTracking;
+    @JsonProperty("price") private String mPrice;
+    @JsonProperty("quantity") private int mQuantity;
+    @JsonProperty("weight") private String mWeight;
+    @JsonProperty("photos") private ArrayList<Photo> mPhotos;
+    @JsonProperty("createdDate") private Date mCreatedDate;
 
     public Box() {
         // empty constructor for jackson
     }
 
-    protected Box(Parcel in) {
+    public Box(Parcel in) {
         mId = in.readString();
         mUid = in.readString();
         mTitle = in.readString();
@@ -59,6 +62,36 @@ public class Box implements Parcelable {
 
     public String getUid() {
         return mUid;
+    }
+
+    @JsonSetter("packageName")
+    public void setPackageName(String title) {
+        mTitle = title;
+    }
+
+    @JsonSetter("barCode")
+    public void setBacCode(String bacCode) {
+        mUid = bacCode;
+    }
+
+    @JsonSetter("packagePrice")
+    public void setPackagePrice(int packagePrice) {
+        mPrice = String.valueOf(packagePrice);
+    }
+
+    @JsonIgnore
+    public void setPackagePrice(String packagePrice) {
+        mPrice = packagePrice;
+    }
+
+    @JsonSetter("trackingNumber")
+    public void setTrackingNumber(String trackingNumber) {
+        mTracking = trackingNumber;
+    }
+
+    @JsonIgnore
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     public String getTitle() {
