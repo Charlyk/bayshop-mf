@@ -93,7 +93,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mPackage = getArguments().getParcelable(PRODUCT_ARG);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragmentSwipeRefreshLayout);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ApiClient.getInstance().getRequest(Constants.Api.urlViewParcelDetails(String
                 .valueOf(mPackage.getId())), mHandler);

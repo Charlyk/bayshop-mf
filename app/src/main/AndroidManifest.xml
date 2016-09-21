@@ -25,6 +25,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -83,22 +84,29 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbtZmtnHa-hMA_MFjkGRGBuaecJCGhXo4"/>
 
-        <activity android:name=".ui.calculator.ShippingCalculatorActivity">
-        </activity>
-        <activity android:name=".ui.contact.ContactUsActivity">
-        </activity>
-        <activity android:name=".ui.contact.SearchMailActivity">
-        </activity>
-        <activity android:name=".ui.addresses.WarehouseAddressesActivity">
-        </activity>
-        <activity android:name=".ui.contact.ChatActivity">
-        </activity>
-        <activity android:name=".ui.contact.NewMessageActivity">
-        </activity>
-        <activity android:name=".ui.services.ReplenishmentActivity">
-        </activity>
-        <activity android:name=".ui.general.ResultActivity">
-        </activity>
+        <activity android:name=".ui.calculator.ShippingCalculatorActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.contact.ContactUsActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.contact.SearchMailActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.addresses.WarehouseAddressesActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.contact.ChatActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.contact.NewMessageActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.services.ReplenishmentActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.general.ResultActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
