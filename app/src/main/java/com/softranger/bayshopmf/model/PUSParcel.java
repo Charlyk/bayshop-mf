@@ -139,7 +139,7 @@ public class PUSParcel implements Parcelable {
         held_by_customs(R.string.held_by_customs, "customs-held", 7),
         local_depot(R.string.local_deposit, "local-depo", 8),
         in_the_way(R.string.take_to_delivery, "taken-to-delivery", 9),
-        received(R.string.received, "received", 10);
+        received(R.string.received, "mReceived", 10);
 
         private final String formatted;
         private final int index;

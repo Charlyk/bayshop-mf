@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -25,13 +27,18 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Country;
 import com.softranger.bayshopmf.model.CountryCode;
 import com.softranger.bayshopmf.model.Language;
+import com.softranger.bayshopmf.model.ParcelsCount;
+import com.softranger.bayshopmf.model.ServerResponse;
 import com.softranger.bayshopmf.model.User;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.FacebookAuth;
 import com.softranger.bayshopmf.util.FacebookAuth.OnLoginDataReadyListener;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,8 +50,10 @@ import java.util.Iterator;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
+public class LoginActivity extends ParentActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnLoginDataReadyListener {
 
     private static final int RC_SIGN_IN = 1537;
@@ -53,14 +62,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private CallbackManager mCallbackManager;
     private LoginFragment mLoginFragment;
 
+    private Call<ServerResponse<User>> mLoginCall;
+    private Call<ServerResponse<User>> mSocialLoginCall;
+    private Call<ServerResponse<User>> mDataCall;
+    private Call<ServerResponse<ParcelsCount>> mCountersCall;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         instance = this;
 
-        mLoginFragment = new LoginFragment();
-        addFragment(mLoginFragment, false);
+        mLoginFragment = LoginFragment.newInstance();
+        replaceFragment(mLoginFragment);
 
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(Scopes.PLUS_ME), new Scope(Scopes.EMAIL))
@@ -114,8 +128,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             mLoginFragment.mPasswordInput.setError(getString(R.string.enter_valid_password));
             return;
         }
-        ApiClient.getInstance().logIn(email, password, mAuthHandler);
+
         mLoginFragment.showLoading();
+        mLoginCall = Application.apiInterface().loginWithCredentials(email, password);
+        mLoginCall.enqueue(mLoginCallback);
     }
 
     @Override
@@ -133,13 +149,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            String serverCode = acct.getServerAuthCode();
-            String name = acct.getDisplayName();
-            RequestBody body = new FormBody.Builder()
-                    .add("code", serverCode)
-                    .add("type", "google")
-                    .build();
-            ApiClient.getInstance().postRequest(body, Constants.Api.urlAuth(), mAuthHandler);
+            if (acct != null) {
+                String serverCode = acct.getServerAuthCode();
+                mSocialLoginCall = Application.apiInterface().loginWithSocialNetworks(serverCode, "google");
+                mSocialLoginCall.enqueue(mLoginCallback);
+            } else {
+                Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+                mLoginFragment.hideLoading();
+            }
         } else {
             Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mLoginFragment.hideLoading();
@@ -165,221 +182,91 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         addFragment(new RegisterFragment(), true);
     }
 
-    private Handler mAuthHandler = new Handler(Looper.getMainLooper()) {
+    /**
+     * Callback for login request
+     */
+    private ResponseCallback<User> mLoginCallback = new ResponseCallback<User>() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        if (message.equalsIgnoreCase("Ok")) {
-                            JSONObject data = response.getJSONObject("data");
-                            Application.currentToken = data.optString("access_token");
-                            Application.getInstance().setUserId(data.getString("uid").toUpperCase());
-                            Application.getInstance().setLoginStatus(true);
-                            Application.getInstance().setAuthToken(Application.currentToken);
-                            ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
-                        } else {
-                            message = response.optString("message", getString(R.string.unknown_error));
-                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                            mLoginFragment.hideLoading();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        mLoginFragment.hideLoading();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR:
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                    mLoginFragment.hideLoading();
-                    break;
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    IOException exception = (IOException) msg.obj;
-                    Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                    mLoginFragment.hideLoading();
-                    break;
-                }
-            }
+        public void onSuccess(User user) {
+            Application.getInstance().setUserId(user.getUserId());
+            Application.getInstance().setLoginStatus(true);
+            Application.currentToken = user.getToken();
+            Application.getInstance().setAuthToken(user.getToken());
+            mDataCall = Application.apiInterface().getUserPersonalData(user.getToken());
+            mDataCall.enqueue(mPersonalDataCallback);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mLoginFragment.hideLoading();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<User>> call, Throwable t) {
+            // TODO: 9/21/16 handle errors
+            mLoginFragment.hideLoading();
         }
     };
 
-    protected Handler mHandler = new Handler(Looper.getMainLooper()) {
+    /**
+     * Callback for personal data request
+     */
+    private ResponseCallback<User> mPersonalDataCallback = new ResponseCallback<User>() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        if (message.equalsIgnoreCase("ok")) {
-                            JSONObject data = response.getJSONObject("data");
-                            ArrayList<Country> countries = new ArrayList<>();
-                            ArrayList<Language> languages = new ArrayList<>();
-                            ArrayList<CountryCode> countryCodes = new ArrayList<>();
+        public void onSuccess(User data) {
+            Application.user = data;
+            mCountersCall = Application.apiInterface().getParcelsCounters(Application.currentToken);
+            mCountersCall.enqueue(mCountersCallback);
+        }
 
-                            int currentLanguageId = data.getInt("languageId");
-                            int currentCountryId = data.getInt("countryId");
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mLoginFragment.hideLoading();
+        }
 
-                            String languageName = "";
-                            String countryName = "";
-                            // build countries list
-                            JSONArray jsonCountries = data.getJSONArray("countries");
-                            for (int i = 0; i < jsonCountries.length(); i++) {
-                                JSONObject object = jsonCountries.getJSONObject(i);
-                                Country country = new Country.Builder()
-                                        .id(object.getInt("id"))
-                                        .name(object.getString("title"))
-                                        .build();
-                                if (currentCountryId == country.getId())
-                                    countryName = country.getName();
-                                countries.add(country);
-                            }
-                            // build languages array list
-                            JSONObject jsonLanguages = data.getJSONObject("languages");
-                            Iterator<String> keys = jsonLanguages.keys();
-                            while (keys.hasNext()) {
-                                String key = keys.next();
-                                Language language = new Language.Builder()
-                                        .id(Integer.parseInt(key))
-                                        .name(jsonLanguages.getString(key))
-                                        .build();
-                                if (currentLanguageId == language.getId())
-                                    languageName = language.getName();
-                                languages.add(language);
-                            }
-                            // build country codes
-                            JSONArray jsonCodes = data.getJSONArray("phoneFormats");
-                            for (int i = 0; i < jsonCodes.length(); i++) {
-                                JSONObject object = jsonCodes.getJSONObject(i);
-                                CountryCode countryCode = new CountryCode.Builder()
-                                        .id(object.getInt("id"))
-                                        .countryId(object.getInt("countryId"))
-                                        .code(object.getString("code"))
-                                        .format(object.getString("format"))
-                                        .flagUrl(object.getString("flag"))
-                                        .countryCode(object.getString("countryCode"))
-                                        .name(object.getString("title"))
-                                        .build();
-                                countryCodes.add(countryCode);
-                            }
-                            // build user
-                            Application.user = new User.Builder()
-                                    .firstName(data.getString("name"))
-                                    .lastName(data.getString("surname"))
-                                    .countryId(data.getInt("countryId"))
-                                    .phoneCode(data.getString("phoneCode"))
-                                    .phoneNumber(data.getString("phone"))
-                                    .languageId(data.getInt("languageId"))
-                                    .countryName(countryName)
-                                    .languageName(languageName)
-                                    .countries(countries)
-                                    .languages(languages)
-                                    .countryCodes(countryCodes)
-                                    .build();
-                            ApiClient.getInstance().getRequest(Constants.Api.urlParcelsCounter(), mCounterHandler);
-                        } else {
-                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = LoginActivity.this.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-            }
+        @Override
+        public void onError(Call<ServerResponse<User>> call, Throwable t) {
+            // TODO: 9/21/16 handle errors
+            mLoginFragment.hideLoading();
         }
     };
 
-    private Handler mCounterHandler = new Handler(Looper.getMainLooper()) {
+    /**
+     * Callback for parcel count request
+     */
+    private ResponseCallback<ParcelsCount> mCountersCallback = new ResponseCallback<ParcelsCount>() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        if (message.equalsIgnoreCase("ok")) {
-                            JSONObject data = response.getJSONObject("data");
-                            Iterator<String> keys = data.keys();
-                            while (keys.hasNext()) {
-                                String key = keys.next();
-                                Application.counters.put(key, data.optInt(key, 0));
-                            }
-                            Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(mainActivity);
-                        } else {
-                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                    mLoginFragment.hideLoading();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = LoginActivity.this.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                    mLoginFragment.hideLoading();
-                    break;
-                }
+        public void onSuccess(ParcelsCount data) {
+            try {
+                Application.counters = data.getCountersMap();
+                Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(mainActivity);
+                finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+                mLoginFragment.hideLoading();
+                // TODO: 9/21/16 handle the error
             }
-            finish();
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mLoginFragment.hideLoading();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
+            // TODO: 9/21/16 handle errors
+            mLoginFragment.hideLoading();
         }
     };
+
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
@@ -389,15 +276,55 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onLoginDataReady(String facebookData) {
-        RequestBody body = new FormBody.Builder()
-                .add("code", facebookData)
-                .add("type", "facebook")
-                .build();
-        ApiClient.getInstance().postRequest(body, Constants.Api.urlAuth(), mAuthHandler);
+        mSocialLoginCall = Application.apiInterface().loginWithSocialNetworks(facebookData, "facebook");
+        mSocialLoginCall.enqueue(mLoginCallback);
     }
 
     @Override
     public void onCanceled() {
         mLoginFragment.hideLoading();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mLoginCall != null) mLoginCall.cancel();
+        if (mSocialLoginCall != null) mSocialLoginCall.cancel();
+        if (mCountersCall != null) mCountersCall.cancel();
+        if (mDataCall != null) mDataCall.cancel();
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+
+    }
+
+    @Override
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.loginActivityContainer, fragment, fragment.getClass().getSimpleName());
+        transaction.addToBackStack(fragment.getClass().getSimpleName());
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+    }
+
+    @Override
+    public void toggleLoadingProgress(boolean show) {
+
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.loginActivityContainer, fragment);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
     }
 }

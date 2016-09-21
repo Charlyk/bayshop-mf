@@ -12,30 +12,44 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends ParentFragment {
 
-    public EditText mEmailInput;
-    public EditText mPasswordInput;
-    private Button mLoginButton;
-    private ProgressBar mLoginProgressBar;
+    @BindView(R.id.loginEmailInput) EditText mEmailInput;
+    @BindView(R.id.loginPasswordInput) EditText mPasswordInput;
+    @BindView(R.id.loginButton) Button mLoginButton;
+    @BindView(R.id.loginProgressBar) ProgressBar mLoginProgressBar;
 
     private LoginActivity mActivity;
+    private Unbinder mUnbinder;
 
 
     public LoginFragment() {
         // Required empty public constructor
     }
 
+    public static LoginFragment newInstance() {
+        Bundle args = new Bundle();
+        LoginFragment fragment = new LoginFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        mUnbinder = ButterKnife.bind(this, view);
         mActivity = (LoginActivity) getActivity();
         initializeViews(view);
         return view;
@@ -45,10 +59,6 @@ public class LoginFragment extends Fragment {
      * Bind all needed views from this activity
      */
     private void initializeViews(View view) {
-        mEmailInput = (EditText) view.findViewById(R.id.loginEmailInput);
-        mPasswordInput = (EditText) view.findViewById(R.id.loginPasswordInput);
-        mLoginProgressBar = (ProgressBar) view.findViewById(R.id.loginProgressBar);
-        mLoginButton = (Button) view.findViewById(R.id.loginButton);
         Button signUpButton = (Button) view.findViewById(R.id.signUpButton);
         String actionColor = "#e64d50";
         String questionText = mActivity.getColoredSpanned(getString(R.string.haveAnAccountText), actionColor);
@@ -72,5 +82,21 @@ public class LoginFragment extends Fragment {
     public void hideLoading() {
         mLoginProgressBar.setVisibility(View.GONE);
         mLoginButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.login);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.login_fragment;
     }
 }

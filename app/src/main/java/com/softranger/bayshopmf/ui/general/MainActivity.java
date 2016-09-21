@@ -146,7 +146,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (Application.user != null) {
             String fullName = Application.user.getFirstName() + " " + Application.user.getLastName();
             userNameLabel.setText(fullName);
-            userIdLabel.setText(Application.getInstance().getUserId());
+            userIdLabel.setText(Application.getInstance().getUserId().toUpperCase());
         }
 
         // add first fragment to container
@@ -184,25 +184,25 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
      */
     public void updateParcelCounters(@Nullable String parcelStatus) {
         if (parcelStatus == null) {
-            setMenuCounter(R.id.nav_waitingArrival, Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL));
-            setMenuCounter(R.id.nav_inStock, Application.counters.get(Constants.ParcelStatus.IN_STOCK));
-            setMenuCounter(R.id.nav_received, Application.counters.get(Constants.ParcelStatus.RECEIVED));
-            setMenuCounter(R.id.nav_parcels, Application.counters.get(Constants.PARCELS));
+            setMenuCounter(R.id.nav_waitingArrival, Application.getCount(Constants.ParcelStatus.AWAITING_ARRIVAL));
+            setMenuCounter(R.id.nav_inStock, Application.getCount(Constants.ParcelStatus.IN_STOCK));
+            setMenuCounter(R.id.nav_received, Application.getCount(Constants.ParcelStatus.RECEIVED));
+            setMenuCounter(R.id.nav_parcels, Application.getCount(Constants.PARCELS));
             return;
         }
 
         switch (parcelStatus) {
             case Constants.ParcelStatus.AWAITING_ARRIVAL:
-                setMenuCounter(R.id.nav_waitingArrival, Application.counters.get(parcelStatus));
+                setMenuCounter(R.id.nav_waitingArrival, Application.getCount(parcelStatus));
                 break;
             case Constants.ParcelStatus.IN_STOCK:
-                setMenuCounter(R.id.nav_inStock, Application.counters.get(parcelStatus));
+                setMenuCounter(R.id.nav_inStock, Application.getCount(parcelStatus));
                 break;
             case Constants.ParcelStatus.RECEIVED:
-                setMenuCounter(R.id.nav_received, Application.counters.get(parcelStatus));
+                setMenuCounter(R.id.nav_received, Application.getCount(parcelStatus));
                 break;
             case Constants.PARCELS:
-                setMenuCounter(R.id.nav_parcels, Application.counters.get(parcelStatus));
+                setMenuCounter(R.id.nav_parcels, Application.getCount(parcelStatus));
                 break;
         }
     }

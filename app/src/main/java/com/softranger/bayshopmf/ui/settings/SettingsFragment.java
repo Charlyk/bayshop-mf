@@ -4,6 +4,7 @@ package com.softranger.bayshopmf.ui.settings;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,7 +43,9 @@ public class SettingsFragment extends ParentFragment implements SettingsAdapter.
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (SettingsActivity) getActivity();
         mSettingItems = mActivity.getResources().getStringArray(R.array.settings_list);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentSwipeRefreshLayout);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
+        SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragmentSwipeRefreshLayout);
+        refreshLayout.setEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         SettingsAdapter adapter = new SettingsAdapter(buildSettingsList());
         adapter.setOnSettingClickListener(this);

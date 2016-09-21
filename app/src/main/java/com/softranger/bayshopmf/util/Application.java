@@ -99,7 +99,11 @@ public class Application extends android.app.Application {
     }
 
     public static int getCount(String parcelStatus) {
-        return counters.get(parcelStatus);
+        try {
+            return counters.get(parcelStatus);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public static BayShopApiInterface apiInterface() {

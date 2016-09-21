@@ -19,19 +19,21 @@ import java.util.Iterator;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Parcelable {
-    private String mUserId;
-    @JsonProperty("name") String mFirstName;
-    @JsonProperty("surname") String mLastName;
-    @JsonProperty("countryId") int mCountryId;
-    @JsonProperty("phoneCode") String mPhoneCode;
-    @JsonProperty("phone") String mPhoneNumber;
+    @JsonProperty("uid") private String mUserId;
+    @JsonProperty("access_token") private String mToken;
+    @JsonProperty("id") private String mId;
+    @JsonProperty("name") private String mFirstName;
+    @JsonProperty("surname") private String mLastName;
+    @JsonProperty("countryId") private int mCountryId;
+    @JsonProperty("phoneCode") private String mPhoneCode;
+    @JsonProperty("phone") private String mPhoneNumber;
     @JsonProperty("languageId")
-    @JsonIgnore int mLanguageId;
-    @JsonIgnore String mLanguageName;
-    @JsonIgnore String mCountryName;
-    @JsonProperty("countries") ArrayList<Country> mCountries;
-    @JsonIgnore ArrayList<Language> mLanguages;
-    @JsonProperty("phoneFormats") ArrayList<CountryCode> mCountryCodes;
+    @JsonIgnore private int mLanguageId;
+    @JsonIgnore private String mLanguageName;
+    @JsonIgnore private String mCountryName;
+    @JsonProperty("countries") private ArrayList<Country> mCountries;
+    @JsonIgnore private ArrayList<Language> mLanguages;
+    @JsonProperty("phoneFormats") private ArrayList<CountryCode> mCountryCodes;
 
     private User() {
 
@@ -50,6 +52,8 @@ public class User implements Parcelable {
         in.readTypedList(mCountries, Country.CREATOR);
         in.readTypedList(mLanguages, Language.CREATOR);
         in.readTypedList(mCountryCodes, CountryCode.CREATOR);
+        mToken = in.readString();
+        mId = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -172,6 +176,14 @@ public class User implements Parcelable {
         mCountryCodes = countryCodes;
     }
 
+    public String getToken() {
+        return mToken;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -190,6 +202,8 @@ public class User implements Parcelable {
         dest.writeTypedList(mCountries);
         dest.writeTypedList(mLanguages);
         dest.writeTypedList(mCountryCodes);
+        dest.writeString(mToken);
+        dest.writeString(mId);
     }
 
     public static class Builder {

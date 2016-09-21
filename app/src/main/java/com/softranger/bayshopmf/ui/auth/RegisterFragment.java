@@ -28,6 +28,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Iterator;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -35,28 +39,31 @@ import okhttp3.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends ParentFragment implements View.OnClickListener {
+public class RegisterFragment extends ParentFragment {
 
     private LoginActivity mActivity;
 
-    private EditText mFirstNameInput;
-    private EditText mLastNameInput;
-    private EditText mEmailInput;
-    private EditText mPasswordInput;
-    private EditText mConfirmPassInput;
+    @BindView(R.id.registerNameInput) EditText mFirstNameInput;
+    @BindView(R.id.registerLastNameInput) EditText mLastNameInput;
+    @BindView(R.id.registerEmailInput) EditText mEmailInput;
+    @BindView(R.id.registerPasswordInput) EditText mPasswordInput;
+    @BindView(R.id.registerConfirmPassword) EditText mConfirmPassInput;
 
-    private ProgressBar mProgressBar;
-    private Button mConfirmButton;
+    @BindView(R.id.registerProgressBar) ProgressBar mProgressBar;
+    @BindView(R.id.registerConfirmButton) Button mConfirmButton;
 
     private String mEmail;
     private String mPassword;
 
     private static RequestStep requestStep;
 
+    private Unbinder mUnbinder;
+
     public RegisterFragment() {
         // Required empty public constructor
     }
 
+    // TODO: 9/21/16 change this fragment to use retrofit
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,46 +71,38 @@ public class RegisterFragment extends ParentFragment implements View.OnClickList
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         mActivity = (LoginActivity) getActivity();
-        mConfirmButton = (Button) view.findViewById(R.id.registerConfirmButton);
-        mConfirmButton.setOnClickListener(this);
-
-        mFirstNameInput = (EditText) view.findViewById(R.id.registerNameInput);
-        mLastNameInput = (EditText) view.findViewById(R.id.registerLastNameInput);
-        mEmailInput = (EditText) view.findViewById(R.id.registerEmailInput);
-        mPasswordInput = (EditText) view.findViewById(R.id.registerPasswordInput);
-        mConfirmPassInput = (EditText) view.findViewById(R.id.registerConfirmPassword);
-
-        mProgressBar = (ProgressBar) view.findViewById(R.id.registerProgressBar);
+        mUnbinder = ButterKnife.bind(this, view);
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick(R.id.registerConfirmButton)
+    void registerUserToApplication() {
         String firstName = String.valueOf(mFirstNameInput.getText());
+        String lastName = String.valueOf(mLastNameInput.getText());
+        String email = String.valueOf(mEmailInput.getText());
+        String password = String.valueOf(mPasswordInput.getText());
+        String confirmPass = String.valueOf(mConfirmPassInput.getText());
+
         if (firstName.equals("")) {
             mFirstNameInput.setError(mActivity.getString(R.string.enter_your_first_name));
             return;
         }
 
-        String lastName = String.valueOf(mLastNameInput.getText());
         if (lastName.equals("")) {
             mLastNameInput.setError(mActivity.getString(R.string.enter_last_name));
             return;
         }
 
-        String email = String.valueOf(mEmailInput.getText());
         if (email.equals("") || !email.contains("@")) {
             mEmailInput.setError(mActivity.getString(R.string.enter_valid_email));
             return;
         }
 
-        String password = String.valueOf(mPasswordInput.getText());
         if (password.equals("") || password.length() < 6) {
             mPasswordInput.setError(mActivity.getString(R.string.enter_valid_password));
             return;
         }
 
-        String confirmPass = String.valueOf(mConfirmPassInput.getText());
         if (!confirmPass.equals(password)) {
             mConfirmPassInput.setError(mActivity.getString(R.string.passwords_does_not_match));
             return;
@@ -172,5 +171,11 @@ public class RegisterFragment extends ParentFragment implements View.OnClickList
 
     enum RequestStep {
         REGISTER, LOGIN, COUNTERS
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }

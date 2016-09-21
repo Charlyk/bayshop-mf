@@ -2,35 +2,27 @@ package com.softranger.bayshopmf.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.Country;
-import com.softranger.bayshopmf.model.CountryCode;
-import com.softranger.bayshopmf.model.Language;
+import com.softranger.bayshopmf.model.ParcelsCount;
+import com.softranger.bayshopmf.model.ServerResponse;
 import com.softranger.bayshopmf.model.User;
-import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class SplashActivity extends AppCompatActivity {
 
     private Intent mIntent;
+
+    private Call<ServerResponse<User>> mPersonalDataCall;
+    private Call<ServerResponse<ParcelsCount>> mCountersCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +30,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         if (Application.getInstance().isLoggedIn()) {
             mIntent = new Intent(this, MainActivity.class);
-            ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
+
+            mPersonalDataCall = Application.apiInterface().getUserPersonalData(Application.currentToken);
+            mPersonalDataCall.enqueue(mPersonalDataCallback);
         } else {
             mIntent = new Intent(this, LoginActivity.class);
             startActivity(mIntent);
@@ -46,115 +40,59 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    protected Handler mHandler = new Handler(Looper.getMainLooper()) {
+    /**
+     * Callback for personal data request
+     */
+    private ResponseCallback<User> mPersonalDataCallback = new ResponseCallback<User>() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            // build user
-                            Application.user = new ObjectMapper().readValue(data.toString(), User.class);
-                            Application.user.setLanguages(data.getJSONObject("languages"));
-                            ApiClient.getInstance().getRequest(Constants.Api.urlParcelsCounter(), mCounterHandler);
-                        } else {
-                            Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(SplashActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = SplashActivity.this.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-            }
+        public void onSuccess(User data) {
+            Application.user = data;
+            mCountersCall = Application.apiInterface().getParcelsCounters(Application.currentToken);
+            mCountersCall.enqueue(mCountersCallback);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<User>> call, Throwable t) {
+            // TODO: 9/21/16 handle errors
         }
     };
 
-    private Handler mCounterHandler = new Handler(Looper.getMainLooper()) {
+    /**
+     * Callback for parcel count request
+     */
+    private ResponseCallback<ParcelsCount> mCountersCallback = new ResponseCallback<ParcelsCount>() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            Iterator<String> keys = data.keys();
-                            int parcelsCount = 0;
-                            while (keys.hasNext()) {
-                                String key = keys.next();
-                                if (key.equals(Constants.ParcelStatus.AWAITING_ARRIVAL) ||
-                                        key.equals(Constants.ParcelStatus.IN_STOCK) ||
-                                        key.equals(Constants.ParcelStatus.RECEIVED)) {
-                                    Application.counters.put(key, data.optInt(key, 0));
-                                } else {
-                                    parcelsCount = parcelsCount + data.optInt(key);
-                                }
-                            }
-                            Application.counters.put(Constants.PARCELS, parcelsCount);
-                            startActivity(mIntent);
-                        } else {
-                            Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(SplashActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = SplashActivity.this.getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(SplashActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
+        public void onSuccess(ParcelsCount data) {
+            try {
+                Application.counters = data.getCountersMap();
+                startActivity(mIntent);
+                finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: 9/21/16 handle the error
             }
-            finish();
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
+            // TODO: 9/21/16 handle errors
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCountersCall != null) mCountersCall.cancel();
+        if (mPersonalDataCall != null) mPersonalDataCall.cancel();
+    }
 }
