@@ -20,29 +20,34 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
-import com.softranger.bayshopmf.model.InStockDetailed;
-import com.softranger.bayshopmf.model.InStockItem;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.box.InStock;
+import com.softranger.bayshopmf.model.box.InStockDetailed;
 import com.softranger.bayshopmf.model.product.Photo;
-import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
-import com.softranger.bayshopmf.util.ParentFragment;
+import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
-import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import retrofit2.Call;
 
 
 /**
@@ -53,24 +58,38 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
 
     private static final String ITEM_ARG = "ITEM ARGUMENT";
     private MainActivity mActivity;
-    private Button mFillDeclaration;
-    private Button mCheckProduct;
-    private Button mAdditionalPhoto;
-    private RecyclerView mRecyclerView;
+    private Unbinder mUnbinder;
+
+    @BindView(R.id.fill_declarationButton) Button mFillDeclaration;
+    @BindView(R.id.check_productButton) Button mCheckProduct;
+    @BindView(R.id.additional_photoButton) Button mAdditionalPhoto;
+    @BindView(R.id.inStockDetailsImageList) RecyclerView mRecyclerView;
+    @BindView(R.id.inStockDetailsHolderLayout) LinearLayout mHolderLayout;
+    @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotoLayout;
+
+    @BindView(R.id.details_tracking_label) TextView tracking;
+    @BindView(R.id.details_date_label)  TextView date;
+    @BindView(R.id.details_weight_label)  TextView weight;
+    @BindView(R.id.details_price_label)  TextView price;
+
+    @BindView(R.id.inStockDetailsItemId)  TextView uid;
+    @BindView(R.id.inStockDetailsProductName)  TextView description;
+    @BindView(R.id.inStockDetailsStorageIcon)  ImageView storage;
+
     private InStockDetailed mInStockDetailed;
-    private InStockItem mInStockItem;
-    private View mRootView;
+    private InStock mInStockItem;
     private ImagesAdapter mImagesAdapter;
-    private LinearLayout mHolderLayout;
-    private LinearLayout mNoPhotoLayout;
+
+
+    private Call<ServerResponse<InStockDetailed>> mCall;
 
     public DetailsFragment() {
         // Required empty public constructor
     }
 
-    public static DetailsFragment newInstance(InStockItem inStockItem) {
+    public static DetailsFragment newInstance(InStock inStock) {
         Bundle args = new Bundle();
-        args.putParcelable(ITEM_ARG, inStockItem);
+        args.putParcelable(ITEM_ARG, inStock);
         DetailsFragment fragment = new DetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -80,27 +99,34 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_details, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         mActivity = (MainActivity) getActivity(); // used as context to create views programmatically
-        mHolderLayout = (LinearLayout) mRootView.findViewById(R.id.inStockDetailsHolderLayout);
+        mUnbinder = ButterKnife.bind(this, rootView);
+        // hide entire layout while we are loading data
         mHolderLayout.setVisibility(View.GONE);
+        // create an intent filter and add al actions needed to update the layout in case of any changes
         IntentFilter intentFilter = new IntentFilter(CheckProductFragment.ACTION_CHECK_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
-        intentFilter.addAction(StorageItemsFragment.ACTION_ITEM_CHANGED);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.inStockDetailsImageList);
+        intentFilter.addAction(AddAwaitingFragment.ACTION_ITEM_ADDED);
+        mActivity.registerReceiver(mStatusReceiver, intentFilter);
+
+        // set up recycler view
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
-        mNoPhotoLayout = (LinearLayout) mRootView.findViewById(R.id.noPhotoLayoutHolder);
-        mActivity.registerReceiver(mStatusReceiver, intentFilter);
-        mInStockItem = getArguments().getParcelable(ITEM_ARG);
         mImagesAdapter = new ImagesAdapter(R.layout.product_image_list_item);
         mImagesAdapter.setOnImageClickListener(this);
         mRecyclerView.setAdapter(mImagesAdapter);
-        ApiClient.getInstance().getRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);
+
+        // get in stock item from arguments
+        mInStockItem = getArguments().getParcelable(ITEM_ARG);
+
+        // send request to server for item details
+        mCall = Application.apiInterface().getInStockItemDetails(Application.currentToken, mInStockItem.getId());
         mActivity.toggleLoadingProgress(true);
-        return mRootView;
+        mCall.enqueue(mResponseCallback);
+        return rootView;
     }
 
     private BroadcastReceiver mStatusReceiver = new BroadcastReceiver() {
@@ -123,43 +149,58 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
-                case StorageItemsFragment.ACTION_ITEM_CHANGED:
+                case AddAwaitingFragment.ACTION_ITEM_ADDED:
+                    // send request to server for item details
+                    mCall = Application.apiInterface().getInStockItemDetails(Application.currentToken, mInStockItem.getId());
                     mHolderLayout.setVisibility(View.GONE);
-                    ApiClient.getInstance().getRequest(Constants.Api.urlDetailedInStock(String.valueOf(mInStockItem.getID())), mHandler);
                     mActivity.toggleLoadingProgress(true);
+                    mCall.enqueue(mResponseCallback);
                     break;
             }
         }
     };
 
-    private void showDetails(final View view, final InStockDetailed detailed) {
+    private ResponseCallback<InStockDetailed> mResponseCallback = new ResponseCallback<InStockDetailed>() {
+        @Override
+        public void onSuccess(InStockDetailed data) {
+            if (data.getPhotos().size() <= 0) {
+                mRecyclerView.setVisibility(View.GONE);
+                mNoPhotoLayout.setVisibility(View.VISIBLE);
+            } else {
+
+                mInStockDetailed = data;
+
+                mImagesAdapter.refreshList(mInStockDetailed.getPhotos());
+                new ImageDownloadThread<>(mInStockDetailed.getPhotos(), mImageDownloadHandler, mActivity).start();
+            }
+            showDetails(mInStockDetailed);
+            mHolderLayout.setVisibility(View.VISIBLE);
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<InStockDetailed>> call, Throwable t) {
+            mActivity.toggleLoadingProgress(false);
+            // TODO: 9/22/16 hanlde errors
+        }
+    };
+
+    private void showDetails(final InStockDetailed detailed) {
         // fill text views
-        final TextView tracking = (TextView) view.findViewById(R.id.details_tracking_label);
-        final TextView date = (TextView) view.findViewById(R.id.details_date_label);
-        final TextView weight = (TextView) view.findViewById(R.id.details_weight_label);
-        final TextView price = (TextView) view.findViewById(R.id.details_price_label);
-
-        final TextView uid = (TextView) view.findViewById(R.id.inStockDetailsItemId);
-        final TextView description = (TextView) view.findViewById(R.id.inStockDetailsProductName);
-        final ImageView storage = (ImageView) view.findViewById(R.id.inStockDetailsStorageIcon);
-
-        final SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         final SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
 
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Date createdDate;
-                String strDate = "";
-                try {
-                    createdDate = inputFormat.parse(detailed.getDate());
-                    strDate = outputFormat.format(createdDate);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                uid.setText(detailed.getParcelId());
-                String strDescription = mInStockItem.getName();
+                uid.setText(detailed.getUid());
+                String strDescription = mInStockItem.getTitle();
                 @ColorRes int textColor = android.R.color.black;
                 if (strDescription == null || strDescription.equals("null") || strDescription.equals("")) {
                     strDescription = getString(R.string.declaration_not_filled);
@@ -167,49 +208,33 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                 }
                 description.setText(strDescription);
                 description.setTextColor(getResources().getColor(textColor));
-                storage.setImageResource(getStorageIcon(detailed.getDeposit()));
+                storage.setImageResource(R.mipmap.ic_usa_flag);
 
-                tracking.setText(detailed.getTrackingNumber());
-                date.setText(strDate);
+                tracking.setText(detailed.getTracking());
+                date.setText(outputFormat.format(detailed.getCreatedDate()));
                 weight.setText(detailed.getWeight() + "kg");
-                price.setText(detailed.getCurency() + detailed.getPrice());
+                price.setText(detailed.getCurrency() + detailed.getPrice());
 
-                mFillDeclaration = (Button) view.findViewById(R.id.fill_declarationButton);
-                mCheckProduct = (Button) view.findViewById(R.id.check_productButton);
-                mAdditionalPhoto = (Button) view.findViewById(R.id.additional_photoButton);
-
-                if (detailed.getPhotoInProgress() == Constants.IN_PROGRESS) {
+                if (detailed.getPhotosInProgress() == Constants.IN_PROGRESS) {
                     mAdditionalPhoto.setSelected(true);
                 }
 
-                if (detailed.getCheckInProgress() == Constants.IN_PROGRESS) {
+                if (detailed.isCheckInProgress()) {
                     mCheckProduct.setSelected(true);
                 }
 
-                if (detailed.isHasDeclaration()) {
+                if (detailed.getDeclarationFilled() != 0) {
                     mFillDeclaration.setText(mActivity.getString(R.string.edit_declaration));
                 } else {
                     mFillDeclaration.setText(mActivity.getString(R.string.fill_in_the_declaration));
                 }
-                mFillDeclaration.setSelected(detailed.isHasDeclaration());
+                mFillDeclaration.setSelected(detailed.getDeclarationFilled() != 0);
 
                 mFillDeclaration.setOnClickListener(DetailsFragment.this);
                 mCheckProduct.setOnClickListener(DetailsFragment.this);
                 mAdditionalPhoto.setOnClickListener(DetailsFragment.this);
             }
         });
-    }
-
-    private int getStorageIcon(String storage) {
-        switch (storage) {
-            case Constants.US:
-                return R.mipmap.ic_usa_flag;
-            case Constants.GB:
-                return R.mipmap.ic_uk_flag;
-            case Constants.DE:
-                return R.mipmap.ic_de_flag;
-        }
-        return R.mipmap.ic_usa_flag;
     }
 
     @Override
@@ -219,20 +244,14 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                 mActivity.addFragment(DeclarationFragment.newInstance(mInStockDetailed), true);
                 break;
             case R.id.check_productButton:
-                mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mInStockDetailed.getID()),
-                        mInStockDetailed.getCheckInProgress() == Constants.IN_PROGRESS, false), true);
+                mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mInStockDetailed.getId()),
+                        mInStockDetailed.isCheckInProgress(), false), true);
                 break;
             case R.id.additional_photoButton:
-                mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mInStockDetailed.getID()),
-                        mInStockDetailed.getPhotoInProgress() == Constants.IN_PROGRESS, false), true);
+                mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mInStockDetailed.getId()),
+                        mInStockDetailed.getPhotosInProgress() == Constants.IN_PROGRESS, false), true);
                 break;
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mActivity.unregisterReceiver(mStatusReceiver);
     }
 
     @Override
@@ -245,45 +264,6 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-        JSONObject data = response.getJSONObject("data");
-        mInStockDetailed = (InStockDetailed) new InStockDetailed.Builder()
-                .date(data.getString("createdDate"))
-                .price(data.getDouble("price"))
-                .photoInProgress(data.getInt("photosInProgress"))
-                .checkInProgress(data.getBoolean("checkProductInProgress") ? 1 : 0)
-                .curency(data.getString("currency"))
-                .weight(data.getDouble("weight"))
-                .deposit(mInStockItem.getDeposit())
-                .trackingNumber(data.getString("trackingNumber"))
-                .hasDeclaration(data.getBoolean("declarationFilled"))
-                .parcelId(data.getString("uid"))
-                .id(Integer.parseInt(data.getString("id")))
-                .build();
-        JSONArray jsonPhotos = data.getJSONArray("photos");
-        ArrayList<Photo> photos = new ArrayList<>();
-        for (int i = 0; i < jsonPhotos.length(); i++) {
-            JSONObject o = jsonPhotos.getJSONObject(i);
-            Photo photo = new Photo.Builder()
-                    .smallImage(o.getString("photoThumbnail"))
-                    .bigImage(o.getString("photo"))
-                    .build();
-            photos.add(photo);
-        }
-
-        if (photos.size() <= 0) {
-            mRecyclerView.setVisibility(View.GONE);
-            mNoPhotoLayout.setVisibility(View.VISIBLE);
-        } else {
-            mInStockDetailed.setPhotoUrls(photos);
-
-            mImagesAdapter.refreshList(mInStockDetailed.getPhotoUrls());
-            new ImageDownloadThread<>(mInStockDetailed.getPhotoUrls(), mImageDownloadHandler, mActivity).start();
-        }
-        showDetails(mRootView, mInStockDetailed);
     }
 
     private Handler mImageDownloadHandler = new Handler(Looper.getMainLooper()) {
@@ -301,18 +281,20 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     };
 
     @Override
-    public void onHandleMessageEnd() {
-        mHolderLayout.setVisibility(View.VISIBLE);
-        mActivity.toggleLoadingProgress(false);
-    }
-
-    @Override
     public String getFragmentTitle() {
-        return mInStockItem.getParcelId() + getString(R.string.details);
+        return mInStockItem.getUid() + " " + getString(R.string.details);
     }
 
     @Override
     public MainActivity.SelectedFragment getSelectedFragment() {
         return MainActivity.SelectedFragment.in_stock_details;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mActivity.unregisterReceiver(mStatusReceiver);
+        if (mCall != null) mCall.cancel();
+        mUnbinder.unbind();
     }
 }
