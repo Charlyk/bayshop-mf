@@ -5,7 +5,9 @@ import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.app.ParcelsCount;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
+import com.softranger.bayshopmf.model.box.Declaration;
 import com.softranger.bayshopmf.model.box.InStock;
+import com.softranger.bayshopmf.model.box.InStockDetailed;
 import com.softranger.bayshopmf.model.user.User;
 
 import java.util.ArrayList;
@@ -79,4 +81,19 @@ public interface BayShopApiInterface {
     // replace "us" to needed storage, for now we have just "us"
     @GET("mf-list/in-stock/us")
     Call<ServerResponse<InStockList>> getInStockItems(@Header("Bearer") String token);
+
+    @GET("mf-list/{id}")
+    Call<ServerResponse<InStockDetailed>> getInStockItemDetails(@Header("Bearer") String token,
+                                                                @Path("id") String itemId);
+
+    @GET("mf-storage-declaration/{id}")
+    Call<ServerResponse<Declaration>> getInStockItemDeclaration(@Header("Bearer") String token,
+                                                                @Path("id") String itemId);
+
+    @FormUrlEncoded
+    @POST("mf-storage-declaration/{id}")
+    Call<ServerResponse> saveInStockItemDeclaration(@Header("Bearer") String token,
+                                                    @Path("id") String itemId,
+                                                    @Field("title") String title,
+                                                    @Field("declarationItems") String declarationItemsArray); // array of products in JSON format
 }

@@ -284,13 +284,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public interface OnItemClickListener {
-        void onRowClick(InStockItem inStockItem, int position);
-
-        void onNoDeclarationItemSelected(InStockItem inStockItem, int position);
-
-        void onIconClick(InStockItem inStockItem, boolean isSelected, int position);
-
-        void onProductClick(AwaitingArrival product, int position);
 
         void onInProcessingProductClick(PUSParcel processingPackage, int position);
 
@@ -301,7 +294,5 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onCheckOrderClick();
 
         void onAdditionalPhotosClick();
-
-        void onProductItemDeleteClick(AwaitingArrival product, int position);
     }
 }

@@ -258,53 +258,6 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
         }
     }
 
-    /**
-     * Called for {@link InStockItem} item click
-     *
-     * @param inStockItem which was clicked within the adapter
-     * @param position    in the list for clicked item
-     */
-    @Override
-    public void onRowClick(final InStockItem inStockItem, int position) {
-        mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
-    }
-
-    /**
-     * Called if an item without declaration was selected
-     *
-     * @param inStockItem which was selected
-     * @param position    in the list for selected item
-     */
-    @Override
-    public void onNoDeclarationItemSelected(final InStockItem inStockItem, int position) {
-        mActivity.addFragment(DetailsFragment.newInstance(inStockItem), true);
-        Toast.makeText(mActivity, getString(R.string.fill_in_the_declaration), Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Called if InStock item icon was clicked
-     *
-     * @param inStockItem which icon was clicked
-     * @param isSelected  shows if item was either selected or deselected
-     * @param position    for the item in the list
-     */
-    @Override
-    public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
-        if (isSelected) MainActivity.inStockItems.add(inStockItem);
-        else MainActivity.inStockItems.remove(inStockItem);
-    }
-
-    /**
-     * Called if an awaiting arrival item was clicked
-     *
-     * @param product  which was clicked
-     * @param position within the adapter for clicked item
-     */
-    @Override
-    public void onProductClick(AwaitingArrival product, int position) {
-//        mActivity.addFragment(AwaitingArrivalProductFragment.newInstance(product), true);
-    }
-
     @Override
     public void onInProcessingProductClick(PUSParcel processingPackage, int position) {
 
@@ -343,37 +296,6 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     @Override
     public void onAdditionalPhotosClick() {
 
-    }
-
-    @Override
-    public void onProductItemDeleteClick(AwaitingArrival product, int position) {
-        deleteItem(product, position);
-    }
-
-    private void deleteItem(final AwaitingArrival product, final int position) {
-        mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
-                        + product.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
-                getString(R.string.yes), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        isDeleteClicked = true;
-                        mObjects.remove(product);
-                        mAdapter.deleteItem(position);
-                        ApiClient.getInstance().delete(Constants.Api.urlWaitingArrivalDetails(
-                                String.valueOf(product.getId())), mHandler);
-                        mAlertDialog.dismiss();
-                        int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
-                        count -= 1;
-                        Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
-                        mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
-                    }
-                }, getString(R.string.no), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mAlertDialog != null) mAlertDialog.dismiss();
-                    }
-                }, 0);
-        if (mAlertDialog != null) mAlertDialog.show();
     }
 
     @Override

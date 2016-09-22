@@ -26,7 +26,7 @@ public abstract class ResponseCallback<T> implements Callback<ServerResponse<T>>
     public void onResponse(Call<ServerResponse<T>> call, Response<ServerResponse<T>> response) {
         if (response.body() != null) {
             String message = response.body().getMessage();
-            if (message.equals(Constants.ApiResponse.OK_MESSAGE)) {
+            if (message.equalsIgnoreCase(Constants.ApiResponse.OK_MESSAGE)) {
                 onSuccess(response.body().getData());
             } else {
                 onFailure(response.body());

@@ -1,6 +1,10 @@
 package com.softranger.bayshopmf.ui.instock;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +20,7 @@ import com.softranger.bayshopmf.model.InStockList;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
@@ -57,6 +62,10 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (MainActivity) getActivity();
 
+        // register broadcast receiver to get notified when an item is changed
+        IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
 
         mInStocks = new ArrayList<>();
@@ -90,14 +99,29 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mSwipeRefreshLayout.setRefreshing(false);
+            if (mSwipeRefreshLayout != null) {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
         }
 
         @Override
         public void onError(Call<ServerResponse<InStockList>> call, Throwable t) {
             // TODO: 9/21/16 handle errors
             mActivity.toggleLoadingProgress(false);
-            mSwipeRefreshLayout.setRefreshing(false);
+            if (mSwipeRefreshLayout != null) {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }
+    };
+
+    /**
+     * Broadcast used to receive item update messages
+     */
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mCall = Application.apiInterface().getInStockItems(Application.currentToken);
+            mCall.enqueue(mResponseCallback);
         }
     };
 
@@ -105,7 +129,7 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
 
     @Override
     public void onItemClick(InStock inStock, int position) {
-
+        mActivity.addFragment(DetailsFragment.newInstance(inStock), true);
     }
 
     @Override
@@ -115,7 +139,8 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
 
     @Override
     public void onNoDeclarationClick(InStock inStock, int position) {
-
+        mActivity.addFragment(DetailsFragment.newInstance(inStock), true);
+        Toast.makeText(mActivity, getString(R.string.fill_in_the_declaration), Toast.LENGTH_SHORT).show();
     }
 
     /*Utility methods*/

@@ -19,6 +19,18 @@
         android:layout_gravity="center_vertical"
         android:src="@mipmap/ic_uncheck_45dp"/>
 
+    <com.softranger.bayshopmf.util.widget.Circle
+        android:id="@+id/testCircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignBottom="@id/inStockItemImage"
+        android:layout_alignTop="@id/inStockItemImage"
+        android:layout_alignLeft="@id/inStockItemImage"
+        android:layout_alignStart="@id/inStockItemImage"
+        android:layout_alignRight="@id/inStockItemImage"
+        android:layout_alignEnd="@id/inStockItemImage"/>
+
     <LinearLayout
         android:id="@+id/inStockItemDataLayout"
         android:layout_toRightOf="@id/inStockItemImage"
@@ -49,17 +61,11 @@
             android:textColor="@android:color/black"
             tools:text="Some product description"/>
 
-        <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
-            android:id="@+id/inStockStatusBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
         <RelativeLayout
-            android:labelFor="@id/inStockStatusBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView

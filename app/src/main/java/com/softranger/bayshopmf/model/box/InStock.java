@@ -4,6 +4,7 @@ import android.os.Parcel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
  * Created by Eduard Albu on 9/20/16, 09, 2016
@@ -61,6 +62,11 @@ public class InStock extends Box {
     @JsonIgnore
     public void setDeclarationFilled(int declarationFilled) {
         mDeclarationFilled = declarationFilled;
+    }
+
+    @JsonSetter("declarationFilled")
+    public void setDeclarationFilled(boolean declarationFilled) {
+        mDeclarationFilled = declarationFilled ? 1 : 0;
     }
 
     public boolean isSelected() {

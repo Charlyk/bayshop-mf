@@ -109,7 +109,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
 
         mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
 
-        mRecyclerView.setVisibility(View.GONE);
         mNoPhotosHolder.setVisibility(View.VISIBLE);
 
         mStorageIcon.setImageResource(R.mipmap.ic_usa_flag);

@@ -110,26 +110,6 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     }
 
     @Override
-    public void onRowClick(InStockItem inStockItem, int position) {
-
-    }
-
-    @Override
-    public void onNoDeclarationItemSelected(InStockItem inStockItem, int position) {
-
-    }
-
-    @Override
-    public void onIconClick(InStockItem inStockItem, boolean isSelected, int position) {
-
-    }
-
-    @Override
-    public void onProductClick(AwaitingArrival product, int position) {
-
-    }
-
-    @Override
     public void onInProcessingProductClick(PUSParcel processingPackage, int position) {
         mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
     }
@@ -151,11 +131,6 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
 
     @Override
     public void onAdditionalPhotosClick() {
-
-    }
-
-    @Override
-    public void onProductItemDeleteClick(AwaitingArrival product, int position) {
 
     }
 

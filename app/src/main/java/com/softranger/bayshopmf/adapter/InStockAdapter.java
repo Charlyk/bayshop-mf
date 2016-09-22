@@ -15,6 +15,8 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ViewAnimator;
+import com.softranger.bayshopmf.util.widget.Circle;
+import com.softranger.bayshopmf.util.widget.CircleAngleAnimation;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 import java.util.ArrayList;
@@ -63,10 +65,11 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             itemHolder.mWeightLabel.setText(itemHolder.mInStock.getWeight());
             itemHolder.mPriceLabel.setText(itemHolder.mInStock.getPrice());
 
-            // TODO: 9/21/16 check status bar text on left side of parrent
-            int spent = getSpentDays(itemHolder.mInStock);
-            int remaining  = 45 - spent;
-            itemHolder.mStatusBarView.setProgress(spent, "Remaining " + remaining + " days");
+            itemHolder.mCircle.setStrokeColor(R.color.colorGreenAction);
+
+            CircleAngleAnimation animation = new CircleAngleAnimation(itemHolder.mCircle, 360);
+            animation.setDuration(3000);
+            itemHolder.mCircle.startAnimation(animation);
         }
     }
 
@@ -76,15 +79,15 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-            ViewAnimator.AnimationListener, ParcelStatusBarView.OnStatusBarReadyListener {
+            ViewAnimator.AnimationListener {
 
         @BindView(R.id.inStockUidLabel) TextView mUidLabel;
         @BindView(R.id.inStockDescriptionlabel) TextView mDescriptionLabel;
-        @BindView(R.id.inStockStatusBar) ParcelStatusBarView mStatusBarView;
         @BindView(R.id.inStockDateLabel) TextView mDateLabel;
         @BindView(R.id.inStockWeightLabel) TextView mWeightLabel;
         @BindView(R.id.inStockPriceLabel) TextView mPriceLabel;
         @BindView(R.id.inStockItemImage) ImageView mImageView;
+        @BindView(R.id.testCircle) Circle mCircle;
 
         View mView;
         ViewAnimator mViewAnimator;
@@ -95,9 +98,6 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ButterKnife.bind(this, itemView);
             mView = itemView;
             mView.setOnClickListener(this);
-
-            mStatusBarView.setOnStatusBarReadyListener(this);
-            mStatusBarView.setNewColorsMap(getBarColors());
 
             mViewAnimator = new ViewAnimator();
             mViewAnimator.setAnimationListener(this);
@@ -136,13 +136,6 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void onAnimationFinished() {
             @DrawableRes int image = mInStock.isSelected() ? R.mipmap.ic_check_45dp : R.mipmap.ic_uncheck_45dp;
             mImageView.setImageResource(image);
-        }
-
-        @Override
-        public void onStatusBarReady() {
-            int spent = getSpentDays(mInStock);
-            int remaining  = 45 - spent;
-            mStatusBarView.setProgress(spent, "Remaining " + remaining + " days");
         }
     }
 
