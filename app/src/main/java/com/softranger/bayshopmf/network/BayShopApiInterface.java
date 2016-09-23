@@ -8,6 +8,9 @@ import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
 import com.softranger.bayshopmf.model.box.Declaration;
 import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.model.box.InStockDetailed;
+import com.softranger.bayshopmf.model.pus.PUSParcel;
+import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
+import com.softranger.bayshopmf.model.pus.PUSStatuses;
 import com.softranger.bayshopmf.model.user.User;
 
 import java.util.ArrayList;
@@ -96,4 +99,26 @@ public interface BayShopApiInterface {
                                                     @Path("id") String itemId,
                                                     @Field("title") String title,
                                                     @Field("declarationItems") String declarationItemsArray); // array of products in JSON format
+
+    @GET("parcels/us")
+    Call<ServerResponse<PUSStatuses>> getAllParcelsFromServer(@Header("Bearer") String token);
+
+    @GET("parcels/view/{id}")
+    Call<ServerResponse<PUSParcelDetailed>> getPUSParcelDetails(@Header("Bearer") String token,
+                                                                @Path("id") String parcelId);
+
+    @DELETE("parcels/view/{parcelId}")
+    Call<ServerResponse> sendParcelToDisband(@Header("Bearer") String token,
+                                             @Path("parcelId") String parcelId);
+
+    @FormUrlEncoded
+    @POST("parcels/view/{parcelId}")
+    Call<ServerResponse> leaveFeedback(@Header("Bearer") String token, @Path("parcelId") String parcelId,
+                                       @Field("comment") String comment, @Field("rating") String rating);
+
+    @FormUrlEncoded
+    @POST("parcels/view/{parcelId}")
+    Call<ServerResponse> allowDamagedParcelSending(@Header("Bearer") String token, @Path("parcelId") String parcelId,
+                                       @Field("confirm") int alow);
+
 }

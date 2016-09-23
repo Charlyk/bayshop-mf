@@ -18,6 +18,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,23 +28,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
+import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.model.product.Photo;
-import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
+import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentFragment;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,25 +53,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import retrofit2.Call;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class InProcessingDetails extends ParentFragment implements ImagesAdapter.OnImageClickListener,
-        InProcessingDetailsAdapter.OnItemClickListener, LoadingDialogFragment.OnDoneListener {
+        InProcessingDetailsAdapter.OnItemClickListener, LoadingDialogFragment.OnDoneListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String PRODUCT_ARG = "in processing arguments";
     private static final int UPLOAD_RESULT_CODE = 12;
     private static final int TAKE_PICTURE_CODE = 13;
     private static final int CAMERA_PERMISSION_CODE = 14;
 
+    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
+
+    private Unbinder mUnbinder;
     private MainActivity mActivity;
-    private RecyclerView mRecyclerView;
     private PUSParcel mPackage;
     private PUSParcelDetailed mPUSParcelDetailed;
     private AlertDialog mAlertDialog;
     private InProcessingDetailsAdapter mAdapter;
     private CustomTabsIntent mTabsIntent;
-
+    private Call<ServerResponse<PUSParcelDetailed>> mCall;
 
     public InProcessingDetails() {
         // Required empty public constructor
@@ -96,14 +105,16 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (MainActivity) getActivity();
+        mUnbinder = ButterKnife.bind(this, view);
+
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        ApiClient.getInstance().getRequest(Constants.Api.urlViewParcelDetails(String
-                .valueOf(mPackage.getId())), mHandler);
+
+        mCall = Application.apiInterface().getPUSParcelDetails(Application.currentToken, mPackage.getId());
         mActivity.toggleLoadingProgress(true);
+        mCall.enqueue(mDetailsResponseCallback);
 
         CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
         tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorPrimary));
@@ -126,23 +137,36 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         mActivity.startActivity(intent);
     }
 
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-        mPUSParcelDetailed = new ObjectMapper().readValue(response.getJSONObject("data").toString(), PUSParcelDetailed.class);
-        mPUSParcelDetailed.setRealWeight(mPackage.getRealWeight());
+    private ResponseCallback<PUSParcelDetailed> mDetailsResponseCallback = new ResponseCallback<PUSParcelDetailed>() {
+        @Override
+        public void onSuccess(PUSParcelDetailed data) {
+            mPUSParcelDetailed = data;
+            mPUSParcelDetailed.setRealWeight(mPackage.getRealWeight());
 
-        mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, InProcessingDetails.this);
-        if (mPUSParcelDetailed.getParcelStatus() == PUSParcel.PUSStatus.in_the_way) {
-            mAdapter.setShowMap(true);
+            mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, InProcessingDetails.this);
+            if (mPUSParcelDetailed.getParcelStatus() == PUSParcel.PUSStatus.in_the_way) {
+                mAdapter.setShowMap(true);
+            }
+            mAdapter.setOnItemClickListener(InProcessingDetails.this);
+            mRecyclerView.setAdapter(mAdapter);
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
-        mAdapter.setOnItemClickListener(this);
-        mRecyclerView.setAdapter(mAdapter);
-    }
 
-    @Override
-    public void onHandleMessageEnd() {
-        mActivity.toggleLoadingProgress(false);
-    }
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<PUSParcelDetailed>> call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
+        }
+    };
 
     @Override
     public String getFragmentTitle() {
@@ -154,6 +178,12 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         return MainActivity.SelectedFragment.parcel_details;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mCall != null) mCall.cancel();
+        mUnbinder.unbind();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -345,7 +375,8 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     @Override
     public void onToDisbandClick(PUSParcelDetailed item, int position) {
-
+        Application.apiInterface().sendParcelToDisband(Application.currentToken, item.getId())
+                .enqueue(mDisbandResponeCallback);
     }
 
     @Override
@@ -376,7 +407,9 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     @Override
     public void onAllowShippingClick(PUSParcelDetailed item, int position) {
-
+        mActivity.toggleLoadingProgress(true);
+        Application.apiInterface().allowDamagedParcelSending(Application.currentToken, mPackage.getId(), 1)
+                .enqueue(mAllowShippingCallback);
     }
 
     @Override
@@ -386,11 +419,76 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     @Override
     public void onDamageToDisbandClick(PUSParcelDetailed item, int position) {
-
+        Application.apiInterface().sendParcelToDisband(Application.currentToken, item.getId())
+                .enqueue(mDisbandResponeCallback);
     }
 
     @Override
     public void onDamageToDisbandDetailsClick(PUSParcelDetailed item, int position) {
 
     }
+
+    @Override
+    public void onRefresh() {
+        mCall = Application.apiInterface().getPUSParcelDetails(Application.currentToken, mPackage.getId());
+        mCall.enqueue(mDetailsResponseCallback);
+    }
+
+    private ResponseCallback mDisbandResponeCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            mActivity.showResultActivity(getString(R.string.parcel_deleted),
+                    getString(R.string.disband_request_sent), R.mipmap.ic_to_disband_30dp,
+                    getString(R.string.request_received));
+            Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
+            int count = Application.counters.get(Constants.PARCELS);
+            count = count - 1;
+            Application.counters.put(Constants.PARCELS, count);
+            mActivity.updateParcelCounters(Constants.PARCELS);
+            mActivity.sendBroadcast(refresh);
+            mActivity.onBackPressed();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
+
+    private ResponseCallback mAllowShippingCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            mActivity.showResultActivity(getString(R.string.allow_shipping),
+                    getString(R.string.allow_request_sent) + " " + mPUSParcelDetailed.getCodeNumber(),
+                    R.mipmap.ic_to_disband_30dp, getString(R.string.we_will_send_parcel));
+            Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
+            int count = Application.counters.get(Constants.PARCELS);
+            count = count - 1;
+            Application.counters.put(Constants.PARCELS, count);
+            mActivity.updateParcelCounters(Constants.PARCELS);
+            mActivity.sendBroadcast(refresh);
+            mActivity.onBackPressed();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
 }

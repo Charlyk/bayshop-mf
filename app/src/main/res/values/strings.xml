@@ -334,4 +334,14 @@
     <string name="storage">Storage</string>
     <string name="services">Services</string>
     <string name="enter_state">Please enter seller state name</string>
+    <string name="parcel_deleted">Parcel deleted</string>
+    <string name="disband_request_sent">Disband request was sent.</string>
+    <string name="request_received">Your disband request were received by us and we will notify you when it\'s done.</string>
+    <string name="feedback_sent">Feedback sent</string>
+    <string name="feedback_added">Thanks for your feedback</string>
+    <string name="feedback_comment">Thanks for leaving a feedback about your parcel, your opinion is very important for us and we will do the best to fit your needs.</string>
+    <string name="allow_request_sent">You allowed sending for parcel</string>
+    <string name="we_will_send_parcel">You request was received and we will send your parcel as asap.</string>
+    <string name="remained">Remained</string>
+    <string name="days">days</string>
 </resources>

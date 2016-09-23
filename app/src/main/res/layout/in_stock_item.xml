@@ -19,18 +19,6 @@
         android:layout_gravity="center_vertical"
         android:src="@mipmap/ic_uncheck_45dp"/>
 
-    <com.softranger.bayshopmf.util.widget.Circle
-        android:id="@+id/testCircle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignBottom="@id/inStockItemImage"
-        android:layout_alignTop="@id/inStockItemImage"
-        android:layout_alignLeft="@id/inStockItemImage"
-        android:layout_alignStart="@id/inStockItemImage"
-        android:layout_alignRight="@id/inStockItemImage"
-        android:layout_alignEnd="@id/inStockItemImage"/>
-
     <LinearLayout
         android:id="@+id/inStockItemDataLayout"
         android:layout_toRightOf="@id/inStockItemImage"
@@ -99,15 +87,15 @@
                 android:id="@+id/inStockDateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/inStockWeightLabel"
-                android:layout_toLeftOf="@id/inStockWeightLabel"
                 android:layout_below="@id/inStockDateTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
-                tools:text="12.10.16 (3 days ago)"/>
+                tools:text="12.10.16"/>
 
             <TextView
                 android:id="@+id/inStockPriceTitle"
@@ -145,5 +133,19 @@
         android:layout_height="2dp"
         android:layout_below="@+id/inStockItemDataLayout"
         android:background="@drawable/drop_shadow"
-        android:layout_marginTop="16dp"/> <!-- bottom space between inStockItems -->
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        tools:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@android:color/white"
+        android:padding="3dp"
+        android:textSize="12sp"
+        android:layout_alignParentEnd="true"
+        tools:background="@drawable/yelow_5dp_corner"
+        android:layout_margin="12dp"
+        android:id="@+id/inStockRemainingLabel"/>
 </RelativeLayout>

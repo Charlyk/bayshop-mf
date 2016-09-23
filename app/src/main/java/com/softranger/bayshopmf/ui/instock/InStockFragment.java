@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
@@ -25,6 +27,7 @@ import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
+import com.softranger.bayshopmf.util.widget.TotalsView;
 
 import java.util.ArrayList;
 
@@ -44,6 +47,8 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.fragmentFrameLayout) FrameLayout mRootLayout;
+    private TotalsView mTotalsView;
 
     public InStockFragment() {
         // Required empty public constructor
@@ -61,6 +66,13 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (MainActivity) getActivity();
+
+        mTotalsView = new TotalsView(mActivity);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.BOTTOM;
+
+        mRootLayout.addView(mTotalsView, layoutParams);
 
         // register broadcast receiver to get notified when an item is changed
         IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
@@ -134,7 +146,13 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
 
     @Override
     public void onIconClick(InStock inStock, boolean isSelected, int position) {
-
+        if (isSelected) {
+            mTotalsView.increasePrice(2);
+            mTotalsView.increaseWeight(2);
+        } else {
+            mTotalsView.decreasePrice(2);
+            mTotalsView.decreaseWeight(2);
+        }
     }
 
     @Override

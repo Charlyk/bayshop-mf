@@ -24,11 +24,9 @@ import android.widget.ImageButton;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.model.address.Address;
-import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.ParentActivity;
-import com.softranger.bayshopmf.ui.instock.buildparcel.ShippingMethodFragment;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
 import com.softranger.bayshopmf.util.Constants;
@@ -52,7 +50,6 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     private static final String SHOW_SELECT_ARG = "show select button argument";
     private ParentActivity mActivity;
     private SecondStepAdapter mAdapter;
-    private InForming mInForming;
     private ArrayList<Address> mAddresses;
     private static boolean isPost;
     private SecondStepAdapter.ButtonType mButtonType;
@@ -72,13 +69,11 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     }
 
 
-    public static AddressesListFragment newInstance(InForming inForming) {
+    public static AddressesListFragment newInstance() {
         Bundle args = new Bundle();
-        args.putParcelable(IN_FORMING_ARG, inForming);
         args.putBoolean(SHOW_SELECT_ARG, true);
         AddressesListFragment fragment = new AddressesListFragment();
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -126,16 +121,12 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
         mAdapter = new SecondStepAdapter(mAddresses, mButtonType);
         mAdapter.setOnAddressClickListener(this);
 
-        if (getArguments().containsKey(IN_FORMING_ARG)) {
-            mInForming = getArguments().getParcelable(IN_FORMING_ARG);
-        }
 
         recyclerView.setAdapter(mAdapter);
         VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) view.findViewById(R.id.buildSecondStepFastScroller);
         fastScroller.setRecyclerView(recyclerView);
         recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
         fastScroller.setSectionIndicator(indicator);
-        isPost = mInForming != null;
 
         getAddressesList(isPost);
         return view;
@@ -144,10 +135,10 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     private void getAddressesList(boolean isPost) {
         mActivity.toggleLoadingProgress(true);
         if (isPost) {
-            RequestBody body = new FormBody.Builder()
-                    .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
-                    .build();
-            ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mHandler);
+//            RequestBody body = new FormBody.Builder()
+//                    .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
+//                    .build();
+//            ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mHandler);
         } else {
             ApiClient.getInstance().getRequest(Constants.Api.urlAddressesList(), mHandler);
         }
@@ -174,15 +165,15 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
 
     @Override
     public void onSelectAddressClick(Address address, int position) {
-        if (mInForming != null) {
-            mInForming.setAddress(address);
-            mActivity.addFragment(ShippingMethodFragment.newInstance(mInForming), true);
-        } else {
+//        if (mInForming != null) {
+//            mInForming.setAddress(address);
+//            mActivity.addFragment(ShippingMethodFragment.newInstance(mInForming), true);
+//        } else {
             Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
             changeAddress.putExtra("address", address);
             mActivity.sendBroadcast(changeAddress);
             mActivity.onBackPressed();
-        }
+//        }
     }
 
     @Override

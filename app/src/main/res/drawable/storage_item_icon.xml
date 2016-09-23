@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@mipmap/ic_check_45dp" android:state_selected="true" />
-    <item android:drawable="@mipmap/ic_uncheck_invisible_45dp" android:state_selected="false" />
-    <item android:drawable="@mipmap/ic_uncheck_45dp" />
-</selector>

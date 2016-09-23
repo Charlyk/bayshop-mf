@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.model.app.ServerResponse;
@@ -20,6 +21,8 @@ import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -210,17 +213,27 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mResponseCall != null) mResponseCall.cancel();
         mUnbinder.unbind();
     }
 
     @Override
     public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response ) {
-        ServerResponse serverResponse = response.body();
-        if (serverResponse.getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
-            mActivity.showResultActivity("Request received", "Return to seller request received",
-                    R.mipmap.ic_confirm_35dp, "Yeour parcel will soon be sent back to the seller, we will notify you when this happens.");
+        if (response.body() != null) {
+            ServerResponse serverResponse = response.body();
+            if (serverResponse.getMessage().equalsIgnoreCase(Constants.ApiResponse.OK_MESSAGE)) {
+                mActivity.showResultActivity("Request received", "Return to seller request received",
+                        R.mipmap.ic_confirm_35dp, "Yeour parcel will soon be sent back to the seller, we will notify you when this happens.");
+            } else {
+                Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            try {
+                ServerResponse serverResponse = new ObjectMapper().readValue(response.errorBody().string(), ServerResponse.class);
+                Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         mActivity.toggleLoadingProgress(false);
     }

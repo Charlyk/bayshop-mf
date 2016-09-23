@@ -13,10 +13,7 @@ import android.view.ViewGroup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
-import com.softranger.bayshopmf.model.box.AwaitingArrival;
-import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
-import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Constants;
@@ -112,11 +109,6 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     @Override
     public void onInProcessingProductClick(PUSParcel processingPackage, int position) {
         mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
-    }
-
-    @Override
-    public void onInFormingClick(InForming inForming, int position) {
-
     }
 
     @Override

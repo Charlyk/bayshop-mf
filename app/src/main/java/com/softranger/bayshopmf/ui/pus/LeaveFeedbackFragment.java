@@ -19,10 +19,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
@@ -40,6 +44,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,6 +59,8 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
+    private Call<ServerResponse> mCall;
+    private PUSParcelDetailed mParcelDetailed;
 
     private static SimpleDateFormat serverFormat;
     private static SimpleDateFormat friendlyFormat;
@@ -97,12 +104,12 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
 
-        PUSParcelDetailed detailed = getArguments().getParcelable(DETAILED_PARCEL);
+        mParcelDetailed = getArguments().getParcelable(DETAILED_PARCEL);
 
-        if (detailed != null) {
-            mDateLabel.setText(getFormattedDate(detailed.getReceivedTime()));
-            mUidLabel.setText(detailed.getCodeNumber());
-            mDescriptionLabel.setText(detailed.getGeneralDescription());
+        if (mParcelDetailed != null) {
+            mDateLabel.setText(getFormattedDate(mParcelDetailed.getReceivedTime()));
+            mUidLabel.setText(mParcelDetailed.getCodeNumber());
+            mDescriptionLabel.setText(mParcelDetailed.getGeneralDescription());
         }
 
         mRatingLabel.setText(getString(mRatingStrings.get(mRatingBar.getRating())));
@@ -136,6 +143,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
     }
 
@@ -231,7 +239,34 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     void sendFeedback() {
         String comment = String.valueOf(mCommentInput.getText());
         float rating = mRatingBar.getRating();
+
+        mCall = Application.apiInterface().leaveFeedback(Application.currentToken,
+                mParcelDetailed.getId(), comment, String.valueOf(rating));
+        mActivity.toggleLoadingProgress(true);
+        mCall.enqueue(mResponseCallback);
     }
+
+    private ResponseCallback mResponseCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            mActivity.showResultActivity(getString(R.string.feedback_sent), getString(R.string.feedback_added),
+                    R.mipmap.ic_confirm_35dp, getString(R.string.feedback_comment));
+            mActivity.onBackPressed();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
 
     @Override
     public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {

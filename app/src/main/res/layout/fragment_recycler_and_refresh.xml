@@ -2,6 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:id="@+id/fragmentFrameLayout"
              xmlns:fab="http://schemas.android.com/apk/res-auto"
              android:background="#f1f1f1"
              android:clickable="true">
@@ -14,6 +15,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragmentRecyclerView"
             android:clipToPadding="false"
+            android:paddingBottom="80dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>

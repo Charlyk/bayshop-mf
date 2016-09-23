@@ -19,8 +19,10 @@ import com.softranger.bayshopmf.util.widget.Circle;
 import com.softranger.bayshopmf.util.widget.CircleAngleAnimation;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -38,10 +40,12 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<InStock> mInStocks;
     private Context mContext;
     private OnInStockClickListener mOnInStockClickListener;
+    private SimpleDateFormat mDateFormat;
 
     public InStockAdapter(ArrayList<InStock> inStocks, Context context) {
         mInStocks = inStocks;
         mContext = context;
+        mDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
     }
 
     public void setOnInStockClickListener(OnInStockClickListener onInStockClickListener) {
@@ -61,15 +65,24 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             itemHolder.mInStock = mInStocks.get(position);
             itemHolder.mUidLabel.setText(itemHolder.mInStock.getUid());
             itemHolder.mDescriptionLabel.setText(itemHolder.mInStock.getTitle());
-            itemHolder.mDateLabel.setText(Application.getFormattedDate(itemHolder.mInStock.getCreatedDate()));
+
+            Date parcelDate = new Date();
+            if (itemHolder.mInStock.getCreatedDate() != null) {
+                parcelDate = itemHolder.mInStock.getCreatedDate();
+            }
+
+            itemHolder.mDateLabel.setText(mDateFormat.format(parcelDate));
             itemHolder.mWeightLabel.setText(itemHolder.mInStock.getWeight());
             itemHolder.mPriceLabel.setText(itemHolder.mInStock.getPrice());
 
-            itemHolder.mCircle.setStrokeColor(R.color.colorGreenAction);
+            int spent = getSpentDays(itemHolder.mInStock);
+            int remains = 45 - spent;
+            String remained = mContext.getString(R.string.remained) + " " + remains +
+                    " " + mContext.getString(R.string.days);
+            itemHolder.mRemainingLabel.setText(remained);
 
-            CircleAngleAnimation animation = new CircleAngleAnimation(itemHolder.mCircle, 360);
-            animation.setDuration(3000);
-            itemHolder.mCircle.startAnimation(animation);
+            itemHolder.mRemainingLabel.setBackgroundDrawable(mContext.getResources()
+                    .getDrawable(getBarColors(spent)));
         }
     }
 
@@ -87,7 +100,7 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @BindView(R.id.inStockWeightLabel) TextView mWeightLabel;
         @BindView(R.id.inStockPriceLabel) TextView mPriceLabel;
         @BindView(R.id.inStockItemImage) ImageView mImageView;
-        @BindView(R.id.testCircle) Circle mCircle;
+        @BindView(R.id.inStockRemainingLabel) TextView mRemainingLabel;
 
         View mView;
         ViewAnimator mViewAnimator;
@@ -139,32 +152,31 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private SparseArray<ParcelStatusBarView.BarColor> getBarColors() {
-        SparseArray<ParcelStatusBarView.BarColor> barColors = new SparseArray<>();
-        for (int i = 0; i < 45; i++) {
-            if (i <= 15) {
-                barColors.put(i, ParcelStatusBarView.BarColor.green);
-            } else if (i > 15 && i <= 40) {
-                barColors.put(i, ParcelStatusBarView.BarColor.yellow);
-            } else {
-                barColors.put(i, ParcelStatusBarView.BarColor.red);
-            }
+    @DrawableRes
+    private int getBarColors(int remains) {
+        if (remains <= 15) {
+            return R.drawable.green_5dp_corner;
+        } else if (remains > 15 && remains <= 40) {
+            return R.drawable.yelow_5dp_corner;
+        } else {
+            return R.drawable.red_5dp_corner;
         }
-        return barColors;
     }
 
     private int getSpentDays(InStock inStock) {
         if (inStock == null) return 1;
         Date today = new Date();
         Date created = inStock.getCreatedDate();
-        if (created == null) return 16;
+        if (created == null) return 13;
         long diff = today.getTime() - created.getTime();
         return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
     public interface OnInStockClickListener {
         void onItemClick(InStock inStock, int position);
+
         void onIconClick(InStock inStock, boolean isSelected, int position);
+
         void onNoDeclarationClick(InStock inStock, int position);
     }
 }

@@ -35,7 +35,6 @@ import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
-import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -163,13 +162,11 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     private ResponseCallback<InStockDetailed> mResponseCallback = new ResponseCallback<InStockDetailed>() {
         @Override
         public void onSuccess(InStockDetailed data) {
+            mInStockDetailed = data;
             if (data.getPhotos().size() <= 0) {
                 mRecyclerView.setVisibility(View.GONE);
                 mNoPhotoLayout.setVisibility(View.VISIBLE);
             } else {
-
-                mInStockDetailed = data;
-
                 mImagesAdapter.refreshList(mInStockDetailed.getPhotos());
                 new ImageDownloadThread<>(mInStockDetailed.getPhotos(), mImageDownloadHandler, mActivity).start();
             }
@@ -194,6 +191,11 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     private void showDetails(final InStockDetailed detailed) {
         // fill text views
         final SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
+
+        if (detailed == null) {
+            mActivity.onBackPressed();
+            return;
+        }
 
         mActivity.runOnUiThread(new Runnable() {
             @Override

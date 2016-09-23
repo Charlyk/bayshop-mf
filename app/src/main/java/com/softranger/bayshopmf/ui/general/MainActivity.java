@@ -20,7 +20,6 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,28 +28,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.InStockItem;
-import com.softranger.bayshopmf.model.packages.InForming;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
-import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
-import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
 import com.softranger.bayshopmf.ui.instock.InStockFragment;
-import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
 import com.softranger.bayshopmf.ui.payment.PaymentActivity;
 import com.softranger.bayshopmf.ui.pus.PUSParcelsFragment;
 import com.softranger.bayshopmf.ui.pus.ReceivedFragment;
-import com.softranger.bayshopmf.ui.services.ReplenishmentFragment;
 import com.softranger.bayshopmf.ui.settings.SettingsActivity;
 import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Application;
@@ -77,7 +67,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     public Toolbar mToolbar;
     private ProgressBar mProgressBar;
     private FrameLayout mFabBackground;
-    public static ArrayList<InStockItem> inStockItems;
     private static String[] permissions;
     private NavigationView mNavigationView;
     private String mFirstToolbarTitle;
@@ -113,8 +102,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
         IntentFilter intentFilter = new IntentFilter(SettingsActivity.ACTION_LOG_OUT);
         registerReceiver(mBroadcastReceiver, intentFilter);
-
-        inStockItems = new ArrayList<>();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);

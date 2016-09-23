@@ -19,25 +19,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
-import com.softranger.bayshopmf.model.box.AwaitingArrival;
-import com.softranger.bayshopmf.model.packages.InForming;
-import com.softranger.bayshopmf.model.InStockItem;
 import com.softranger.bayshopmf.model.product.Product;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
-import com.softranger.bayshopmf.ui.instock.buildparcel.ItemsListFragment;
-import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
@@ -67,13 +59,13 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     private ItemAdapter mAdapter;
     private static String url;
     private TextView mNoValueText;
-    private ArrayList<InForming> mInFormingItems;
     private SwipeRefreshLayout mRefreshLayout;
     private AlertDialog mAlertDialog;
     private boolean isDeleteClicked;
     private Unbinder mUnbinder;
 
-    @BindView(R.id.buildParcelButton) FloatingActionButton mActionButton;
+    @BindView(R.id.buildParcelButton)
+    FloatingActionButton mActionButton;
 
     public StorageItemsFragment() {
         // Required empty public constructor
@@ -121,7 +113,6 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
 
         // initialize in forming items list which will be passed to activity and used to add floating
         // buttons with corresponding parcels
-        mInFormingItems = new ArrayList<>();
 
         // Create the adapter for this fragment and pass it to recycler view
         mAdapter = new ItemAdapter(mActivity);
@@ -191,54 +182,21 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     private void buildItemsList(JSONObject response) {
         try {
             mObjects.clear();
-            mInFormingItems.clear();
-            if (MainActivity.selectedFragment == MainActivity.SelectedFragment.in_stock) {
-                mInFormingItems = new ArrayList<>();
-                mObjects.add(new Object());
-                JSONObject jsonData = response.getJSONObject("data");
-                JSONArray inStockList = jsonData.getJSONArray("list");
-                JSONArray livePackages = jsonData.getJSONArray("livePackages");
-                for (int i = 0; i < inStockList.length(); i++) {
-                    JSONObject jsonItem = inStockList.getJSONObject(i);
-                    String parcelName = jsonItem.getString("title");
-                    if (parcelName == null || parcelName.equals("null")) parcelName = "";
-                    InStockItem inStockItem = new InStockItem.Builder()
-                            .deposit(mDeposit)
-                            .id(jsonItem.getInt("id"))
-                            .trackingNumber(jsonItem.optString("tracking", ""))
-                            .name(parcelName)
-                            .parcelId(jsonItem.optString("uid", ""))
-                            .hasDeclaration(jsonItem.getInt("isDeclarationFilled") == 1)
-                            .build();
-                    mObjects.add(inStockItem);
-                }
-
-                for (int i = 0; i < livePackages.length(); i++) {
-                    JSONObject pack = livePackages.getJSONObject(i);
-                    InForming inForming = new InForming.Builder()
-                            .codeNumber(pack.getString("codeNumber"))
-                            .id(pack.getInt("id"))
-                            .deposit(mDeposit)
-                            .build();
-                    mInFormingItems.add(inForming);
-                }
-            } else {
-                JSONArray arrayData = response.getJSONArray("data");
-                switch (MainActivity.selectedFragment) {
-                    case awaiting_arrival: {
-                        for (int i = 0; i < arrayData.length(); i++) {
-                            JSONObject jsonItem = arrayData.getJSONObject(i);
-                            Product inStockItem = new Product.Builder()
-                                    .deposit(mDeposit)
-                                    .id(jsonItem.getInt("id"))
-                                    .trackingNumber(jsonItem.getString("tracking"))
-                                    .productName(jsonItem.optString("title", ""))
-                                    .productId(jsonItem.getString("uid"))
-                                    .build();
-                            mObjects.add(inStockItem);
-                        }
-                        break;
+            JSONArray arrayData = response.getJSONArray("data");
+            switch (MainActivity.selectedFragment) {
+                case awaiting_arrival: {
+                    for (int i = 0; i < arrayData.length(); i++) {
+                        JSONObject jsonItem = arrayData.getJSONObject(i);
+                        Product inStockItem = new Product.Builder()
+                                .deposit(mDeposit)
+                                .id(jsonItem.getInt("id"))
+                                .trackingNumber(jsonItem.getString("tracking"))
+                                .productName(jsonItem.optString("title", ""))
+                                .productId(jsonItem.getString("uid"))
+                                .build();
+                        mObjects.add(inStockItem);
                     }
+                    break;
                 }
             }
         } catch (Exception e) {
@@ -261,17 +219,6 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     @Override
     public void onInProcessingProductClick(PUSParcel processingPackage, int position) {
 
-    }
-
-    /**
-     * Called when an {@link InForming} item is clicked
-     *
-     * @param inForming which was clicked
-     * @param position  within the adapter
-     */
-    @Override
-    public void onInFormingClick(InForming inForming, int position) {
-        mActivity.addFragment(ItemsListFragment.newInstance(null, false, inForming, mDeposit), true);
     }
 
     /**

@@ -16,14 +16,14 @@ import com.softranger.bayshopmf.R;
 public class PUSParcel implements Parcelable {
     @JsonProperty("id") String mId;
     @JsonProperty("codeNumber") String mCodeNumber;
-    @JsonProperty("fieldTime") String fieldTime;
-    @JsonProperty("totalPrice") String mPrice;
-    @JsonProperty("currency") String mCurrency;
-    @JsonProperty("generalDescription") String mGeneralDescription;
-    PUSStatus mParcelStatus;
-    String mRealWeight;
-    boolean mWasAnimated;
-    boolean mIsSelected;
+    @JsonProperty("fieldTime") private String fieldTime;
+    @JsonProperty("totalPrice") private String mPrice;
+    @JsonProperty("currency") private String mCurrency;
+    @JsonProperty("generalDescription") private String mGeneralDescription;
+
+    private PUSStatus mParcelStatus;
+    private String mRealWeight;
+    private boolean mIsSelected;
 
     public PUSParcel() {
 
@@ -36,7 +36,6 @@ public class PUSParcel implements Parcelable {
         fieldTime = in.readString();
         mPrice = in.readString();
         mCurrency = in.readString();
-        mWasAnimated = in.readByte() != 0;
     }
 
     public static final Creator<PUSParcel> CREATOR = new Creator<PUSParcel>() {
@@ -104,14 +103,6 @@ public class PUSParcel implements Parcelable {
         }
     }
 
-    public boolean isWasAnimated() {
-        return mWasAnimated;
-    }
-
-    public void setWasAnimated(boolean wasAnimated) {
-        mWasAnimated = wasAnimated;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -125,7 +116,6 @@ public class PUSParcel implements Parcelable {
         parcel.writeString(fieldTime);
         parcel.writeString(mPrice);
         parcel.writeString(mCurrency);
-        parcel.writeByte((byte) (mWasAnimated ? 1 : 0));
     }
 
     public enum PUSStatus {
