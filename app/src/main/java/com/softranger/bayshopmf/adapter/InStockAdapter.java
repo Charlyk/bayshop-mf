@@ -106,6 +106,7 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ViewAnimator mViewAnimator;
         InStock mInStock;
 
+
         ItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
