@@ -1,6 +1,8 @@
 package com.softranger.bayshopmf.ui.instock;
 
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -37,18 +40,24 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 
 public class InStockFragment extends ParentFragment implements SwipeRefreshLayout.OnRefreshListener,
-        InStockAdapter.OnInStockClickListener {
+        InStockAdapter.OnInStockClickListener, Animator.AnimatorListener {
 
     private Unbinder mUnbinder;
     private MainActivity mActivity;
     private Call<ServerResponse<InStockList>> mCall;
     private InStockAdapter mAdapter;
     private ArrayList<InStock> mInStocks;
+    private ArrayList<InStock> mSelectedItems;
+
+    private ValueAnimator mShowAnimation;
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.fragmentFrameLayout) FrameLayout mRootLayout;
+
     private TotalsView mTotalsView;
+
+    private boolean mIsTotalVisible;
 
     public InStockFragment() {
         // Required empty public constructor
@@ -67,12 +76,9 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (MainActivity) getActivity();
 
-        mTotalsView = new TotalsView(mActivity);
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity = Gravity.BOTTOM;
+        mSelectedItems = new ArrayList<>();
 
-        mRootLayout.addView(mTotalsView, layoutParams);
+        mTotalsView = new TotalsView(mActivity);
 
         // register broadcast receiver to get notified when an item is changed
         IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
@@ -146,13 +152,71 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
 
     @Override
     public void onIconClick(InStock inStock, boolean isSelected, int position) {
+        // if we have already an animation in progress we should cancel it first
+        if (mShowAnimation != null) mShowAnimation.cancel();
+
+        // then check if item is either selected or not
+        // if yes add it to our ArrayList of selected items and try to show totals view
+        // otherwise remove it from lis and if the list is empty hide totals view
         if (isSelected) {
             mTotalsView.increasePrice(2);
             mTotalsView.increaseWeight(2);
+            mSelectedItems.add(inStock);
         } else {
             mTotalsView.decreasePrice(2);
             mTotalsView.decreaseWeight(2);
+            mSelectedItems.remove(inStock);
         }
+
+        toggleTotalsVisibility(mSelectedItems.size() > 0);
+    }
+
+    private void toggleTotalsVisibility(boolean show) {
+        int from;
+        int to;
+
+        // if show is requested and view is already visible just return from here
+        if (show && mIsTotalVisible) return;
+
+        // set this variable to use it in onAnimationEnd() method
+        mIsTotalVisible = show;
+
+        // set start and end value for animation
+        if (show) {
+            from = 0;
+            to = Application.getPixelsFromDp(60);
+        } else {
+            from = Application.getPixelsFromDp(60);
+            to = 0;
+        }
+
+        // create and set layout params for our totals view
+        final FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.BOTTOM;
+        layoutParams.height = from;
+
+        // if show is requested then add our view to root layout
+        if (show)
+            mRootLayout.addView(mTotalsView, layoutParams);
+
+        // build a value animator, it is global so we can cancel it if user clicks multiple
+        // times on selection buttons
+        mShowAnimation = ValueAnimator.ofFloat(from, to);
+        mShowAnimation.setDuration(200);
+        mShowAnimation.addListener(this);
+        mShowAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        mShowAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float animatedValue = (float) animation.getAnimatedValue();
+                layoutParams.height = (int) animatedValue;
+                mTotalsView.setLayoutParams(layoutParams);
+            }
+        });
+
+        // start the animation
+        mShowAnimation.start();
     }
 
     @Override
@@ -184,5 +248,27 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
     public void onRefresh() {
         mCall = Application.apiInterface().getInStockItems(Application.currentToken);
         mCall.enqueue(mResponseCallback);
+    }
+
+    @Override
+    public void onAnimationStart(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animation) {
+        if (!mIsTotalVisible) {
+            mRootLayout.removeView(mTotalsView);
+        }
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animation) {
+
     }
 }

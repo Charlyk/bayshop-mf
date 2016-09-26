@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_height="70dp"
                 android:background="#8db842"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
 
     <Button
         android:id="@+id/totalsViewCreateBtn"
@@ -14,18 +16,55 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:maxWidth="120dp"
         android:layout_centerVertical="true"
-        android:textSize="16sp"
         android:background="@drawable/yellow_btn_bg"
+        android:maxWidth="120dp"
         android:text="@string/create_parcel"
         android:textColor="@android:color/white"/>
+
+    <RelativeLayout
+        android:id="@+id/totalsViewWeightLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/totalsViewWeightTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="12sp"
+            android:layout_alignParentTop="true"
+            android:text="@string/weight"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/totalsViewWeightLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/totalsViewWeightTitle"
+            android:text="@string/_0_0"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/totalsViewPriceLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_marginLeft="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/totalsViewWeightLayout"
+        android:layout_toEndOf="@id/totalsViewWeightLayout">
 
         <TextView
             android:id="@+id/totalsViewPriceTitle"
@@ -34,6 +73,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:textSize="12sp"
             android:text="@string/price"
             android:textColor="@android:color/white"/>
 
@@ -46,41 +86,6 @@
             android:layout_below="@id/totalsViewPriceTitle"
             android:text="@string/_0_0"
             android:textColor="@android:color/white"
-            android:textSize="20sp"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/totalsViewWeightLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/totalsViewPriceLayout"
-        android:layout_toStartOf="@id/totalsViewPriceLayout"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/totalsViewWeightTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/weight"
-            android:textColor="@android:color/white"/>
-
-        <TextView
-            android:id="@+id/totalsViewWeightLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/totalsViewWeightTitle"
-            android:text="@string/_0_0"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
     </RelativeLayout>
 </RelativeLayout>

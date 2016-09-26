@@ -1,8 +1,10 @@
 package com.softranger.bayshopmf.util;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.util.TypedValue;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -95,6 +97,16 @@ public class Application extends android.app.Application {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    /**
+     * Convert dp to pixels
+     * @param dp to convert
+     * @return value of passed dp in pixels
+     */
+    public static int getPixelsFromDp(int dp) {
+        Resources r = Application.getInstance().getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 
     public static BayShopApiInterface apiInterface() {

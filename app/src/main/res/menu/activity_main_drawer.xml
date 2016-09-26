@@ -44,10 +44,10 @@
                 android:id="@+id/nav_shippingCalculator"
                 android:icon="@mipmap/shipping_calculator_24dp"
                 android:title="@string/shipping_calculator"/>
-            <!--<item-->
-                <!--android:id="@+id/nav_contactUs"-->
-                <!--android:icon="@mipmap/inner_mail_24dp"-->
-                <!--android:title="@string/inner_mail"/>-->
+            <item
+                android:id="@+id/nav_contactUs"
+                android:icon="@mipmap/inner_mail_24dp"
+                android:title="@string/inner_mail"/>
         </menu>
     </item>
 
