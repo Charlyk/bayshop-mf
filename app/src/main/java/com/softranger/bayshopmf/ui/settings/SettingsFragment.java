@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -44,7 +46,7 @@ public class SettingsFragment extends ParentFragment implements SettingsAdapter.
         mActivity = (SettingsActivity) getActivity();
         mSettingItems = mActivity.getResources().getStringArray(R.array.settings_list);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
-        SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragmentSwipeRefreshLayout);
+        JellyRefreshLayout refreshLayout = (JellyRefreshLayout) view.findViewById(R.id.jellyPullToRefresh);
         refreshLayout.setEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         SettingsAdapter adapter = new SettingsAdapter(buildSettingsList());

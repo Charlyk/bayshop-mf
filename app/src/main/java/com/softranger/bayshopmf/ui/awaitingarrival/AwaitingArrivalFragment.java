@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +19,8 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.AwaitingArrivalAdapter;
-import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
@@ -36,11 +35,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefreshLayout.OnRefreshListener,
+public class AwaitingArrivalFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener,
         AwaitingArrivalAdapter.OnAwaitingClickListener {
 
     public static final String ACTION_SHOW_BTN = "SHOW FLOATING BUTTON";
@@ -61,7 +62,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefr
     }};
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
+    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
     @BindView(R.id.addAwaitingFloatingButton) FloatingActionButton mActionButton;
 
     public AwaitingArrivalFragment() {
@@ -100,7 +101,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefr
         mAdapter.setOnAwaitingClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout.setPullToRefreshListener(this);
         mRecyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -160,7 +161,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefr
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case AddAwaitingFragment.ACTION_ITEM_ADDED:
-                    onRefresh();
+                    onRefresh(mRefreshLayout);
                     break;
                 case ACTION_SHOW_BTN:
                     mActionButton.setVisibility(View.VISIBLE);
@@ -168,11 +169,6 @@ public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefr
             }
         }
     };
-
-    @Override
-    public void onRefresh() {
-        mWaitingListCall.clone().enqueue(mResponseCallback);
-    }
 
     @Override
     public void onAwaitingClick(AwaitingArrival awaitingArrival, int position) {
@@ -204,5 +200,10 @@ public class AwaitingArrivalFragment extends ParentFragment implements SwipeRefr
                     }
                 }, 0);
         if (mAlertDialog != null) mAlertDialog.show();
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        mWaitingListCall.clone().enqueue(mResponseCallback);
     }
 }

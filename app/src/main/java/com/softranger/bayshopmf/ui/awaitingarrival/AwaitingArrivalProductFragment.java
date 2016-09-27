@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,11 +50,13 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AwaitingArrivalProductFragment extends ParentFragment {
+public class AwaitingArrivalProductFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener {
 
     private static final String PRODUCT_ARG = "product";
     public static final String ACTION_UPDATE = "update data";
@@ -69,6 +72,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
     @BindView(R.id.awaitingArrivalDetailsImageList) RecyclerView mRecyclerView;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
+    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
 
     private MainActivity mActivity;
     private Unbinder mUnbinder;
@@ -106,6 +110,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
         intentFilter.addAction(ACTION_UPDATE);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
+
+        mRefreshLayout.setPullToRefreshListener(this);
 
         mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
 
@@ -296,5 +302,15 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
     @Override
     public MainActivity.SelectedFragment getSelectedFragment() {
         return MainActivity.SelectedFragment.awaiting_arrival;
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               mRefreshLayout.setRefreshing(false);
+            }
+        }, 1000);
     }
 }

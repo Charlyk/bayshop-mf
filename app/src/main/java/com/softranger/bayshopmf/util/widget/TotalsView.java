@@ -38,6 +38,8 @@ public class TotalsView extends RelativeLayout implements View.OnClickListener {
     private TextView mPriceLabel;
     private Button mCreateBtn;
 
+    private OnCreateParcelClickListener mOnCreateParcelClickListener;
+
     private String mCurrency;
 
     private static double totalPrice;
@@ -85,9 +87,15 @@ public class TotalsView extends RelativeLayout implements View.OnClickListener {
         mCurrency = "";
     }
 
+    public void setOnCreateParcelClickListener(OnCreateParcelClickListener onCreateParcelClickListener) {
+        mOnCreateParcelClickListener = onCreateParcelClickListener;
+    }
+
     @Override
     public void onClick(View v) {
-
+        if (mOnCreateParcelClickListener != null) {
+            mOnCreateParcelClickListener.onCreateParcelClick();
+        }
     }
 
     public void setCurrency(String currency) {
@@ -178,5 +186,9 @@ public class TotalsView extends RelativeLayout implements View.OnClickListener {
         downSet.playTogether(scaleDownXanimation, scaleDownYanimation);
         downSet.setInterpolator(new AccelerateInterpolator());
         downSet.start();
+    }
+
+    public interface OnCreateParcelClickListener {
+        void onCreateParcelClick();
     }
 }

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +26,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -56,6 +58,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Response;
 
 public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,6 +75,8 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     private static String[] permissions;
     private NavigationView mNavigationView;
     private String mFirstToolbarTitle;
+
+    @BindView(R.id.fullScreenContainer) public FrameLayout mFrameLayout;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -98,18 +104,20 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
         supportPostponeEnterTransition();
         supportStartPostponedEnterTransition();
 
         IntentFilter intentFilter = new IntentFilter(SettingsActivity.ACTION_LOG_OUT);
         registerReceiver(mBroadcastReceiver, intentFilter);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = ButterKnife.findById(this, R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // set click listener to collapse button and hide layout if user press on screen
-        mFabBackground = (FrameLayout) findViewById(R.id.fabBackgroundLayout);
+        mFabBackground = ButterKnife.findById(this, R.id.fabBackgroundLayout);
         mFabBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,20 +126,20 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         });
 
         // initialize navigation drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = ButterKnife.findById(this, R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        mProgressBar = (ProgressBar) findViewById(R.id.mainActivityProgressBar);
+        mProgressBar = ButterKnife.findById(this, R.id.mainActivityProgressBar);
 
         // initialize navigation view and it's header
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView = ButterKnife.findById(this, R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         View navHeaderView = mNavigationView.getHeaderView(0);
-        TextView userNameLabel = (TextView) navHeaderView.findViewById(R.id.navHeaderUserNameLabel);
-        TextView userIdLabel = (TextView) navHeaderView.findViewById(R.id.navHeaderUserIdLabel);
+        TextView userNameLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserNameLabel);
+        TextView userIdLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserIdLabel);
         if (Application.user != null) {
             String fullName = Application.user.getFirstName() + " " + Application.user.getLastName();
             userNameLabel.setText(fullName);
@@ -166,6 +174,21 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
         }
+    }
+
+    public void addFullScreenFragment(ParentFragment parentFragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fullScreenContainer, parentFragment, parentFragment.getClass().getSimpleName());
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+    }
+
+    public int getMaxY() {
+        Display mdisp = getWindowManager().getDefaultDisplay();
+        Point mdispSize = new Point();
+        mdisp.getSize(mdispSize);
+        return mdispSize.y;
     }
 
     /**

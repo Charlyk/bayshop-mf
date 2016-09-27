@@ -10,6 +10,7 @@
           <set>
             <option value="/Users/owner/StudioProjects/bayshop-mf" />
             <option value="/Users/owner/StudioProjects/bayshop-mf/app" />
+            <option value="/Users/owner/StudioProjects/bayshop-mf/jellyrefresh" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

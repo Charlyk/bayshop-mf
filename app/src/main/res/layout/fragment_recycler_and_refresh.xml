@@ -2,15 +2,22 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              android:id="@+id/fragmentFrameLayout"
              xmlns:fab="http://schemas.android.com/apk/res-auto"
              android:background="#f1f1f1"
              android:clickable="true">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/fragmentSwipeRefreshLayout"
+    <uk.co.imallan.jellyrefresh.JellyRefreshLayout
+        android:id="@+id/jellyPullToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:text="@string/loading"
+        android:textColor="@color/colorPrimary"
+        app:jellyColor="@color/colorAccent"
+        app:pullHeight="128dp"
+        app:triggerHeight="96dp"
+        app:headerHeight="56dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragmentRecyclerView"
@@ -18,7 +25,7 @@
             android:paddingBottom="80dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </uk.co.imallan.jellyrefresh.JellyRefreshLayout>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/addAwaitingFloatingButton"

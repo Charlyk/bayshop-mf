@@ -16,10 +16,13 @@ import com.softranger.bayshopmf.model.chat.MailMessage;
 
 import java.util.ArrayList;
 
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PersonalMailsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class PersonalMailsFragment extends Fragment implements PullToRefreshLayout.PullToRefreshListener {
 
 
     public PersonalMailsFragment() {
@@ -29,7 +32,7 @@ public class PersonalMailsFragment extends Fragment implements SwipeRefreshLayou
     private ArrayList<MailMessage> mMessages;
     private ContactUsActivity mActivity;
     private MailAdapter mAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
+    private JellyRefreshLayout mRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,9 +41,8 @@ public class PersonalMailsFragment extends Fragment implements SwipeRefreshLayou
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (ContactUsActivity) getActivity();
         mMessages = new ArrayList<>();
-        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragmentSwipeRefreshLayout);
-        mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        mRefreshLayout = (JellyRefreshLayout) view.findViewById(R.id.jellyPullToRefresh);
+        mRefreshLayout.setPullToRefreshListener(this);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter = new MailAdapter(mMessages);
@@ -50,7 +52,7 @@ public class PersonalMailsFragment extends Fragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void onRefresh() {
-        mRefreshLayout.setRefreshing(false);
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        pullToRefreshLayout.setRefreshing(false);
     }
 }

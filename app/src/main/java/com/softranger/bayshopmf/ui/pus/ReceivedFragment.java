@@ -3,7 +3,6 @@ package com.softranger.bayshopmf.ui.pus;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,11 +27,14 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnItemClickListener,
+        PullToRefreshLayout.PullToRefreshListener {
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
@@ -40,7 +42,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     private ItemAdapter mAdapter;
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
+    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
 
     public ReceivedFragment() {
         // Required empty public constructor
@@ -66,6 +68,8 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
+
+        mRefreshLayout.setPullToRefreshListener(this);
 
         mActivity.toggleLoadingProgress(true);
         ApiClient.getInstance().getRequest(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.RECEIVED), mHandler);
@@ -127,7 +131,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     }
 
     @Override
-    public void onRefresh() {
-        mRefreshLayout.setRefreshing(false);
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        pullToRefreshLayout.setRefreshing(false);
     }
 }

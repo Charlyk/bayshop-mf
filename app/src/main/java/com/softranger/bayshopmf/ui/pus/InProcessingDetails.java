@@ -57,12 +57,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.Call;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class InProcessingDetails extends ParentFragment implements ImagesAdapter.OnImageClickListener,
-        InProcessingDetailsAdapter.OnItemClickListener, LoadingDialogFragment.OnDoneListener, SwipeRefreshLayout.OnRefreshListener {
+        InProcessingDetailsAdapter.OnItemClickListener, LoadingDialogFragment.OnDoneListener,
+        PullToRefreshLayout.PullToRefreshListener {
 
     private static final String PRODUCT_ARG = "in processing arguments";
     private static final int UPLOAD_RESULT_CODE = 12;
@@ -70,7 +73,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     private static final int CAMERA_PERMISSION_CODE = 14;
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
+    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
 
     private Unbinder mUnbinder;
     private MainActivity mActivity;
@@ -428,12 +431,6 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     }
 
-    @Override
-    public void onRefresh() {
-        mCall = Application.apiInterface().getPUSParcelDetails(Application.currentToken, mPackage.getId());
-        mCall.enqueue(mDetailsResponseCallback);
-    }
-
     private ResponseCallback mDisbandResponeCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
@@ -491,4 +488,10 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
             mActivity.toggleLoadingProgress(false);
         }
     };
+
+    @Override
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        mCall = Application.apiInterface().getPUSParcelDetails(Application.currentToken, mPackage.getId());
+        mCall.enqueue(mDetailsResponseCallback);
+    }
 }

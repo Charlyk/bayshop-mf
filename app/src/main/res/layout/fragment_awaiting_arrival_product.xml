@@ -1,9 +1,22 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="@android:color/white"
-             tools:context=".ui.awaitingarrival.AwaitingArrivalProductFragment">
+            tools:context=".ui.awaitingarrival.AwaitingArrivalProductFragment">
 
-    <include layout="@layout/awaiting_arrival_product_details"/>
+    <uk.co.imallan.jellyrefresh.JellyRefreshLayout
+        android:id="@+id/jellyPullToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/loading"
+        android:textColor="@color/colorPrimary"
+        app:jellyColor="@color/colorAccent"
+        app:pullHeight="128dp"
+        app:triggerHeight="96dp"
+        app:headerHeight="56dp">
+
+        <include layout="@layout/awaiting_arrival_product_details"/>
+    </uk.co.imallan.jellyrefresh.JellyRefreshLayout>
 </ScrollView>

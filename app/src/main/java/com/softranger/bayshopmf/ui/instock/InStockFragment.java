@@ -2,13 +2,13 @@ package com.softranger.bayshopmf.ui.instock;
 
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -38,9 +38,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.Call;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
-public class InStockFragment extends ParentFragment implements SwipeRefreshLayout.OnRefreshListener,
-        InStockAdapter.OnInStockClickListener, Animator.AnimatorListener {
+public class InStockFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener,
+        InStockAdapter.OnInStockClickListener, Animator.AnimatorListener, TotalsView.OnCreateParcelClickListener {
 
     private Unbinder mUnbinder;
     private MainActivity mActivity;
@@ -52,7 +54,7 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
     private ValueAnimator mShowAnimation;
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.fragmentSwipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.fragmentFrameLayout) FrameLayout mRootLayout;
 
     private TotalsView mTotalsView;
@@ -79,6 +81,7 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
         mSelectedItems = new ArrayList<>();
 
         mTotalsView = new TotalsView(mActivity);
+        mTotalsView.setOnCreateParcelClickListener(this);
 
         // register broadcast receiver to get notified when an item is changed
         IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
@@ -91,7 +94,7 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
         mAdapter.setOnInStockClickListener(this);
 
         mRecyclerView.setAdapter(mAdapter);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setPullToRefreshListener(this);
 
         mCall = Application.apiInterface().getInStockItems(Application.currentToken);
         mActivity.toggleLoadingProgress(true);
@@ -198,7 +201,7 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
 
         // if show is requested then add our view to root layout
         if (show)
-            mRootLayout.addView(mTotalsView, layoutParams);
+            mActivity.mFrameLayout.addView(mTotalsView, layoutParams);
 
         // build a value animator, it is global so we can cancel it if user clicks multiple
         // times on selection buttons
@@ -242,12 +245,7 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
-    }
-
-    @Override
-    public void onRefresh() {
-        mCall = Application.apiInterface().getInStockItems(Application.currentToken);
-        mCall.enqueue(mResponseCallback);
+        mActivity.mFrameLayout.removeView(mTotalsView);
     }
 
     @Override
@@ -258,7 +256,7 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
     @Override
     public void onAnimationEnd(Animator animation) {
         if (!mIsTotalVisible) {
-            mRootLayout.removeView(mTotalsView);
+            mActivity.mFrameLayout.removeView(mTotalsView);
         }
     }
 
@@ -270,5 +268,19 @@ public class InStockFragment extends ParentFragment implements SwipeRefreshLayou
     @Override
     public void onAnimationRepeat(Animator animation) {
 
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        mCall = Application.apiInterface().getInStockItems(Application.currentToken);
+        mCall.enqueue(mResponseCallback);
+    }
+
+    @Override
+    public void onCreateParcelClick() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mTotalsView, "y", mTotalsView.getY(), 300);
+        animator.setDuration(500);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.start();
     }
 }

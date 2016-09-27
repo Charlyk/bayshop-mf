@@ -16,10 +16,13 @@ import com.softranger.bayshopmf.model.chat.MailMessage;
 
 import java.util.ArrayList;
 
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderMailsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class OrderMailsFragment extends Fragment implements PullToRefreshLayout.PullToRefreshListener {
 
 
     public OrderMailsFragment() {
@@ -29,7 +32,7 @@ public class OrderMailsFragment extends Fragment implements SwipeRefreshLayout.O
     private ArrayList<MailMessage> mMessages;
     private ContactUsActivity mActivity;
     private MailAdapter mAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
+    private JellyRefreshLayout mRefreshLayout;
 
 
     @Override
@@ -39,9 +42,8 @@ public class OrderMailsFragment extends Fragment implements SwipeRefreshLayout.O
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (ContactUsActivity) getActivity();
         mMessages = new ArrayList<>();
-        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragmentSwipeRefreshLayout);
-        mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        mRefreshLayout = (JellyRefreshLayout) view.findViewById(R.id.jellyPullToRefresh);
+        mRefreshLayout.setPullToRefreshListener(this);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter = new MailAdapter(mMessages);
@@ -51,7 +53,7 @@ public class OrderMailsFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     @Override
-    public void onRefresh() {
-        mRefreshLayout.setRefreshing(false);
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        pullToRefreshLayout.setRefreshing(false);
     }
 }
