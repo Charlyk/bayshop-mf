@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,9 +37,7 @@ import retrofit2.Call;
 import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class AwaitingArrivalFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener,
         AwaitingArrivalAdapter.OnAwaitingClickListener {
 
@@ -62,8 +59,8 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     }};
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
     @BindView(R.id.addAwaitingFloatingButton) FloatingActionButton mActionButton;
+    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
 
     public AwaitingArrivalFragment() {
         // Required empty public constructor
@@ -84,8 +81,11 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
         intentFilter.addAction(ACTION_SHOW_BTN);
+        intentFilter.addAction(MainActivity.ACTION_REFRESH);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mUnbinder = ButterKnife.bind(this, view);
+
+        mRefreshLayout.setPullToRefreshListener(this);
 
         mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems(Application.currentToken);
 
@@ -101,7 +101,6 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         mAdapter.setOnAwaitingClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        mRefreshLayout.setPullToRefreshListener(this);
         mRecyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -150,7 +149,6 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
         @Override
         public void onError(Call<ServerResponse<ArrayList<AwaitingArrival>>> call, Throwable t) {
-            // TODO: 9/21/16 handle errors
             mActivity.toggleLoadingProgress(false);
             mRefreshLayout.setRefreshing(false);
         }
@@ -161,10 +159,13 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case AddAwaitingFragment.ACTION_ITEM_ADDED:
-                    onRefresh(mRefreshLayout);
                     break;
                 case ACTION_SHOW_BTN:
                     mActionButton.setVisibility(View.VISIBLE);
+                    break;
+                case MainActivity.ACTION_REFRESH:
+                    mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems(Application.currentToken);
+                    mWaitingListCall.enqueue(mResponseCallback);
                     break;
             }
         }
@@ -183,27 +184,18 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     private void deleteItem(final AwaitingArrival product, final int position) {
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
                         + product.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
-                getString(R.string.yes), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mActivity.toggleLoadingProgress(true);
+                getString(R.string.yes), ((view) ->  {mActivity.toggleLoadingProgress(true);
+                    new DeleteAsyncTask(position, mAwaitingArrivals, mActivity, mAdapter).execute(product);
+                    // close the dialog
+                    mAlertDialog.dismiss();
 
-                        new DeleteAsyncTask(position, mAwaitingArrivals, mActivity, mAdapter).execute(product);
-
-                        // close the dialog
-                        mAlertDialog.dismiss();
-                    }
-                }, getString(R.string.no), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mAlertDialog != null) mAlertDialog.dismiss();
-                    }
-                }, 0);
+                }), getString(R.string.no), ((view) -> {if (mAlertDialog != null) mAlertDialog.dismiss();}), 0);
         if (mAlertDialog != null) mAlertDialog.show();
     }
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        mWaitingListCall.clone().enqueue(mResponseCallback);
+        mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems(Application.currentToken);
+        mWaitingListCall.enqueue(mResponseCallback);
     }
 }

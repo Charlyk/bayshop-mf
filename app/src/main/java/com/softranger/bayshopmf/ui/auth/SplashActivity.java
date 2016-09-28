@@ -32,10 +32,14 @@ public class SplashActivity extends AppCompatActivity {
             mPersonalDataCall = Application.apiInterface().getUserPersonalData(Application.currentToken);
             mPersonalDataCall.enqueue(mPersonalDataCallback);
         } else {
-            mIntent = new Intent(this, LoginActivity.class);
-            startActivity(mIntent);
-            finish();
+            startLoginActivity();
         }
+    }
+
+    private void startLoginActivity() {
+        mIntent = new Intent(this, LoginActivity.class);
+        startActivity(mIntent);
+        finish();
     }
 
     /**
@@ -52,11 +56,13 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            startLoginActivity();
         }
 
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
-            // TODO: 9/21/16 handle errors
+            Toast.makeText(getBaseContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            startLoginActivity();
         }
     };
 
@@ -72,18 +78,21 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             } catch (Exception e) {
                 e.printStackTrace();
-                // TODO: 9/21/16 handle the error
+                Toast.makeText(getBaseContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                startLoginActivity();
             }
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            startLoginActivity();
         }
 
         @Override
         public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
-            // TODO: 9/21/16 handle errors
+            Toast.makeText(getBaseContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            startLoginActivity();
         }
     };
 

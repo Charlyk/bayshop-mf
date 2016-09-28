@@ -42,7 +42,6 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     private ItemAdapter mAdapter;
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
 
     public ReceivedFragment() {
         // Required empty public constructor
@@ -68,8 +67,6 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
-
-        mRefreshLayout.setPullToRefreshListener(this);
 
         mActivity.toggleLoadingProgress(true);
         ApiClient.getInstance().getRequest(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.RECEIVED), mHandler);

@@ -1,6 +1,8 @@
 package com.softranger.bayshopmf.ui.addresses;
 
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
@@ -19,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 
 import com.softranger.bayshopmf.R;
@@ -26,6 +29,8 @@ import com.softranger.bayshopmf.adapter.SecondStepAdapter;
 import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.instock.InStockFragment;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
@@ -46,6 +51,7 @@ import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScrol
 public class AddressesListFragment extends ParentFragment implements SecondStepAdapter.OnAddressClickListener,
         MenuItemCompat.OnActionExpandListener, SearchView.OnQueryTextListener, MenuItem.OnMenuItemClickListener {
 
+    public static final String ACTION_START_ANIM = "START TOTALS ANIMATION";
     private static final String IN_FORMING_ARG = "in forming argument";
     private static final String SHOW_SELECT_ARG = "show select button argument";
     private ParentActivity mActivity;
@@ -55,6 +61,7 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     private SecondStepAdapter.ButtonType mButtonType;
     private AlertDialog mDeleteDialog;
     private static boolean deleteClicked;
+    private View mRootView;
 
     public AddressesListFragment() {
         // Required empty public constructor
@@ -107,15 +114,17 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
         mActivity = (ParentActivity) getActivity();
+
+        mRootView.setAlpha(0.1f);
 
         IntentFilter intentFilter = new IntentFilter(EditAddressFragment.ACTION_REFRESH_ADDRESS);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
         ColorGroupSectionTitleIndicator indicator = (ColorGroupSectionTitleIndicator)
-                view.findViewById(R.id.buildSecondStepFastScrollerSectionIndicator);
+                mRootView.findViewById(R.id.buildSecondStepFastScrollerSectionIndicator);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.buildSecondStepList);
+        RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.buildSecondStepList);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAddresses = new ArrayList<>();
         mAdapter = new SecondStepAdapter(mAddresses, mButtonType);
@@ -123,13 +132,13 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
 
 
         recyclerView.setAdapter(mAdapter);
-        VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) view.findViewById(R.id.buildSecondStepFastScroller);
+        VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) mRootView.findViewById(R.id.buildSecondStepFastScroller);
         fastScroller.setRecyclerView(recyclerView);
         recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
         fastScroller.setSectionIndicator(indicator);
 
         getAddressesList(isPost);
-        return view;
+        return mRootView;
     }
 
     private void getAddressesList(boolean isPost) {
@@ -291,6 +300,18 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     @Override
     public void finallyMethod() {
         mActivity.toggleLoadingProgress(false);
+        Intent intent = new Intent(ACTION_START_ANIM);
+        mActivity.sendBroadcast(intent);
+
+        ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(mRootView, "alpha", 0.1f, 1.0f);
+        ObjectAnimator recyclerAnimation = ObjectAnimator.ofFloat(mRootView, "y",
+                InStockFragment.totalsY + MainActivity.toolbarHeight, Application.getPixelsFromDp(60));
+
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(500);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.playTogether(alphaAnimation, recyclerAnimation);
+        set.start();
     }
 
     @Override

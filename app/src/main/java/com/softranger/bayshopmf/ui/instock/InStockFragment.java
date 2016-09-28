@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.ui.instock;
 
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
@@ -11,6 +12,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +27,10 @@ import com.softranger.bayshopmf.model.InStockList;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.steps.SelectAddressFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -53,11 +57,13 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     private ValueAnimator mShowAnimation;
 
-    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.fragmentFrameLayout) FrameLayout mRootLayout;
+    @BindView(R.id.fragmentRecyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentFrameLayout)
+    FrameLayout mRootLayout;
 
     private TotalsView mTotalsView;
+    public static float totalsY;
 
     private boolean mIsTotalVisible;
 
@@ -85,6 +91,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
         // register broadcast receiver to get notified when an item is changed
         IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
+        intentFilter.addAction(AddressesListFragment.ACTION_START_ANIM);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -94,7 +101,6 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         mAdapter.setOnInStockClickListener(this);
 
         mRecyclerView.setAdapter(mAdapter);
-        mSwipeRefreshLayout.setPullToRefreshListener(this);
 
         mCall = Application.apiInterface().getInStockItems(Application.currentToken);
         mActivity.toggleLoadingProgress(true);
@@ -113,25 +119,18 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setItemViewCacheSize(mInStocks.size());
             mActivity.toggleLoadingProgress(false);
-            mSwipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            if (mSwipeRefreshLayout != null) {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
         }
 
         @Override
         public void onError(Call<ServerResponse<InStockList>> call, Throwable t) {
             // TODO: 9/21/16 handle errors
             mActivity.toggleLoadingProgress(false);
-            if (mSwipeRefreshLayout != null) {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
         }
     };
 
@@ -141,8 +140,16 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mCall = Application.apiInterface().getInStockItems(Application.currentToken);
-            mCall.enqueue(mResponseCallback);
+            if (intent.getAction().equals(AddressesListFragment.ACTION_START_ANIM)) {
+                ObjectAnimator animator = ObjectAnimator.ofFloat(mTotalsView, "y", mTotalsView.getY(), 0f);
+                animator.addUpdateListener(animation -> {
+                    float animatedValue = (float) animation.getAnimatedValue();
+                    Log.d("InStockFragment", String.valueOf(animatedValue));
+                });
+            } else {
+                mCall = Application.apiInterface().getInStockItems(Application.currentToken);
+                mCall.enqueue(mResponseCallback);
+            }
         }
     };
 
@@ -209,12 +216,31 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         mShowAnimation.setDuration(200);
         mShowAnimation.addListener(this);
         mShowAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        mShowAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mShowAnimation.addUpdateListener(animation -> {
+            float animatedValue = (float) animation.getAnimatedValue();
+            layoutParams.height = (int) animatedValue;
+            mTotalsView.setLayoutParams(layoutParams);
+        });
+
+        mShowAnimation.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float animatedValue = (float) animation.getAnimatedValue();
-                layoutParams.height = (int) animatedValue;
-                mTotalsView.setLayoutParams(layoutParams);
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                totalsY = mTotalsView.getY();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
             }
         });
 
@@ -246,6 +272,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
         mActivity.mFrameLayout.removeView(mTotalsView);
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -278,9 +305,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     @Override
     public void onCreateParcelClick() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(mTotalsView, "y", mTotalsView.getY(), 300);
-        animator.setDuration(500);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.start();
+        AddressesListFragment addressFragment = AddressesListFragment.newInstance();
+        mActivity.addFullScreenFragment(addressFragment);
     }
 }

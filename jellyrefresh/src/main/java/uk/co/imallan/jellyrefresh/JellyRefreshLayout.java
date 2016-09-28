@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.bhargavms.dotloader.DotLoader;
 
 public class JellyRefreshLayout extends PullToRefreshLayout implements PullToRefreshLayout.PullToRefreshPullingListener {
 
@@ -43,10 +48,12 @@ public class JellyRefreshLayout extends PullToRefreshLayout implements PullToRef
             float height = a.getDimension(R.styleable.JellyRefreshLayout_headerHeight, mHeaderHeight);
             float pullHeight = a.getDimension(R.styleable.JellyRefreshLayout_pullHeight, mPullHeight);
             float triggerHeight = a.getDimension(R.styleable.JellyRefreshLayout_pullHeight, mTriggerHeight);
+            int loadingLayout = a.getResourceId(R.styleable.JellyRefreshLayout_loadingViewLayout, R.layout.loading_layout);
             mJellyLayout.setColor(color);
             mHeaderHeight = height;
             mPullHeight = pullHeight;
             mTriggerHeight = triggerHeight;
+            setLoadingView(loadingLayout);
         } finally {
             a.recycle();
         }
@@ -54,6 +61,7 @@ public class JellyRefreshLayout extends PullToRefreshLayout implements PullToRef
 
     @Override
     public void setRefreshing(boolean refreshing) {
+        Log.d(this.getClass().getSimpleName(), "Refresh value: " + refreshing);
         if (refreshing) {
             post(() -> mJellyLayout.setPointX(mJellyLayout.getWidth() / 2));
         }
@@ -69,14 +77,12 @@ public class JellyRefreshLayout extends PullToRefreshLayout implements PullToRef
         }
         setHeaderView(mJellyLayout);
         setPullingListener(this);
+    }
 
-        int color = Color.parseColor("#ffffff");
-        TextView loadingText = new TextView(mContext);
-        loadingText.setTextSize(20f);
-        loadingText.setTextColor(color);
-        loadingText.setText("Loading...");
+    public void setLoadingView(@LayoutRes int loadingViewLayout) {
+        DotLoader dotLoader = (DotLoader) LayoutInflater.from(mContext).inflate(loadingViewLayout, null, false);
 
-        setLoadingView(loadingText);
+        setLoadingView(dotLoader);
     }
 
     @Override
@@ -148,7 +154,7 @@ public class JellyRefreshLayout extends PullToRefreshLayout implements PullToRef
         FrameLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-        params.topMargin = 40;
+        params.topMargin = 10;
         mJellyLayout.addView(view, params);
         view.setVisibility(INVISIBLE);
         mLoadingView = view;

@@ -27,12 +27,15 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.general.ResultActivity;
 
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
+
 /**
  * Created by Eduard Albu on 7/1/16, 07, 2016
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public abstract class ParentActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
+public abstract class ParentActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener,
+        PullToRefreshLayout.PullToRefreshListener {
 
     public static SelectedFragment selectedFragment;
 
@@ -177,6 +180,10 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         animation.setDuration(200).start();
     }
 
+    public void stopRereshing() {
+
+    }
+
     public void showResultActivity(@NonNull String topTitle, @NonNull String secondTitle,
                                    @DrawableRes int image, @NonNull String descriptiom) {
         // build intent for result activity
@@ -235,5 +242,10 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         public int fragmentName() {
             return mFragmentName;
         }
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+
     }
 }

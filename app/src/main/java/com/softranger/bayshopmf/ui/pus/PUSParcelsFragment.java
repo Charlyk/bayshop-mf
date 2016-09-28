@@ -43,8 +43,8 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
     private PUSParcelsAdapter mAdapter;
     private Call<ServerResponse<PUSStatuses>> mCall;
 
-    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
+    @BindView(R.id.fragmentRecyclerView)
+    RecyclerView mRecyclerView;
 
     public PUSParcelsFragment() {
         // Required empty public constructor
@@ -75,7 +75,6 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         mAdapter.setOnPusItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        mRefreshLayout.setPullToRefreshListener(this);
 
         mCall = Application.apiInterface().getAllParcelsFromServer(Application.currentToken);
         mActivity.toggleLoadingProgress(true);
@@ -90,28 +89,25 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setItemViewCacheSize(mPUSParcels.size());
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<PUSStatuses>> call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
         }
     };
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            onRefresh(mRefreshLayout);
+            // TODO: 9/28/16 refresh
         }
     };
 

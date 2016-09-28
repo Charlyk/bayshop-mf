@@ -73,7 +73,6 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     private static final int CAMERA_PERMISSION_CODE = 14;
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
 
     private Unbinder mUnbinder;
     private MainActivity mActivity;
@@ -153,21 +152,18 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
             mAdapter.setOnItemClickListener(InProcessingDetails.this);
             mRecyclerView.setAdapter(mAdapter);
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<PUSParcelDetailed>> call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
         }
     };
 

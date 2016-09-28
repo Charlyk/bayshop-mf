@@ -16,6 +16,7 @@
         android:textColor="@color/colorPrimary"
         app:jellyColor="@color/colorAccent"
         app:pullHeight="128dp"
+        app:loadingViewLayout="@layout/refresh_header"
         app:triggerHeight="96dp"
         app:headerHeight="56dp">
 

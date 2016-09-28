@@ -46,8 +46,6 @@ public class SettingsFragment extends ParentFragment implements SettingsAdapter.
         mActivity = (SettingsActivity) getActivity();
         mSettingItems = mActivity.getResources().getStringArray(R.array.settings_list);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragmentRecyclerView);
-        JellyRefreshLayout refreshLayout = (JellyRefreshLayout) view.findViewById(R.id.jellyPullToRefresh);
-        refreshLayout.setEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         SettingsAdapter adapter = new SettingsAdapter(buildSettingsList());
         adapter.setOnSettingClickListener(this);

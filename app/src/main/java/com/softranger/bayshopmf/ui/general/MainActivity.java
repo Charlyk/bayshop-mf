@@ -51,19 +51,22 @@ import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.CustomExceptionHandler;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
+import com.softranger.bayshopmf.util.widget.TotalsView;
 
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Response;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String ACTION_REFRESH = "START REFRESHING";
     public static final String ACTION_ITEM_DELETED = "ITEM_DELETED";
     private static final int PERMISSION_REQUEST_CODE = 1535;
     public static final String ACTION_UPDATE_TITLE = "update toolbar title";
@@ -75,6 +78,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     private static String[] permissions;
     private NavigationView mNavigationView;
     private String mFirstToolbarTitle;
+    public static int toolbarHeight;
 
     @BindView(R.id.fullScreenContainer) public FrameLayout mFrameLayout;
 
@@ -113,16 +117,14 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         registerReceiver(mBroadcastReceiver, intentFilter);
 
         mToolbar = ButterKnife.findById(this, R.id.toolbar);
+        toolbarHeight = mToolbar.getHeight();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // set click listener to collapse button and hide layout if user press on screen
         mFabBackground = ButterKnife.findById(this, R.id.fabBackgroundLayout);
-        mFabBackground.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        mFabBackground.setOnClickListener((view) -> {
+            onBackPressed();
         });
 
         // initialize navigation drawer
@@ -179,16 +181,9 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     public void addFullScreenFragment(ParentFragment parentFragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fullScreenContainer, parentFragment, parentFragment.getClass().getSimpleName());
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.add(R.id.fullScreenContainer, parentFragment, parentFragment.getClass().getSimpleName());
+        transaction.addToBackStack(parentFragment.getClass().getSimpleName());
         transaction.commit();
-    }
-
-    public int getMaxY() {
-        Display mdisp = getWindowManager().getDefaultDisplay();
-        Point mdispSize = new Point();
-        mdisp.getSize(mdispSize);
-        return mdispSize.y;
     }
 
     /**
@@ -241,22 +236,14 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         transaction.addToBackStack(fragment.getClass().getSimpleName());
         transaction.commit();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerToggle.setDrawerIndicatorEnabled(false);
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setDisplayShowHomeEnabled(true);
-                getSupportActionBar().setHomeButtonEnabled(true);
-                mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        onBackPressed();
-                    }
-                });
-                mDrawerToggle.syncState();
-            }
+        new Handler().postDelayed(() -> {
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            mDrawerToggle.setToolbarNavigationClickListener(view -> onBackPressed());
+            mDrawerToggle.syncState();
         }, 100);
     }
 
@@ -278,18 +265,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     @Override
     public void setToolbarTitle(final String title) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-                        toolbarTitle.setText(title);
-                    }
-                }, 100);
-            }
-        });
+        runOnUiThread(() -> new Handler().postDelayed(() -> {
+            TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+            toolbarTitle.setText(title);
+        }, 100));
     }
 
     private void setMenuCounter(@IdRes int itemId, int count) {
@@ -400,68 +379,17 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         }
     }
 
+    @Override
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        Intent refresh = new Intent(ACTION_REFRESH);
+        sendBroadcast(refresh);
+    }
+
     public interface OnEditDialogClickListener {
         void onPositiveClick(String newInput);
 
         void onNegativeClick();
     }
-
-
-
-    public Handler mDeleteHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message");
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-                            JSONObject data = response.getJSONObject("data");
-                            boolean hasParcels = data.getInt("isPackageHasMoreBoxes") == 1;
-
-                            Intent refreshIntent = new Intent(StorageItemsFragment.ACTION_ITEM_CHANGED);
-                            Intent deleteIntent = new Intent(ACTION_ITEM_DELETED);
-                            deleteIntent.putExtra("hasMoreItems", hasParcels);
-                            refreshIntent.putExtra("deposit", "us"); // TODO: 6/27/16 set with the actual selected storage
-                            sendBroadcast(refreshIntent);
-                            sendBroadcast(deleteIntent);
-                        } else {
-                            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-            toggleLoadingProgress(false);
-        }
-    };
 
     public BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
