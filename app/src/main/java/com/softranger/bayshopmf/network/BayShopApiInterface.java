@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.network;
 
+import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.InStockList;
 import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.app.ParcelsCount;
@@ -121,4 +122,7 @@ public interface BayShopApiInterface {
     Call<ServerResponse> allowDamagedParcelSending(@Header("Bearer") String token, @Path("parcelId") String parcelId,
                                        @Field("confirm") int alow);
 
+    @FormUrlEncoded
+    @POST("parcel-create")
+    Call<ServerResponse<CreationDetails>> createPusParcel(@Header("Bearer") String token);
 }

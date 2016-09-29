@@ -31,6 +31,5 @@
         android:layout_toLeftOf="@id/buildSecondStepFastScroller"
         android:layout_toStartOf="@id/buildSecondStepFastScroller"
         recyclerviewfastscroller:rfs_backgroundColor="@color/colorAccent"
-        recyclerviewfastscroller:rfs_textColor="@android:color/white"
-        />
+        recyclerviewfastscroller:rfs_textColor="@android:color/white"/>
 </RelativeLayout>

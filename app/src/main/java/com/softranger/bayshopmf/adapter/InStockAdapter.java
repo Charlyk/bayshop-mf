@@ -64,16 +64,29 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ItemHolder itemHolder = (ItemHolder) holder;
             itemHolder.mInStock = mInStocks.get(position);
             itemHolder.mUidLabel.setText(itemHolder.mInStock.getUid());
-            itemHolder.mDescriptionLabel.setText(itemHolder.mInStock.getTitle());
+
+            boolean isNullTitle = itemHolder.mInStock.getTitle() == null;
+
+            if (isNullTitle) {
+                itemHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+                itemHolder.mDescriptionLabel.setText(mContext.getString(R.string.declaration_not_filled));
+            } else {
+                itemHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.black));
+                itemHolder.mDescriptionLabel.setText(itemHolder.mInStock.getTitle());
+            }
 
             Date parcelDate = new Date();
             if (itemHolder.mInStock.getCreatedDate() != null) {
                 parcelDate = itemHolder.mInStock.getCreatedDate();
             }
 
+            double price = Double.parseDouble(itemHolder.mInStock.getPrice());
+            int grams = Integer.parseInt(itemHolder.mInStock.getWeight());
+            double kilos = grams / 1000;
+
             itemHolder.mDateLabel.setText(mDateFormat.format(parcelDate));
-            itemHolder.mWeightLabel.setText(itemHolder.mInStock.getWeight());
-            itemHolder.mPriceLabel.setText(itemHolder.mInStock.getPrice());
+            itemHolder.mWeightLabel.setText(kilos + "kg");
+            itemHolder.mPriceLabel.setText("$" + price);
 
             int spent = getSpentDays(itemHolder.mInStock);
             int remains = 45 - spent;

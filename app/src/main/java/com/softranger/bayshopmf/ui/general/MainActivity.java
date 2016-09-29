@@ -1,6 +1,11 @@
 package com.softranger.bayshopmf.ui.general;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -11,6 +16,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,12 +35,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment;
@@ -60,27 +72,31 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Response;
 import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
-public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener,
+        FloatingActionsMenu.OnFloatingActionsMenuUpdateListener {
 
     public static final String ACTION_REFRESH = "START REFRESHING";
     public static final String ACTION_ITEM_DELETED = "ITEM_DELETED";
     private static final int PERMISSION_REQUEST_CODE = 1535;
     public static final String ACTION_UPDATE_TITLE = "update toolbar title";
     public ActionBarDrawerToggle mDrawerToggle;
-    public DrawerLayout mDrawerLayout;
-    public Toolbar mToolbar;
-    private ProgressBar mProgressBar;
-    private FrameLayout mFabBackground;
     private static String[] permissions;
-    private NavigationView mNavigationView;
     private String mFirstToolbarTitle;
     public static int toolbarHeight;
+    private static SelectedFragment selectedFromMenu;
 
-    @BindView(R.id.fullScreenContainer) public FrameLayout mFrameLayout;
+    @BindView(R.id.fullScreenContainer) public LinearLayout mFrameLayout;
+    @BindView(R.id.fabBackgroundLayout) FrameLayout mFabBackground;
+    @BindView(R.id.activityActionMenu) public FloatingActionButton mActionsMenu;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.mainActivityProgressBar) ProgressBar mProgressBar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.nav_view) NavigationView mNavigationView;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -116,28 +132,20 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         IntentFilter intentFilter = new IntentFilter(SettingsActivity.ACTION_LOG_OUT);
         registerReceiver(mBroadcastReceiver, intentFilter);
 
-        mToolbar = ButterKnife.findById(this, R.id.toolbar);
         toolbarHeight = mToolbar.getHeight();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // set click listener to collapse button and hide layout if user press on screen
-        mFabBackground = ButterKnife.findById(this, R.id.fabBackgroundLayout);
-        mFabBackground.setOnClickListener((view) -> {
-            onBackPressed();
-        });
+        mFabBackground.setOnClickListener((view) -> onBackPressed());
 
         // initialize navigation drawer
-        mDrawerLayout = ButterKnife.findById(this, R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        mProgressBar = ButterKnife.findById(this, R.id.mainActivityProgressBar);
-
         // initialize navigation view and it's header
-        mNavigationView = ButterKnife.findById(this, R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         View navHeaderView = mNavigationView.getHeaderView(0);
         TextView userNameLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserNameLabel);
@@ -212,6 +220,81 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                 setMenuCounter(R.id.nav_parcels, Application.getCount(parcelStatus));
                 break;
         }
+    }
+
+    @OnClick(R.id.activityActionMenu)
+    void onActionBtnClick() {
+        if (selectedFragment == SelectedFragment.in_stock) {
+            Intent createParcel = new Intent(InStockFragment.ACTION_CREATE_PARCEL);
+            sendBroadcast(createParcel);
+        } else if (selectedFragment == SelectedFragment.select_address) {
+            Toast.makeText(this, "Floating action menu", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void toggleActionMenuVisibility(boolean show) {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mActionsMenu, "scaleX",
+                show ? 0f : 1f,
+                show ? 1f : 0f);
+
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mActionsMenu, "scaleY",
+                show ? 0f : 1f,
+                show ? 1f : 0f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.setDuration(200);
+        set.playTogether(scaleX, scaleY);
+        if (show) mActionsMenu.setVisibility(View.VISIBLE);
+
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!show) mActionsMenu.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        set.start();
+    }
+
+    public void changeActionMenuColor(ActionMenuColor actionMenuColor) {
+        int colorFrom = 0;
+        int colorTo = 0;
+        int colorPressed = 0;
+        switch (actionMenuColor) {
+            case green:
+                colorFrom = getResources().getColor(R.color.colorLocalDepot);
+                colorTo = getResources().getColor(R.color.colorGreenAction);
+                colorPressed = getResources().getColor(R.color.colorGreenActionDark);
+                break;
+            case yellow:
+                colorFrom = getResources().getColor(R.color.colorGreenAction);
+                colorTo = getResources().getColor(R.color.colorLocalDepot);
+                colorPressed = getResources().getColor(R.color.colorLocalDepotDark);
+                break;
+        }
+
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(500); // milliseconds
+        colorAnimation.addUpdateListener(animator -> mActionsMenu.setColorNormal((int) animator.getAnimatedValue()));
+        colorAnimation.start();
+        mActionsMenu.setColorPressed(colorPressed);
+
     }
 
     /**
@@ -347,7 +430,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 //                setToolbarTitle(mFirstToolbarTitle);
 //                break;
         }
-
+        selectedFromMenu = selectedFragment;
         if (closeDrawer)
             mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -364,6 +447,13 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     @Override
     public void onBackPressed() {
+
+        if (selectedFragment == SelectedFragment.select_address) {
+            Intent intent = new Intent(AddressesListFragment.ACTION_START_ANIM);
+            intent.putExtra("up", false);
+            sendBroadcast(intent);
+        }
+
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else if (getFragmentManager().getBackStackEntryCount() > 0) {
@@ -383,6 +473,16 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
         Intent refresh = new Intent(ACTION_REFRESH);
         sendBroadcast(refresh);
+    }
+
+    @Override
+    public void onMenuExpanded() {
+
+    }
+
+    @Override
+    public void onMenuCollapsed() {
+
     }
 
     public interface OnEditDialogClickListener {
@@ -414,6 +514,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         // if we don't have fragments in back stack just return
         if (manager.getBackStackEntryCount() == 0) {
             setToolbarTitle(mFirstToolbarTitle);
+            selectedFragment = selectedFromMenu;
             return;
         }
         // otherwise get the framgent from backstack and cast it to ParentFragment so we could get it's title
@@ -423,5 +524,9 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         setToolbarTitle(fragment.getFragmentTitle());
         // now we need to update the current selected fragment
         selectedFragment = fragment.getSelectedFragment();
+    }
+
+    public enum ActionMenuColor {
+        green, yellow
     }
 }

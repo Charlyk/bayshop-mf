@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
  * Created by Eduard Albu on 5/13/16, 05, 2016
@@ -12,18 +13,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Address implements Parcelable {
     private String mClientName;
-    @JsonProperty("first_name") String mFirstName;
-    @JsonProperty("last_name") String mLastName;
-    private String mEmail;
-    @JsonProperty("address") String mStreet;
-    @JsonProperty("city") String mCity;
-    @JsonProperty("country") String mCountry;
-    @JsonProperty("zip") String mPostalCode;
-    @JsonProperty("phone") String mPhoneNumber;
-    private String mPhoneCode;
-    @JsonProperty("state") String mState;
-    private int mCountryId;
-    private int mId = -1;
+    @JsonProperty("first_name") private String mFirstName;
+    @JsonProperty("last_name") private String mLastName;
+    @JsonProperty("user_id") private String mUserId;
+    @JsonProperty("shipping_email") private String mEmail;
+    @JsonProperty("address") private String mStreet;
+    @JsonProperty("city") private String mCity;
+    @JsonProperty("country") private String mCountry;
+    @JsonProperty("zip") private String mPostalCode;
+    @JsonProperty("phone") private String mPhoneNumber;
+    @JsonProperty("shipping_phone_code") private String mPhoneCode;
+    @JsonProperty("state") private String mState;
+    @JsonProperty("countryId") private int mCountryId;
+    @JsonProperty("id") private int mId = -1;
+    @JsonProperty("remoteId") private String mRemoteId;
+    @JsonProperty("isDefault") private int mIsDefault;
+    @JsonProperty("isInvisible") private int mIsInvisible;
     private boolean mIsInFavorites;
 
     private Address() {
@@ -71,10 +76,12 @@ public class Address implements Parcelable {
         return mStreet;
     }
 
+    @JsonSetter("shipping_address")
     public void setStreet(String street) {
         mStreet = street;
     }
 
+    @JsonSetter("shipping_city")
     public String getCity() {
         return mCity;
     }
@@ -87,14 +94,21 @@ public class Address implements Parcelable {
         return mCountry;
     }
 
+    @JsonSetter("countryTitle")
     public void setCountry(String country) {
         mCountry = country;
+    }
+
+    @JsonSetter("shipping_country")
+    public void setShippingCountry(String shippingCountry) {
+        mCountry = shippingCountry;
     }
 
     public String getPostalCode() {
         return mPostalCode;
     }
 
+    @JsonSetter("shipping_zip")
     public void setPostalCode(String postalCode) {
         mPostalCode = postalCode;
     }
@@ -103,6 +117,7 @@ public class Address implements Parcelable {
         return mPhoneNumber;
     }
 
+    @JsonSetter("shipping_phone")
     public void setPhoneNumber(String phoneNumber) {
         mPhoneNumber = phoneNumber;
     }
@@ -119,6 +134,7 @@ public class Address implements Parcelable {
         return mFirstName;
     }
 
+    @JsonSetter("shipping_first_name")
     public void setFirstName(String firstName) {
         mFirstName = firstName;
     }
@@ -127,6 +143,7 @@ public class Address implements Parcelable {
         return mLastName;
     }
 
+    @JsonSetter("shipping_last_name")
     public void setLastName(String lastName) {
         mLastName = lastName;
     }
@@ -167,6 +184,7 @@ public class Address implements Parcelable {
         return mState;
     }
 
+    @JsonSetter("shipping_state")
     public void setState(String state) {
         mState = state;
     }

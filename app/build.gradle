@@ -70,4 +70,7 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
     compile project(':library')
+    compile ('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
+        transitive = true;
+    }
 }

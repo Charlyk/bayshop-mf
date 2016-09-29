@@ -16,4 +16,5 @@
     <color name="colorGoogleBtnPressed">#c43f2a</color>
     <color name="black_semi_transparent">#B2000000</color>
     <color name="colorLocalDepot">#ecc950</color>
+    <color name="colorLocalDepotDark">#bfa23f</color>
 </resources>

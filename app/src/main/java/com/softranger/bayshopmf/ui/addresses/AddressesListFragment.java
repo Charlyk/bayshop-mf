@@ -9,12 +9,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.SecondStepAdapter;
@@ -31,18 +34,16 @@ import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.InStockFragment;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.ParentActivity;
-import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
 /**
@@ -52,16 +53,15 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
         MenuItemCompat.OnActionExpandListener, SearchView.OnQueryTextListener, MenuItem.OnMenuItemClickListener {
 
     public static final String ACTION_START_ANIM = "START TOTALS ANIMATION";
-    private static final String IN_FORMING_ARG = "in forming argument";
     private static final String SHOW_SELECT_ARG = "show select button argument";
-    private ParentActivity mActivity;
+    private MainActivity mActivity;
     private SecondStepAdapter mAdapter;
     private ArrayList<Address> mAddresses;
     private static boolean isPost;
     private SecondStepAdapter.ButtonType mButtonType;
     private AlertDialog mDeleteDialog;
     private static boolean deleteClicked;
-    private View mRootView;
+    private RelativeLayout mRootView;
 
     public AddressesListFragment() {
         // Required empty public constructor
@@ -114,10 +114,8 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
-        mActivity = (ParentActivity) getActivity();
-
-        mRootView.setAlpha(0.1f);
+        mRootView = (RelativeLayout) inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
+        mActivity = (MainActivity) getActivity();
 
         IntentFilter intentFilter = new IntentFilter(EditAddressFragment.ACTION_REFRESH_ADDRESS);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
@@ -144,10 +142,7 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     private void getAddressesList(boolean isPost) {
         mActivity.toggleLoadingProgress(true);
         if (isPost) {
-//            RequestBody body = new FormBody.Builder()
-//                    .add("isBatteryLionExists", String.valueOf(mInForming.isHasBattery() ? 1 : 0))
-//                    .build();
-//            ApiClient.getInstance().postRequest(body, Constants.Api.urlBuildStep(2, String.valueOf(mInForming.getId())), mHandler);
+
         } else {
             ApiClient.getInstance().getRequest(Constants.Api.urlAddressesList(), mHandler);
         }
@@ -167,22 +162,16 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mActivity.changeActionMenuColor(MainActivity.ActionMenuColor.yellow);
         mActivity.unregisterReceiver(mTitleReceiver);
-        Intent intent = new Intent(MainActivity.ACTION_UPDATE_TITLE);
-        mActivity.sendBroadcast(intent);
     }
 
     @Override
     public void onSelectAddressClick(Address address, int position) {
-//        if (mInForming != null) {
-//            mInForming.setAddress(address);
-//            mActivity.addFragment(ShippingMethodFragment.newInstance(mInForming), true);
-//        } else {
-            Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
-            changeAddress.putExtra("address", address);
-            mActivity.sendBroadcast(changeAddress);
-            mActivity.onBackPressed();
-//        }
+        Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
+        changeAddress.putExtra("address", address);
+        mActivity.sendBroadcast(changeAddress);
+        mActivity.onBackPressed();
     }
 
     @Override
@@ -198,26 +187,19 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
 
     @Override
     public void onEditAddressClick(Address address, int position) {
-        mActivity.addFragment(EditAddressFragment.newInstance(address), false);
+
     }
 
     @Override
     public void onDeleteAddressClick(final Address address, final int position) {
         String message = getString(R.string.confirm_address_deleteing) + " " + address.getClientName() + " " + getString(R.string.address);
-        mDeleteDialog = mActivity.getDialog(getString(R.string.delete_address), message, R.mipmap.ic_delete_address_24dp, getString(R.string.confirm), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.removeItem(position);
-                deleteClicked = true;
-                ApiClient.getInstance().delete(Constants.Api.urlGetAddress(String.valueOf(address.getId())), mHandler);
-                mDeleteDialog.dismiss();
-            }
-        }, getString(R.string.cancel), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDeleteDialog.dismiss();
-            }
-        }, 0);
+        mDeleteDialog = mActivity.getDialog(getString(R.string.delete_address), message, R.mipmap.ic_delete_address_24dp, getString(R.string.confirm),
+                v -> {
+                    mAdapter.removeItem(position);
+                    deleteClicked = true;
+                    ApiClient.getInstance().delete(Constants.Api.urlGetAddress(String.valueOf(address.getId())), mHandler);
+                    mDeleteDialog.dismiss();
+                }, getString(R.string.cancel), v -> mDeleteDialog.dismiss(), 0);
         mDeleteDialog.show();
     }
 
@@ -241,22 +223,14 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
         if (newText == null || newText.equals("")) {
             mAdapter.replaceList(mAddresses);
         } else {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    final ArrayList<Address> searched = new ArrayList<>();
-                    for (Address address : mAddresses) {
-                        if (address.getClientName().toLowerCase().contains(newText.toLowerCase())) {
-                            searched.add(address);
-                        }
+            new Thread(() -> {
+                final ArrayList<Address> searched = new ArrayList<>();
+                for (Address address : mAddresses) {
+                    if (address.getClientName().toLowerCase().contains(newText.toLowerCase())) {
+                        searched.add(address);
                     }
-                    mActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mAdapter.replaceList(searched);
-                        }
-                    });
                 }
+                mActivity.runOnUiThread(() -> mAdapter.replaceList(searched));
             }).start();
         }
         return true;
@@ -301,17 +275,9 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     public void finallyMethod() {
         mActivity.toggleLoadingProgress(false);
         Intent intent = new Intent(ACTION_START_ANIM);
+        intent.putExtra("up", true);
         mActivity.sendBroadcast(intent);
-
-        ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(mRootView, "alpha", 0.1f, 1.0f);
-        ObjectAnimator recyclerAnimation = ObjectAnimator.ofFloat(mRootView, "y",
-                InStockFragment.totalsY + MainActivity.toolbarHeight, Application.getPixelsFromDp(60));
-
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(500);
-        set.setInterpolator(new AccelerateDecelerateInterpolator());
-        set.playTogether(alphaAnimation, recyclerAnimation);
-        set.start();
+        mActivity.changeActionMenuColor(MainActivity.ActionMenuColor.green);
     }
 
     @Override
