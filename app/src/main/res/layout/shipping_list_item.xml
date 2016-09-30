@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selectable_background"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="7.5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/shippingMethodPriceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_alignTop="@+id/shippingMethodNameLabel"
+        android:layout_centerHorizontal="true"
+        tools:text="$10"/>
+
+    <TextView
+        android:id="@+id/shippingMethodNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/colorAccent"
+        tools:text="BayShop Air Post"
+        android:layout_toLeftOf="@id/shippingMethodPriceLabel"
+        android:layout_toStartOf="@id/shippingMethodPriceLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/shippingMethodTimeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:text="@string/delivery_time"
+        android:layout_below="@id/shippingMethodNameLabel"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/shippingMethodTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/shippingMethodTimeTitle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:textSize="13sp"
+        tools:text="5 days"/>
+
+    <TextView
+        android:id="@+id/shippingMethodVolumeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@id/shippingMethodTimeTitle"
+        android:textSize="13sp"
+        android:text="@string/max_length"/>
+
+    <TextView
+        android:id="@+id/shippingMethodVolumeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        tools:text="1.5 meters"
+        android:textSize="13sp"
+        android:layout_alignLeft="@id/shippingMethodVolumeTitle"
+        android:layout_alignStart="@id/shippingMethodVolumeTitle"
+        android:layout_below="@id/shippingMethodVolumeTitle"/>
+
+    <ImageButton
+        android:id="@+id/shippingMethodDetailsBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/ic_detail_24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>

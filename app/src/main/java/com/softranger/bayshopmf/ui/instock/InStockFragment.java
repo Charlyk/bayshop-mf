@@ -42,29 +42,35 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.Call;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 public class InStockFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener,
         InStockAdapter.OnInStockClickListener, Animator.AnimatorListener, TotalsView.OnCreateParcelClickListener {
 
     public static final String ACTION_CREATE_PARCEL = "START CREATING PARCEL";
+    public static final String ACTION_HIDE_TOTALS = "HIDE TOTALS VIEW";
 
     private Unbinder mUnbinder;
     private MainActivity mActivity;
     private Call<ServerResponse<InStockList>> mCall;
     private InStockAdapter mAdapter;
     private ArrayList<InStock> mInStocks;
-    private ArrayList<InStock> mSelectedItems;
+    private static ArrayList<InStock> selectedItems;
 
     private ValueAnimator mShowAnimation;
 
-    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.fragmentFrameLayout) FrameLayout mRootLayout;
+    @BindView(R.id.fragmentRecyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentFrameLayout)
+    FrameLayout mRootLayout;
+    @BindView(R.id.jellyPullToRefresh)
+    JellyRefreshLayout mRefreshLayout;
 
     private TotalsView mTotalsView;
     public static float totalsY;
 
-    private boolean mIsTotalVisible;
+    public static boolean isTotalVisible;
 
     public InStockFragment() {
         // Required empty public constructor
@@ -83,7 +89,9 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (MainActivity) getActivity();
 
-        mSelectedItems = new ArrayList<>();
+        selectedItems = new ArrayList<>();
+
+        mRefreshLayout.setPullToRefreshListener(this);
 
         mTotalsView = new TotalsView(mActivity);
         mTotalsView.setOnCreateParcelClickListener(this);
@@ -92,6 +100,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
         intentFilter.addAction(AddressesListFragment.ACTION_START_ANIM);
         intentFilter.addAction(ACTION_CREATE_PARCEL);
+        intentFilter.addAction(ACTION_HIDE_TOTALS);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -115,22 +124,28 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         @Override
         public void onSuccess(InStockList data) {
             mInStocks.clear();
+            selectedItems.clear();
+            mTotalsView.resetTotals();
             mInStocks.addAll(data.getInStocks());
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setItemViewCacheSize(mInStocks.size());
+            toggleTotalsVisibility(false);
             mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<InStockList>> call, Throwable t) {
-            // TODO: 9/21/16 handle errors
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
     };
 
@@ -145,6 +160,13 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
                 toggleFragmentHeight(up);
             } else if (intent.getAction().equals(ACTION_CREATE_PARCEL)) {
                 mTotalsView.toggleOnClick();
+            } else if (intent.getAction().equals(ACTION_HIDE_TOTALS)) {
+                toggleTotalsVisibility(false);
+                selectedItems.clear();
+                for (InStock inStock : mInStocks) {
+                    inStock.setSelected(false);
+                }
+                mAdapter.notifyDataSetChanged();
             } else {
                 mCall = Application.apiInterface().getInStockItems(Application.currentToken);
                 mCall.enqueue(mResponseCallback);
@@ -152,8 +174,13 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         }
     };
 
+    public static boolean canHideTotals() {
+        return isTotalVisible && selectedItems.size() > 0;
+    }
+
     /**
      * Method used to expand or collapse full screen frame layout from main activity
+     *
      * @param up true if you want to expand or false to collapse
      */
     private void toggleFragmentHeight(boolean up) {
@@ -200,7 +227,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
             public void onAnimationEnd(Animator animation) {
                 // in case we need to collapse the frame
                 // call onBackPressed() for the fragment to be removed from container
-                if (!up) mActivity.onBackPressed();
+                if (!up) mActivity.getFragmentManager().popBackStack();
             }
 
             @Override
@@ -241,14 +268,14 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         if (isSelected) {
             mTotalsView.increasePrice(price);
             mTotalsView.increaseWeight(kilos);
-            mSelectedItems.add(inStock);
+            selectedItems.add(inStock);
         } else {
             mTotalsView.decreasePrice(price);
             mTotalsView.decreaseWeight(kilos);
-            mSelectedItems.remove(inStock);
+            selectedItems.remove(inStock);
         }
 
-        toggleTotalsVisibility(mSelectedItems.size() > 0);
+        toggleTotalsVisibility(selectedItems.size() > 0);
     }
 
     private void toggleTotalsVisibility(boolean show) {
@@ -256,11 +283,11 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         int to;
 
         // if show is requested and view is already visible just return from here
-        if (show && mIsTotalVisible) return;
+        if (show && isTotalVisible) return;
         if (!show) mActivity.toggleActionMenuVisibility(false);
 
         // set this variable to use it in onAnimationEnd() method
-        mIsTotalVisible = show;
+        isTotalVisible = show;
 
         // set start and end value for animation
         if (show) {
@@ -356,7 +383,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        if (!mIsTotalVisible) {
+        if (!isTotalVisible) {
             mActivity.mFrameLayout.removeView(mTotalsView);
             mTotalsView.resetTotals();
         }
@@ -380,7 +407,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     @Override
     public void onCreateParcelClick() {
-        AddressesListFragment addressFragment = AddressesListFragment.newInstance();
+        AddressesListFragment addressFragment = AddressesListFragment.newInstance(selectedItems);
         mActivity.addFullScreenFragment(addressFragment);
     }
 

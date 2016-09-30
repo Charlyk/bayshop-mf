@@ -18,7 +18,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +30,7 @@ import android.widget.Toast;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
-import com.softranger.bayshopmf.adapter.SecondStepAdapter;
+import com.softranger.bayshopmf.adapter.AddressListAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
@@ -57,7 +56,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.Call;
-import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 /**
@@ -313,31 +311,18 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     public void onOrderDeliveryClick(PUSParcelDetailed item, int position) {
         mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
                         + " " + item.getAddress().getClientName(), R.mipmap.ic_order_delivery_white_30dp,
-                getString(R.string.confirm), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
-                                R.mipmap.ic_order_sent_75dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mActivity.onBackPressed();
-                                    }
-                                }), false);
-                        mAlertDialog.dismiss();
-                    }
-                }, getString(R.string.cancel), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
-                    }
-                }, R.color.colorGreenAction);
+                getString(R.string.confirm), v -> {
+                    mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
+                            R.mipmap.ic_order_sent_75dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
+                            v1 -> mActivity.onBackPressed()), false);
+                    mAlertDialog.dismiss();
+                }, getString(R.string.cancel), v -> mAlertDialog.dismiss(), R.color.colorGreenAction);
         mAlertDialog.show();
     }
 
     @Override
     public void onSelectAddressClick(PUSParcelDetailed item, int position) {
-        mActivity.addFragment(AddressesListFragment.newInstance(SecondStepAdapter.ButtonType.select), true);
+        mActivity.addFragment(AddressesListFragment.newInstance(AddressListAdapter.ButtonType.select), true);
     }
 
     @Override

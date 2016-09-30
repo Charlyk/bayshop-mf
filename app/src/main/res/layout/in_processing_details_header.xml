@@ -77,7 +77,7 @@
         android:layout_marginBottom="10dp"
         android:background="#b1b1b1"/>
 
-    <include layout="@layout/second_step_list_item"/>
+    <include layout="@layout/address_list_item"/>
 
     <TableLayout
         android:layout_width="match_parent"

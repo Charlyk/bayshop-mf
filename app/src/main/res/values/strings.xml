@@ -345,4 +345,8 @@
     <string name="remained">Remained</string>
     <string name="days">days</string>
     <string name="loading">Loading...</string>
+    <string name="delivery_time">Delivery time:</string>
+    <string name="max_length">Max. length</string>
+    <string name="select_phone_code">Select phone code</string>
+    <string name="select_country">Select country</string>
 </resources>

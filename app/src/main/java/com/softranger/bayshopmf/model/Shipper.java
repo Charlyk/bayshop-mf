@@ -41,6 +41,9 @@ public class Shipper implements Parcelable {
     @JsonProperty("time") private String mTime;
     @JsonProperty("realWeight") private int mRealWeight;
     @JsonProperty("disabled") private boolean mIsDisabled;
+    @JsonProperty("volumeWeight") private int mVolumeWeight;
+    @JsonProperty("shipperMeasureId") private String mShipperMeasureId;
+    @JsonProperty("calculatedPrice") private double mCalculatedPrice;
 
     public Shipper() {
         // empty constructor for jackson
@@ -76,6 +79,9 @@ public class Shipper implements Parcelable {
         mTime = in.readString();
         mRealWeight = in.readInt();
         mIsDisabled = in.readByte() != 0;
+        mVolumeWeight = in.readInt();
+        mShipperMeasureId = in.readString();
+        mCalculatedPrice = in.readDouble();
     }
 
     public static final Creator<Shipper> CREATOR = new Creator<Shipper>() {
@@ -206,6 +212,18 @@ public class Shipper implements Parcelable {
         return mIsDisabled;
     }
 
+    public int getVolumeWeight() {
+        return mVolumeWeight;
+    }
+
+    public String getShipperMeasureId() {
+        return mShipperMeasureId;
+    }
+
+    public double getCalculatedPrice() {
+        return mCalculatedPrice;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -242,5 +260,8 @@ public class Shipper implements Parcelable {
         dest.writeString(mTime);
         dest.writeInt(mRealWeight);
         dest.writeByte((byte) (mIsDisabled ? 1 : 0));
+        dest.writeInt(mVolumeWeight);
+        dest.writeString(mShipperMeasureId);
+        dest.writeDouble(mCalculatedPrice);
     }
 }

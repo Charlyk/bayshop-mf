@@ -137,8 +137,6 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                     break;
                 case local_depot:
                     headerHolder.mHomeDeliveryLayout.setVisibility(View.VISIBLE);
-                    headerHolder.mSelectButton.setVisibility(View.VISIBLE);
-                    headerHolder.mSelectButton.setText(Application.getInstance().getString(R.string.change_address));
                     warningImage = R.mipmap.ic_local_deposit_44dp;
                     warningMessage = "Some text for local depot packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
@@ -243,12 +241,12 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback {
         @BindView(R.id.courierMapView) MapView mMapView;
-        @BindView(R.id.secondStepItemNameLabel) TextView mClientName;
-        @BindView(R.id.secondStepPhoneNumberLabel) TextView mPhoneNumber;
-        @BindView(R.id.secondStepCityLabel) TextView mCity;
-        @BindView(R.id.secondStepCountryLabel) TextView mCountry;
-        @BindView(R.id.secondStepPostalCodeLabel) TextView mPostalCode;
-        @BindView(R.id.secondStepAddressLabel) TextView mStreet;
+        @BindView(R.id.addressItemNameLabel) TextView mClientName;
+        @BindView(R.id.addressPhoneNumberLabel) TextView mPhoneNumber;
+        @BindView(R.id.addressCityLabel) TextView mCity;
+        @BindView(R.id.addressCountryLabel) TextView mCountry;
+        @BindView(R.id.addressPostalCodeLabel) TextView mPostalCode;
+        @BindView(R.id.addressStreetLabel) TextView mStreet;
         @BindView(R.id.inProcessingDetailsParcelIdLabel) TextView mParcelId;
         @BindView(R.id.heldByProhibitionDescriptionLabel) TextView mDescriptionlabel;
         @BindView(R.id.inProcessingDetailsGoodsPriceLabel) TextView mGoodsPrice;
@@ -260,7 +258,6 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.payTheDebtAmountLabel) TextView mDebtLabel;
         @BindView(R.id.inProcessingDetailsShippingByLabel) TextView mShippingBy;
 
-        @BindView(R.id.secondStepSelectBtn) Button mSelectButton;
         @BindView(R.id.prohibitionHeldTakePhotoBtn) Button mTakePicture;
         @BindView(R.id.prohibitionHeldUploadDocumentBtn) Button mUploadDocument;
         @BindView(R.id.heldByProhibitionReturnBtn) Button mReturnToSeller;
@@ -272,8 +269,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.damageToDisband) Button mDamageToDisband;
         @BindView(R.id.leaveReviewButton) Button mLeaveFeedback;
 
-        @BindView(R.id.secondStepEditAddressButton) ImageButton mEditButton;
-        @BindView(R.id.secondStepAddToFavoritesAddressButton) ImageButton mAddToFavorite;
+        @BindView(R.id.addressEditButton) ImageButton mEditButton;
+        @BindView(R.id.addressAddToFavoritesButton) ImageButton mAddToFavorite;
         @BindView(R.id.damageAllowShippingDetails) ImageButton mAllowShippingDetails;
         @BindView(R.id.damageToDisbandDetails) ImageButton mDamageToDisbandDetails;
 
@@ -292,6 +289,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
         @BindView(R.id.sentParcelHeaderLayout) RelativeLayout mSentParcelLayout;
         @BindView(R.id.orderHomeDeliveryLayout) RelativeLayout mHomeDeliveryLayout;
+        @BindView(R.id.addressItemLayout) RelativeLayout mAddressItemLayout;
         @BindView(R.id.receivedSignatureOnMapLayout) RelativeLayout mReceivedOnMapLayout;
         @BindView(R.id.payTheDebtLayout) RelativeLayout mPayTheDebtLayout;
 
@@ -328,14 +326,13 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             mSentParcelLayout.setOnClickListener(this);
             mToDisband.setOnClickListener(this);
             mShippingByLayout.setOnClickListener(this);
+            mAddressItemLayout.setOnClickListener(this);
 
             mReceivedOnMapLayout.setVisibility(View.GONE);
             mTakePicture.setOnClickListener(this);
             mUploadDocument.setOnClickListener(this);
             mEditButton.setVisibility(View.GONE);
             mAddToFavorite.setVisibility(View.GONE);
-            mSelectButton.setVisibility(View.GONE);
-            mSelectButton.setOnClickListener(this);
             mHomeDeliveryLayout.setVisibility(View.GONE);
             mUploadLayout.setVisibility(View.GONE);
             mToDeliveryDetails.setVisibility(View.GONE);
@@ -360,7 +357,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                 case R.id.orderHomeDeliveryLayout:
                     mOnItemClickListener.onOrderDeliveryClick(mProcessingParcel, getAdapterPosition());
                     break;
-                case R.id.secondStepSelectBtn:
+                case R.id.addressItemLayout:
                     mOnItemClickListener.onSelectAddressClick(mProcessingParcel, getAdapterPosition());
                     break;
                 case R.id.takeToDeliveryDetailsCallBtn:

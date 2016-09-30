@@ -1,14 +1,28 @@
-<com.softranger.bayshopmf.util.widget.SlidingRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true"
-    tools:context="com.softranger.bayshopmf.ui.steps.SelectAddressFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:clickable="true"
+                android:background="@color/colorDivider"
+                tools:context=".ui.addresses.AddressesListFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/selectAddressRecyclerView"
-        android:background="@color/colorAccent"
+        android:id="@+id/buildSecondStepList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</com.softranger.bayshopmf.util.widget.SlidingRelativeLayout>
+        android:layout_height="match_parent"
+        tools:listitem="@layout/address_list_item"/>
+
+    <com.futuremind.recyclerviewfastscroll.FastScroller
+        android:id="@+id/addressFastScroller"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:fastscroll__handleColor="@color/colorAccent"
+        app:fastscroll__bubbleColor="@color/colorAccent"
+        app:fastscroll__bubbleTextAppearance="@style/StyledScrollerTextAppearance"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

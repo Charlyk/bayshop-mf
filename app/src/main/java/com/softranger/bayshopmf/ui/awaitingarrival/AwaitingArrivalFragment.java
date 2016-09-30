@@ -81,7 +81,6 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
         intentFilter.addAction(ACTION_SHOW_BTN);
-        intentFilter.addAction(MainActivity.ACTION_REFRESH);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mUnbinder = ButterKnife.bind(this, view);
 
@@ -162,10 +161,6 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
                     break;
                 case ACTION_SHOW_BTN:
                     mActionButton.setVisibility(View.VISIBLE);
-                    break;
-                case MainActivity.ACTION_REFRESH:
-                    mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems(Application.currentToken);
-                    mWaitingListCall.enqueue(mResponseCallback);
                     break;
             }
         }

@@ -62,7 +62,7 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
     @BindView(R.id.receivedSignatureClientNameLagel) TextView mClinetNameLabel;
     @BindView(R.id.receivedSignatureStreetLabel) TextView mStreetLabel;
     @BindView(R.id.receivedSignaturePhoneLabel) TextView mPhoneNumberLabel;
-    @BindView(R.id.secondStepCityLabel) TextView mCityLabel;
+    @BindView(R.id.addressCityLabel) TextView mCityLabel;
     @BindView(R.id.receivedSignatureCountryLabel) TextView mCountryLabel;
     @BindView(R.id.receivedSignaturepostalCodeLabel) TextView mPostalCodeLabel;
     @BindView(R.id.receivedSignatureMapView) MapView mMapView;

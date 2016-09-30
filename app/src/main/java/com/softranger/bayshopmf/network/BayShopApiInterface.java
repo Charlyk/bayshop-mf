@@ -2,14 +2,14 @@ package com.softranger.bayshopmf.network;
 
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.InStockList;
-import com.softranger.bayshopmf.model.box.AwaitingArrival;
+import com.softranger.bayshopmf.model.address.Address;
+import com.softranger.bayshopmf.model.address.AddressToEdit;
 import com.softranger.bayshopmf.model.app.ParcelsCount;
 import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
 import com.softranger.bayshopmf.model.box.Declaration;
-import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.model.box.InStockDetailed;
-import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.model.pus.PUSStatuses;
 import com.softranger.bayshopmf.model.user.User;
@@ -120,9 +120,32 @@ public interface BayShopApiInterface {
     @FormUrlEncoded
     @POST("parcels/view/{parcelId}")
     Call<ServerResponse> allowDamagedParcelSending(@Header("Bearer") String token, @Path("parcelId") String parcelId,
-                                       @Field("confirm") int alow);
+                                                   @Field("confirm") int alow);
 
     @FormUrlEncoded
     @POST("parcel-create")
-    Call<ServerResponse<CreationDetails>> createPusParcel(@Header("Bearer") String token);
+    Call<ServerResponse<CreationDetails>> createPusParcel(@Header("Bearer") String token,
+                                                          @Field("boxes") String boxesArray);
+
+    @GET("member-address/{id}")
+    Call<ServerResponse<AddressToEdit>> getMemberAddress(@Header("Bearer") String token,
+                                                   @Path("id") String addressId);
+
+    @GET("member-address/phone-formats")
+    Call<ServerResponse<AddressToEdit>> getPhoneCodes(@Header("Bearer") String token);
+
+    @FormUrlEncoded
+    @POST("member-address/{id}")
+    Call<ServerResponse<AddressToEdit>> saveMemberAddress(@Header("Bearer") String token,
+                                                    @Path("id") String addressId,
+                                                    @Field("shipping_first_name") String firstName,
+                                                    @Field("shipping_last_name") String lastName,
+                                                    @Field("shipping_email") String email,
+                                                    @Field("shipping_address") String address,
+                                                    @Field("shipping_city") String city,
+                                                    @Field("shipping_zip") String zip,
+                                                    @Field("shipping_phone_code") String phoneCode,
+                                                    @Field("shipping_phone") String phoneNumber,
+                                                    @Field("countryId") String countryId,
+                                                    @Field("shipping_state") String state);
 }

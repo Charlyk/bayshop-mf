@@ -4,7 +4,6 @@ package com.softranger.bayshopmf.ui.settings;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.adapter.SecondStepAdapter;
+import com.softranger.bayshopmf.adapter.AddressListAdapter;
 import com.softranger.bayshopmf.adapter.SettingsAdapter;
 import com.softranger.bayshopmf.model.app.Setting;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
@@ -22,8 +21,6 @@ import com.softranger.bayshopmf.util.ParentFragment;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +69,7 @@ public class SettingsFragment extends ParentFragment implements SettingsAdapter.
                 mActivity.addFragment(new UserDataFragment(), true);
                 break;
             case ADDRESSES:
-                mActivity.addFragment(AddressesListFragment.newInstance(SecondStepAdapter.ButtonType.delete), false);
+                mActivity.addFragment(AddressesListFragment.newInstance(AddressListAdapter.ButtonType.delete), false);
                 break;
             case CHANGE_PASSWORD:
                 mActivity.addFragment(ChangePassFragment.newInstance(), true);

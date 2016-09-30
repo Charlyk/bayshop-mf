@@ -184,6 +184,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
 
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
+            t.printStackTrace();
             // TODO: 9/21/16 handle errors
             mLoginFragment.hideLoading();
         }
@@ -208,6 +209,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
 
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
+            t.printStackTrace();
             // TODO: 9/21/16 handle errors
             mLoginFragment.hideLoading();
         }
@@ -239,6 +241,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
 
         @Override
         public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
+            t.printStackTrace();
             // TODO: 9/21/16 handle errors
             mLoginFragment.hideLoading();
         }

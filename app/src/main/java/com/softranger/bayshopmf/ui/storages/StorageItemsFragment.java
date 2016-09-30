@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
-import com.softranger.bayshopmf.adapter.SecondStepAdapter;
+import com.softranger.bayshopmf.adapter.AddressListAdapter;
 import com.softranger.bayshopmf.model.product.Product;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
@@ -261,7 +261,7 @@ public class StorageItemsFragment extends ParentFragment implements ItemAdapter.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.storageItemsOrderDeliveryBtn:
-                mActivity.addFragment(AddressesListFragment.newInstance(SecondStepAdapter.ButtonType.select), false);
+                mActivity.addFragment(AddressesListFragment.newInstance(AddressListAdapter.ButtonType.select), false);
                 break;
         }
     }

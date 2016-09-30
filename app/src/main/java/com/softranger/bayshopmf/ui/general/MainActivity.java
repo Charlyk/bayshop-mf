@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
@@ -80,7 +81,6 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener,
         FloatingActionsMenu.OnFloatingActionsMenuUpdateListener {
 
-    public static final String ACTION_REFRESH = "START REFRESHING";
     public static final String ACTION_ITEM_DELETED = "ITEM_DELETED";
     private static final int PERMISSION_REQUEST_CODE = 1535;
     public static final String ACTION_UPDATE_TITLE = "update toolbar title";
@@ -135,6 +135,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         toolbarHeight = mToolbar.getHeight();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // add back stack listener to update toolbar title and other visuals
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(this);
 
         // set click listener to collapse button and hide layout if user press on screen
         mFabBackground.setOnClickListener((view) -> onBackPressed());
@@ -310,7 +314,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     @Override
     public void addFragment(ParentFragment fragment, boolean showAnimation) {
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.addOnBackStackChangedListener(this);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (showAnimation)
             transaction.setCustomAnimations(R.animator.slide_in, R.animator.slide_out, R.animator.slide_in, R.animator.slide_out);
@@ -447,15 +450,16 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     @Override
     public void onBackPressed() {
-
-        if (selectedFragment == SelectedFragment.select_address) {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else if (selectedFragment == SelectedFragment.addresses_list) {
             Intent intent = new Intent(AddressesListFragment.ACTION_START_ANIM);
             intent.putExtra("up", false);
             sendBroadcast(intent);
-        }
-
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
+            selectedFragment = SelectedFragment.in_stock;
+        } else if (InStockFragment.canHideTotals()) {
+            Intent intent = new Intent(InStockFragment.ACTION_HIDE_TOTALS);
+            sendBroadcast(intent);
         } else if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
             if (getFragmentManager().getBackStackEntryCount() == 1) {
@@ -467,12 +471,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        Intent refresh = new Intent(ACTION_REFRESH);
-        sendBroadcast(refresh);
     }
 
     @Override

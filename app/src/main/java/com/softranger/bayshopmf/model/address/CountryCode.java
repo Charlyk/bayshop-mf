@@ -11,13 +11,13 @@ import com.softranger.bayshopmf.util.Imageble;
  * Created by macbook on 6/17/16.
  */
 public class CountryCode implements Parcelable, Imageble {
-    @JsonProperty("id") int mId;
-    @JsonProperty("countryId") int mCountryId;
-    @JsonProperty("code") String mCode;
-    @JsonProperty("format") String mFormat;
-    @JsonProperty("flag") String mFlagUrl;
-    @JsonProperty("countryCode") String mCountryCode;
-    @JsonProperty("title") String mName;
+    @JsonProperty("id") private int mId;
+    @JsonProperty("countryId") private int mCountryId;
+    @JsonProperty("code") private String mCode;
+    @JsonProperty("format") private String mFormat;
+    @JsonProperty("flag") private String mFlagUrl;
+    @JsonProperty("countryCode") private String mCountryCode;
+    @JsonProperty("title") private String mName;
     private Bitmap mFlagImage;
 
     private CountryCode() {

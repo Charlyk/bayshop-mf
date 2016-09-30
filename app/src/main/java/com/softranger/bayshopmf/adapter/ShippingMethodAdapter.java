@@ -13,6 +13,10 @@ import com.softranger.bayshopmf.model.product.ShippingMethod;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by Eduard Albu on 5/26/16, 05, 2016
  * for project BayShop MF
@@ -49,7 +53,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.warning_item, parent, false);
                 return new WarningHolder(view);
             default:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shipping_method_item, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shipping_list_item, parent, false);
                 return new ViewHolder(view);
         }
     }
@@ -63,13 +67,12 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             String price = itemHolder.mShippingMethodObj.getCurrency() + itemHolder.mShippingMethodObj.getCalculatedPrice();
             itemHolder.mMethodPrice.setText(price);
             String html = itemHolder.mShippingMethodObj.getDescription();
-            html = html.replaceAll("<(.*?)\\>"," ");//Removes all items in brackets
-            html = html.replaceAll("<(.*?)\\\n"," ");//Must be undeneath
+            html = html.replaceAll("<(.*?)\\>", " ");//Removes all items in brackets
+            html = html.replaceAll("<(.*?)\\\n", " ");//Must be undeneath
             html = html.replaceFirst("(.*?)\\>", " ");//Removes any connected item to the last bracket
-            html = html.replaceAll("&nbsp;"," ");
-            html = html.replaceAll("&amp;"," ");
+            html = html.replaceAll("&nbsp;", " ");
+            html = html.replaceAll("&amp;", " ");
 //            String description = Html.fromHtml(itemHolder.mShippingMethodObj.getDescription()).toString();
-            itemHolder.mDescription.setText(html);
         }
     }
 
@@ -90,42 +93,37 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView mShippingMethod;
-        final TextView mMethodPrice;
-        final TextView mDescription;
-        final ImageButton mDetailsButton;
-        final Button mSelectButton;
+        @BindView(R.id.shippingMethodNameLabel) TextView mShippingMethod;
+        @BindView(R.id.shippingMethodPriceLabel) TextView mMethodPrice;
+        @BindView(R.id.shippingMethodTimeLabel) TextView mTimeLabel;
+        @BindView(R.id.shippingMethodVolumeLabel) TextView mVolumeLabel;
+        @BindView(R.id.shippingMethodDetailsBtn) ImageButton mDetailsButton;
         ShippingMethod mShippingMethodObj;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            mShippingMethod = (TextView) itemView.findViewById(R.id.shippingMethodItemNameLabel);
-            mMethodPrice = (TextView) itemView.findViewById(R.id.shippingMethodItemPriceLabel);
-            mDetailsButton = (ImageButton) itemView.findViewById(R.id.shippingMethodDetailsBtn);
-            mSelectButton = (Button) itemView.findViewById(R.id.shippingMethodSelectBtn);
-            mDescription = (TextView) itemView.findViewById(R.id.shippingMethodDescriptionLabel);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
             mDetailsButton.setOnClickListener(this);
-            mSelectButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.shippingMethodDetailsBtn:
-                    if (mOnShippingClickListener != null) {
-                        mOnShippingClickListener.onDetailsClick(mShippingMethodObj, getAdapterPosition() - 1, mDescription, mDetailsButton);
-                    }
-                    break;
-                case R.id.shippingMethodSelectBtn:
-                    if (mOnShippingClickListener != null) {
-                        mOnShippingClickListener.onSelectClick(mShippingMethodObj, getAdapterPosition() - 1);
-                    }
-                    break;
+            if (mOnShippingClickListener != null) {
+                mOnShippingClickListener.onSelectClick(mShippingMethodObj, getAdapterPosition() - 1);
+            }
+        }
+
+        @OnClick(R.id.shippingMethodDetailsBtn)
+        void showShippingMethodDetails() {
+            if (mOnShippingClickListener != null) {
+                mOnShippingClickListener.onDetailsClick(mShippingMethodObj, getAdapterPosition() - 1, mDetailsButton);
             }
         }
     }
 
     public interface OnShippingClickListener {
-        void onDetailsClick(ShippingMethod shippingMethod, int position, TextView detailsTextView, ImageButton detailsButton);
+        void onDetailsClick(ShippingMethod shippingMethod, int position, ImageButton detailsButton);
         void onSelectClick(ShippingMethod shippingMethod, int position);
     }
 }

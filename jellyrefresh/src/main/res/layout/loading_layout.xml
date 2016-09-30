@@ -5,5 +5,5 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:color_array="@array/dot_colors"
-    app:dot_radius="8dp"
+    app:dot_radius="5dp"
     app:number_of_dots="4"/>

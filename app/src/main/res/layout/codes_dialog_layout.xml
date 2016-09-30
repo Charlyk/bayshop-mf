@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    android:background="@color/colorSelection">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/codesDialogToolbar"
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:layout_height="?actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_phone_code"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:textSize="18sp"/>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/codesDialogRecyclerView"
+        android:layout_below="@id/codesDialogToolbar"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/spinner_list_item"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@id/codesDialogToolbar"
+        android:background="@drawable/drop_shadow"/>
+</RelativeLayout>

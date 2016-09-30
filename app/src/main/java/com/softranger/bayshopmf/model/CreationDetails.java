@@ -20,7 +20,7 @@ public class CreationDetails implements Parcelable {
     @JsonProperty("count") private int mCount;
     @JsonProperty("weight") private int mGramsWeight;
     @JsonProperty("declarationPrice") private int mDeclarationPrice;
-    @JsonProperty("items") private String mItems;
+    @JsonProperty("items") private int[] mItems;
     @JsonProperty("insuranceMin") private int mInsuranceMin;
     @JsonProperty("insuranceMax") private int mInsuranceMax;
     @JsonProperty("insurancePercent") private String mInsurancePercent;
@@ -40,7 +40,7 @@ public class CreationDetails implements Parcelable {
         mCount = in.readInt();
         mGramsWeight = in.readInt();
         mDeclarationPrice = in.readInt();
-        mItems = in.readString();
+        in.readIntArray(mItems);
         mInsuranceMin = in.readInt();
         mInsuranceMax = in.readInt();
         mInsurancePercent = in.readString();
@@ -83,7 +83,7 @@ public class CreationDetails implements Parcelable {
         return mDeclarationPrice;
     }
 
-    public String getItems() {
+    public int[] getItems() {
         return mItems;
     }
 
@@ -131,7 +131,7 @@ public class CreationDetails implements Parcelable {
         dest.writeInt(mCount);
         dest.writeInt(mGramsWeight);
         dest.writeInt(mDeclarationPrice);
-        dest.writeString(mItems);
+        dest.writeIntArray(mItems);
         dest.writeInt(mInsuranceMin);
         dest.writeInt(mInsuranceMax);
         dest.writeString(mInsurancePercent);

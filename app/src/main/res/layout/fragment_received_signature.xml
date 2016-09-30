@@ -130,7 +130,7 @@
 
         <!-- Street name row -->
         <TextView
-            android:id="@+id/secondStepAddressTitle"
+            android:id="@+id/addressStreetTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/receivedSignatureClientNameLagel"
@@ -145,17 +145,17 @@
             android:layout_below="@id/receivedSignatureClientNameLagel"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_toEndOf="@id/secondStepAddressTitle"
-            android:layout_toRightOf="@id/secondStepAddressTitle"
+            android:layout_toEndOf="@id/addressStreetTitle"
+            android:layout_toRightOf="@id/addressStreetTitle"
             android:textColor="@android:color/black"
             tools:text="Floriolor 16/1 ap 106"/>
 
         <!-- City row -->
         <TextView
-            android:id="@+id/secondStepPhoneNumberTitle"
+            android:id="@+id/addressPhoneNumberTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/secondStepAddressTitle"
+            android:layout_below="@id/addressStreetTitle"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:text="@string/phone_number"/>
@@ -167,14 +167,14 @@
             android:layout_below="@id/receivedSignatureStreetLabel"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_toEndOf="@id/secondStepPhoneNumberTitle"
-            android:layout_toRightOf="@id/secondStepPhoneNumberTitle"
+            android:layout_toEndOf="@id/addressPhoneNumberTitle"
+            android:layout_toRightOf="@id/addressPhoneNumberTitle"
             android:textColor="@android:color/black"
             tools:text="+37379466284"/>
 
         <!-- Postal code row -->
         <TextView
-            android:id="@+id/secondStepCityTitle"
+            android:id="@+id/addressCityTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/receivedSignaturePhoneLabel"
@@ -183,23 +183,23 @@
             android:text="@string/city"/>
 
         <TextView
-            android:id="@+id/secondStepCityLabel"
+            android:id="@+id/addressCityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/receivedSignaturePhoneLabel"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_toEndOf="@id/secondStepCityTitle"
-            android:layout_toRightOf="@id/secondStepCityTitle"
+            android:layout_toEndOf="@id/addressCityTitle"
+            android:layout_toRightOf="@id/addressCityTitle"
             android:textColor="@android:color/black"
             tools:text="Chisinau"/>
 
         <!-- Country row -->
         <TextView
-            android:id="@+id/secondStepCountryTitle"
+            android:id="@+id/addressCountryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/secondStepCityTitle"
+            android:layout_below="@id/addressCityTitle"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:text="@string/country"/>
@@ -208,20 +208,20 @@
             android:id="@+id/receivedSignatureCountryLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/secondStepCityLabel"
+            android:layout_below="@id/addressCityLabel"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_toEndOf="@id/secondStepCountryTitle"
-            android:layout_toRightOf="@id/secondStepCountryTitle"
+            android:layout_toEndOf="@id/addressCountryTitle"
+            android:layout_toRightOf="@id/addressCountryTitle"
             android:textColor="@android:color/black"
             tools:text="Moldova"/>
 
         <!-- Country row -->
         <TextView
-            android:id="@+id/secondStepPostalCodeTitle"
+            android:id="@+id/addressPostalCodeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/secondStepCountryTitle"
+            android:layout_below="@id/addressCountryTitle"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:text="@string/postal_code"/>
@@ -234,8 +234,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_toEndOf="@id/secondStepPostalCodeTitle"
-            android:layout_toRightOf="@id/secondStepPostalCodeTitle"
+            android:layout_toEndOf="@id/addressPostalCodeTitle"
+            android:layout_toRightOf="@id/addressPostalCodeTitle"
             android:textColor="@android:color/black"
             tools:text="Moldova"/>
 

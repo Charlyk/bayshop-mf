@@ -4,15 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.softranger.bayshopmf.util.CountriesDeserializer;
 import com.softranger.bayshopmf.util.SpinnerObj;
 
 /**
  * Created by macbook on 6/17/16.
  */
+
 public class Country implements Parcelable, SpinnerObj {
-    @JsonProperty("id") int mId;
-    @JsonProperty("title") String mName;
-    @JsonProperty("code") String mCode;
+    @JsonProperty("id") private int mId;
+    @JsonProperty("title") private String mName;
+    @JsonProperty("code") private String mCode;
 
     private Country() {
 

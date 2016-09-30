@@ -5,6 +5,11 @@ import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.softranger.bayshopmf.util.CountriesDeserializer;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by Eduard Albu on 5/13/16, 05, 2016
@@ -13,22 +18,19 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  */
 public class Address implements Parcelable {
     private String mClientName;
+    @JsonProperty("id") private int mId;
     @JsonProperty("first_name") private String mFirstName;
     @JsonProperty("last_name") private String mLastName;
-    @JsonProperty("user_id") private String mUserId;
     @JsonProperty("shipping_email") private String mEmail;
     @JsonProperty("address") private String mStreet;
     @JsonProperty("city") private String mCity;
-    @JsonProperty("country") private String mCountry;
-    @JsonProperty("zip") private String mPostalCode;
-    @JsonProperty("phone") private String mPhoneNumber;
-    @JsonProperty("shipping_phone_code") private String mPhoneCode;
     @JsonProperty("state") private String mState;
+    @JsonProperty("zip") private String mPostalCode;
+    @JsonProperty("shipping_phone_code") private String mPhoneCode;
+    @JsonProperty("phone") private String mPhoneNumber;
     @JsonProperty("countryId") private int mCountryId;
-    @JsonProperty("id") private int mId = -1;
-    @JsonProperty("remoteId") private String mRemoteId;
-    @JsonProperty("isDefault") private int mIsDefault;
-    @JsonProperty("isInvisible") private int mIsInvisible;
+    @JsonProperty("country") private String mCountry;
+
     private boolean mIsInFavorites;
 
     private Address() {
@@ -65,11 +67,7 @@ public class Address implements Parcelable {
     };
 
     public String getClientName() {
-        return mClientName;
-    }
-
-    public void setClientName(String clientName) {
-        mClientName = clientName;
+        return mFirstName + " " + mLastName;
     }
 
     public String getStreet() {
@@ -81,11 +79,11 @@ public class Address implements Parcelable {
         mStreet = street;
     }
 
-    @JsonSetter("shipping_city")
     public String getCity() {
         return mCity;
     }
 
+    @JsonSetter("shipping_city")
     public void setCity(String city) {
         mCity = city;
     }
@@ -315,6 +313,56 @@ public class Address implements Parcelable {
             address.mIsInFavorites = this.mIsInFavorites;
             address.mState = this.mState;
             return address;
+        }
+    }
+
+    @JsonDeserialize(using = CountriesDeserializer.class)
+    public static class AddressCountries implements Parcelable {
+        private int mId;
+        private String mName;
+
+        protected AddressCountries(Parcel in) {
+            mId = in.readInt();
+            mName = in.readString();
+        }
+
+        public static final Creator<AddressCountries> CREATOR = new Creator<AddressCountries>() {
+            @Override
+            public AddressCountries createFromParcel(Parcel in) {
+                return new AddressCountries(in);
+            }
+
+            @Override
+            public AddressCountries[] newArray(int size) {
+                return new AddressCountries[size];
+            }
+        };
+
+        public int getId() {
+            return mId;
+        }
+
+        public void setId(int id) {
+            mId = id;
+        }
+
+        public String getName() {
+            return mName;
+        }
+
+        public void setName(String name) {
+            mName = name;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(mId);
+            dest.writeString(mName);
         }
     }
 }

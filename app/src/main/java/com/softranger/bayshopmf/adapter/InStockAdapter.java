@@ -65,6 +65,13 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             itemHolder.mInStock = mInStocks.get(position);
             itemHolder.mUidLabel.setText(itemHolder.mInStock.getUid());
 
+            @DrawableRes int image = itemHolder.mInStock.isSelected() ? R.mipmap.ic_check_45dp : R.mipmap.ic_uncheck_45dp;
+            itemHolder.mImageView.setImageResource(image);
+
+            @ColorInt int color = itemHolder.mInStock.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
+                    mContext.getResources().getColor(R.color.colorPrimary);
+            itemHolder.mView.setBackgroundColor(color);
+
             boolean isNullTitle = itemHolder.mInStock.getTitle() == null;
 
             if (isNullTitle) {

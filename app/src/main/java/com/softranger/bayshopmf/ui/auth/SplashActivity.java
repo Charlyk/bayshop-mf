@@ -61,6 +61,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
+            t.printStackTrace();
             Toast.makeText(getBaseContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             startLoginActivity();
         }
@@ -91,6 +92,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
+            t.printStackTrace();
             Toast.makeText(getBaseContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             startLoginActivity();
         }
