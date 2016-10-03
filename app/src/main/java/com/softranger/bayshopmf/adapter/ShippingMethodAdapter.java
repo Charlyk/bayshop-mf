@@ -9,9 +9,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.product.ShippingMethod;
 
 import java.util.ArrayList;
+import java.util.StringJoiner;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,11 +26,13 @@ import butterknife.OnClick;
  */
 public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<ShippingMethod> mShippingMethods;
+    private ArrayList<Shipper> mShippingMethods;
     private OnShippingClickListener mOnShippingClickListener;
+    private String mCurrency;
 
-    public ShippingMethodAdapter(ArrayList<ShippingMethod> shippingMethods) {
+    public ShippingMethodAdapter(ArrayList<Shipper> shippingMethods, String currency) {
         mShippingMethods = shippingMethods;
+        mCurrency = currency;
     }
 
     public void setOnShippingClickListener(OnShippingClickListener onShippingClickListener) {
@@ -63,9 +67,12 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (holder instanceof ViewHolder) {
             ViewHolder itemHolder = (ViewHolder) holder;
             itemHolder.mShippingMethodObj = mShippingMethods.get(position - 1);
-            itemHolder.mShippingMethod.setText(itemHolder.mShippingMethodObj.getName());
-            String price = itemHolder.mShippingMethodObj.getCurrency() + itemHolder.mShippingMethodObj.getCalculatedPrice();
+            itemHolder.mShippingMethod.setText(itemHolder.mShippingMethodObj.getTitle());
+            String price = String.valueOf(mCurrency + itemHolder.mShippingMethodObj.getCalculatedPrice());
             itemHolder.mMethodPrice.setText(price);
+            itemHolder.mVolumeLabel.setText(String.valueOf(itemHolder.mShippingMethodObj.getMaxVolume()));
+            itemHolder.mTimeLabel.setText(itemHolder.mShippingMethodObj.getTime());
+
             String html = itemHolder.mShippingMethodObj.getDescription();
             html = html.replaceAll("<(.*?)\\>", " ");//Removes all items in brackets
             html = html.replaceAll("<(.*?)\\\n", " ");//Must be undeneath
@@ -98,7 +105,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         @BindView(R.id.shippingMethodTimeLabel) TextView mTimeLabel;
         @BindView(R.id.shippingMethodVolumeLabel) TextView mVolumeLabel;
         @BindView(R.id.shippingMethodDetailsBtn) ImageButton mDetailsButton;
-        ShippingMethod mShippingMethodObj;
+        Shipper mShippingMethodObj;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -123,7 +130,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public interface OnShippingClickListener {
-        void onDetailsClick(ShippingMethod shippingMethod, int position, ImageButton detailsButton);
-        void onSelectClick(ShippingMethod shippingMethod, int position);
+        void onDetailsClick(Shipper shippingMethod, int position, ImageButton detailsButton);
+        void onSelectClick(Shipper shippingMethod, int position);
     }
 }

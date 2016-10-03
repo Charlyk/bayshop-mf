@@ -113,7 +113,7 @@
     <string name="i_am_sure">I\'m sure</string>
     <string name="message_example">Esti uveren in ceea ce faci? Asa iti poti pierde tot ce ai adunat o viata, gindestete ghini…</string>
     <string name="delivery_price">Delivery price:</string>
-    <string name="insurance">Insurance</string>
+    <string name="insurance">Insurance\u0020</string>
     <string name="declaration">Declaration filling:</string>
     <string name="you_don_t_have_any_item_yet">You don\'t have any parcels yet</string>
     <string name="select_address">Select address</string>
@@ -290,9 +290,9 @@
     <string name="send">Send message</string>
     <string name="uploading_file">Uploading file…</string>
     <string name="declaration_not_filled">Declaration is not filled in</string>
-    <string name="check_parcel_details">CHECK PARCEL DETAILS</string>
-    <string name="additional_services">ADDITIONAL SERVICES</string>
-    <string name="terms_and_conditions">TERMS AND CONDITIONS</string>
+    <string name="check_parcel_details">Check parcel details</string>
+    <string name="additional_services">Additional services</string>
+    <string name="terms_and_conditions">Terms and conditions</string>
     <string name="from">from</string>
     <string name="shipping_by">Shipping by:</string>
     <string name="create_parcel">Create parcel</string>
@@ -305,8 +305,6 @@
     <string name="inner_mail">Inner mail</string>
     <string name="held_by_damage">Held by damage</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="replenish_your_account">Enter the recharge amount and choose payment method in order to replenish your account</string>
     <string name="recharge_amount">Recharge amount:</string>
     <string name="choose_payment_method">Choose payment method</string>
@@ -321,7 +319,7 @@
     <string name="parcel_was_added">Your parcel is added with code</string>
     <string name="thank_you_awaiting">Thanks for adding an awaiting parcel, we will notify you when it will arrive to our warehouse.</string>
     <string name="processing">Processing</string>
-    <string name="enter_your_comment">Enter your comment...</string>
+    <string name="enter_your_comment">Enter your comment…</string>
     <string name="send_comment">Send comment</string>
     <string name="hated_it">Hated it</string>
     <string name="disliked_it">Disliked it</string>
@@ -344,9 +342,12 @@
     <string name="we_will_send_parcel">You request was received and we will send your parcel as asap.</string>
     <string name="remained">Remained</string>
     <string name="days">days</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="delivery_time">Delivery time:</string>
     <string name="max_length">Max. length</string>
     <string name="select_phone_code">Select phone code</string>
     <string name="select_country">Select country</string>
+    <string name="no_insurance">No insurance $0</string>
+    <string name="parcel_created">Parcel created</string>
+    <string name="your_parcel_added">Your parcel was added successfuly with ID\u0020</string>
 </resources>

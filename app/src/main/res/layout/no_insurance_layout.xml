@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/noInsuranceSelector"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?selectableItemBackground"
+                android:layout_height="wrap_content"
+                android:background="#FFFCEEEF"
                 android:clickable="true">
 
     <RelativeLayout
         android:id="@+id/noInsuranceButtonLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp">
 
         <!-- Want insurance selector -->
         <RadioButton
@@ -34,7 +36,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:src="@mipmap/ic_warning_24dpi"/>
 
         <!-- Want insurance title -->
@@ -49,8 +50,8 @@
             android:layout_toLeftOf="@+id/noInsuranceRadioButton"
             android:layout_toRightOf="@+id/noInsuranceWarningImage"
             android:layout_toStartOf="@+id/noInsuranceRadioButton"
-            android:text="@string/i_refuse_the_insurance"
-            android:textColor="@android:color/black"
+            android:text="@string/no_insurance"
+            android:textColor="@color/textColor"
             android:textSize="18sp"/>
     </RelativeLayout>
 
@@ -62,31 +63,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/noInsuranceButtonLayout"
-        android:layout_marginTop="17dp"
         android:ellipsize="end"
         android:maxLines="3"
+        android:visibility="gone"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/lorem_ipsum"/>
 
     <!-- Details button-->
-    <ImageButton
-        android:id="@+id/noInsuranceDetailsButton"
-        style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/noInsuranceDescriptionLabel"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="?selectableItemBackground"
-        android:src="@mipmap/ic_detail_24dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@id/noInsuranceDetailsButton"
+        android:layout_below="@id/noInsuranceDescriptionLabel"
         android:background="#b1b1b1"/>
 </RelativeLayout>

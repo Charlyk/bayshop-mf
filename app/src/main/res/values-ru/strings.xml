@@ -113,7 +113,7 @@
     <string name="i_am_sure">Я уверен(а)</string>
     <string name="message_example">Esti uveren in ceea ce faci? Asa iti poti pierde tot ce ai adunat o viata, gindestete ghini…</string>
     <string name="delivery_price">Цена доставки:</string>
-    <string name="insurance">Страховка</string>
+    <string name="insurance">Страховка\u0020</string>
     <string name="declaration">Заполнение декларации:</string>
     <string name="you_don_t_have_any_item_yet">У вас пока что нет посылок</string>
     <string name="select_address">Выбрать адрес</string>
@@ -290,9 +290,9 @@
     <string name="send">Отправить сообщение</string>
     <string name="uploading_file">Загрузка файла…</string>
     <string name="declaration_not_filled">Декларация не заполнена</string>
-    <string name="check_parcel_details">ПРОВЕРЬТЕ ДЕТАЛИ ПОСЫЛКИ</string>
-    <string name="additional_services">ДОПОЛНИТЕЛЬНЫЕ УСЛУГИ</string>
-    <string name="terms_and_conditions">УСЛОВИЯ</string>
+    <string name="check_parcel_details">Проверьте детали посылки</string>
+    <string name="additional_services">Дополнительные услуги</string>
+    <string name="terms_and_conditions">Условия</string>
     <string name="from">из</string>
     <string name="shipping_by">Доставка посредством:</string>
     <string name="create_parcel">Создать посылку</string>
@@ -314,4 +314,7 @@
     <string name="disliked_it">Disliked it</string>
     <string name="loved_it">Loved it</string>
     <string name="enter_state">Please enter seller state name</string>
+    <string name="no_insurance">Не страховать $0</string>
+    <string name="parcel_created">Parcel created</string>
+    <string name="your_parcel_added">Your parcel was added successfuly with ID\u0020</string>
 </resources>

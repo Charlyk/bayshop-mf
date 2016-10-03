@@ -109,6 +109,10 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.addresses.EditAddressActivity">
         </activity>
+        <activity android:name=".ui.steps.CreateParcelActivity">
+        </activity>
+        <activity android:name=".ui.addresses.SearchAddressActivity">
+        </activity>
     </application>
 
 </manifest>

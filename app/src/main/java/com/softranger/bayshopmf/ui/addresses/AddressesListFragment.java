@@ -1,177 +1,202 @@
 package com.softranger.bayshopmf.ui.addresses;
 
 
-import android.animation.AnimatorSet;
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
-import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.futuremind.recyclerviewfastscroll.FastScroller;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.adapter.SecondStepAdapter;
+import com.softranger.bayshopmf.adapter.AddressListAdapter;
+import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.address.Address;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.ui.instock.InStockFragment;
+import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.ui.steps.ShippingMethodFragment;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.ColorGroupSectionTitleIndicator;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddressesListFragment extends ParentFragment implements SecondStepAdapter.OnAddressClickListener,
-        MenuItemCompat.OnActionExpandListener, SearchView.OnQueryTextListener, MenuItem.OnMenuItemClickListener {
+public class AddressesListFragment extends ParentFragment implements AddressListAdapter.OnAddressClickListener,
+        FloatingActionsMenu.OnFloatingActionsMenuUpdateListener {
 
     public static final String ACTION_START_ANIM = "START TOTALS ANIMATION";
     private static final String SHOW_SELECT_ARG = "show select button argument";
-    private MainActivity mActivity;
-    private SecondStepAdapter mAdapter;
-    private ArrayList<Address> mAddresses;
-    private static boolean isPost;
-    private SecondStepAdapter.ButtonType mButtonType;
+    private static final String BOXES_ARG = "BOXES ARG KEY";
+
+    private ParentActivity mActivity;
+    private AddressListAdapter mAdapter;
     private AlertDialog mDeleteDialog;
-    private static boolean deleteClicked;
-    private RelativeLayout mRootView;
+    private Unbinder mUnbinder;
+    private AddressListAdapter.ButtonType mButtonType;
+    private Call<ServerResponse<CreationDetails>> mResponseCall;
+    private ArrayList<InStock> mInStocks;
+    private CreationDetails mCreationDetails;
+
+    @BindView(R.id.buildSecondStepList) RecyclerView mRecyclerView;
+    @BindView(R.id.addressFastScroller) FastScroller mFastScroller;
+    @BindView(R.id.addressActionMenu) FloatingActionsMenu mActionsMenu;
+    @BindView(R.id.addressFabBg) FrameLayout mFabBg;
 
     public AddressesListFragment() {
         // Required empty public constructor
     }
 
-    public static AddressesListFragment newInstance(SecondStepAdapter.ButtonType buttonType) {
+    public static AddressesListFragment newInstance(@Nullable AddressListAdapter.ButtonType buttonType) {
         Bundle args = new Bundle();
         AddressesListFragment fragment = new AddressesListFragment();
-        fragment.setArguments(args);
         fragment.mButtonType = buttonType;
+        fragment.setArguments(args);
         return fragment;
     }
 
-
-    public static AddressesListFragment newInstance() {
+    public static AddressesListFragment newInstance(@NonNull ArrayList<InStock> inStocks) {
         Bundle args = new Bundle();
         args.putBoolean(SHOW_SELECT_ARG, true);
+        args.putParcelableArrayList(BOXES_ARG, inStocks);
         AddressesListFragment fragment = new AddressesListFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.address_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.addressSearch);
-        MenuItem addAddressItem = menu.findItem(R.id.addressAdd);
-        addAddressItem.setOnMenuItemClickListener(this);
-        MenuItemCompat.setOnActionExpandListener(searchItem, this);
-        SearchManager searchManager = (SearchManager) mActivity.getSystemService(Context.SEARCH_SERVICE);
-
-        SearchView searchView = null;
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(mActivity.getComponentName()));
-            searchView.setOnQueryTextListener(this);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = (RelativeLayout) inflater.inflate(R.layout.fragment_build_parcel_address, container, false);
-        mActivity = (MainActivity) getActivity();
+        RelativeLayout rootView = (RelativeLayout) inflater.inflate(R.layout.fragment_select_address, container, false);
+        mActivity = (ParentActivity) getActivity();
+        mUnbinder = ButterKnife.bind(this, rootView);
 
-        IntentFilter intentFilter = new IntentFilter(EditAddressFragment.ACTION_REFRESH_ADDRESS);
+        mActionsMenu.setOnFloatingActionsMenuUpdateListener(this);
+
+        IntentFilter intentFilter = new IntentFilter(EditAddressActivity.ACTION_REFRESH_ADDRESS);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
-        ColorGroupSectionTitleIndicator indicator = (ColorGroupSectionTitleIndicator)
-                mRootView.findViewById(R.id.buildSecondStepFastScrollerSectionIndicator);
 
-        RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.buildSecondStepList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        mAddresses = new ArrayList<>();
-        mAdapter = new SecondStepAdapter(mAddresses, mButtonType);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+        ArrayList<Address> addresses = new ArrayList<>();
+        mAdapter = new AddressListAdapter(addresses, mButtonType);
         mAdapter.setOnAddressClickListener(this);
 
-
-        recyclerView.setAdapter(mAdapter);
-        VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) mRootView.findViewById(R.id.buildSecondStepFastScroller);
-        fastScroller.setRecyclerView(recyclerView);
-        recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
-        fastScroller.setSectionIndicator(indicator);
-
-        getAddressesList(isPost);
-        return mRootView;
-    }
-
-    private void getAddressesList(boolean isPost) {
-        mActivity.toggleLoadingProgress(true);
-        if (isPost) {
-
-        } else {
-            ApiClient.getInstance().getRequest(Constants.Api.urlAddressesList(), mHandler);
+        if (getArguments().containsKey(BOXES_ARG)) {
+            mInStocks = getArguments().getParcelableArrayList(BOXES_ARG);
         }
+
+        mRecyclerView.setAdapter(mAdapter);
+        mFastScroller.setRecyclerView(mRecyclerView);
+
+        getAddressesList(mInStocks);
+        return rootView;
     }
+
+    private void getAddressesList(ArrayList<InStock> inStocks) {
+        mActivity.toggleLoadingProgress(true);
+        JSONArray boxesArray = new JSONArray();
+        for (InStock i : inStocks) {
+            boxesArray.put(i.getId());
+        }
+
+        mResponseCall = Application.apiInterface().createPusParcel(Application.currentToken, boxesArray.toString());
+        mResponseCall.enqueue(mResponseCallback);
+    }
+
+    private ResponseCallback<CreationDetails> mResponseCallback = new ResponseCallback<CreationDetails>() {
+        @Override
+        public void onSuccess(CreationDetails data) {
+            mCreationDetails = data;
+            mAdapter.refreshList(data.getAddresses());
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+            mActivity.onBackPressed();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<CreationDetails>> call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+            mActivity.toggleLoadingProgress(false);
+            mActivity.onBackPressed();
+        }
+    };
 
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case EditAddressFragment.ACTION_REFRESH_ADDRESS:
-                    getAddressesList(isPost);
+                case EditAddressActivity.ACTION_REFRESH_ADDRESS:
+                    if (mInStocks != null) {
+                        getAddressesList(mInStocks);
+                    }
                     break;
             }
         }
     };
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mActivity.changeActionMenuColor(MainActivity.ActionMenuColor.yellow);
-        mActivity.unregisterReceiver(mTitleReceiver);
+    @OnClick(R.id.addressCreateFloatingBtn)
+    void createNewAddress() {
+        Intent editAddress = new Intent(mActivity, EditAddressActivity.class);
+        mActivity.startActivity(editAddress);
+    }
+
+    @OnClick(R.id.addressSearchFloatingBtn)
+    void searchAnAddress() {
+
+    }
+
+    @OnClick(R.id.addressFabBg)
+    void collapseActionMenu() {
+        mActionsMenu.collapse();
     }
 
     @Override
     public void onSelectAddressClick(Address address, int position) {
-        Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
-        changeAddress.putExtra("address", address);
-        mActivity.sendBroadcast(changeAddress);
-        mActivity.onBackPressed();
+        if (mCreationDetails != null) {
+            mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
+                    String.valueOf(address.getId())), true);
+        }
+//        Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
+//        changeAddress.putExtra("address", address);
+//        mActivity.sendBroadcast(changeAddress);
+//        mActivity.onBackPressed();
     }
 
     @Override
@@ -187,7 +212,9 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
 
     @Override
     public void onEditAddressClick(Address address, int position) {
-
+        Intent editAddress = new Intent(mActivity, EditAddressActivity.class);
+        editAddress.putExtra(EditAddressActivity.ADDRESS_ID_EXTRA, address.getId());
+        mActivity.startActivity(editAddress);
     }
 
     @Override
@@ -196,88 +223,10 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
         mDeleteDialog = mActivity.getDialog(getString(R.string.delete_address), message, R.mipmap.ic_delete_address_24dp, getString(R.string.confirm),
                 v -> {
                     mAdapter.removeItem(position);
-                    deleteClicked = true;
                     ApiClient.getInstance().delete(Constants.Api.urlGetAddress(String.valueOf(address.getId())), mHandler);
                     mDeleteDialog.dismiss();
                 }, getString(R.string.cancel), v -> mDeleteDialog.dismiss(), 0);
         mDeleteDialog.show();
-    }
-
-    @Override
-    public boolean onMenuItemActionExpand(MenuItem item) {
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemActionCollapse(MenuItem item) {
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(final String newText) {
-        if (newText == null || newText.equals("")) {
-            mAdapter.replaceList(mAddresses);
-        } else {
-            new Thread(() -> {
-                final ArrayList<Address> searched = new ArrayList<>();
-                for (Address address : mAddresses) {
-                    if (address.getClientName().toLowerCase().contains(newText.toLowerCase())) {
-                        searched.add(address);
-                    }
-                }
-                mActivity.runOnUiThread(() -> mAdapter.replaceList(searched));
-            }).start();
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        mActivity.addFragment(EditAddressFragment.newInstance(null), false);
-        return true;
-    }
-
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-        if (!deleteClicked) {
-            mAddresses.clear();
-            JSONObject data = response.getJSONObject("data");
-            JSONArray addressesJSON = data.getJSONArray("addresses");
-            for (int i = 0; i < addressesJSON.length(); i++) {
-                JSONObject a = addressesJSON.getJSONObject(i);
-                String name = a.getString("shipping_first_name") + " " + a.getString("shipping_last_name");
-                Address address = new Address.Builder()
-                        .id(a.getInt("id"))
-                        .clientName(name)
-                        .firstName(a.getString("shipping_first_name"))
-                        .lastName(a.getString("shipping_last_name"))
-                        .street(a.getString("shipping_address"))
-                        .city(a.getString("shipping_city"))
-                        .country(a.getString("countryTitle"))
-                        .postalCode(a.getString("shipping_zip"))
-                        .phoneNumber(a.optString("phone", ""))
-                        .phoneCode(a.optString("shipping_phone_code", ""))
-                        .build();
-                mAddresses.add(address);
-            }
-            mAdapter.refreshList();
-        } else {
-            deleteClicked = false;
-        }
-    }
-
-    @Override
-    public void finallyMethod() {
-        mActivity.toggleLoadingProgress(false);
-        Intent intent = new Intent(ACTION_START_ANIM);
-        intent.putExtra("up", true);
-        mActivity.sendBroadcast(intent);
-        mActivity.changeActionMenuColor(MainActivity.ActionMenuColor.green);
     }
 
     @Override
@@ -288,5 +237,51 @@ public class AddressesListFragment extends ParentFragment implements SecondStepA
     @Override
     public ParentActivity.SelectedFragment getSelectedFragment() {
         return ParentActivity.SelectedFragment.addresses_list;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mResponseCall != null) mResponseCall.cancel();
+        mActivity.unregisterReceiver(mTitleReceiver);
+        mUnbinder.unbind();
+    }
+
+    @Override
+    public void onMenuExpanded() {
+        mFabBg.setVisibility(View.VISIBLE);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mFabBg, "alpha", 0f, 1f);
+        animator.setDuration(200);
+        animator.setInterpolator(new AccelerateInterpolator());
+        animator.start();
+    }
+
+    @Override
+    public void onMenuCollapsed() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mFabBg, "alpha", 1f, 0f);
+        animator.setDuration(200);
+        animator.setInterpolator(new AccelerateInterpolator());
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mFabBg.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        animator.start();
     }
 }

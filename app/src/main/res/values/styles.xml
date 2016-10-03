@@ -33,13 +33,17 @@
         <item name="android:textColorSecondary">@color/colorPrimary</item>
     </style>
 
+    <style name="ToolbarColoredBackArrowWhite" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="RatingBarTheme" parent="Widget.AppCompat.RatingBar">
         <item name="colorAccent">@color/colorLocalDepot</item>
     </style>
 
     <style name="menu_labels_style">
-        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:background">@drawable/action_label_bg</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 

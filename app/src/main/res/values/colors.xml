@@ -14,7 +14,9 @@
     <color name="colorFbButtonPressed">#364d84</color>
     <color name="colorGoogleBtn">#df462e</color>
     <color name="colorGoogleBtnPressed">#c43f2a</color>
-    <color name="black_semi_transparent">#B2000000</color>
+    <color name="black_semi_transparent">#bc000000</color>
     <color name="colorLocalDepot">#ecc950</color>
     <color name="colorLocalDepotDark">#bfa23f</color>
+    <color name="white_semi_tranparent">#BCFFFFFF</color>
+    <color name="textColor">#424242</color>
 </resources>

@@ -7,17 +7,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -31,6 +28,8 @@ import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.ui.steps.ConfirmationFragment;
+import com.softranger.bayshopmf.ui.steps.CreateParcelActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -101,6 +100,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         intentFilter.addAction(AddressesListFragment.ACTION_START_ANIM);
         intentFilter.addAction(ACTION_CREATE_PARCEL);
         intentFilter.addAction(ACTION_HIDE_TOTALS);
+        intentFilter.addAction(ConfirmationFragment.ACTION_BUILD_FINISHED);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -155,10 +155,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(AddressesListFragment.ACTION_START_ANIM)) {
-                boolean up = intent.getExtras().getBoolean("up", false);
-                toggleFragmentHeight(up);
-            } else if (intent.getAction().equals(ACTION_CREATE_PARCEL)) {
+            if (intent.getAction().equals(ACTION_CREATE_PARCEL)) {
                 mTotalsView.toggleOnClick();
             } else if (intent.getAction().equals(ACTION_HIDE_TOTALS)) {
                 toggleTotalsVisibility(false);
@@ -168,6 +165,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
                 }
                 mAdapter.notifyDataSetChanged();
             } else {
+                // also using action ConfirmationFragment.ACTION_BUILD_FINISHED
                 mCall = Application.apiInterface().getInStockItems(Application.currentToken);
                 mCall.enqueue(mResponseCallback);
             }
@@ -178,74 +176,6 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         return isTotalVisible && selectedItems.size() > 0;
     }
 
-    /**
-     * Method used to expand or collapse full screen frame layout from main activity
-     *
-     * @param up true if you want to expand or false to collapse
-     */
-    private void toggleFragmentHeight(boolean up) {
-        ValueAnimator heightAnimation;
-
-        // get device screen size
-        Display display = mActivity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        float height = size.y;
-
-        // check if we need to either expand or collapse
-        if (up) {
-            // set height from 55 which is the height of the totals view
-            heightAnimation = ValueAnimator.ofFloat(Application.getPixelsFromDp(55),
-                    height);
-        } else {
-            // set height from full screen size to totals view height
-            heightAnimation = ValueAnimator.ofFloat(height, Application.getPixelsFromDp(55));
-        }
-
-        // get layout params for our frame so we can change the height
-        RelativeLayout.LayoutParams frameParams = (RelativeLayout.LayoutParams) mActivity.mFrameLayout.getLayoutParams();
-
-        // buid value animator object
-        heightAnimation.setDuration(400);
-        heightAnimation.setInterpolator(new DecelerateInterpolator());
-        heightAnimation.addUpdateListener(animation -> {
-            // get animated value
-            float animatedValue = (float) animation.getAnimatedValue();
-            // set it as the height of our frame layout params
-            frameParams.height = (int) animatedValue;
-            // set new layout params to our height
-            mActivity.mFrameLayout.setLayoutParams(frameParams);
-        });
-
-        heightAnimation.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                // in case we need to collapse the frame
-                // call onBackPressed() for the fragment to be removed from container
-                if (!up) mActivity.getFragmentManager().popBackStack();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-
-        // transform totals view to either toolbar or totals bar
-        mTotalsView.transform(up);
-        // finaly start the animation
-        heightAnimation.start();
-    }
 
     /*Adapter callbacks*/
 
@@ -407,12 +337,13 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     @Override
     public void onCreateParcelClick() {
-        AddressesListFragment addressFragment = AddressesListFragment.newInstance(selectedItems);
-        mActivity.addFullScreenFragment(addressFragment);
+        Intent buildParcel = new Intent(mActivity, CreateParcelActivity.class);
+        buildParcel.putExtra(CreateParcelActivity.SELECTED_ITEMS, selectedItems);
+        mActivity.startActivity(buildParcel);
     }
 
     @Override
     public void onNavIconClick() {
-        toggleFragmentHeight(false);
+
     }
 }

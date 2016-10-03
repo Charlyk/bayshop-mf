@@ -31,7 +31,7 @@
         android:layout_alignParentStart="true"
         android:singleLine="true"
         android:ellipsize="end"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"/>
 
@@ -53,7 +53,6 @@
         android:layout_below="@id/shippingMethodTimeTitle"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
         android:textSize="13sp"
         tools:text="5 days"/>
 
@@ -86,4 +85,11 @@
         android:src="@mipmap/ic_detail_24dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/drop_shadow"
+        android:layout_below="@id/shippingMethodVolumeLabel"
+        android:layout_marginTop="20dp"/>
 </RelativeLayout>

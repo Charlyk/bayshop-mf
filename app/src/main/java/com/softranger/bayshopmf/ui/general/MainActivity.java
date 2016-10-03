@@ -190,14 +190,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         }
     }
 
-    public void addFullScreenFragment(ParentFragment parentFragment) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fullScreenContainer, parentFragment, parentFragment.getClass().getSimpleName());
-        transaction.addToBackStack(parentFragment.getClass().getSimpleName());
-        transaction.commit();
-    }
-
     /**
      * Set the parcels count on the right side in the Navigation Drawer
      */
@@ -228,12 +220,8 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     @OnClick(R.id.activityActionMenu)
     void onActionBtnClick() {
-        if (selectedFragment == SelectedFragment.in_stock) {
-            Intent createParcel = new Intent(InStockFragment.ACTION_CREATE_PARCEL);
-            sendBroadcast(createParcel);
-        } else if (selectedFragment == SelectedFragment.select_address) {
-            Toast.makeText(this, "Floating action menu", Toast.LENGTH_SHORT).show();
-        }
+        Intent createParcel = new Intent(InStockFragment.ACTION_CREATE_PARCEL);
+        sendBroadcast(createParcel);
     }
 
     public void toggleActionMenuVisibility(boolean show) {
@@ -298,7 +286,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         colorAnimation.addUpdateListener(animator -> mActionsMenu.setColorNormal((int) animator.getAnimatedValue()));
         colorAnimation.start();
         mActionsMenu.setColorPressed(colorPressed);
-
     }
 
     /**
@@ -452,11 +439,6 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else if (selectedFragment == SelectedFragment.addresses_list) {
-            Intent intent = new Intent(AddressesListFragment.ACTION_START_ANIM);
-            intent.putExtra("up", false);
-            sendBroadcast(intent);
-            selectedFragment = SelectedFragment.in_stock;
         } else if (InStockFragment.canHideTotals()) {
             Intent intent = new Intent(InStockFragment.ACTION_HIDE_TOTALS);
             sendBroadcast(intent);

@@ -23,6 +23,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -148,4 +149,14 @@ public interface BayShopApiInterface {
                                                     @Field("shipping_phone") String phoneNumber,
                                                     @Field("countryId") String countryId,
                                                     @Field("shipping_state") String state);
+
+    @FormUrlEncoded
+    @PUT("parcel-create")
+    Call<ServerResponse<Integer>> createNewPusParcel(@Header("Bearer") String token,
+                                                     @Field("boxes") String boxesArray,
+                                                     @Field("addressId") String addressId,
+                                                     @Field("shipperId") String shipperId,
+                                                     @Field("insurance") boolean insurance,
+                                                     @Field("sentOnUserAlert") boolean sendOnAlert,
+                                                     @Field("useAdditionalMaterials") boolean additionalMaterials);
 }

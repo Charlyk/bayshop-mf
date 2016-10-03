@@ -130,6 +130,7 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
     };
 
     private void setDataOnPosition(Address address) {
+        if (address == null) return;
         mFirstNameInput.setText(address.getFirstName());
         mLastNameInput.setText(address.getLastName());
         mEmailInput.setText(address.getEmail());
@@ -137,7 +138,7 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
         mPhoneInput.setText(address.getPhoneNumber());
         mCityInput.setText(address.getCity());
         mPhoneCode.setText(address.getPhoneCode());
-        mCountryLabel.setText(address.getCountry());
+        mCountryLabel.setText(address.getState());
         mPostalCodeInput.setText(address.getPostalCode());
     }
 
@@ -268,6 +269,4 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
                 break;
         }
     }
-
-
 }

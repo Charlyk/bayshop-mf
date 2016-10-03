@@ -1,36 +1,19 @@
-<RelativeLayout
+<LinearLayout
     android:id="@+id/insuranceSelector"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground"
+    android:background="#FFF7FCEE"
     android:clickable="true"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Goaranteed text -->
-    <TextView
-        android:id="@+id/insuranceGuaranteeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/guaranteed_protection_of_your_parcel_by_bayshop"
-        android:textColor="@color/colorAccent"
-        android:gravity="center"
-        android:layout_margin="16dp"/>
-
-    <!-- Separator -->
-    <View
-        android:id="@+id/insuranceGuaranteeSeparator"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"
-        android:layout_below="@id/insuranceGuaranteeText"/>
 
     <RelativeLayout
         android:id="@+id/insuranceButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/insuranceGuaranteeSeparator">
+        android:paddingTop="16dp">
 
         <!-- Want insurance selector -->
         <RadioButton
@@ -40,7 +23,6 @@
             android:clickable="false"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
-            android:checked="true"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
@@ -52,143 +34,56 @@
             android:layout_height="35dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/ic_shield_24dpi"/>
 
         <!-- Want insurance title -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/i_want_to_insure_parcel"
-            android:textSize="18sp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:textColor="@android:color/black"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/insuranceShieldImage"
             android:layout_toEndOf="@+id/insuranceShieldImage"
             android:layout_toLeftOf="@+id/insuranceRadioButton"
             android:layout_toStartOf="@+id/insuranceRadioButton"
-            android:id="@+id/textView17"/>
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/insurance"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/textColor"
+                android:id="@+id/textView17"/>
+
+            <TextView
+                android:id="@+id/insurancePriceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="18sp"
+                tools:text="$8"/>
+        </LinearLayout>
 
     </RelativeLayout>
 
-    <!-- Products cost title and label -->
-    <TextView
-        android:id="@+id/insuranceProductsCostTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/products_cost"
-        android:layout_below="@id/insuranceButtonLayout"
-        android:layout_marginTop="17dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"/>
-
-    <TextView
-        android:id="@+id/insuranceProductsCostLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignBottom="@id/insuranceProductsCostTitle"
-        tools:text="$30"
-        android:textColor="@android:color/black"/>
-
-    <!-- Shipping cost title and label -->
-    <TextView
-        android:id="@+id/insuranceShippingCostTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/shipping_price"
-        android:layout_below="@id/insuranceProductsCostTitle"
-        android:layout_marginTop="17dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"/>
-
-    <TextView
-        android:id="@+id/insuranceShippingCostLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignBottom="@id/insuranceShippingCostTitle"
-        tools:text="$10"
-        android:textColor="@android:color/black"/>
-
-    <!-- Insurance cost title and label -->
-    <TextView
-        android:id="@+id/insuranceInsuranceCostTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/insurance_price"
-        android:layout_below="@id/insuranceShippingCostTitle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="@color/colorAccent"
-        android:textSize="17sp"
-        android:layout_marginTop="17dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"/>
-
-    <TextView
-        android:id="@+id/insuranceInsuranceCostLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="17sp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignBottom="@id/insuranceInsuranceCostTitle"
-        tools:text="$10"
-        android:textColor="@color/colorAccent"/>
-
-    <!-- Insurance descritpion -->
     <TextView
         android:id="@+id/insuranceDescriptionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:layout_marginBottom="16dp"
         android:maxLines="3"
+        android:visibility="gone"
         android:ellipsize="end"
-        android:layout_marginTop="17dp"
         android:text="@string/lorem_ipsum"
-        android:gravity="center"
-        android:layout_below="@id/insuranceInsuranceCostTitle"/>
-
-    <!-- Details button-->
-    <Button
-        android:id="@+id/insuranceDetailsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/insurance_agreement"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/colorGreenAction"
-        android:background="?selectableItemBackground"
-        android:src="@mipmap/ic_detail_24dp"
-        style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_below="@id/insuranceDescriptionLabel"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:gravity="center"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"
-        android:layout_below="@id/insuranceDetailsButton"/>
-</RelativeLayout>
+        android:background="#b1b1b1"/>
+</LinearLayout>
