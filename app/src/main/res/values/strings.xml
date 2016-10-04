@@ -173,7 +173,7 @@
     <string name="packed_time">Packing time:</string>
     <string name="order">Order</string>
     <string name="address_confirmation">Confirmation of address</string>
-    <string name="return_to_seller_s_address">Return to seller\'s address</string>
+    <string name="return_to_seller_s_address">Return to seller</string>
     <string name="name">Name:</string>
     <string name="enter_your_first_name">Enter your First Name</string>
     <string name="enter_your_last_name">Enter your Last Name</string>
@@ -241,7 +241,7 @@
     <string name="take_to_delivery_alert">This product was taken by courier and it will soon be delivered to you.</string>
     <string name="pay_the_debt">Pay the debt</string>
     <string name="geolocation">Geolocation</string>
-    <string name="signature">Signature and geolocation</string>
+    <string name="signature">Information</string>
     <string name="track_parcel">Track the parcel</string>
     <string name="volume">Volume (cm)</string>
     <string name="z">Z</string>
@@ -350,4 +350,5 @@
     <string name="no_insurance">No insurance $0</string>
     <string name="parcel_created">Parcel created</string>
     <string name="your_parcel_added">Your parcel was added successfuly with ID\u0020</string>
+    <string name="held_by_user">Held by user</string>
 </resources>

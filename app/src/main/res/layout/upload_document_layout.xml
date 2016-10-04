@@ -1,51 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="?actionBarSize"
-              android:background="@android:color/white"
               android:id="@+id/uploadDocumentLayout"
-              android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:orientation="horizontal">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
-
-    <RelativeLayout
+    <Button
+        android:id="@+id/prohibitionHeldUploadDocumentBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_weight="1"
+        android:background="@drawable/green_button_bg"
+        android:gravity="center"
+        android:text="@string/upload_document"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"/>
 
-        <Button
-            android:id="@+id/prohibitionHeldUploadDocumentBtn"
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:drawableLeft="@mipmap/ic_document_30dp"
-            android:drawableStart="@mipmap/ic_document_30dp"
-            android:drawablePadding="6dp"
-            android:background="?selectableItemBackground"
-            android:text="@string/upload_document"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"/>
-
-        <Button
-            android:id="@+id/prohibitionHeldTakePhotoBtn"
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:drawableStart="@mipmap/ic_take_photo_30dp"
-            android:drawableLeft="@mipmap/ic_take_photo_30dp"
-            android:drawablePadding="6dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="?selectableItemBackground"
-            android:text="@string/take_photo"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"/>
-    </RelativeLayout>
+    <Button
+        android:id="@+id/prohibitionHeldTakePhotoBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_weight="1"
+        android:background="@drawable/green_button_bg"
+        android:gravity="center"
+        android:text="@string/take_photo"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"/>
 </LinearLayout>

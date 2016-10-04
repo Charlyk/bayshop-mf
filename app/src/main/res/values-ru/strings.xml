@@ -64,7 +64,7 @@
     <string name="ipad_mini">iPad mini</string>
     <string name="tracking_number">Трекинг-номер:</string>
     <string name="link_to_the_product_ordered_by_you">Ссылка на заказанный вами товар:</string>
-    <string name="held_by_prohibition">Задержана из-за наличия запрещенного товара</string>
+    <string name="held_by_prohibition">Запрещенные товары</string>
     <string name="created_on">"Создана: "</string>
     <string name="complete">" завершено"</string>
     <string name="cancel">Отменить</string>
@@ -173,7 +173,7 @@
     <string name="packed_time">Время упаковки:</string>
     <string name="order">Заказ</string>
     <string name="address_confirmation">Подтверждение адреса</string>
-    <string name="return_to_seller_s_address">Вернуть на адрес продавца</string>
+    <string name="return_to_seller_s_address">Вернуть продавцу</string>
     <string name="name">Имя:</string>
     <string name="enter_your_first_name">Введите имя</string>
     <string name="enter_your_last_name">Введите фамилию</string>
@@ -241,7 +241,7 @@
     <string name="take_to_delivery_alert">Этот товар был передан курьеру, и скоро он доставит его вам.</string>
     <string name="pay_the_debt">Оплатить долг</string>
     <string name="geolocation">Геолокация</string>
-    <string name="signature">Подпись и геолокация</string>
+    <string name="signature">Информация</string>
     <string name="track_parcel">Отследить посылку</string>
     <string name="volume">Объем (см)</string>
     <string name="z">Z</string>
@@ -317,4 +317,5 @@
     <string name="no_insurance">Не страховать $0</string>
     <string name="parcel_created">Parcel created</string>
     <string name="your_parcel_added">Your parcel was added successfuly with ID\u0020</string>
+    <string name="held_by_user">Held by user</string>
 </resources>

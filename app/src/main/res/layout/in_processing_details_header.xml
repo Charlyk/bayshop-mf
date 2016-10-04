@@ -8,25 +8,7 @@
 
     <include layout="@layout/warning_with_icon"/>
 
-    <include layout="@layout/sent_parcels_header_layout"/>
-
-    <include layout="@layout/upload_document_layout"/>
-
-    <include layout="@layout/signature_geolocation_btn"/>
-
-    <include layout="@layout/prohibition_details_header"/>
-
-    <include layout="@layout/order_home_delivery"/>
-
-    <include layout="@layout/pay_debt_layout"/>
-
     <include layout="@layout/take_to_delivery_header"/>
-
-    <include layout="@layout/awaiting_declaration_btn"/>
-
-    <include layout="@layout/held_by_user_btn"/>
-
-    <include layout="@layout/damage_recorded_btn"/>
 
     <View
         android:layout_width="match_parent"
@@ -61,20 +43,18 @@
             tools:text="MF3121241412"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/heldByProhibitionDescriptionLabel"
-        android:layout_width="wrap_content"
+    <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
+        android:id="@+id/pusDetailsStatusProgress"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
-        tools:text="MacBook Pro Late 2016"
-        android:textColor="@android:color/black"/>
+        android:layout_marginLeft="16dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="16dp"
         android:background="#b1b1b1"/>
 
     <include layout="@layout/address_list_item"/>
@@ -100,7 +80,7 @@
                 android:layout_column="1"
                 android:layout_gravity="end"
                 android:layout_marginBottom="5dp"
-                android:textColor="@android:color/black"
+                android:textColor="@color/textColor"
                 tools:text="$ 200"/>
         </TableRow>
 
@@ -117,7 +97,7 @@
                 android:layout_column="1"
                 android:layout_gravity="end"
                 android:layout_marginBottom="5dp"
-                android:textColor="@android:color/black"
+                android:textColor="@color/textColor"
                 tools:text="$ 2.5"/>
         </TableRow>
 
@@ -134,7 +114,7 @@
                 android:layout_column="1"
                 android:layout_gravity="end"
                 android:layout_marginBottom="5dp"
-                android:textColor="@android:color/black"
+                android:textColor="@color/textColor"
                 tools:text="$ 25.00"/>
         </TableRow>
 
@@ -151,7 +131,7 @@
                 android:layout_column="1"
                 android:layout_gravity="end"
                 android:layout_marginBottom="5dp"
-                android:textColor="@android:color/black"
+                android:textColor="@color/textColor"
                 tools:text="$ 280"/>
         </TableRow>
     </TableLayout>
@@ -190,12 +170,12 @@
             android:stretchColumns="0">
 
             <TableRow>
-
                 <TextView
                     android:id="@+id/inProcessingDetailsShippingByLabel"
                     android:layout_column="0"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textColor="@color/textColor"
                     tools:text="BayShop AirPost"/>
 
                 <TextView
@@ -203,10 +183,10 @@
                     android:layout_column="1"
                     android:layout_gravity="end"
                     android:layout_marginBottom="5dp"
+                    android:textSize="16sp"
                     android:textColor="@color/colorAccent"
-                    android:text="tracking21323122432"/>
+                    tools:text="tracking21323122432"/>
             </TableRow>
-
         </TableLayout>
     </LinearLayout>
 
@@ -223,6 +203,6 @@
         android:paddingRight="16dp"
         android:paddingLeft="16dp"
         android:text="@string/parcel_components"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"/>
+        android:textColor="@color/textColor"
+        android:textSize="18sp"/>
 </LinearLayout>

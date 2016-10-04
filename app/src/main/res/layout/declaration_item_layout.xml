@@ -1,105 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7.5dp"
     android:background="@android:color/white"
-    android:layout_marginTop="7dp"
-    app:cardElevation="2dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    app:cardElevation="2dp">
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
         android:orientation="vertical">
 
+        <!-- Product URL -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@string/product_name"/>
+                android:text="@string/url_to_the_product"/>
 
             <ImageButton
                 android:id="@+id/declarationItemDeleteButton"
                 style="@style/Base.Widget.AppCompat.ActionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginStart="50dp"
                 android:src="@mipmap/ic_delete_24dpi"/>
 
-            <EditText
-                android:id="@+id/productNameInput"
-                android:inputType="text"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@id/declarationItemDeleteButton"
+            <ImageButton
+                android:id="@+id/declarationOpenUrlBtn"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/declarationItemDeleteButton"
-                android:layout_below="@id/textView3"
-                android:nextFocusDown="@+id/productUrlInput"
-                android:padding="2dp"
-                android:hint="@string/example_product"
-                android:background="@android:color/white"
-                android:layout_height="30dp"
-                android:layout_width="match_parent"
-                android:singleLine="true"/>
-        </RelativeLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#b1b1b1"/>
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="@string/url_to_the_product"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+                android:layout_toStartOf="@id/declarationItemDeleteButton"
+                android:background="?selectableItemBackground"
+                android:src="@mipmap/ic_link_26dp"/>
 
             <EditText
                 android:id="@+id/productUrlInput"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/textView4"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toLeftOf="@id/declarationOpenUrlBtn"
+                android:layout_toStartOf="@id/declarationOpenUrlBtn"
+                android:background="@android:color/white"
+                android:hint="@string/http_example_com_example_product"
+                android:inputType="textUri"
                 android:nextFocusDown="@+id/productQuantityInput"
                 android:padding="2dp"
-                android:hint="@string/http_example_com_example_product"
-                android:background="@android:color/white"
-                android:inputType="textUri"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:layout_width="0dp"
                 android:singleLine="true"/>
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_link_26dp"
-                android:background="?selectableItemBackground"
-                android:id="@+id/declarationOpenUrlBtn"
-                style="@style/Base.Widget.AppCompat.ActionButton"/>
-        </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -107,81 +74,107 @@
             android:layout_marginBottom="10dp"
             android:background="#b1b1b1"/>
 
-        <LinearLayout
-            android:layout_height="wrap_content"
+        <!-- Product Name-->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:text="@string/product_name"/>
+
+            <EditText
+                android:id="@+id/productNameInput"
                 android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/textView3"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/white"
+                android:hint="@string/example_product"
+                android:inputType="text"
+                android:nextFocusDown="@+id/productUrlInput"
+                android:padding="2dp"
+                android:singleLine="true"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#b1b1b1"/>
+
+        <!-- Product price and quantity -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView5"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/units_quantity"/>
 
                 <EditText
                     android:id="@+id/productQuantityInput"
-                    android:padding="2dp"
-                    android:hint="@string/_0"
-                    android:nextFocusDown="@+id/productPriceInput"
-                    android:background="@android:color/white"
-                    android:inputType="number"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_width="match_parent"/>
+                    android:background="@android:color/white"
+                    android:hint="@string/_0"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/productPriceInput"
+                    android:padding="2dp"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView6"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/total_price"/>
 
                 <EditText
                     android:id="@+id/productPriceInput"
-                    android:padding="2dp"
-                    android:hint="@string/_0_0"
-                    android:background="@android:color/white"
-                    android:inputType="numberDecimal"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_width="match_parent"/>
+                    android:background="@android:color/white"
+                    android:hint="@string/_0_0"
+                    android:inputType="numberDecimal"
+                    android:padding="2dp"/>
             </LinearLayout>
         </LinearLayout>
 
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0.5dp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginBottom="10dp"-->
-            <!--android:background="#b1b1b1"/>-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginRight="16dp"-->
-            <!--android:layout_marginBottom="10dp"-->
-            <!--android:text="@string/delete_item"-->
-            <!--android:textSize="16sp"-->
-            <!--android:background="@drawable/red_button_bg"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--style="@style/Base.Widget.AppCompat.ActionButton"-->
-            <!--android:id="@+id/itemDeleteButton"-->
-            <!--android:layout_gravity="end"/>-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/drop_shadow"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -1,36 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="50dp"
                 android:id="@+id/orderHomeDeliveryLayout"
                 android:clickable="true"
-                android:background="?selectableItemBackground">
-
-    <View
-        android:id="@+id/topSeparator"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_alignParentTop="true"
-        android:background="#b1b1b1"/>
+                android:background="@drawable/green_button_bg">
 
     <TextView
         android:id="@+id/localDepotOrderTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
         android:drawableLeft="@mipmap/ic_order_delivery_30dp"
         android:drawableStart="@mipmap/ic_order_delivery_30dp"
         android:gravity="center_vertical"
         android:drawablePadding="10dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:textSize="16sp"
-        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimary"
         android:text="@string/order_delivery"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_alignParentBottom="true"
-        android:background="#b1b1b1"/>
 </RelativeLayout>

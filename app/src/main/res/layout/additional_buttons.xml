@@ -4,29 +4,6 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <Button
-        android:id="@+id/fill_declarationButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="5dp"
-        android:background="?selectableItemBackground"
-        android:drawableLeft="@mipmap/ic_edit_declaration_30dp"
-        android:drawablePadding="16dp"
-        android:drawableStart="@mipmap/ic_edit_declaration_30dp"
-        android:gravity="start|center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:text="@string/fill_in_the_declaration"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

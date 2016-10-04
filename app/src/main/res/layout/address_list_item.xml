@@ -80,7 +80,7 @@
         android:textSize="16sp"
         android:layout_toEndOf="@id/addressStreetTitle"
         android:layout_toRightOf="@id/addressStreetTitle"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textColor"
         tools:text="Floriolor 16/1 ap 106"/>
 
     <!-- City row -->
@@ -104,7 +104,7 @@
         android:textSize="16sp"
         android:layout_toEndOf="@id/addressCityTitle"
         android:layout_toRightOf="@id/addressCityTitle"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textColor"
         tools:text="Chisinau"/>
 
     <!-- Postal code row -->
@@ -128,7 +128,7 @@
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@id/addressPostalCodeTitle"
         android:layout_toRightOf="@id/addressPostalCodeTitle"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textColor"
         tools:text="Moldova"/>
 
     <!-- Country row -->
@@ -152,7 +152,7 @@
         android:textSize="16sp"
         android:layout_toEndOf="@id/addressCountryTitle"
         android:layout_toRightOf="@id/addressCountryTitle"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textColor"
         tools:text="Moldova"/>
 
     <!-- Phone row -->
@@ -176,7 +176,7 @@
         android:textSize="16sp"
         android:layout_toEndOf="@id/addressPhoneNumberTitle"
         android:layout_toRightOf="@id/addressPhoneNumberTitle"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textColor"
         tools:text="+37379466284"/>
 
     <LinearLayout

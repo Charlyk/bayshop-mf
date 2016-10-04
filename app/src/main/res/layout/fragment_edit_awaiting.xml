@@ -1,155 +1,105 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            tools:context=".ui.awaitingarrival.EditAwaitingFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorDivider"
+                tools:context=".ui.awaitingarrival.EditAwaitingFragment">
+
+    <include layout="@layout/warning_with_icon"/>
 
     <LinearLayout
+        android:id="@+id/trackingNumberLayout"
         android:layout_width="match_parent"
+        android:layout_marginTop="7.5dp"
         android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:background="@android:color/white"
+        android:layout_below="@+id/warningLayoutWithIcon"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
-
         <TextView
-            android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:text="@string/link_to_the_product_ordered_by_you"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/editAwaitingUrlInput"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:inputType="textUri"
-                android:background="@android:color/white"
-                android:hint="@string/url_example"
-                android:padding="3dp"/>
-
-            <ImageButton
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_link_26dp"
-                android:background="?selectableItemBackground"
-                android:id="@+id/openUrlArrivalBtn"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
+            android:textSize="12sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:text="@string/tracking_number"/>
 
         <EditText
-            android:id="@+id/editAwaitingTrackingInput"
+            android:id="@+id/editAwaitingTrackingNumInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="10dp"
-            android:singleLine="true"
+            android:layout_height="30dp"
             android:background="@android:color/white"
             android:hint="@string/tracking_example"
-            android:padding="3dp"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:text="@string/product_name"/>
-
-        <EditText
-            android:id="@+id/editAwaitingNameInput"
-            android:layout_width="match_parent"
-            android:singleLine="true"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="textUri"
+            android:nextFocusDown="@+id/productQuantityInput"
+            android:padding="2dp"
             android:layout_marginBottom="10dp"
-            android:background="@android:color/white"
-            android:hint="@string/ipad_mini"
-            android:padding="3dp"/>
+            android:singleLine="true"/>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:layout_height="2dp"
+            android:background="@drawable/drop_shadow"/>
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:text="@string/price"/>
+    <LinearLayout
+        android:id="@+id/editAwaitingButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/editAwaitingPriceInput"
+        <Button
+            android:id="@+id/editAwaitingAddFieldButton"
+            style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:singleLine="true"
-            android:background="@android:color/white"
-            android:ems="10"
-            android:hint="23.5"
-            android:inputType="numberDecimal"
-            android:padding="3dp"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:layout_height="50dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/green_button_bg"
+            android:text="@string/add_item"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
 
         <Button
             android:id="@+id/editAwaitingSaveButton"
             style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end"
-            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="1dp"
+            android:layout_marginStart="1dp"
+            android:gravity="center"
             android:background="@drawable/green_button_bg"
             android:text="@string/save"
             android:textColor="@android:color/white"
-            android:textSize="16sp"/>
+            android:textSize="18sp"/>
     </LinearLayout>
-</ScrollView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/editAwaitingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/declaration_item_layout"
+        android:layout_below="@+id/trackingNumberLayout"
+        android:layout_above="@id/editAwaitingButtonsLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/warningLayoutWithIcon"
+        android:background="@drawable/drop_shadow"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/drop_shadow"
+        android:layout_alignParentTop="true"/>
+</RelativeLayout>

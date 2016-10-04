@@ -1,57 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
     android:id="@+id/receivedSignatureOnMapLayout">
 
-    <View
-        android:id="@+id/topSeparator"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_alignParentTop="true"
-        android:background="#b1b1b1"/>
-
     <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:layout_below="@id/topSeparator"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/signature"
         android:id="@+id/geolocationButton"
-        android:textColor="@color/colorAccent"
-        android:background="?selectableItemBackground"
-        android:drawableLeft="@mipmap/ic_signature_amp_geolocation_35dp"
-        android:drawableStart="@mipmap/ic_signature_amp_geolocation_35dp"
-        android:drawablePadding="10dp"
-        android:textSize="16sp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <View
-        android:id="@+id/middleSeparator"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@id/geolocationButton"
-        android:background="#b1b1b1"/>
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/green_button_bg"
+        android:layout_marginRight="1dp"
+        android:layout_marginEnd="1dp"
+        android:textSize="18sp"
+        android:layout_weight="1"/>
 
     <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/leave_feedback"
-        android:layout_below="@id/middleSeparator"
         android:id="@+id/leaveReviewButton"
-        android:textColor="@color/colorAccent"
-        android:background="?selectableItemBackground"
-        android:drawableLeft="@mipmap/ic_leave_preview_35dp"
-        android:drawableStart="@mipmap/ic_leave_preview_35dp"
-        android:drawablePadding="14dp"
-        android:textSize="16sp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-</RelativeLayout>
+        android:layout_weight="1"
+        android:layout_marginLeft="1dp"
+        android:layout_marginStart="1dp"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/green_button_bg"
+        android:textSize="18sp"/>
+</LinearLayout>

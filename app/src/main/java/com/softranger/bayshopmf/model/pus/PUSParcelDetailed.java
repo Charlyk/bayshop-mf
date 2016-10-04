@@ -18,31 +18,50 @@ import java.util.ArrayList;
  */
 public class PUSParcelDetailed extends PUSParcel {
 
-    @JsonProperty("created") String mCreated;
-    @JsonProperty("sentTime") String mSentTime;
-    @JsonProperty("packedTime") String mPackedTime;
-    @JsonProperty("receivedTime") String mReceivedTime;
-    @JsonProperty("takenToDeliveryTime") String mTakenToDeliveryTime;
-    @JsonProperty("customsHeldTime") String mCustomsHeldTime;
-    @JsonProperty("localDepoTime") String mLocalDepoTime;
-    @JsonProperty("heldByProhibitionTime") String mHeldByProhibitionTime;
-    @JsonProperty("heldByDamageTime") String mHeldByDamageTime;
-    @JsonProperty("customsCause") String mCustomsCause;
-    @JsonProperty("totalPrice") String mTotalPrice;
-    @JsonProperty("deliveryPrice") String mDeliveryPrice;
-    @JsonProperty("status") String mStringStatus;
+    @JsonProperty("created")
+    private String mCreated;
+    @JsonProperty("sentTime")
+    private String mSentTime;
+    @JsonProperty("packedTime")
+    private String mPackedTime;
+    @JsonProperty("receivedTime")
+    private String mReceivedTime;
+    @JsonProperty("takenToDeliveryTime")
+    private String mTakenToDeliveryTime;
+    @JsonProperty("customsHeldTime")
+    private String mCustomsHeldTime;
+    @JsonProperty("localDepoTime")
+    private String mLocalDepoTime;
+    @JsonProperty("heldByProhibitionTime")
+    private String mHeldByProhibitionTime;
+    @JsonProperty("heldByDamageTime")
+    private String mHeldByDamageTime;
+    @JsonProperty("customsCause")
+    private String mCustomsCause;
+    @JsonProperty("totalPrice")
+    private String mTotalPrice;
+    @JsonProperty("deliveryPrice")
+    private String mDeliveryPrice;
+    @JsonProperty("status")
+    private String mStringStatus;
     @JsonProperty("shipping")
-    ShippingMethod mShippingMethod;
+    private ShippingMethod mShippingMethod;
     @JsonProperty("address")
-    Address mAddress;
-    @JsonProperty("boxes") ArrayList<Box> mBoxes;
-    @JsonProperty("insuranceCommission") String mInsuranceCommission;
-    @JsonProperty("percent") int mPercent;
-    @JsonProperty("tracking") String mTrackingNum;
-    @JsonProperty("trackingUrl") String mTrackingUrl;
+    private Address mAddress;
+    @JsonProperty("boxes")
+    private ArrayList<Box> mBoxes;
+    @JsonProperty("insuranceCommission")
+    private String mInsuranceCommission;
+    @JsonProperty("percent")
+    private int mPercent;
+    @JsonProperty("tracking")
+    private String mTrackingNum;
+    @JsonProperty("trackingUrl")
+    private String mTrackingUrl;
     @JsonProperty("coordinates")
-    Coordinates mCoordinates;
-    @JsonProperty("signature") String mSignatureUrl;
+    private Coordinates mCoordinates;
+    @JsonProperty("signature")
+    private String mSignatureUrl;
 
     public PUSParcelDetailed() {
 

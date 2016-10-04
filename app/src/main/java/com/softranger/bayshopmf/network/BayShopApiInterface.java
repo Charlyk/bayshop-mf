@@ -99,7 +99,6 @@ public interface BayShopApiInterface {
     @POST("mf-storage-declaration/{id}")
     Call<ServerResponse> saveInStockItemDeclaration(@Header("Bearer") String token,
                                                     @Path("id") String itemId,
-                                                    @Field("title") String title,
                                                     @Field("declarationItems") String declarationItemsArray); // array of products in JSON format
 
     @GET("parcels/us")

@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/heldByUserBtnLayout"
               android:layout_width="match_parent"
               android:layout_height="50dp"
-              android:gravity="center"
-              android:clickable="true"
               android:background="@drawable/green_button_bg"
+              android:clickable="true"
+              android:gravity="center"
+              android:id="@+id/takenCallCourierBtn"
               android:orientation="vertical">
 
     <TextView
-        android:id="@+id/heldByUserSendBtn"
+        android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/send_parcel_30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableLeft="@mipmap/ic_call_30dp"
         android:drawablePadding="10dp"
-        android:drawableStart="@mipmap/send_parcel_30dp"
-        android:gravity="start|center_vertical"
-        android:text="@string/send_parcel"
+        android:drawableStart="@mipmap/ic_call_30dp"
+        android:gravity="center"
+        android:text="@string/call_courier"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"/>
 </LinearLayout>

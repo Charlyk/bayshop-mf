@@ -151,8 +151,8 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                 case AddAwaitingFragment.ACTION_ITEM_ADDED:
                     // send request to server for item details
                     mCall = Application.apiInterface().getInStockItemDetails(Application.currentToken, mInStockItem.getId());
-                    mHolderLayout.setVisibility(View.GONE);
-                    mActivity.toggleLoadingProgress(true);
+//                    mActivity.toggleLoadingProgress(true);
+                    mActivity.hideKeyboard();
                     mCall.enqueue(mResponseCallback);
                     break;
             }

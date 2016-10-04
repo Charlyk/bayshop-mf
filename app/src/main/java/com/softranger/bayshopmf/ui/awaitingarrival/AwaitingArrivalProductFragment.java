@@ -56,7 +56,7 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AwaitingArrivalProductFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener {
+public class AwaitingArrivalProductFragment extends ParentFragment {
 
     private static final String PRODUCT_ARG = "product";
     public static final String ACTION_UPDATE = "update data";
@@ -72,7 +72,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pu
     @BindView(R.id.awaitingArrivalDetailsImageList) RecyclerView mRecyclerView;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
-    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
 
     private MainActivity mActivity;
     private Unbinder mUnbinder;
@@ -110,8 +109,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pu
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
         intentFilter.addAction(ACTION_UPDATE);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
-
-        mRefreshLayout.setPullToRefreshListener(this);
 
         mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
 
@@ -302,15 +299,5 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pu
     @Override
     public MainActivity.SelectedFragment getSelectedFragment() {
         return MainActivity.SelectedFragment.awaiting_arrival;
-    }
-
-    @Override
-    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               mRefreshLayout.setRefreshing(false);
-            }
-        }, 1000);
     }
 }

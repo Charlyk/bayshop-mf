@@ -77,7 +77,8 @@ public class ParcelStatusBarView extends RelativeLayout {
             put(6, BarColor.green); // sent
             put(7, BarColor.red); // held by customs
             put(8, BarColor.yellow); // local depot
-            put(9, BarColor.green); // in the way;
+            put(9, BarColor.green); // in the way
+            put(10, BarColor.green); // received
         }};
 
         mInterpolator = new AccelerateDecelerateInterpolator();
@@ -86,7 +87,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         View rootView = inflater.inflate(R.layout.status_bar_view, this);
         mStatusBarHolder = (LinearLayout) rootView.findViewById(R.id.statusBarHolderLayout);
 
-        mStatusesCount = 9;
+        mStatusesCount = 10;
         mStatusBarHolder.measure(MeasureSpec.EXACTLY, MeasureSpec.UNSPECIFIED);
         mTotalWidth = mStatusBarHolder.getWidth();
 

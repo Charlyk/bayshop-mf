@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:id="@+id/warningLayoutWithIcon"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:layout_marginTop="16dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginBottom="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@android:color/white"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:src="@mipmap/ic_take_to_delivery_44dp"
         android:id="@+id/warningWithIconImageView"/>
 
@@ -21,9 +26,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
+        android:layout_toRightOf="@id/warningWithIconImageView"
+        android:layout_toEndOf="@id/warningWithIconImageView"
+        android:layout_centerVertical="true"
         android:text="@string/take_to_delivery_alert"
         android:gravity="center"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:id="@+id/warningWithIconLabel"/>
-</LinearLayout>
+</RelativeLayout>

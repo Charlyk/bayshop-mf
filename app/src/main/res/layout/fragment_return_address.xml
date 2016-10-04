@@ -1,252 +1,255 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-    android:background="#f1f1f1">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical"
-        tools:context="com.softranger.bayshopmf.ui.pus.ReturnAddressFragment">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/returnConfirmBtn"
+        android:background="#f1f1f1">
 
-        <!--last name-->
         <RelativeLayout
-            android:id="@+id/returnLastNameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_below="@+id/returnFirstNameLayout">
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            tools:context="com.softranger.bayshopmf.ui.pus.ReturnAddressFragment">
 
-            <android.support.design.widget.TextInputLayout
+            <!--last name-->
+            <RelativeLayout
+                android:id="@+id/returnLastNameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/returnFirstNameLayout"
+                android:layout_marginBottom="0.5dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/returnLastNameInput"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nextFocusDown="@+id/returnAddressInput"
-                    android:background="@android:color/white"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:hint="@string/last_name"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_height="?actionBarSize"
+                    android:background="@android:color/white">
 
-        <!--first name-->
-        <RelativeLayout
-            android:id="@+id/returnFirstNameLayout"
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/returnLastNameInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:hint="@string/last_name"
+                        android:inputType="textCapWords"
+                        android:nextFocusDown="@+id/returnAddressInput"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <!--first name-->
+            <RelativeLayout
+                android:id="@+id/returnFirstNameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="0.5dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/returnFirstNameInput"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nextFocusDown="@+id/returnLastNameInput"
-                    android:background="@android:color/white"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:hint="@string/first_name"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_height="?actionBarSize"
+                    android:background="@android:color/white">
 
-        <!--Address and house number-->
-        <RelativeLayout
-            android:id="@+id/returnAddressLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_below="@id/returnLastNameLayout">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/returnFirstNameInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:hint="@string/first_name"
+                        android:inputType="textCapWords"
+                        android:nextFocusDown="@+id/returnLastNameInput"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <!--Address and house number-->
+            <RelativeLayout
+                android:id="@+id/returnAddressLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/returnLastNameLayout"
+                android:layout_marginBottom="0.5dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/returnAddressInput"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nextFocusDown="@+id/returnCityInput"
-                    android:background="@android:color/white"
-                    android:inputType="textPostalAddress"
-                    android:singleLine="true"
-                    android:hint="@string/address_and_house"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_height="?actionBarSize"
+                    android:background="@android:color/white">
 
-        <!--city-->
-        <RelativeLayout
-            android:id="@+id/returnCityLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_below="@id/returnAddressLayout">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/returnAddressInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:hint="@string/address_and_house"
+                        android:inputType="textPostalAddress"
+                        android:nextFocusDown="@+id/returnCityInput"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <!--city-->
+            <RelativeLayout
+                android:id="@+id/returnCityLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/returnAddressLayout"
+                android:layout_marginBottom="0.5dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/returnCityInput"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nextFocusDown="@+id/returnCountryInput"
-                    android:background="@android:color/white"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:hint="@string/city"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_height="?actionBarSize"
+                    android:background="@android:color/white">
 
-        <!--country-->
-        <RelativeLayout
-            android:id="@+id/returnCountryLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_below="@id/returnCityLayout">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/returnCityInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:hint="@string/city"
+                        android:inputType="textCapWords"
+                        android:nextFocusDown="@+id/returnCountryInput"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <!--country-->
+            <RelativeLayout
+                android:id="@+id/returnCountryLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/returnCityLayout"
+                android:layout_marginBottom="0.5dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/returnCountryInput"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nextFocusDown="@+id/returnStateInput"
-                    android:background="@android:color/white"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:hint="@string/country"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_height="?actionBarSize"
+                    android:background="@android:color/white">
 
-        <!--State/Province-->
-        <RelativeLayout
-            android:id="@+id/returnStateLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_below="@id/returnCountryLayout">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/returnCountryInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:hint="@string/country"
+                        android:inputType="textCapWords"
+                        android:nextFocusDown="@+id/returnStateInput"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <!--State/Province-->
+            <RelativeLayout
+                android:id="@+id/returnStateLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/returnCountryLayout"
+                android:layout_marginBottom="0.5dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/returnStateInput"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nextFocusDown="@+id/returnPostalCodeInput"
-                    android:background="@android:color/white"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:hint="@string/state"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_height="?actionBarSize"
+                    android:background="@android:color/white">
 
-        <!--zip/postal code-->
-        <RelativeLayout
-            android:id="@+id/returnPostalCodeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_below="@id/returnStateLayout">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/returnStateInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:hint="@string/state"
+                        android:inputType="textCapWords"
+                        android:nextFocusDown="@+id/returnPostalCodeInput"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <!--zip/postal code-->
+            <RelativeLayout
+                android:id="@+id/returnPostalCodeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/returnStateLayout"
+                android:layout_marginBottom="0.5dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/returnPostalCodeInput"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nextFocusDown="@+id/returnPhoneInput"
-                    android:background="@android:color/white"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:hint="@string/postal_code"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-            </android.support.design.widget.TextInputLayout>
-        </RelativeLayout>
+                    android:layout_height="?actionBarSize"
+                    android:background="@android:color/white">
 
-        <!--phone number-->
-        <RelativeLayout
-            android:id="@+id/returnPhoneNumberLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_below="@id/returnPostalCodeLayout">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/returnPostalCodeInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:hint="@string/postal_code"
+                        android:inputType="textCapWords"
+                        android:nextFocusDown="@+id/returnPhoneInput"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <!--phone number-->
+            <RelativeLayout
+                android:id="@+id/returnPhoneNumberLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@android:color/white">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/returnPostalCodeLayout"
+                android:layout_marginBottom="0.5dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/returnPhoneInput"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/white"
-                    android:inputType="phone"
-                    android:singleLine="true"
-                    android:hint="@string/phone_number"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="?actionBarSize"
+                    android:background="@android:color/white">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/returnPhoneInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:hint="@string/phone_number"
+                        android:inputType="phone"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/firstNameInputFocusIndicator"
+                android:layout_width="5dp"
+                android:layout_height="?actionBarSize"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/colorAccent"/>
         </RelativeLayout>
+    </ScrollView>
 
-        <Button
-            android:id="@+id/returnConfirmBtn"
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/returnPhoneNumberLayout"
-            android:layout_margin="16dp"
-            android:background="@drawable/green_button_bg"
-            android:minWidth="100dp"
-            android:text="@string/confirm"
-            android:textColor="@android:color/white"/>
-
-        <View
-            android:id="@+id/firstNameInputFocusIndicator"
-            android:layout_width="5dp"
-            android:layout_height="?actionBarSize"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/colorAccent"/>
-    </RelativeLayout>
-</ScrollView>
+    <Button
+        android:id="@+id/returnConfirmBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/green_button_bg"
+        android:textSize="18sp"
+        android:text="@string/confirm"
+        android:textColor="@android:color/white"/>
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.adapter;
 
+import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ import com.softranger.bayshopmf.model.box.Box;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 import java.util.ArrayList;
 
@@ -45,9 +47,12 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     private ImagesAdapter.OnImageClickListener mOnImageClickListener;
     private OnItemClickListener mOnItemClickListener;
     private boolean mShowMap;
+    private Context mContext;
 
-    public InProcessingDetailsAdapter(PUSParcelDetailed parcel, ImagesAdapter.OnImageClickListener onImageClickListener) {
+    public InProcessingDetailsAdapter(PUSParcelDetailed parcel, Context context,
+                                      ImagesAdapter.OnImageClickListener onImageClickListener) {
         mItems = new ArrayList<>();
+        mContext = context;
         mItems.add(parcel);
         mItems.addAll(parcel.getBoxes());
         mOnImageClickListener = onImageClickListener;
@@ -95,6 +100,9 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             headerHolder.mProcessingParcel = (PUSParcelDetailed) mItems.get(position);
             headerHolder.mWarningWithImage.setVisibility(View.VISIBLE);
 
+            headerHolder.mStatusBarView.setProgress(headerHolder.mProcessingParcel.getParcelStatus().index(),
+                    mContext.getString(headerHolder.mProcessingParcel.getParcelStatus().statusName()));
+
             // check parcel status and set visibility of additional buttons and views
             // also set the right warning text and icon
             @DrawableRes int warningImage = 0;
@@ -109,34 +117,27 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                     warningMessage = "Some text for awaiting sending packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_due_to_debt:
-                    headerHolder.mPayTheDebtLayout.setVisibility(View.VISIBLE);
-                    headerHolder.mDebtLabel.setText("$4030"); // TODO: 7/18/16 replace text
                     headerHolder.mWarningImage.setImageResource(R.mipmap.ic_held_due_to_debt_44dp);
                     warningImage = R.mipmap.ic_held_due_to_debt_44dp;
                     warningMessage = "Some text for held due to debt packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_by_prohibition:
-                    headerHolder.mProhibitionLayout.setVisibility(View.VISIBLE);
                     warningImage = R.mipmap.ic_held_by_prohibition_44dp;
                     warningMessage = "Some text for held by prohibition packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_by_damage:
-                    headerHolder.mDamageRecordedLayout.setVisibility(View.VISIBLE);
                     warningImage = R.mipmap.ic_packing_44dp;
                     warningMessage = "Some text for taken to delivery packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case sent:
-                    headerHolder.mSentParcelLayout.setVisibility(View.VISIBLE);
                     warningImage = R.mipmap.ic_sent_44dp;
                     warningMessage = "Some text for sent packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_by_customs:
-                    headerHolder.mUploadLayout.setVisibility(View.VISIBLE);
                     warningImage = R.mipmap.ic_held_by_customs_60dp;
                     warningMessage = headerHolder.mProcessingParcel.getCustomsCause(); // TODO: 7/18/16 replace text
                     break;
                 case local_depot:
-                    headerHolder.mHomeDeliveryLayout.setVisibility(View.VISIBLE);
                     warningImage = R.mipmap.ic_local_deposit_44dp;
                     warningMessage = "Some text for local depot packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
@@ -146,7 +147,6 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                     warningMessage = "Some text for taken to delivery packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case received:
-                    headerHolder.mReceivedOnMapLayout.setVisibility(View.VISIBLE);
                     warningImage = R.mipmap.ic_received_44dp;
                     warningMessage = "Some text for received packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
@@ -180,16 +180,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             // set shipping method name
             headerHolder.mShippingBy.setText(headerHolder.mProcessingParcel.getShippingMethod().getName());
 
-            // get parcel general description
-            String description = headerHolder.mProcessingParcel.getGeneralDescription();
             // if the description is null set the text color to gray and text to Description not filled
             // otherwise set the parcel description in label
-            if (description == null || description.equals("null") || description.equals("")) {
-                headerHolder.mDescriptionlabel.setText(Application.getInstance().getString(R.string.no_description));
-                headerHolder.mDescriptionlabel.setTextColor(Application.getInstance().getResources().getColor(android.R.color.darker_gray));
-            } else {
-                headerHolder.mDescriptionlabel.setText(headerHolder.mProcessingParcel.getGeneralDescription());
-            }
             headerHolder.mTrackingNumber.setText(headerHolder.mProcessingParcel.getTrackingNum());
         } else if (mItems.get(position) instanceof Box) {
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
@@ -239,7 +231,9 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback {
+    class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback,
+            ParcelStatusBarView.OnStatusBarReadyListener {
+
         @BindView(R.id.courierMapView) MapView mMapView;
         @BindView(R.id.addressItemNameLabel) TextView mClientName;
         @BindView(R.id.addressPhoneNumberLabel) TextView mPhoneNumber;
@@ -248,50 +242,27 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.addressPostalCodeLabel) TextView mPostalCode;
         @BindView(R.id.addressStreetLabel) TextView mStreet;
         @BindView(R.id.inProcessingDetailsParcelIdLabel) TextView mParcelId;
-        @BindView(R.id.heldByProhibitionDescriptionLabel) TextView mDescriptionlabel;
         @BindView(R.id.inProcessingDetailsGoodsPriceLabel) TextView mGoodsPrice;
         @BindView(R.id.inProcessingDetailsCustomsClearanceLabel) TextView mCustomsClearance;
         @BindView(R.id.inProcessingDetailsShippingPriceLabel) TextView mShippingPrice;
         @BindView(R.id.inProcessingDetailsTotalPriceLabel) TextView mTotalPrice;
         @BindView(R.id.inProcessingDetailsShippingByTracking) TextView mTrackingNumber;
         @BindView(R.id.warningWithIconLabel) TextView mWarningTextView;
-        @BindView(R.id.payTheDebtAmountLabel) TextView mDebtLabel;
         @BindView(R.id.inProcessingDetailsShippingByLabel) TextView mShippingBy;
 
-        @BindView(R.id.prohibitionHeldTakePhotoBtn) Button mTakePicture;
-        @BindView(R.id.prohibitionHeldUploadDocumentBtn) Button mUploadDocument;
-        @BindView(R.id.heldByProhibitionReturnBtn) Button mReturnToSeller;
-        @BindView(R.id.heldByProhibitionToDisbandBtn) Button mToDisband;
-        @BindView(R.id.geolocationButton) Button mGeolocation;
-        @BindView(R.id.editAwaitingDeclarationBtn) Button mEditDeclarationBtn;
-        @BindView(R.id.heldByUserSendBtn) Button mUserHeldSendBtn;
-        @BindView(R.id.damageAllowShipping) Button mAllowShipping;
-        @BindView(R.id.damageToDisband) Button mDamageToDisband;
-        @BindView(R.id.leaveReviewButton) Button mLeaveFeedback;
+        @BindView(R.id.pusDetailsStatusProgress)
+        ParcelStatusBarView mStatusBarView;
 
         @BindView(R.id.addressEditButton) ImageButton mEditButton;
         @BindView(R.id.addressAddToFavoritesButton) ImageButton mAddToFavorite;
-        @BindView(R.id.damageAllowShippingDetails) ImageButton mAllowShippingDetails;
-        @BindView(R.id.damageToDisbandDetails) ImageButton mDamageToDisbandDetails;
 
         @BindView(R.id.inProcessingDetailsStorageIcon) ImageView mDepositIcon;
         @BindView(R.id.warningWithIconImageView) ImageView mWarningImage;
 
-        @BindView(R.id.uploadDocumentLayout) LinearLayout mUploadLayout;
-        @BindView(R.id.heldByProhibitionHeaderLayout) LinearLayout mProhibitionLayout;
-        @BindView(R.id.awaitingDeclarationButtonLayout) LinearLayout mAwaitingDeclarationLayout;
-        @BindView(R.id.heldByUserBtnLayout) LinearLayout mHeldByUserLayout;
-        @BindView(R.id.damageRecordedLayout) LinearLayout mDamageRecordedLayout;
         @BindView(R.id.takeToDeliveryDetailsHeaderLayout) LinearLayout mToDeliveryDetails;
-        @BindView(R.id.takeToDeliveryDetailsCallBtn) LinearLayout mCallCourierBtn;
-        @BindView(R.id.warningLayoutWithIcon) LinearLayout mWarningWithImage;
+        @BindView(R.id.warningLayoutWithIcon)
+        RelativeLayout mWarningWithImage;
         @BindView(R.id.shippingByLayoutButton) LinearLayout mShippingByLayout;
-
-        @BindView(R.id.sentParcelHeaderLayout) RelativeLayout mSentParcelLayout;
-        @BindView(R.id.orderHomeDeliveryLayout) RelativeLayout mHomeDeliveryLayout;
-        @BindView(R.id.addressItemLayout) RelativeLayout mAddressItemLayout;
-        @BindView(R.id.receivedSignatureOnMapLayout) RelativeLayout mReceivedOnMapLayout;
-        @BindView(R.id.payTheDebtLayout) RelativeLayout mPayTheDebtLayout;
 
 
         GoogleMap mGoogleMap;
@@ -302,6 +273,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
             ButterKnife.bind(this, itemView);
 
+            mStatusBarView.setOnStatusBarReadyListener(this);
+
             if (mShowMap) {
                 // map
                 if (mMapView != null) {
@@ -311,33 +284,11 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                 }
             }
 
-            mAllowShipping.setOnClickListener(this);
-            mDamageToDisband.setOnClickListener(this);
-            mAllowShippingDetails.setOnClickListener(this);
-            mDamageToDisbandDetails.setOnClickListener(this);
-            mUserHeldSendBtn.setOnClickListener(this);
-            mEditDeclarationBtn.setOnClickListener(this);
-            mLeaveFeedback.setOnClickListener(this);
-            mCallCourierBtn.setOnClickListener(this);
-            mHomeDeliveryLayout.setOnClickListener(this);
-            mReturnToSeller.setOnClickListener(this);
-            mPayTheDebtLayout.setOnClickListener(this);
-            mGeolocation.setOnClickListener(this);
-            mSentParcelLayout.setOnClickListener(this);
-            mToDisband.setOnClickListener(this);
             mShippingByLayout.setOnClickListener(this);
-            mAddressItemLayout.setOnClickListener(this);
 
-            mReceivedOnMapLayout.setVisibility(View.GONE);
-            mTakePicture.setOnClickListener(this);
-            mUploadDocument.setOnClickListener(this);
             mEditButton.setVisibility(View.GONE);
             mAddToFavorite.setVisibility(View.GONE);
-            mHomeDeliveryLayout.setVisibility(View.GONE);
-            mUploadLayout.setVisibility(View.GONE);
             mToDeliveryDetails.setVisibility(View.GONE);
-            mProhibitionLayout.setVisibility(View.GONE);
-            mSentParcelLayout.setVisibility(View.GONE);
             mWarningWithImage.setVisibility(View.GONE);
         }
 
@@ -345,57 +296,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         public void onClick(View v) {
             if (mOnItemClickListener == null) return;
             switch (v.getId()) {
-                case R.id.prohibitionHeldTakePhotoBtn:
-                    mOnItemClickListener.onTakePictureClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.prohibitionHeldUploadDocumentBtn:
-                    mOnItemClickListener.onUploadDocumentClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.heldByProhibitionReturnBtn:
-                    mOnItemClickListener.onReturnToSenderClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.orderHomeDeliveryLayout:
-                    mOnItemClickListener.onOrderDeliveryClick(mProcessingParcel, getAdapterPosition());
-                    break;
                 case R.id.addressItemLayout:
                     mOnItemClickListener.onSelectAddressClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.takeToDeliveryDetailsCallBtn:
-                    mOnItemClickListener.onCallCourierClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.payTheDebtLayout:
-                    mOnItemClickListener.onPayTheDebtClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.geolocationButton:
-                    mOnItemClickListener.onGeolocationClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.shippingByLayoutButton:
-                case R.id.sentParcelHeaderLayout:
-                    mOnItemClickListener.onStartTrackingClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.leaveReviewButton:
-                    mOnItemClickListener.onLeaveFeedbackClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.editAwaitingDeclarationBtn:
-                    mOnItemClickListener.onEditDeclarationClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.heldByProhibitionToDisbandBtn:
-                    mOnItemClickListener.onToDisbandClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.heldByUserSendBtn:
-                    mOnItemClickListener.onUserHeldSendClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.damageAllowShipping:
-                    mOnItemClickListener.onAllowShippingClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.damageAllowShippingDetails:
-                    mOnItemClickListener.onAllowShippingDetailsClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.damageToDisband:
-                    mOnItemClickListener.onDamageToDisbandClick(mProcessingParcel, getAdapterPosition());
-                    break;
-                case R.id.damageToDisbandDetails:
-                    mOnItemClickListener.onDamageToDisbandDetailsClick(mProcessingParcel, getAdapterPosition());
                     break;
             }
         }
@@ -413,6 +315,14 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             // googleMap in the Google Map
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        }
+
+        @Override
+        public void onStatusBarReady() {
+            if (mProcessingParcel != null) {
+                mStatusBarView.setProgress(mProcessingParcel.getParcelStatus().index(),
+                        mContext.getString(mProcessingParcel.getParcelStatus().statusName()));
+            }
         }
     }
 
@@ -438,22 +348,6 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public interface OnItemClickListener {
-        void onUploadDocumentClick(PUSParcelDetailed item, int position);
-        void onTakePictureClick(PUSParcelDetailed item, int position);
-        void onReturnToSenderClick(PUSParcelDetailed item, int position);
-        void onOrderDeliveryClick(PUSParcelDetailed item, int position);
         void onSelectAddressClick(PUSParcelDetailed item, int position);
-        void onCallCourierClick(PUSParcelDetailed item, int position);
-        void onPayTheDebtClick(PUSParcelDetailed item, int position);
-        void onGeolocationClick(PUSParcelDetailed item, int position);
-        void onStartTrackingClick(PUSParcelDetailed item, int position);
-        void onLeaveFeedbackClick(PUSParcelDetailed item, int position);
-        void onEditDeclarationClick(PUSParcelDetailed item, int position);
-        void onToDisbandClick(PUSParcelDetailed item, int position);
-        void onUserHeldSendClick(PUSParcelDetailed item, int position);
-        void onAllowShippingClick(PUSParcelDetailed item, int position);
-        void onAllowShippingDetailsClick(PUSParcelDetailed item, int position);
-        void onDamageToDisbandClick(PUSParcelDetailed item, int position);
-        void onDamageToDisbandDetailsClick(PUSParcelDetailed item, int position);
     }
 }

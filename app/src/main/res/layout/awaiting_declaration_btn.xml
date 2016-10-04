@@ -3,25 +3,20 @@
               android:orientation="vertical"
               android:id="@+id/awaitingDeclarationButtonLayout"
               android:layout_width="match_parent"
-              android:visibility="gone"
-              android:layout_height="wrap_content">
+              android:gravity="center"
+              android:background="@drawable/green_button_bg"
+              android:clickable="true"
+              android:layout_height="50dp">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
-
-    <Button
-        style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
         android:gravity="start|center_vertical"
         android:text="@string/edit_declaration"
         android:drawableLeft="@mipmap/ic_edit_declaration_30dp"
         android:drawableStart="@mipmap/ic_edit_declaration_30dp"
         android:drawablePadding="10dp"
-        android:textSize="16sp"
-        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimary"
         android:id="@+id/editAwaitingDeclarationBtn"/>
 </LinearLayout>

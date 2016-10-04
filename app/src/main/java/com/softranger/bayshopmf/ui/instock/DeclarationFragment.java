@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,10 +54,12 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     private MainActivity mActivity;
     private Unbinder mUnbinder;
     private DeclarationListAdapter mDeclarationAdapter;
-    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.editAwaitingRecyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.trackingNumberLayout)
+    LinearLayout mTrackingLayout;
     private InStockDetailed mInStockDetailed;
     private CustomTabsIntent mTabsIntent;
-    private Declaration mDeclaration;
     private Call<ServerResponse<Declaration>> mDeclarationCall;
     private Call<ServerResponse> mSaveCall;
 
@@ -76,9 +80,10 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_awaiting, container, false);
         mActivity = (MainActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
+        mTrackingLayout.setVisibility(View.GONE);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mInStockDetailed = getArguments().getParcelable(IN_STOCK_ARG);
 
@@ -95,14 +100,17 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         return view;
     }
 
-    @Override
-    public void onAddFieldsClick() {
+    @SuppressWarnings("unused")
+    @OnClick(R.id.editAwaitingAddFieldButton)
+    void addNewFields() {
         mDeclarationAdapter.addNewProductCard();
         mRecyclerView.smoothScrollToPosition(mDeclarationAdapter.getItemCount() - 1);
     }
 
-    @Override
-    public void onSaveItemsClick(Declaration declaration, ArrayList<Product> products) {
+    @SuppressWarnings("unused")
+    @OnClick(R.id.editAwaitingSaveButton)
+    void saveDeclaration() {
+        ArrayList<Product> products = mDeclarationAdapter.getProducts();
         JSONArray jsonArray = new JSONArray();
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         for (Product product : products) {
@@ -129,20 +137,15 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
             }
         }
 
-        if (declaration.getTitle().equals("")) {
-            Snackbar.make(mRecyclerView, getString(R.string.please_enter_description), Snackbar.LENGTH_SHORT).show();
-            return;
-        }
         mSaveCall = Application.apiInterface().saveInStockItemDeclaration(Application.currentToken,
-                mInStockDetailed.getId(), declaration.getTitle(), jsonArray.toString());
+                mInStockDetailed.getId(), jsonArray.toString());
         mSaveCall.enqueue(mSaveCallback);
     }
 
     private ResponseCallback<Declaration> mDeclarationResponseCallback = new ResponseCallback<Declaration>() {
         @Override
         public void onSuccess(Declaration data) {
-            mDeclaration = data;
-            mDeclarationAdapter = new DeclarationListAdapter(mDeclaration, mInStockDetailed.getDeclarationFilled() != 0);
+            mDeclarationAdapter = new DeclarationListAdapter(data.getProducts(), mInStockDetailed.getDeclarationFilled() != 0);
             mDeclarationAdapter.setOnActionButtonsClickListener(DeclarationFragment.this);
             mRecyclerView.setAdapter(mDeclarationAdapter);
             mActivity.toggleLoadingProgress(false);
@@ -168,9 +171,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
                     Intent update = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
                     mActivity.sendBroadcast(update);
                     mActivity.onBackPressed();
-                    mActivity.hideKeyboard();
                     Snackbar.make(mRecyclerView, getString(R.string.declaration_saved), Snackbar.LENGTH_SHORT).show();
-                    return;
                 } else {
                     Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -181,21 +182,23 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
                     Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } finally {
+                    mActivity.toggleLoadingProgress(false);
                 }
             }
-            mActivity.toggleLoadingProgress(false);
+
         }
 
         @Override
         public void onFailure(Call<ServerResponse> call, Throwable t) {
-            // TODO: 9/22/16 handle error
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
         }
     };
 
     @Override
-    public void onDeleteClick(int position) {
-        mActivity.hideKeyboard();
+    public void onDeleteClick(Product product, int position) {
+        mDeclarationAdapter.removeItem(position);
     }
 
     @Override
