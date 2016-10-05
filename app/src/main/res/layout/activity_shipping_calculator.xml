@@ -1,347 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context=".ui.calculator.ShippingCalculatorActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
-        app:theme="@style/ToolbarColoredBackArrow"
+        app:navigationIcon="@mipmap/ic_back_white_24dp"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:navigationIcon="@mipmap/ic_back_24dp">
+        app:theme="@style/ToolbarColoredBackArrow">
 
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
             android:layout_gravity="center"
+            android:ellipsize="end"
             android:gravity="center"
+            android:singleLine="true"
             android:text="@string/shipping_calculator"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
+        android:layout_below="@id/toolbar"
         android:background="@drawable/drop_shadow"/>
 
-        <!--<RadioGroup-->
-            <!--android:id="@+id/calculatorStorageSelector"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?actionBarSize"-->
-            <!--android:gravity="center"-->
-            <!--android:orientation="horizontal">-->
-
-            <!--<RadioButton-->
-                <!--android:id="@+id/calculatorUsaSelector"-->
-                <!--android:layout_width="35dp"-->
-                <!--android:layout_height="35dp"-->
-                <!--android:layout_marginEnd="70dp"-->
-                <!--android:layout_marginRight="70dp"-->
-                <!--android:background="@drawable/us_storage_selection"-->
-                <!--android:button="@null"-->
-                <!--android:checked="true"/>-->
-
-            <!--<RadioButton-->
-                <!--android:id="@+id/calculatorUkSelector"-->
-                <!--android:layout_width="35dp"-->
-                <!--android:layout_height="35dp"-->
-                <!--android:layout_marginEnd="70dp"-->
-                <!--android:layout_marginRight="70dp"-->
-                <!--android:background="@drawable/uk_storage_selection"-->
-                <!--android:button="@null"/>-->
-
-            <!--<RadioButton-->
-                <!--android:id="@+id/calculatorDeSelector"-->
-                <!--android:layout_width="35dp"-->
-                <!--android:layout_height="35dp"-->
-                <!--android:background="@drawable/de_storage_selection"-->
-                <!--android:button="@null"/>-->
-        <!--</RadioGroup>-->
-
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0.5dp"-->
-        <!--android:background="#b1b1b1"/>-->
-
-    <RelativeLayout
+    <!--Country-->
+    <LinearLayout
+        android:id="@+id/countryBtnLayout"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:background="?selectableItemBackground"
-        android:onClick="selectCountry"
         android:clickable="true"
+        android:gravity="center_vertical"
+        android:onClick="selectCountry"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/ic_country_24dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="bottom"
+                android:text="@string/country"/>
+
+            <TextView
+                android:id="@+id/calculatorCountryNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/select_country"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/countrySeparator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/countryBtnLayout"
+        android:layout_marginBottom="10dp"
+        android:background="#b1b1b1"/>
+
+    <!--Weight-->
+    <LinearLayout
+        android:id="@+id/weightLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/countrySeparator"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:drawableLeft="@mipmap/ic_country_24dp"
-            android:drawableStart="@mipmap/ic_country_24dp"
-            android:drawablePadding="10dp"
-            android:gravity="bottom"
-            android:textSize="16sp"
-            android:text="@string/country"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/ic_weight_24dp"/>
 
-        <TextView
-            android:id="@+id/calculatorCountryNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Moldova"
-            android:textSize="16sp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:id="@+id/calculatorCountriesSpinner"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:drawableLeft="@mipmap/ic_weight_24dp"
-            android:drawableStart="@mipmap/ic_weight_24dp"
-            android:drawablePadding="10dp"
-            android:gravity="bottom"
-            android:textSize="16sp"
-            android:text="@string/weight"
-            android:id="@+id/textView29"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-
-        <EditText
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:inputType="numberDecimal"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:hint="@string/_0_0"
-            android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:nextFocusDown="@+id/calculatorVolumeXInput"
-            android:background="@drawable/bordered_rectangle"
-            android:singleLine="true"
-            android:ems="10"
-            android:id="@+id/calculatorWeightInput"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/textView31"
-            android:layout_toStartOf="@+id/textView31"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/kilos"
-            android:id="@+id/textView31"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="#b1b1b1"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:drawableLeft="@mipmap/ic_volume_24dp"
-            android:drawableStart="@mipmap/ic_volume_24dp"
-            android:drawablePadding="10dp"
-            android:gravity="bottom"
-            android:textSize="16sp"
-            android:text="@string/volume"
-            android:id="@+id/textView32"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-
-        <RelativeLayout
-            android:orientation="horizontal"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_below="@id/textView32"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView29"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:text="@string/x"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/calculatorVolumeX"/>
+                android:text="@string/weight"/>
+
+            <EditText
+                android:id="@+id/calculatorWeightInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:focusableInTouchMode="true"
+                android:hint="@string/_0_0"
+                android:inputType="numberDecimal"
+                android:nextFocusDown="@+id/calculatorVolumeXInput"
+                android:singleLine="true"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/weightSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/weightLayout"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#b1b1b1"/>
+
+    <!--Volume-->
+
+    <LinearLayout
+        android:id="@+id/volumeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/weightSeparator"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/ic_weight_24dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/calculatorVolumeX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/volume_x"/>
 
             <EditText
                 android:id="@+id/calculatorVolumeXInput"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
                 android:focusableInTouchMode="true"
                 android:hint="@string/_0"
-                android:gravity="center"
-                android:layout_toRightOf="@+id/calculatorVolumeX"
-                android:layout_toEndOf="@+id/calculatorVolumeX"
-                android:nextFocusDown="@+id/calculatorVolumeYInput"
-                android:background="@drawable/bordered_rectangle"
                 android:inputType="numberDecimal"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:ems="10"/>
+                android:nextFocusDown="@+id/calculatorVolumeYInput"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/calculatorVolumeY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/volume_y"/>
 
             <EditText
                 android:id="@+id/calculatorVolumeYInput"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:focusableInTouchMode="true"
-                android:hint="@string/_0"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:nextFocusDown="@+id/calculatorVolumeZInput"
-                android:background="@drawable/bordered_rectangle"
-                android:inputType="numberDecimal"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:ems="10"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/calculatorVolumeYInput"
-                android:layout_toStartOf="@+id/calculatorVolumeYInput"
-                android:layout_centerVertical="true"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:textColor="@android:color/black"
-                android:text="@string/y"
-                android:id="@+id/calculatorVolumeY"/>
-
-            <EditText
-                android:id="@+id/calculatorVolumeZInput"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:hint="@string/_0"
+                android:ems="10"
                 android:focusableInTouchMode="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/bordered_rectangle"
+                android:hint="@string/_0"
                 android:inputType="numberDecimal"
-                android:ems="10"/>
+                android:nextFocusDown="@+id/calculatorVolumeZInput"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/calculatorVolumeZ"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/calculatorVolumeZInput"
-                android:layout_toLeftOf="@+id/calculatorVolumeZInput"
-                android:layout_centerVertical="true"
-                android:layout_gravity="end|center_vertical"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:text="@string/z"/>
-        </RelativeLayout>
-    </RelativeLayout>
+                android:text="@string/volume_z"/>
+
+            <EditText
+                android:id="@+id/calculatorVolumeZInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:focusableInTouchMode="true"
+                android:hint="@string/_0"
+                android:inputType="numberDecimal"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <View
+        android:id="@+id/volumeSeparator"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_below="@id/volumeLayout"
         android:background="#b1b1b1"/>
 
+    <!--Separator-->
     <RelativeLayout
+        android:id="@+id/methodsSeparator"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        android:layout_below="@id/volumeSeparator"
+        android:background="#f1f1f1"
         android:clickable="true"
         android:paddingLeft="16dp"
-        android:background="#f1f1f1"
         android:paddingRight="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:gravity="bottom"
-            android:textSize="16sp"
-            android:text="@string/shipping_method"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/price"
-            android:textSize="16sp"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:gravity="bottom"
+            android:text="@string/shipping_method"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"/>
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/calculatorResetButton"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/green_button_bg"
+        android:gravity="center"
+        android:text="@string/reset"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+
+    <!--methods list-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/calculatorShippingList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/calculatorResetButton"
+        android:layout_below="@id/methodsSeparator"
+        tools:listitem="@layout/shipping_list_item"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/calculatorShippingList"
-        tools:listitem="@layout/calculator_shipping_item"/>
-</LinearLayout>
+        android:layout_height="2dp"
+        android:layout_below="@id/methodsSeparator"
+        android:background="@drawable/drop_shadow"/>
+</RelativeLayout>

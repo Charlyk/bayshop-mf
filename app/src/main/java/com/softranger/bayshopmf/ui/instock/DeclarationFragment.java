@@ -93,7 +93,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         mTabsIntent = tabsBuilder.build();
 
         // get declaration from server
-        mDeclarationCall = Application.apiInterface().getInStockItemDeclaration(Application.currentToken, mInStockDetailed.getId());
+        mDeclarationCall = Application.apiInterface().getInStockItemDeclaration(mInStockDetailed.getId());
         mActivity.toggleLoadingProgress(true);
         mDeclarationCall.enqueue(mDeclarationResponseCallback);
 
@@ -137,8 +137,8 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
             }
         }
 
-        mSaveCall = Application.apiInterface().saveInStockItemDeclaration(Application.currentToken,
-                mInStockDetailed.getId(), jsonArray.toString());
+        mSaveCall = Application.apiInterface().saveInStockItemDeclaration(mInStockDetailed.getId(),
+                jsonArray.toString());
         mSaveCall.enqueue(mSaveCallback);
     }
 
@@ -227,6 +227,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         super.onDestroyView();
         if (mSaveCall != null) mSaveCall.cancel();
         if (mDeclarationCall != null) mDeclarationCall.cancel();
+        mActivity.hideKeyboard();
         mUnbinder.unbind();
     }
 }
