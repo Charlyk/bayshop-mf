@@ -122,7 +122,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         mInStockItem = getArguments().getParcelable(ITEM_ARG);
 
         // send request to server for item details
-        mCall = Application.apiInterface().getInStockItemDetails(Application.currentToken, mInStockItem.getId());
+        mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
         return rootView;
@@ -150,7 +150,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                     break;
                 case AddAwaitingFragment.ACTION_ITEM_ADDED:
                     // send request to server for item details
-                    mCall = Application.apiInterface().getInStockItemDetails(Application.currentToken, mInStockItem.getId());
+                    mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
 //                    mActivity.toggleLoadingProgress(true);
                     mActivity.hideKeyboard();
                     mCall.enqueue(mResponseCallback);
@@ -197,45 +197,41 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             return;
         }
 
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                uid.setText(detailed.getUid());
-                String strDescription = mInStockItem.getTitle();
-                @ColorRes int textColor = android.R.color.black;
-                if (strDescription == null || strDescription.equals("null") || strDescription.equals("")) {
-                    strDescription = getString(R.string.declaration_not_filled);
-                    textColor = android.R.color.darker_gray;
-                }
-                description.setText(strDescription);
-                description.setTextColor(getResources().getColor(textColor));
-                storage.setImageResource(R.mipmap.ic_usa_flag);
-
-                tracking.setText(detailed.getTracking());
-                date.setText(outputFormat.format(detailed.getCreatedDate()));
-                weight.setText(detailed.getWeight() + "kg");
-                price.setText(detailed.getCurrency() + detailed.getPrice());
-
-                if (detailed.getPhotosInProgress() == Constants.IN_PROGRESS) {
-                    mAdditionalPhoto.setSelected(true);
-                }
-
-                if (detailed.isCheckInProgress()) {
-                    mCheckProduct.setSelected(true);
-                }
-
-                if (detailed.getDeclarationFilled() != 0) {
-                    mFillDeclaration.setText(mActivity.getString(R.string.edit_declaration));
-                } else {
-                    mFillDeclaration.setText(mActivity.getString(R.string.fill_in_the_declaration));
-                }
-                mFillDeclaration.setSelected(detailed.getDeclarationFilled() != 0);
-
-                mFillDeclaration.setOnClickListener(DetailsFragment.this);
-                mCheckProduct.setOnClickListener(DetailsFragment.this);
-                mAdditionalPhoto.setOnClickListener(DetailsFragment.this);
+        mActivity.runOnUiThread(() -> {
+            uid.setText(detailed.getUid());
+            String strDescription = mInStockItem.getTitle();
+            @ColorRes int textColor = android.R.color.black;
+            if (strDescription == null || strDescription.equals("null") || strDescription.equals("")) {
+                strDescription = getString(R.string.declaration_not_filled);
+                textColor = android.R.color.darker_gray;
             }
+            description.setText(strDescription);
+            description.setTextColor(getResources().getColor(textColor));
+            storage.setImageResource(R.mipmap.ic_usa_flag);
+
+            tracking.setText(detailed.getTracking());
+            date.setText(outputFormat.format(detailed.getCreatedDate()));
+            weight.setText(detailed.getWeight() + "kg");
+            price.setText(detailed.getCurrency() + detailed.getPrice());
+
+            if (detailed.getPhotosInProgress() == Constants.IN_PROGRESS) {
+                mAdditionalPhoto.setSelected(true);
+            }
+
+            if (detailed.isCheckInProgress()) {
+                mCheckProduct.setSelected(true);
+            }
+
+            if (detailed.getDeclarationFilled() != 0) {
+                mFillDeclaration.setText(mActivity.getString(R.string.edit_declaration));
+            } else {
+                mFillDeclaration.setText(mActivity.getString(R.string.fill_in_the_declaration));
+            }
+            mFillDeclaration.setSelected(detailed.getDeclarationFilled() != 0);
+
+            mFillDeclaration.setOnClickListener(DetailsFragment.this);
+            mCheckProduct.setOnClickListener(DetailsFragment.this);
+            mAdditionalPhoto.setOnClickListener(DetailsFragment.this);
         });
     }
 
@@ -271,12 +267,9 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     private Handler mImageDownloadHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(final Message msg) {
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (msg.what == ImageDownloadThread.FINISHED) {
-                        mImagesAdapter.notifyDataSetChanged();
-                    }
+            mActivity.runOnUiThread(() -> {
+                if (msg.what == ImageDownloadThread.FINISHED) {
+                    mImagesAdapter.notifyDataSetChanged();
                 }
             });
         }

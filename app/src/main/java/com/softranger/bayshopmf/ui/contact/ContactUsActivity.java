@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.MailAdapter;
-import com.softranger.bayshopmf.adapter.StorageTabAdapter;
+import com.softranger.bayshopmf.adapter.PagerAdapter;
 import com.softranger.bayshopmf.model.chat.MailMessage;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -52,7 +52,7 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
     }
 
     private void setUpTabsForAllMails() {
-        StorageTabAdapter adapter = new StorageTabAdapter(this, getSupportFragmentManager());
+        PagerAdapter adapter = new PagerAdapter(this, getSupportFragmentManager());
         adapter.setShowTitle(true);
         adapter.addFragment(new OrderMailsFragment(), getString(R.string.orders));
         adapter.addFragment(new ParcelMailsFragment(), getString(R.string.parcels));

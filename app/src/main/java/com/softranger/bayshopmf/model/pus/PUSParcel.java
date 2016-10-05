@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.softranger.bayshopmf.R;
 
+import java.util.Date;
+
 /**
  * Created by Eduard Albu on 9/14/16, 09, 2016
  * for project bayshop-mf
@@ -17,7 +19,8 @@ import com.softranger.bayshopmf.R;
 public class PUSParcel implements Parcelable {
     @JsonProperty("id") String mId;
     @JsonProperty("codeNumber") String mCodeNumber;
-    @JsonProperty("fieldTime") private String fieldTime;
+    @JsonProperty("fieldTime")
+    private Date fieldTime;
     @JsonProperty("totalPrice") private String mPrice;
     @JsonProperty("currency") private String mCurrency;
     @JsonProperty("generalDescription") private String mGeneralDescription;
@@ -34,7 +37,7 @@ public class PUSParcel implements Parcelable {
         mId = in.readString();
         mCodeNumber = in.readString();
         mRealWeight = in.readString();
-        fieldTime = in.readString();
+        fieldTime = (Date) in.readSerializable();
         mPrice = in.readString();
         mCurrency = in.readString();
     }
@@ -68,7 +71,7 @@ public class PUSParcel implements Parcelable {
         return mRealWeight;
     }
 
-    public String getFieldTime() {
+    public Date getFieldTime() {
         return fieldTime;
     }
 
@@ -114,7 +117,7 @@ public class PUSParcel implements Parcelable {
         parcel.writeString(mId);
         parcel.writeString(mCodeNumber);
         parcel.writeString(mRealWeight);
-        parcel.writeString(fieldTime);
+        parcel.writeSerializable(fieldTime);
         parcel.writeString(mPrice);
         parcel.writeString(mCurrency);
     }

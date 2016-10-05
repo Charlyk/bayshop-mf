@@ -3,16 +3,31 @@ package com.softranger.bayshopmf.model.payment;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Date;
+
 /**
  * Created by macbook on 6/30/16.
  */
 public class History implements Parcelable {
     private PaymentType mPaymentType;
+    @JsonProperty("comment")
     private String mComment;
-    private String mDate;
+    @JsonProperty("created")
+    private Date mDate;
+    @JsonProperty("method_commission")
+    private String mMethodCommission;
+    @JsonProperty("commission")
+    private String mCommission;
+    @JsonProperty("summ")
     private double mSumm;
+    @JsonProperty("total_amount")
     private double mTotalAmmount;
+    @JsonProperty("trid")
     private String mTransactionId;
+    @JsonProperty("sign")
     private String mCurrency;
 
     private History() {
@@ -21,11 +36,13 @@ public class History implements Parcelable {
 
     protected History(Parcel in) {
         mComment = in.readString();
-        mDate = in.readString();
+        mMethodCommission = in.readString();
+        mCommission = in.readString();
         mSumm = in.readDouble();
         mTotalAmmount = in.readDouble();
         mTransactionId = in.readString();
         mCurrency = in.readString();
+        mDate = (Date) in.readSerializable();
     }
 
     public static final Creator<History> CREATOR = new Creator<History>() {
@@ -40,60 +57,45 @@ public class History implements Parcelable {
         }
     };
 
-    public PaymentType getPaymentType() {
-        return mPaymentType;
+    @JsonSetter("type")
+    public void setPaymentType(String paymentType) {
+        mPaymentType = PaymentType.toType(paymentType);
     }
 
-    public void setPaymentType(PaymentType paymentType) {
-        mPaymentType = paymentType;
+    public PaymentType getPaymentType() {
+        return mPaymentType;
     }
 
     public String getComment() {
         return mComment;
     }
 
-    public void setComment(String comment) {
-        mComment = comment;
-    }
-
-    public String getDate() {
+    public Date getDate() {
         return mDate;
     }
 
-    public void setDate(String date) {
-        mDate = date;
+    public String getMethodCommission() {
+        return mMethodCommission;
+    }
+
+    public String getCommissionl() {
+        return mCommission;
     }
 
     public double getSumm() {
         return mSumm;
     }
 
-    public void setSumm(double summ) {
-        mSumm = summ;
-    }
-
     public double getTotalAmmount() {
         return mTotalAmmount;
-    }
-
-    public void setTotalAmmount(double totalAmmount) {
-        mTotalAmmount = totalAmmount;
     }
 
     public String getTransactionId() {
         return mTransactionId;
     }
 
-    public void setTransactionId(String transactionId) {
-        mTransactionId = transactionId;
-    }
-
     public String getCurrency() {
         return mCurrency;
-    }
-
-    public void setCurrency(String currency) {
-        mCurrency = currency;
     }
 
     @Override
@@ -104,77 +106,31 @@ public class History implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mComment);
-        dest.writeString(mDate);
+        dest.writeString(mMethodCommission);
+        dest.writeString(mCommission);
         dest.writeDouble(mSumm);
         dest.writeDouble(mTotalAmmount);
         dest.writeString(mTransactionId);
-    }
-
-    public static class Builder {
-        private PaymentType mPaymentType;
-        private String mComment;
-        private String mDate;
-        private double mSumm;
-        private double mTotalAmmount;
-        private String mTransactionId;
-        private String mCurrency;
-
-        public Builder paymentType(String paymentType) {
-            switch (paymentType) {
-                case "minus":
-                    mPaymentType = PaymentType.minus;
-                    break;
-                case "plus":
-                    mPaymentType = PaymentType.plus;
-                    break;
-            }
-            return this;
-        }
-
-        public Builder comment(String comment) {
-            mComment = comment;
-            return this;
-        }
-
-        public Builder date(String date) {
-            mDate = date;
-            return this;
-        }
-
-        public Builder summ(double summ) {
-            mSumm = summ;
-            return this;
-        }
-
-        public Builder totalAmmount(double totalAmmount) {
-            mTotalAmmount = totalAmmount;
-            return this;
-        }
-
-        public Builder transactionId(String transactionId) {
-            mTransactionId = transactionId;
-            return this;
-        }
-
-        public Builder currency(String currency) {
-            mCurrency = currency;
-            return this;
-        }
-
-        public History build() {
-            History history = new History();
-            history.mPaymentType = this.mPaymentType;
-            history.mComment = this.mComment;
-            history.mDate = this.mDate;
-            history.mSumm = this.mSumm;
-            history.mTotalAmmount = this.mTotalAmmount;
-            history.mTransactionId = this.mTransactionId;
-            history.mCurrency = this.mCurrency;
-            return history;
-        }
+        dest.writeString(mCurrency);
+        dest.writeSerializable(mDate);
     }
 
     public enum PaymentType {
-        minus, plus
+        minus("minus"), plus("plus"), unknown("unknown");
+
+        private String mStringType;
+
+        PaymentType(String stringType) {
+            mStringType = stringType;
+        }
+
+        public static PaymentType toType(String stringType) {
+            for (PaymentType type : PaymentType.values()) {
+                if (type.mStringType.equalsIgnoreCase(stringType)) {
+                    return type;
+                }
+            }
+            return unknown;
+        }
     }
 }

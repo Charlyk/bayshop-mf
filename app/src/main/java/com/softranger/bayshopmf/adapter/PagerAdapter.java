@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class StorageTabAdapter extends FragmentStatePagerAdapter {
+public class PagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mFragmentList = new ArrayList<>();
     private List<String> mTitles = new ArrayList<>();
@@ -23,7 +21,7 @@ public class StorageTabAdapter extends FragmentStatePagerAdapter {
     private Context mContext;
     private boolean mShowTitle;
 
-    public StorageTabAdapter(Context context, FragmentManager fm) {
+    public PagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mFragmentManager = fm;
         mContext = context;
@@ -35,10 +33,7 @@ public class StorageTabAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        if (object instanceof StorageItemsFragment) {
-            mFragmentManager.beginTransaction().remove((Fragment) object).commit();
-            return POSITION_NONE;
-        }
+
         return super.getItemPosition(object);
     }
 
@@ -58,7 +53,6 @@ public class StorageTabAdapter extends FragmentStatePagerAdapter {
         if (mShowTitle) return mTitles.get(position);
         return null;
     }
-
 
 
     public void addFragment(Fragment fragment, String title) {

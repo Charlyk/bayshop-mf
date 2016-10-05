@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
+import com.softranger.bayshopmf.util.Application;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,18 +21,19 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by eduard on 28.04.16.
  */
 public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<Object> mInStockItems;
+    private ArrayList<PUSParcel> mInStockItems;
     private OnItemClickListener mOnItemClickListener;
-    private SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-    private SimpleDateFormat output = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
 
-    private static final int HEADER = -1, IN_STOCK_ITEM = 0, PRODUCT = 1, PUS_PARCEL = 2, IN_FORMING = 3;
+    private static final int HEADER = -1, PUS_PARCEL = 2;
 
     public ItemAdapter(Context context) {
         mContext = context;
@@ -43,7 +46,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (mInStockItems.get(position) instanceof PUSParcel) {
+        if (mInStockItems.get(position) != null) {
             return PUS_PARCEL;
         }
         return HEADER;
@@ -66,53 +69,24 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
-        processingHolder.mProduct = (PUSParcel) mInStockItems.get(position);
-        // check if item is an instance of local depot object
-        // and if it's true then we need to show the checkbox used to select multiple items
-        // to order a home delivery otherwise hide that check box
-
-        processingHolder.mProgressLayout.setVisibility(View.GONE);
-        processingHolder.mProcessingProgressBar.setVisibility(View.GONE);
-
+        processingHolder.mProduct = mInStockItems.get(position);
         // set name id and date in position
-        processingHolder.mParcelId.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
+        processingHolder.mUidLabel.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
         String name = processingHolder.mProduct.getGeneralDescription();
         if (name == null || name.equals("") || name.equals("null")) {
-            processingHolder.mProductName.setText(mContext.getString(R.string.no_description));
-            processingHolder.mProductName.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+            processingHolder.mDescriptionLabel.setText(mContext.getString(R.string.no_description));
+            processingHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
         } else {
-            processingHolder.mProductName.setText(processingHolder.mProduct.getGeneralDescription());
-            processingHolder.mProductName.setTextColor(mContext.getResources().getColor(android.R.color.black));
+            processingHolder.mDescriptionLabel.setText(processingHolder.mProduct.getGeneralDescription());
+            processingHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.black));
         }
-        processingHolder.mCreatedDate.setText(getFormattedDate(processingHolder.mProduct.getFieldTime()));
+        processingHolder.mDateLabel.setText(Application.getFormattedDate(processingHolder.mProduct.getFieldTime()));
+        processingHolder.mPriceLabel.setText(processingHolder.mProduct.getCurrency() + processingHolder.mProduct.getPrice());
 
         // compute kilos from grams and set the result in weight label
         double realWeight = Double.parseDouble(processingHolder.mProduct.getRealWeight());
         double kg = realWeight / 1000;
-        processingHolder.mWeight.setText(kg + "kg.");
-    }
-
-    private String getFormattedDate(String createdDate) {
-        Date today = new Date();
-        Date date = new Date();
-        String formattedDate = "";
-        try {
-            if (createdDate != null && !createdDate.equals(""))
-                date = input.parse(createdDate);
-            formattedDate = output.format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            long diff = today.getTime() - date.getTime();
-            long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-
-            if (days > 0) {
-                formattedDate = formattedDate + " (" + days + " " + mContext.getString(R.string.days_ago) + ")";
-            } else {
-                formattedDate = formattedDate + " (" + mContext.getString(R.string.today) + ")";
-            }
-        }
-        return formattedDate;
+        processingHolder.mWeightLabel.setText(kg + "kg.");
     }
 
     @Override
@@ -120,7 +94,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mInStockItems.size();
     }
 
-    public void refreshList(ArrayList<Object> objects) {
+    public void refreshList(ArrayList<PUSParcel> objects) {
         mInStockItems.clear();
         mInStockItems.addAll(objects);
         notifyDataSetChanged();
@@ -132,25 +106,24 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class InProcessingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        final TextView mParcelId, mProductName, mCreatedDate, mProgress, mWeight, mProgressTitle, mWeightTitle, mCreatedDateTitle;
-        final ProgressBar mProcessingProgressBar;
-        final LinearLayout mProgressLayout;
+        @BindView(R.id.receivedParcelRatigBar)
+        RatingBar mRatingBar;
+        @BindView(R.id.receivedItemUidLabel)
+        TextView mUidLabel;
+        @BindView(R.id.receivedItemWeightLabel)
+        TextView mWeightLabel;
+        @BindView(R.id.receivedItemPriceLabel)
+        TextView mPriceLabel;
+        @BindView(R.id.receivedItemDateLabel)
+        TextView mDateLabel;
+        @BindView(R.id.receivedItemDescriptionLabel)
+        TextView mDescriptionLabel;
         PUSParcel mProduct;
 
         public InProcessingViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mParcelId = (TextView) itemView.findViewById(R.id.inProcessingParcelId);
-            mProductName = (TextView) itemView.findViewById(R.id.inProcessingProductName);
-            mCreatedDate = (TextView) itemView.findViewById(R.id.inProcessingCreatedDate);
-            mProgress = (TextView) itemView.findViewById(R.id.inProcessingProgress);
-            mWeight = (TextView) itemView.findViewById(R.id.inProcessingWeight);
-            mProgressTitle = (TextView) itemView.findViewById(R.id.inProcessingProgressTitle);
-            mProcessingProgressBar = (ProgressBar) itemView.findViewById(R.id.inProcessingProgressBar);
-            mProgressLayout = (LinearLayout) itemView.findViewById(R.id.inProcessingItemCompletionLayout);
-            mWeightTitle = (TextView) itemView.findViewById(R.id.inProcessingWeightTitle);
-            mCreatedDateTitle = (TextView) itemView.findViewById(R.id.inProcessingCreatedDateTitle);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override

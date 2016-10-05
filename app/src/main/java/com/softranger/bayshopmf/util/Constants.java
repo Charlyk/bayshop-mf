@@ -316,7 +316,7 @@ public class Constants {
          * @return url to obtain payment history from server with the selected interval
          */
         public static String urlUserBalance(Period period) {
-            return URL + BALANCE + OPTION_PERIOD + period.getPeriod();
+            return URL + BALANCE + OPTION_PERIOD + period.toString();
         }
 
         /**
@@ -331,19 +331,18 @@ public class Constants {
 
     public enum  Period {
 
-        one, all, week, month;
+        one("one"), all("all"), week("6"), month("1");
 
-        public String getPeriod() {
-            switch (this) {
-                case one: return ONE;
-                case month: return MONTH;
-                case week: return WEEK;
-                default: return ALL;
-            }
+        private String mStringPeriod;
+
+        Period(String stringPeriod) {
+            mStringPeriod = stringPeriod;
         }
-        public final String ONE = "one";
-        public final String ALL = "all";
-        public final String WEEK = "6";
-        public final String MONTH = "1";
+
+
+        @Override
+        public String toString() {
+            return mStringPeriod;
+        }
     }
 }

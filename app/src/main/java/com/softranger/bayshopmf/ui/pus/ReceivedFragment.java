@@ -8,13 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
+import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.network.ApiClient;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -27,6 +31,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import retrofit2.Call;
 import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
@@ -38,10 +43,13 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
-    private ArrayList<Object> mPUSParcels;
+    private ArrayList<PUSParcel> mPUSParcels;
     private ItemAdapter mAdapter;
+    private Call<ServerResponse<ArrayList<PUSParcel>>> mCall;
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.jellyPullToRefresh)
+    JellyRefreshLayout mRefreshLayout;
 
     public ReceivedFragment() {
         // Required empty public constructor
@@ -68,28 +76,38 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
+        mRefreshLayout.setPullToRefreshListener(this);
+
         mActivity.toggleLoadingProgress(true);
-        ApiClient.getInstance().getRequest(Constants.Api.urlOutgoing(Constants.US, Constants.ParcelStatus.RECEIVED), mHandler);
+        mCall = Application.apiInterface().getParcelsByStatus(Constants.ParcelStatus.RECEIVED);
+        mCall.enqueue(mResponseCallback);
 
         return view;
     }
 
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-        JSONArray data = response.getJSONArray("data");
-        for (int i = 0; i < data.length(); i++) {
-            JSONObject parcelJson = data.getJSONObject(i);
-            PUSParcel pusParcel = new ObjectMapper().readValue(parcelJson.toString(), PUSParcel.class);
-            pusParcel.setParcelStatus(Constants.ParcelStatus.RECEIVED);
-            mPUSParcels.add(pusParcel);
+    private ResponseCallback<ArrayList<PUSParcel>> mResponseCallback = new ResponseCallback<ArrayList<PUSParcel>>() {
+        @Override
+        public void onSuccess(ArrayList<PUSParcel> data) {
+            mPUSParcels = data;
+            mAdapter.refreshList(mPUSParcels);
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
-        mAdapter.refreshList(mPUSParcels);
-    }
 
-    @Override
-    public void onHandleMessageEnd() {
-        mActivity.toggleLoadingProgress(false);
-    }
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<ArrayList<PUSParcel>>> call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
+        }
+    };
 
     @Override
     public String getFragmentTitle() {
@@ -104,11 +122,13 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
     }
 
     @Override
     public void onInProcessingProductClick(PUSParcel processingPackage, int position) {
+        processingPackage.setParcelStatus(Constants.ParcelStatus.RECEIVED);
         mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
     }
 
@@ -129,6 +149,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        pullToRefreshLayout.setRefreshing(false);
+        mCall = Application.apiInterface().getParcelsByStatus(Constants.ParcelStatus.RECEIVED);
+        mCall.enqueue(mResponseCallback);
     }
 }

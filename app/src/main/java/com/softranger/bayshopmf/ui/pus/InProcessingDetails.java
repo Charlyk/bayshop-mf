@@ -25,6 +25,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
@@ -70,7 +75,10 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     private static final int TAKE_PICTURE_CODE = 13;
     private static final int CAMERA_PERMISSION_CODE = 14;
 
-    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.pusDetailsRecyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.buttonsLayoutHolder)
+    FrameLayout mButtonsHolder;
 
     private Unbinder mUnbinder;
     private MainActivity mActivity;
@@ -100,21 +108,23 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
+        View view = inflater.inflate(R.layout.fragment_pus_details, container, false);
         mActivity = (MainActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
+
+        mPackage = getArguments().getParcelable(PRODUCT_ARG);
 
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
 
-        mCall = Application.apiInterface().getPUSParcelDetails(Application.currentToken, mPackage.getId());
+        mCall = Application.apiInterface().getPUSParcelDetails(mPackage.getId());
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mDetailsResponseCallback);
+
 
         CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
         tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorPrimary));
@@ -143,13 +153,22 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
             mPUSParcelDetailed = data;
             mPUSParcelDetailed.setRealWeight(mPackage.getRealWeight());
 
-            mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, InProcessingDetails.this);
+            View bottom = getBottomView(mPUSParcelDetailed.getParcelStatus());
+            if (bottom != null) {
+                mButtonsHolder.addView(bottom, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT));
+            }
+
+            setBottomButtonsListeners();
+
+            mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, mActivity, InProcessingDetails.this);
             if (mPUSParcelDetailed.getParcelStatus() == PUSParcel.PUSStatus.in_the_way) {
                 mAdapter.setShowMap(true);
             }
             mAdapter.setOnItemClickListener(InProcessingDetails.this);
             mRecyclerView.setAdapter(mAdapter);
             mActivity.toggleLoadingProgress(false);
+            mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
         }
 
         @Override
@@ -180,6 +199,101 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
+    }
+
+    private View getBottomView(PUSParcel.PUSStatus pusStatus) {
+        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (pusStatus.buttonsLayout() != -1) {
+            return inflater.inflate(pusStatus.buttonsLayout(), null, false);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Set bottom buttons listeners according to parcel status
+     */
+    private void setBottomButtonsListeners() {
+        switch (mPUSParcelDetailed.getParcelStatus()) {
+            case held_by_prohibition:
+                Button returnToSeller = ButterKnife.findById(mButtonsHolder, R.id.heldByProhibitionReturnBtn);
+                returnToSeller.setOnClickListener((view) -> {
+                    onReturnToSenderClick();
+                });
+                Button toDisband = ButterKnife.findById(mButtonsHolder, R.id.heldByProhibitionToDisbandBtn);
+                toDisband.setOnClickListener((view) -> {
+                    onToDisbandClick();
+                });
+                break;
+            case held_by_damage:
+                Button allowShipping = ButterKnife.findById(mButtonsHolder, R.id.damageAllowShipping);
+                allowShipping.setOnClickListener((view) -> {
+                    onAllowShippingClick();
+                });
+                Button disbandDamaged = ButterKnife.findById(mButtonsHolder, R.id.damageToDisband);
+                disbandDamaged.setOnClickListener((view) -> {
+                    onDamageToDisbandClick();
+                });
+                break;
+            case held_due_to_debt:
+                RelativeLayout payTheDebt = ButterKnife.findById(mButtonsHolder, R.id.payTheDebtLayout);
+                TextView debtLabel = ButterKnife.findById(mButtonsHolder, R.id.payTheDebtAmountLabel);
+                payTheDebt.setOnClickListener((view) -> {
+                    onPayTheDebtClick();
+                });
+                break;
+            case sent:
+                RelativeLayout trackParcel = ButterKnife.findById(mButtonsHolder, R.id.sentParcelHeaderLayout);
+                trackParcel.setOnClickListener((view) -> {
+                    onStartTrackingClick();
+                });
+                break;
+            case held_by_customs:
+                Button upload = ButterKnife.findById(mButtonsHolder, R.id.prohibitionHeldUploadDocumentBtn);
+                upload.setOnClickListener((view) -> {
+                    onUploadDocumentClick();
+                });
+                Button takePhoto = ButterKnife.findById(mButtonsHolder, R.id.prohibitionHeldTakePhotoBtn);
+                takePhoto.setOnClickListener((view) -> {
+                    onTakePictureClick();
+                });
+                break;
+            case local_depot:
+                RelativeLayout orderDelivery = ButterKnife.findById(mButtonsHolder, R.id.orderHomeDeliveryLayout);
+                orderDelivery.setOnClickListener((view) -> {
+                    onOrderDeliveryClick();
+                });
+                break;
+            case in_the_way:
+                LinearLayout callCourier = ButterKnife.findById(mButtonsHolder, R.id.takenCallCourierBtn);
+                callCourier.setOnClickListener((view) -> {
+                    onCallCourierClick();
+                });
+                break;
+            case received:
+                Button information = ButterKnife.findById(mButtonsHolder, R.id.geolocationButton);
+                information.setOnClickListener((view) -> {
+                    onGeolocationClick();
+                });
+                Button leaveReview = ButterKnife.findById(mButtonsHolder, R.id.leaveReviewButton);
+                leaveReview.setOnClickListener((view) -> {
+                    onLeaveFeedbackClick();
+                });
+                break;
+            case held_by_user:
+                LinearLayout send = ButterKnife.findById(mButtonsHolder, R.id.heldByUserBtnLayout);
+                send.setOnClickListener((view) -> {
+                    onUserHeldSendClick();
+                });
+                break;
+            case awaiting_declaration:
+                LinearLayout editDeclaration = ButterKnife.findById(mButtonsHolder, R.id.awaitingDeclarationButtonLayout);
+                editDeclaration.setOnClickListener((view) -> {
+                    onEditDeclarationClick();
+                });
+                break;
+        }
     }
 
     @Override
@@ -284,15 +398,13 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         }), false);
     }
 
-    @Override
-    public void onUploadDocumentClick(PUSParcelDetailed item, int position) {
+    public void onUploadDocumentClick() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         startActivityForResult(intent, UPLOAD_RESULT_CODE);
     }
 
-    @Override
-    public void onTakePictureClick(PUSParcelDetailed item, int position) {
+    public void onTakePictureClick() {
         if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED) {
             dispatchTakePictureIntent();
@@ -302,15 +414,32 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         }
     }
 
-    @Override
-    public void onReturnToSenderClick(PUSParcelDetailed item, int position) {
-        mActivity.addFragment(ReturnAddressFragment.newInstance(item), true);
+    //----------------------- HELD BY PROHIBITION -----------------------//
+
+    /**
+     * Used to send a prohibited parcel back to seller
+     */
+    public void onReturnToSenderClick() {
+        mActivity.addFragment(ReturnAddressFragment.newInstance(mPUSParcelDetailed), true);
     }
 
-    @Override
-    public void onOrderDeliveryClick(PUSParcelDetailed item, int position) {
+    /**
+     * Used to disband a prohibited parcel
+     */
+    public void onToDisbandClick() {
+        Application.apiInterface().sendParcelToDisband(mPUSParcelDetailed.getId())
+                .enqueue(mDisbandResponeCallback);
+    }
+
+
+    //----------------------- LOCAL DEPOT -----------------------//
+
+    /**
+     * Order home delivery
+     */
+    public void onOrderDeliveryClick() {
         mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
-                        + " " + item.getAddress().getClientName(), R.mipmap.ic_order_delivery_white_30dp,
+                        + " " + mPUSParcelDetailed.getAddress().getClientName(), R.mipmap.ic_order_delivery_white_30dp,
                 getString(R.string.confirm), v -> {
                     mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
                             R.mipmap.ic_order_sent_75dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
@@ -325,48 +454,68 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         mActivity.addFragment(AddressesListFragment.newInstance(AddressListAdapter.ButtonType.select), true);
     }
 
-    @Override
-    public void onCallCourierClick(PUSParcelDetailed item, int position) {
+    //----------------------- TAKEN TO DELIVERY -----------------------//
+
+    /**
+     * Call courier
+     */
+    public void onCallCourierClick() {
 
     }
 
-    @Override
-    public void onPayTheDebtClick(PUSParcelDetailed item, int position) {
+    //----------------------- HELD DUE TO DEBT -----------------------//
+
+    /**
+     * Pay the debt to send the parcel
+     */
+    public void onPayTheDebtClick() {
 
     }
 
-    @Override
-    public void onGeolocationClick(PUSParcelDetailed item, int position) {
-        mActivity.addFragment(ReceivedSignature.newInstance(item), false);
+    //----------------------- RECEIVED -----------------------//
+
+    /**
+     * Show received location and signature
+     */
+    public void onGeolocationClick() {
+        mActivity.addFragment(ReceivedSignature.newInstance(mPUSParcelDetailed), false);
     }
 
-    @Override
-    public void onStartTrackingClick(PUSParcelDetailed item, int position) {
-        if (item.getTrackingUrl() != null) {
-            mTabsIntent.launchUrl(mActivity, Uri.parse(item.getTrackingUrl()));
+    /**
+     * leave feedback about our job
+     */
+    public void onLeaveFeedbackClick() {
+        mActivity.addFragment(LeaveFeedbackFragment.newInstance(mPUSParcelDetailed), true);
+    }
+
+    //----------------------- SENT -----------------------//
+
+    /**
+     * start tracking a parcel
+     */
+    public void onStartTrackingClick() {
+        if (mPUSParcelDetailed.getTrackingUrl() != null) {
+            mTabsIntent.launchUrl(mActivity, Uri.parse(mPUSParcelDetailed.getTrackingUrl()));
         }
     }
 
-    @Override
-    public void onLeaveFeedbackClick(PUSParcelDetailed item, int position) {
-        mActivity.addFragment(LeaveFeedbackFragment.newInstance(item), true);
+    //----------------------- AWAITING DECLARATION -----------------------//
+
+    /**
+     * edit parcel declaration
+     */
+    public void onEditDeclarationClick() {
+
     }
 
-    @Override
-    public void onEditDeclarationClick(PUSParcelDetailed item, int position) {
+    //----------------------- HELD BY USER -----------------------//
 
-    }
-
-    @Override
-    public void onToDisbandClick(PUSParcelDetailed item, int position) {
-        Application.apiInterface().sendParcelToDisband(Application.currentToken, item.getId())
-                .enqueue(mDisbandResponeCallback);
-    }
-
-    @Override
-    public void onUserHeldSendClick(PUSParcelDetailed item, int position) {
+    /**
+     * send a parcel which is held by user
+     */
+    public void onUserHeldSendClick() {
         mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
-                        + " " + item.getAddress().getClientName(), R.mipmap.send_parcel_white_30dp,
+                        + " " + mPUSParcelDetailed.getAddress().getClientName(), R.mipmap.send_parcel_white_30dp,
                 getString(R.string.confirm), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -389,27 +538,23 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
         mAlertDialog.show();
     }
 
-    @Override
-    public void onAllowShippingClick(PUSParcelDetailed item, int position) {
+    //----------------------- HELD BY DAMAGE -----------------------//
+
+    /**
+     * allow shipping of a damaged parcel
+     */
+    public void onAllowShippingClick() {
         mActivity.toggleLoadingProgress(true);
-        Application.apiInterface().allowDamagedParcelSending(Application.currentToken, mPackage.getId(), 1)
+        Application.apiInterface().allowDamagedParcelSending(mPackage.getId(), 1)
                 .enqueue(mAllowShippingCallback);
     }
 
-    @Override
-    public void onAllowShippingDetailsClick(PUSParcelDetailed item, int position) {
-
-    }
-
-    @Override
-    public void onDamageToDisbandClick(PUSParcelDetailed item, int position) {
-        Application.apiInterface().sendParcelToDisband(Application.currentToken, item.getId())
+    /**
+     * send damaged parcel to disband
+     */
+    public void onDamageToDisbandClick() {
+        Application.apiInterface().sendParcelToDisband(mPUSParcelDetailed.getId())
                 .enqueue(mDisbandResponeCallback);
-    }
-
-    @Override
-    public void onDamageToDisbandDetailsClick(PUSParcelDetailed item, int position) {
-
     }
 
     private ResponseCallback mDisbandResponeCallback = new ResponseCallback() {
@@ -472,7 +617,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        mCall = Application.apiInterface().getPUSParcelDetails(Application.currentToken, mPackage.getId());
+        mCall = Application.apiInterface().getPUSParcelDetails(mPackage.getId());
         mCall.enqueue(mDetailsResponseCallback);
     }
 }

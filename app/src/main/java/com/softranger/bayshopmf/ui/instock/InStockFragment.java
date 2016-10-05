@@ -111,7 +111,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
         mRecyclerView.setAdapter(mAdapter);
 
-        mCall = Application.apiInterface().getInStockItems(Application.currentToken);
+        mCall = Application.apiInterface().getInStockItems();
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
         return view;
@@ -166,7 +166,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
                 mAdapter.notifyDataSetChanged();
             } else {
                 // also using action ConfirmationFragment.ACTION_BUILD_FINISHED
-                mCall = Application.apiInterface().getInStockItems(Application.currentToken);
+                mCall = Application.apiInterface().getInStockItems();
                 mCall.enqueue(mResponseCallback);
             }
         }
@@ -331,7 +331,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        mCall = Application.apiInterface().getInStockItems(Application.currentToken);
+        mCall = Application.apiInterface().getInStockItems();
         mCall.enqueue(mResponseCallback);
     }
 

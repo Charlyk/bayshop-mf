@@ -45,6 +45,8 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
 
     @BindView(R.id.fragmentRecyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.jellyPullToRefresh)
+    JellyRefreshLayout mRefreshLayout;
 
     public PUSParcelsFragment() {
         // Required empty public constructor
@@ -75,8 +77,9 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         mAdapter.setOnPusItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
+        mRefreshLayout.setPullToRefreshListener(this);
 
-        mCall = Application.apiInterface().getAllParcelsFromServer(Application.currentToken);
+        mCall = Application.apiInterface().getAllParcelsFromServer();
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
         return view;
@@ -89,25 +92,28 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setItemViewCacheSize(mPUSParcels.size());
             mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<PUSStatuses>> call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
         }
     };
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // TODO: 9/28/16 refresh
+            onRefresh(mRefreshLayout);
         }
     };
 
@@ -136,7 +142,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        mCall = Application.apiInterface().getAllParcelsFromServer(Application.currentToken);
+        mCall = Application.apiInterface().getAllParcelsFromServer();
         mCall.enqueue(mResponseCallback);
     }
 }

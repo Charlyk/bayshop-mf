@@ -26,7 +26,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private ArrayList<History> mHistories;
     private OnHistoryClickListener mOnHistoryClickListener;
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
-    private static final SimpleDateFormat SERVER_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private Context mContext;
 
     public HistoryAdapter(Context context, ArrayList<History> histories) {
@@ -55,13 +54,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mHistory = mHistories.get(position);
         holder.mDescription.setText(holder.mHistory.getComment());
-        Date date = new Date();
-        try {
-            date = SERVER_FORMAT.parse(holder.mHistory.getDate());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String strDate = FORMAT.format(date);
+        String strDate = FORMAT.format(holder.mHistory.getDate());
         holder.mDate.setText(strDate);
         String summ = holder.mHistory.getCurrency() + holder.mHistory.getSumm();
         holder.mSumm.setText(summ);

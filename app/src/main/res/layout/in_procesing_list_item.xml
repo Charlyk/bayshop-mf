@@ -1,127 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/pusItemHolder"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="horizontal"
-              android:background="@drawable/selectable_background">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/inProcessingParcelId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textSize="18sp"
-            android:textColor="@color/colorAccent"
-            tools:text="PUS231312312312"/>
-
-        <TextView
-            android:id="@+id/inProcessingProductName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            tools:text="Notebook from USA"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/inProcessingCreatedDateTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/created_on"/>
-
-            <TextView
-                android:id="@+id/inProcessingCreatedDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textColor="@android:color/black"
-                tools:text="12 Mar 2016"/>
-        </LinearLayout>
-    </LinearLayout>
+              android:background="@drawable/selectable_background"
+              android:layout_marginBottom="10dp"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_weight="2"
-        android:orientation="vertical">
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp">
 
-        <ProgressBar
-            android:id="@+id/inProcessingProgressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <RatingBar
+            style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
+            android:theme="@style/RatingBarThemeSmall"
+            android:layout_width="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:max="100"
-            android:progress="34"/>
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:numStars="5"
+            tools:rating="3"
+            android:clickable="false"
+            android:stepSize="1"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/receivedParcelRatigBar"/>
 
-        <LinearLayout
-            android:id="@+id/inProcessingItemCompletionLayout"
+        <TextView
+            android:id="@+id/receivedItemUidLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:layout_alignParentLeft="true"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/receivedParcelRatigBar"
+            android:layout_toStartOf="@id/receivedParcelRatigBar"
+            android:textSize="18sp"
+            tools:text="PUS2131432133"/>
+
+        <TextView
+            android:id="@+id/receivedItemDescriptionLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
+            android:singleLine="true"
+            android:ellipsize="end"
+            tools:text="iPhone 5s"
+            android:layout_toLeftOf="@id/receivedParcelRatigBar"
+            android:layout_toStartOf="@id/receivedParcelRatigBar"
+            android:textColor="@color/textColor"
+            android:textSize="16sp"
+            android:layout_below="@id/receivedItemUidLabel"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"/>
 
-            <TextView
-                android:id="@+id/inProcessingProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorAccent"
-                tools:text="34%"/>
-
-            <TextView
-                android:id="@+id/inProcessingProgressTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/complete"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/inProcessingIntemWeightLayout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView45"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
+            android:layout_alignLeft="@+id/receivedItemDescriptionLabel"
+            android:layout_alignStart="@+id/receivedItemDescriptionLabel"
+            android:layout_below="@+id/receivedItemDescriptionLabel"
+            android:text="@string/date"/>
 
-            <TextView
-                android:id="@+id/inProcessingWeightTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/weight"/>
+        <TextView
+            android:id="@+id/receivedItemWeightLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView47"
+            android:layout_alignStart="@+id/textView47"
+            android:layout_below="@+id/textView47"
+            android:textColor="@android:color/black"
+            tools:text="10kg"/>
 
-            <TextView
-                android:id="@+id/inProcessingWeight"
-                android:textColor="@android:color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="2.44kg"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/receivedItemDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView45"
+            android:layout_alignStart="@+id/textView45"
+            android:layout_below="@+id/textView45"
+            android:layout_toLeftOf="@id/receivedItemWeightLabel"
+            android:layout_toStartOf="@id/receivedItemWeightLabel"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            tools:text="12.10.16 (3 days ago)"/>
+
+        <TextView
+            android:id="@+id/textView47"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView45"
+            android:layout_centerHorizontal="true"
+            android:text="@string/weight"/>
+
+        <TextView
+            android:id="@+id/receivedItemPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView47"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/black"
+            tools:text="$450"/>
+
+        <TextView
+            android:id="@+id/textView50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/textView47"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/price"/>
     </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/drop_shadow"/>
 </LinearLayout>

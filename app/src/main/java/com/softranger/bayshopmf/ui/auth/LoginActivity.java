@@ -172,7 +172,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
             Application.getInstance().setLoginStatus(true);
             Application.currentToken = user.getToken();
             Application.getInstance().setAuthToken(user.getToken());
-            mDataCall = Application.apiInterface().getUserPersonalData(user.getToken());
+            mDataCall = Application.apiInterface().getUserPersonalData();
             mDataCall.enqueue(mPersonalDataCallback);
         }
 
@@ -197,7 +197,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         @Override
         public void onSuccess(User data) {
             Application.user = data;
-            mCountersCall = Application.apiInterface().getParcelsCounters(Application.currentToken);
+            mCountersCall = Application.apiInterface().getParcelsCounters();
             mCountersCall.enqueue(mCountersCallback);
         }
 

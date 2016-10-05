@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -49,22 +51,46 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        currentToken = preferences.getString(AUTH_TOKEN, "no token");
+        // initialize counters hashmap
+        counters = new HashMap<>();
+        // initialize facebook sdk and app events logger
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
+        // create a new okHttp client and set a request interceptor
+        // so we could set custom header for every request we make
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.readTimeout(20, TimeUnit.SECONDS);
+        httpClient.connectTimeout(20, TimeUnit.SECONDS);
+        httpClient.writeTimeout(20, TimeUnit.SECONDS);
+        httpClient.addInterceptor((chain) -> {
+            Request original = chain.request();
+            Request request = original.newBuilder()
+                    .header("Bearer", currentToken)
+                    .method(original.method(), original.body())
+                    .build();
+
+            return chain.proceed(request);
+        });
+
+        // create a object mapper and set the format of the date for it
         ObjectMapper objectMapper = new ObjectMapper();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         objectMapper.setDateFormat(dateFormat);
+
+        // build the client and set mapper and client to retrofit
+        OkHttpClient client = httpClient.build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.Api.URL)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .client(client)
                 .build();
 
         serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-
-        preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-        currentToken = preferences.getString(AUTH_TOKEN, "no token");
-        counters = new HashMap<>();
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
     }
 
     public void setAuthToken(String authToken) {

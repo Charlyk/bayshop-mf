@@ -7,14 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,23 +23,15 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
-import com.softranger.bayshopmf.model.product.Product;
-import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
-import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentFragment;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,8 +40,6 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
-import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -116,7 +104,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
 
         mStorageIcon.setImageResource(R.mipmap.ic_usa_flag);
 
-        mCall = Application.apiInterface().getAwaitingParcelDetails(Application.currentToken, mAwaitingArrival.getId());
+        mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
         return rootView;
@@ -147,7 +135,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
                 case ACTION_UPDATE:
-                    mCall = Application.apiInterface().getAwaitingParcelDetails(Application.currentToken, mAwaitingArrival.getId());
+                    mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
                     mCall.enqueue(mResponseCallback);
                     Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
                     mActivity.sendBroadcast(refresh);
@@ -229,8 +217,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
                     public void onClick(View v) {
                         mActivity.toggleLoadingProgress(true);
 
-                        Application.apiInterface().deleteAwaitingParcel(Application.currentToken,
-                                mArrivalDetails.getId()).enqueue(new Callback<ServerResponse>() {
+                        Application.apiInterface().deleteAwaitingParcel(mArrivalDetails.getId()).enqueue(new Callback<ServerResponse>() {
                             @Override
                             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                                 if (response.body() != null) {
@@ -262,7 +249,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
 
                             @Override
                             public void onFailure(Call<ServerResponse> call, Throwable t) {
-                                // TODO: 9/21/16 handle errors
+                                Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                mActivity.toggleLoadingProgress(false);
                             }
                         });
 

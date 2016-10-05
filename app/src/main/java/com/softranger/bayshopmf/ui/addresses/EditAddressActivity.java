@@ -85,11 +85,11 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
             mScrollView.setVisibility(View.GONE);
             mAddressId = intent.getExtras().getInt(ADDRESS_ID_EXTRA);
             mToolbarTitle.setText(getString(R.string.edit_address));
-            mResponseCall = Application.apiInterface().getMemberAddress(Application.currentToken, String.valueOf(mAddressId));
+            mResponseCall = Application.apiInterface().getMemberAddress(String.valueOf(mAddressId));
         } else {
             mToolbarTitle.setText(getString(R.string.add_new_address));
             mAddressId = -1;
-            mResponseCall = Application.apiInterface().getPhoneCodes(Application.currentToken);
+            mResponseCall = Application.apiInterface().getPhoneCodes();
         }
 
         toggleLoading(true);
@@ -198,8 +198,7 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
             return;
         }
 
-        mResponseCall = Application.apiInterface().saveMemberAddress(Application.currentToken,
-                mAddressId > -1 ? String.valueOf(mAddress) : "",
+        mResponseCall = Application.apiInterface().saveMemberAddress(mAddressId > -1 ? String.valueOf(mAddress) : "",
                 firstName, lastName, email, streetName, city, postalCode, countryCode, phoneNumber, country,
                 String.valueOf(mAddress.getAddress().getCountryId())
         );

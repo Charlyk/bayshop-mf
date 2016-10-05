@@ -1,103 +1,112 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:padding="16dp"
-        tools:context=".ui.services.CheckProductFragment">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/check_product_confirmBtn"
+        android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:contentDescription="@null"
-                android:src="@mipmap/ic_awaiting_arrival_125dp"/>
+            android:animateLayoutChanges="true"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            tools:context=".ui.services.CheckProductFragment">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/check_productDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/additional_photo_description"/>
+                <ImageView
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:contentDescription="@null"
+                    android:src="@mipmap/ic_awaiting_arrival_125dp"/>
 
-                <TextView
-                    android:id="@+id/check_productPrice"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/check_product_cost"
-                    android:textColor="@color/colorAccent"/>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/check_productDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/additional_photo_description"/>
+
+                    <TextView
+                        android:id="@+id/check_productPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/check_product_cost"
+                        android:textColor="@color/colorAccent"/>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/additionalPhotoleaveCommentBtn"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/leave_comment"
-                android:textColor="@android:color/darker_gray"/>
 
             <ImageButton
                 android:id="@+id/additionalPhotoDetailsButton"
                 style="@style/Base.Widget.AppCompat.ActionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="end"
                 android:contentDescription="@string/details"
                 android:src="@mipmap/ic_detail_24dp"/>
-        </RelativeLayout>
 
-        <EditText
-            android:id="@+id/check_product_commentInput"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/edit_text_rectangle_bg"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            android:padding="5dp"
-            android:visibility="gone"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorDivider"/>
 
-        <Button
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:id="@+id/check_product_confirmBtn"
-            android:layout_width="wrap_content"
-            android:minWidth="100dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/additional_btns_bg"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textSize="16sp"
-            android:text="@string/confirm"
-            android:textColor="@android:color/white"/>
-    </LinearLayout>
-</ScrollView>
+            <EditText
+                android:id="@+id/check_product_commentInput"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@android:color/white"
+                android:gravity="top"
+                android:hint="@string/enter_your_comment"
+                android:inputType="textMultiLine"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorDivider"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/drop_shadow"/>
+
+    <Button
+        android:id="@+id/check_product_confirmBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/additional_btns_bg"
+        android:minWidth="100dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/confirm"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+</RelativeLayout>

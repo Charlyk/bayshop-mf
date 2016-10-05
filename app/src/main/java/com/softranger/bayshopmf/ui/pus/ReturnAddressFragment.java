@@ -142,7 +142,7 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
             return;
         }
 
-        mResponseCall = mApiInterface.returnToSellerAddress(Application.currentToken,
+        mResponseCall = mApiInterface.returnToSellerAddress(
                 mPUSParcelDetailed.getId(), firstName, lastName,
                 address, city, country, postalCode, phoneNumber, state);
         mActivity.toggleLoadingProgress(true);

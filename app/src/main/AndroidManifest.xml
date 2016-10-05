@@ -113,6 +113,8 @@
         </activity>
         <activity android:name=".ui.addresses.SearchAddressActivity">
         </activity>
+        <activity android:name=".ui.payment.PaymentDetailsActivity">
+        </activity>
     </application>
 
 </manifest>

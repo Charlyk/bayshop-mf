@@ -180,14 +180,17 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         return MainActivity.SelectedFragment.leave_feedback;
     }
 
-    @OnClick(R.id.leaveFeedbackUploadPhotoBtn)
+    @OnClick(R.id.leaveFeedbackUploadImageBtn)
+    void uploadImageFile() {
+
+    }
+
     void uploadImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         startActivityForResult(intent, UPLOAD_RESULT_CODE);
     }
 
-    @OnClick(R.id.leaveFeedbackTakePhotoBtn)
     void takePhoto() {
         if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED) {
@@ -240,7 +243,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         String comment = String.valueOf(mCommentInput.getText());
         float rating = mRatingBar.getRating();
 
-        mCall = Application.apiInterface().leaveFeedback(Application.currentToken,
+        mCall = Application.apiInterface().leaveFeedback(
                 mParcelDetailed.getId(), comment, String.valueOf(rating));
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);

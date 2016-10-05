@@ -58,7 +58,6 @@ import com.softranger.bayshopmf.ui.payment.PaymentActivity;
 import com.softranger.bayshopmf.ui.pus.PUSParcelsFragment;
 import com.softranger.bayshopmf.ui.pus.ReceivedFragment;
 import com.softranger.bayshopmf.ui.settings.SettingsActivity;
-import com.softranger.bayshopmf.ui.storages.StorageItemsFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.CustomExceptionHandler;

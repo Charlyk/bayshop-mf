@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
         if (Application.getInstance().isLoggedIn()) {
             mIntent = new Intent(this, MainActivity.class);
 
-            mPersonalDataCall = Application.apiInterface().getUserPersonalData(Application.currentToken);
+            mPersonalDataCall = Application.apiInterface().getUserPersonalData();
             mPersonalDataCall.enqueue(mPersonalDataCallback);
         } else {
             startLoginActivity();
@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void onSuccess(User data) {
             Application.user = data;
-            mCountersCall = Application.apiInterface().getParcelsCounters(Application.currentToken);
+            mCountersCall = Application.apiInterface().getParcelsCounters();
             mCountersCall.enqueue(mCountersCallback);
         }
 

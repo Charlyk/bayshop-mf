@@ -86,7 +86,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
         mRefreshLayout.setPullToRefreshListener(this);
 
-        mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems(Application.currentToken);
+        mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems();
 
         mActivity.toggleLoadingProgress(true);
         mWaitingListCall.enqueue(mResponseCallback);
@@ -190,7 +190,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems(Application.currentToken);
+        mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems();
         mWaitingListCall.enqueue(mResponseCallback);
     }
 }

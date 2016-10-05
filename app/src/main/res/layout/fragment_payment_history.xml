@@ -1,89 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:clickable="true"
-             android:background="@android:color/white"
-             tools:context="com.softranger.bayshopmf.ui.payment.PaymentHistoryFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:clickable="true"
+                tools:context="com.softranger.bayshopmf.ui.payment.PaymentHistoryFragment">
 
-
-    <RadioGroup
-        android:id="@+id/paymentHistoryPeriodSelector"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@drawable/payment_text_color"
-            android:background="@drawable/payment_buttons_bg"
-            android:layout_weight="1"
-            android:text="@string/all"
-            android:button="@null"
-            android:checked="true"
-            android:id="@+id/paymentHistoryPeriodAll"/>
-
-        <RadioButton
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@drawable/payment_text_color"
-            android:background="@drawable/payment_buttons_bg"
-            android:layout_weight="1"
-            android:text="@string/today"
-            android:button="@null"
-            android:id="@+id/paymentHistoryPeriodToday"/>
-
-        <RadioButton
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@drawable/payment_text_color"
-            android:background="@drawable/payment_buttons_bg"
-            android:layout_weight="1"
-            android:text="@string/last_week"
-            android:button="@null"
-            android:id="@+id/paymentHistoryPeriodWeek"/>
-
-        <RadioButton
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@drawable/payment_text_color"
-            android:background="@drawable/payment_buttons_bg"
-            android:layout_weight="1"
-            android:text="@string/last_month"
-            android:button="@null"
-            android:id="@+id/paymentHistoryPeriodMonth"/>
-    </RadioGroup>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/paymentHistoryRefreshLayout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/paymentHistoryRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/paymentHistoryPeriodSelector">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/paymentHistoryRecyclerView"
-            android:layout_width="match_parent"
-            tools:listitem="@layout/payment_history_list_item"
-            android:background="@android:color/white"
-            android:layout_height="match_parent"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_below="@id/paymentHistoryPeriodSelector"
-        android:background="@drawable/drop_shadow"/>
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/paymentHistoryProgressBar"
-        android:visibility="gone"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:background="@android:color/white"
+        tools:listitem="@layout/payment_history_list_item"/>
 </RelativeLayout>

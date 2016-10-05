@@ -351,4 +351,9 @@
     <string name="parcel_created">Parcel created</string>
     <string name="your_parcel_added">Your parcel was added successfuly with ID\u0020</string>
     <string name="held_by_user">Held by user</string>
+    <string name="payment_details">Payment details</string>
+    <string name="reset">Reset</string>
+    <string name="volume_x">Volume X:</string>
+    <string name="volume_y">Volume Y:</string>
+    <string name="volume_z">Volume Z:</string>
 </resources>

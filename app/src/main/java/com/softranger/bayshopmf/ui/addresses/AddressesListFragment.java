@@ -130,7 +130,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
             boxesArray.put(i.getId());
         }
 
-        mResponseCall = Application.apiInterface().createPusParcel(Application.currentToken, boxesArray.toString());
+        mResponseCall = Application.apiInterface().createPusParcel(boxesArray.toString());
         mResponseCall.enqueue(mResponseCallback);
     }
 

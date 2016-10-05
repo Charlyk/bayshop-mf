@@ -39,8 +39,7 @@ public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
     @Override
     protected Void doInBackground(AwaitingArrival... awaitingArrivals) {
         // send delete request to server
-        Call<ServerResponse> call = Application.apiInterface().deleteAwaitingParcel(Application.currentToken,
-                awaitingArrivals[0].getId());
+        Call<ServerResponse> call = Application.apiInterface().deleteAwaitingParcel(awaitingArrivals[0].getId());
         try {
             // send request
             Response<ServerResponse> response = call.execute();

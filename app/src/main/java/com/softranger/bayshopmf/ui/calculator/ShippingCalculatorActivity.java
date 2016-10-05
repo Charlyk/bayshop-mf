@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.CalculatorAdapter;
+import com.softranger.bayshopmf.model.address.Country;
+import com.softranger.bayshopmf.ui.addresses.CountriesDialogFragment;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -28,16 +31,24 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Response;
 
-public class ShippingCalculatorActivity extends ParentActivity implements TextWatcher, View.OnClickListener {
+public class ShippingCalculatorActivity extends ParentActivity implements TextWatcher,
+        View.OnClickListener, CountriesDialogFragment.OnCountrySelectListener {
 
-    private EditText mWeightInput;
-    private EditText mXInput;
-    private EditText mYInput;
-    private EditText mZInput;
-    private TextView mCountryNameLabel;
-    private Spinner mCountriesSpinner;
+    @BindView(R.id.calculatorWeightInput)
+    EditText mWeightInput;
+    @BindView(R.id.calculatorVolumeXInput)
+    EditText mXInput;
+    @BindView(R.id.calculatorVolumeYInput)
+    EditText mYInput;
+    @BindView(R.id.calculatorVolumeZInput)
+    EditText mZInput;
+    @BindView(R.id.calculatorCountryNameLabel)
+    TextView mCountryNameLabel;
     private CalculatorAdapter mAdapter;
     private static String selectedStorage;
 
@@ -45,23 +56,14 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shipping_calculator);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+        Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         selectedStorage = Constants.US;
-
-        mWeightInput = (EditText) findViewById(R.id.calculatorWeightInput);
-        mXInput = (EditText) findViewById(R.id.calculatorVolumeXInput);
-        mYInput = (EditText) findViewById(R.id.calculatorVolumeYInput);
-        mZInput = (EditText) findViewById(R.id.calculatorVolumeZInput);
 
         mWeightInput.addTextChangedListener(this);
         mXInput.addTextChangedListener(this);
@@ -69,36 +71,13 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
         mZInput.addTextChangedListener(this);
 
         mCountryNameLabel = (TextView) findViewById(R.id.calculatorCountryNameLabel);
-//        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.calculatorStorageSelector);
-//        radioGroup.setOnCheckedChangeListener(this);
 
         mAdapter = new CalculatorAdapter();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.calculatorShippingList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
 
-        mCountriesSpinner = (Spinner) findViewById(R.id.calculatorCountriesSpinner);
     }
-
-    public void selectCountry(View view) {
-        mCountriesSpinner.performClick();
-    }
-
-    //------------------- Storage selector -------------------//
-//    @Override
-//    public void onCheckedChanged(RadioGroup group, int checkedId) {
-//        switch (checkedId) {
-//            case R.id.calculatorUsaSelector:
-//                selectedStorage = Constants.US;
-//                break;
-//            case R.id.calculatorUkSelector:
-//                selectedStorage = Constants.UK;
-//                break;
-//            case R.id.calculatorDeSelector:
-//                selectedStorage = Constants.DE;
-//                break;
-//        }
-//    }
 
     //------------------- Inputs listener -------------------//
     @Override
@@ -115,6 +94,15 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
         String countryName = String.valueOf(mCountryNameLabel.getText());
 
         getShippingPriceFromServer(weight, x, y, z, countryName, selectedStorage);
+    }
+
+    @OnClick(R.id.countryBtnLayout)
+    void selectCountry() {
+        if (Application.user.getCountries() != null) {
+            CountriesDialogFragment dialogFragment = CountriesDialogFragment.newInstance(Application.user.getCountries());
+            dialogFragment.setOnCountrySelectListener(this);
+            dialogFragment.show(getSupportFragmentManager(), this.getClass().getSimpleName());
+        }
     }
 
     @Override
@@ -201,5 +189,10 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
     @Override
     public void onBackStackChanged() {
 
+    }
+
+    @Override
+    public void onCountrySelected(Country country) {
+        mCountryNameLabel.setText(country.getName());
     }
 }

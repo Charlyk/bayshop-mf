@@ -35,18 +35,15 @@ public class CodesSpinnerAdapter extends ArrayAdapter<CountryCode> {
     @Override
     public View getDropDownView(int position, View convertView,
                                 ViewGroup parent) {
-        // TODO Auto-generated method stub
         return getCustomView(position, convertView, parent);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         return getCustomView(position, convertView, parent);
     }
 
     public View getCustomView(final int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         //return super.getView(position, convertView, parent);
         final CountryCode countryCode = mCountryCodes.get(position);
         View row = LayoutInflater.from(mContext).inflate(R.layout.spinner_list_item, parent, false);
