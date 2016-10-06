@@ -46,13 +46,10 @@ public class CodesSpinnerAdapter extends ArrayAdapter<CountryCode> {
     public View getCustomView(final int position, View convertView, ViewGroup parent) {
         //return super.getView(position, convertView, parent);
         final CountryCode countryCode = mCountryCodes.get(position);
-        View row = LayoutInflater.from(mContext).inflate(R.layout.spinner_list_item, parent, false);
-        row.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnCountryClickListener != null) {
-                    mOnCountryClickListener.onCountryClick(countryCode, position);
-                }
+        View row = LayoutInflater.from(mContext).inflate(R.layout.phone_code_item, parent, false);
+        row.setOnClickListener(v -> {
+            if (mOnCountryClickListener != null) {
+                mOnCountryClickListener.onCountryClick(countryCode, position);
             }
         });
         TextView codeLabel = (TextView) row.findViewById(R.id.spinnerCodeLabel);

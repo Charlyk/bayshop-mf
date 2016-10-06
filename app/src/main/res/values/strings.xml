@@ -263,7 +263,7 @@
     <string name="divide_parcels">Divide parcel</string>
     <string name="delete_address">Delete address</string>
     <string name="confirm_address_deleteing">Please confirm that you want to delete</string>
-    <string name="address">address</string>
+    <string name="address">Address</string>
     <string name="parcel_confirmation">Parcel confirmation</string>
     <string name="parcel_in_process">Your parcel is in processing.</string>
     <string name="parcel_in_place">The parcel will be packed soon, you\’ll be notified, when it\'s done.</string>
@@ -356,4 +356,5 @@
     <string name="volume_x">Volume X:</string>
     <string name="volume_y">Volume Y:</string>
     <string name="volume_z">Volume Z:</string>
+    <string name="user_settings">User settings</string>
 </resources>

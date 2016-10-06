@@ -1,248 +1,254 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:background="@android:color/white">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white">
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/userDataScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/userDataSaveButton"
+        android:clickable="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/userDataFirstNameInputLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/userDataFirstNameInput"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/userDataFirstNameInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@android:color/white"
-                android:hint="@string/first_name"
-                android:inputType="textPersonName"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="?actionBarSize"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
 
-        <View
-            android:layout_below="@id/userDataFirstNameInputLayout"
-            android:id="@+id/fNameDivider"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/userDataFirstNameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    android:hint="@string/first_name"
+                    android:inputType="textPersonName"/>
+            </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_below="@id/fNameDivider"
-            android:id="@+id/userDataLastNameInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/userDataLastNameInput"
+            <View
+                android:id="@+id/fNameDivider"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@android:color/white"
-                android:hint="@string/last_name"
-                android:inputType="textPersonName"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="0.5dp"
+                android:layout_below="@id/userDataFirstNameInputLayout"
+                android:background="#b1b1b1"/>
 
-        <View
-            android:id="@+id/lNameDivider"
-            android:layout_below="@id/userDataLastNameInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
-
-        <LinearLayout
-            android:id="@+id/userDataPhoneCodeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="?selectableItemBackground"
-            android:layout_below="@id/lNameDivider"
-            android:clickable="true"
-            android:orientation="vertical"
-            android:paddingEnd="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingStart="16dp"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/phone_code"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/userDaraPhoneCodeTextlabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:hint="@string/_373"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"/>
-
-            <Spinner
-                android:id="@+id/userDataPhoneCodeSpinner"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/userDataLastNameInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"/>
-        </LinearLayout>
+                android:layout_height="?actionBarSize"
+                android:layout_below="@id/fNameDivider"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
 
-        <View
-            android:id="@+id/userDataPhoneCodeDivider"
-            android:layout_below="@id/userDataPhoneCodeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/userDataLastNameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    android:hint="@string/last_name"
+                    android:inputType="textPersonName"/>
+            </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_below="@id/userDataPhoneCodeDivider"
-            android:id="@+id/userDataPhoneNumberInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/userDataPhoneNumberInput"
+            <View
+                android:id="@+id/lNameDivider"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@android:color/white"
-                android:hint="@string/phone_number"
-                android:inputType="phone"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="0.5dp"
+                android:layout_below="@id/userDataLastNameInputLayout"
+                android:background="#b1b1b1"/>
 
-        <View
-            android:id="@+id/userDataPhoneNumberDivider"
-            android:layout_below="@id/userDataPhoneNumberInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
-
-        <LinearLayout
-            android:id="@+id/userDataCountryLayout"
-            android:layout_width="match_parent"
-            android:layout_below="@id/userDataPhoneNumberDivider"
-            android:layout_height="?actionBarSize"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:orientation="vertical"
-            android:paddingEnd="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingStart="16dp"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:id="@+id/userDatacountryTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/country"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/userDataCountrylabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:hint="@string/moldova"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"/>
-
-            <Spinner
-                android:id="@+id/userDataCountrySpinner"
+            <LinearLayout
+                android:id="@+id/userDataPhoneCodeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"/>
-        </LinearLayout>
+                android:layout_height="?actionBarSize"
+                android:layout_below="@id/lNameDivider"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="5dp">
 
-        <View
-            android:id="@+id/userDataCountryDivider"
-            android:layout_below="@id/userDataCountryLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_code"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="12sp"/>
 
-        <LinearLayout
-            android:id="@+id/userDataLanguageLayout"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_below="@id/userDataCountryDivider"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:orientation="vertical"
-            android:paddingEnd="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingStart="16dp"
-            android:paddingTop="5dp">
+                <TextView
+                    android:id="@+id/userDaraPhoneCodeTextlabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/_373"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/userDataLanguageTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/language"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="12sp"/>
+                <Spinner
+                    android:id="@+id/userDataPhoneCodeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/userDataLanguagelabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:hint="@string/english"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"/>
-
-            <Spinner
-                android:id="@+id/userDataLanguageSpinner"
+            <View
+                android:id="@+id/userDataPhoneCodeDivider"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"/>
-        </LinearLayout>
+                android:layout_height="0.5dp"
+                android:layout_below="@id/userDataPhoneCodeLayout"
+                android:background="#b1b1b1"/>
 
-        <View
-            android:id="@+id/userDataLanguageDivider"
-            android:layout_below="@id/userDataLanguageLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/userDataPhoneNumberInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_below="@id/userDataPhoneCodeDivider"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
 
-        <Button
-            android:id="@+id/userDataSaveButton"
-            android:layout_below="@id/userDataLanguageDivider"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_margin="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:text="@string/save"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:background="@drawable/green_button_bg"
-            style="@style/Base.Widget.AppCompat.ActionButton"/>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/userDataPhoneNumberInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    android:hint="@string/phone_number"
+                    android:inputType="phone"/>
+            </android.support.design.widget.TextInputLayout>
 
-        <View
-            android:id="@+id/inputFocusIndicator"
-            android:layout_width="5dp"
-            android:layout_height="?actionBarSize"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/colorAccent"/>
-    </RelativeLayout>
-</ScrollView>
+            <View
+                android:id="@+id/userDataPhoneNumberDivider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/userDataPhoneNumberInputLayout"
+                android:background="#b1b1b1"/>
+
+            <LinearLayout
+                android:id="@+id/userDataCountryLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_below="@id/userDataPhoneNumberDivider"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/userDatacountryTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/country"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/userDataCountrylabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/moldova"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"/>
+
+                <Spinner
+                    android:id="@+id/userDataCountrySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/userDataCountryDivider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/userDataCountryLayout"
+                android:background="#b1b1b1"/>
+
+            <LinearLayout
+                android:id="@+id/userDataLanguageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_below="@id/userDataCountryDivider"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/userDataLanguageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/language"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/userDataLanguagelabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/english"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"/>
+
+                <Spinner
+                    android:id="@+id/userDataLanguageSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/userDataLanguageDivider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/userDataLanguageLayout"
+                android:background="#b1b1b1"/>
+
+            <View
+                android:id="@+id/inputFocusIndicator"
+                android:layout_width="5dp"
+                android:layout_height="?actionBarSize"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/colorAccent"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/userDataSaveButton"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/green_button_bg"
+        android:text="@string/save"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+</RelativeLayout>

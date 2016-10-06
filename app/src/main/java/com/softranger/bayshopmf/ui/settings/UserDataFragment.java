@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -39,42 +40,60 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnFocusChange;
+import butterknife.Unbinder;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserDataFragment extends ParentFragment implements View.OnClickListener, View.OnFocusChangeListener {
+public class UserDataFragment extends ParentFragment {
 
     private SettingsActivity mActivity;
+    private Unbinder mUnbinder;
 
-    private TextInputEditText mFirstNameInput;
-    private TextInputEditText mLastNameInput;
-    private TextInputEditText mPhoneInput;
-    private TextInputLayout mFirstNameLayout;
-    private TextInputLayout mLastNameLayout;
-    private TextInputLayout mPhoneLayout;
+    @BindView(R.id.userDataFirstNameInput)
+    TextInputEditText mFirstNameInput;
+    @BindView(R.id.userDataLastNameInput)
+    TextInputEditText mLastNameInput;
+    @BindView(R.id.userDataPhoneNumberInput)
+    TextInputEditText mPhoneInput;
+    @BindView(R.id.userDataFirstNameInputLayout)
+    TextInputLayout mFirstNameLayout;
+    @BindView(R.id.userDataLastNameInputLayout)
+    TextInputLayout mLastNameLayout;
+    @BindView(R.id.userDataPhoneNumberInputLayout)
+    TextInputLayout mPhoneLayout;
 
-    private LinearLayout mPhoneCodeBtn;
-    private LinearLayout mCountryBtn;
-    private LinearLayout mLanguageBtn;
+    @BindView(R.id.userDaraPhoneCodeTextlabel)
+    TextView mPhoneCodeLabel;
+    @BindView(R.id.userDataCountrylabel)
+    TextView mCountryLabel;
+    @BindView(R.id.userDataLanguagelabel)
+    TextView mLanguageLabel;
 
-    private TextView mPhoneCodeLabel;
-    private TextView mCountryLabel;
-    private TextView mLanguageLabel;
-
-    private Spinner mPhoneCodeSpinner;
-    private Spinner mCountrySpinner;
-    private Spinner mLanguageSpinner;
+    @BindView(R.id.userDataPhoneCodeSpinner)
+    Spinner mPhoneCodeSpinner;
+    @BindView(R.id.userDataCountrySpinner)
+    Spinner mCountrySpinner;
+    @BindView(R.id.userDataLanguageSpinner)
+    Spinner mLanguageSpinner;
 
     private ArrayList<Country> mCountries;
     private ArrayList<Language> mLanguages;
     private ArrayList<CountryCode> mCountryCodes;
 
-    private View mFocusIndicator;
+    @BindView(R.id.inputFocusIndicator)
+    View mFocusIndicator;
 
-    private Button mSaveButton;
+    @BindView(R.id.userDataSaveButton)
+    Button mSaveButton;
+    @BindView(R.id.userDataScrollView)
+    ScrollView mScrollView;
 
     private CodesSpinnerAdapter mSpinnerAdapter;
 
@@ -87,53 +106,68 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
         // Required empty public constructor
     }
 
+    public static UserDataFragment newInstance() {
+        Bundle args = new Bundle();
+        UserDataFragment fragment = new UserDataFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_data, container, false);
+        mUnbinder = ButterKnife.bind(this, view);
         mActivity = (SettingsActivity) getActivity();
 
-        mFocusIndicator = view.findViewById(R.id.inputFocusIndicator);
+        mScrollView.setVisibility(View.GONE);
+
         // create lists
         mCountries = new ArrayList<>();
         mLanguages = new ArrayList<>();
         mCountryCodes = new ArrayList<>();
-        // bind spinners
-        mPhoneCodeSpinner = (Spinner) view.findViewById(R.id.userDataPhoneCodeSpinner);
-        mCountrySpinner = (Spinner) view.findViewById(R.id.userDataCountrySpinner);
-        mLanguageSpinner = (Spinner) view.findViewById(R.id.userDataLanguageSpinner);
-        // bind labels
-        mPhoneCodeLabel = (TextView) view.findViewById(R.id.userDaraPhoneCodeTextlabel);
-        mCountryLabel = (TextView) view.findViewById(R.id.userDataCountrylabel);
-        mLanguageLabel = (TextView) view.findViewById(R.id.userDataLanguagelabel);
-        // bind inputs
-        mFirstNameInput = (TextInputEditText) view.findViewById(R.id.userDataFirstNameInput);
+
         mFirstNameInput.requestFocus();
-        mFirstNameInput.setOnFocusChangeListener(this);
-        mLastNameInput = (TextInputEditText) view.findViewById(R.id.userDataLastNameInput);
-        mLastNameInput.setOnFocusChangeListener(this);
-        mPhoneInput = (TextInputEditText) view.findViewById(R.id.userDataPhoneNumberInput);
-        mPhoneInput.setOnFocusChangeListener(this);
         mPhoneInput.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-        // input layouts
-        mFirstNameLayout = (TextInputLayout) view.findViewById(R.id.userDataFirstNameInputLayout);
-        mLastNameLayout = (TextInputLayout) view.findViewById(R.id.userDataLastNameInputLayout);
-        mPhoneLayout = (TextInputLayout) view.findViewById(R.id.userDataPhoneNumberInputLayout);
-        // bind buttons
-        mPhoneCodeBtn = (LinearLayout) view.findViewById(R.id.userDataPhoneCodeLayout);
-        mCountryBtn = (LinearLayout) view.findViewById(R.id.userDataCountryLayout);
-        mLanguageBtn = (LinearLayout) view.findViewById(R.id.userDataLanguageLayout);
-        mPhoneCodeBtn.setOnClickListener(this);
-        mCountryBtn.setOnClickListener(this);
-        mLanguageBtn.setOnClickListener(this);
-        // bind save button
-        mSaveButton = (Button) view.findViewById(R.id.userDataSaveButton);
-        mSaveButton.setOnClickListener(this);
 
         mActivity.toggleLoadingProgress(true);
         ApiClient.getInstance().getRequest(Constants.Api.urlPersonalData(), mHandler);
         setDataOnPosition();
         return view;
+    }
+
+    @OnClick(R.id.userDataPhoneCodeLayout)
+    void selectPhoneCode() {
+        mPhoneCodeSpinner.performClick();
+    }
+
+    @OnClick(R.id.userDataCountryLayout)
+    void selectCoutny() {
+        mCountrySpinner.performClick();
+    }
+
+    @OnClick(R.id.userDataLanguageLayout)
+    void selectLanguage() {
+        mLanguageSpinner.performClick();
+    }
+
+    @OnClick(R.id.userDataSaveButton)
+    void saveUserData() {
+        isSaveClicked = true;
+        String surname = String.valueOf(mLastNameInput.getText());
+        String name = String.valueOf(mFirstNameInput.getText());
+        String phone = String.valueOf(mPhoneInput.getText());
+        Application.user.setLastName(surname);
+        Application.user.setFirstName(name);
+        Application.user.setPhoneNumber(phone);
+        RequestBody body = new FormBody.Builder()
+                .add("surname", Application.user.getLastName())
+                .add("name", Application.user.getFirstName())
+                .add("countryId", String.valueOf(Application.user.getCountryId()))
+                .add("phoneCode", String.valueOf(Application.user.getPhoneCode()))
+                .add("phone", Application.user.getPhoneNumber())
+                .add("languageId", String.valueOf(Application.user.getLanguageId()))
+                .build();
+        ApiClient.getInstance().postRequest(body, Constants.Api.urlPersonalData(), mHandler);
     }
 
     private void setDataOnPosition() {
@@ -149,6 +183,7 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     public void onDestroyView() {
         super.onDestroyView();
         mActivity.hideKeyboard();
+        mUnbinder.unbind();
     }
 
     @Override
@@ -241,17 +276,14 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
                 mCountryLabel.setText(country.getName());
                 currentCountryId = country.getId();
                 Application.user.setCountryId(country.getId());
-                onClick(mSaveButton);
+                saveUserData();
             }
         });
 
-        mSpinnerAdapter = new CodesSpinnerAdapter(mActivity, R.layout.spinner_list_item, mCountryCodes);
-        mSpinnerAdapter.setOnCountryClickListener(new CodesSpinnerAdapter.OnCountryClickListener() {
-            @Override
-            public void onCountryClick(CountryCode countryCode, int position) {
-                mPhoneCodeLabel.setText(countryCode.getCode());
-                Application.user.setPhoneCode(countryCode.getCode());
-            }
+        mSpinnerAdapter = new CodesSpinnerAdapter(mActivity, R.layout.phone_code_item, mCountryCodes);
+        mSpinnerAdapter.setOnCountryClickListener((countryCode, position) -> {
+            mPhoneCodeLabel.setText(countryCode.getCode());
+            Application.user.setPhoneCode(countryCode.getCode());
         });
 
         mCountrySpinner.setAdapter(countriesAdapter);
@@ -260,39 +292,6 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
 
         new ImageDownloadThread<>(mCountryCodes, mDownloadHandler, mActivity).start();
         setDataOnPosition();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.userDataPhoneCodeLayout:
-                mPhoneCodeSpinner.performClick();
-                break;
-            case R.id.userDataCountryLayout:
-                mCountrySpinner.performClick();
-                break;
-            case R.id.userDataLanguageLayout:
-                mLanguageSpinner.performClick();
-                break;
-            case R.id.userDataSaveButton:
-                isSaveClicked = true;
-                String surname = String.valueOf(mLastNameInput.getText());
-                String name = String.valueOf(mFirstNameInput.getText());
-                String phone = String.valueOf(mPhoneInput.getText());
-                Application.user.setLastName(surname);
-                Application.user.setFirstName(name);
-                Application.user.setPhoneNumber(phone);
-                RequestBody body = new FormBody.Builder()
-                        .add("surname", Application.user.getLastName())
-                        .add("name", Application.user.getFirstName())
-                        .add("countryId", String.valueOf(Application.user.getCountryId()))
-                        .add("phoneCode", String.valueOf(Application.user.getPhoneCode()))
-                        .add("phone", Application.user.getPhoneNumber())
-                        .add("languageId", String.valueOf(Application.user.getLanguageId()))
-                        .build();
-                ApiClient.getInstance().postRequest(body, Constants.Api.urlPersonalData(), mHandler);
-                break;
-        }
     }
 
     @Override
@@ -313,6 +312,7 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
     @Override
     public void finallyMethod() {
         mActivity.toggleLoadingProgress(false);
+        mScrollView.setVisibility(View.VISIBLE);
     }
 
     private Handler mDownloadHandler = new Handler(Looper.getMainLooper()) {
@@ -324,8 +324,8 @@ public class UserDataFragment extends ParentFragment implements View.OnClickList
         }
     };
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
+    @OnFocusChange({R.id.userDataFirstNameInput, R.id.userDataLastNameInput, R.id.userDataPhoneNumberInput})
+    void onInputFocusChanged(View v, boolean hasFocus) {
         switch (v.getId()) {
             case R.id.userDataFirstNameInput:
                 if (hasFocus)

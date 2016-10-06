@@ -18,6 +18,10 @@ public class AddressesList implements Parcelable {
     @JsonProperty("selectedAddress") private Address mSelectedAddress;
     @JsonProperty("addresses") private ArrayList<Address> mAddresses;
 
+    public AddressesList() {
+        // empty constructor for jackson
+    }
+
     protected AddressesList(Parcel in) {
         mSelectedAddress = in.readParcelable(Address.class.getClassLoader());
         mAddresses = in.createTypedArrayList(Address.CREATOR);

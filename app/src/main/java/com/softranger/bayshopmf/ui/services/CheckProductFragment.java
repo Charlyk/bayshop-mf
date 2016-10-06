@@ -157,5 +157,6 @@ public class CheckProductFragment extends ParentFragment {
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
+        mActivity.hideKeyboard();
     }
 }

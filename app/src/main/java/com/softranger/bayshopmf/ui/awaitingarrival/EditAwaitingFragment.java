@@ -107,6 +107,7 @@ public class EditAwaitingFragment extends ParentFragment implements
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        mActivity.hideKeyboard();
     }
 
     @Override

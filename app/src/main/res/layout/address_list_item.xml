@@ -11,30 +11,38 @@
     android:orientation="vertical">
 
     <ImageButton
-        android:id="@+id/addressAddToFavoritesButton"
-        style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/addressItemNameLabel"
-        android:layout_alignBottom="@+id/addressItemNameLabel"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@mipmap/ic_star_silver_24dpi"/>
-
-    <ImageButton
         android:id="@+id/addressEditButton"
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/addressItemNameLabel"
         android:layout_alignBottom="@+id/addressItemNameLabel"
-        android:layout_toLeftOf="@id/addressAddToFavoritesButton"
-        android:layout_toStartOf="@id/addressAddToFavoritesButton"
         android:background="?selectableItemBackgroundBorderless"
-        android:src="@mipmap/ic_edit_24dpi"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@mipmap/ic_setting_30dp"/>
+
+    <ImageButton
+        android:id="@+id/addressAddToFavoritesButton"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/addressItemNameLabel"
+        android:layout_alignBottom="@+id/addressItemNameLabel"
+        android:layout_toLeftOf="@id/addressEditButton"
+        android:layout_toStartOf="@id/addressEditButton"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@mipmap/ic_star_silver_24dpi"/>
+
+    <Spinner
+        android:id="@+id/addressItemSpinner"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/addressEditButton"
+        android:layout_alignRight="@id/addressEditButton"
+        android:layout_alignEnd="@id/addressEditButton"/>
 
     <TextView
         android:id="@+id/addressItemNameLabel"
@@ -43,12 +51,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="5dp"
+        android:paddingBottom="5dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_toLeftOf="@id/addressEditButton"
-        android:layout_toStartOf="@id/addressEditButton"
+        android:paddingTop="20dp"
+        android:layout_toLeftOf="@id/addressAddToFavoritesButton"
+        android:layout_toStartOf="@id/addressAddToFavoritesButton"
         android:drawableLeft="@mipmap/ic_shipping_address"
         android:drawablePadding="5dp"
         android:drawableStart="@mipmap/ic_shipping_address"
@@ -179,30 +187,10 @@
         android:textColor="@color/textColor"
         tools:text="+37379466284"/>
 
-    <LinearLayout
-        android:id="@+id/addressDeleteButtonHolder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:orientation="vertical"
-        android:layout_below="@id/addressPhoneNumberLabel">
-
-        <Button
-            android:id="@+id/addressDeleteButton"
-            android:textColor="@color/colorAccent"
-            android:text="@string/delete_address"
-            android:visibility="gone"
-            style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"/>
-    </LinearLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/addressDeleteButtonHolder"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/addressPhoneNumberLabel"
         android:background="@drawable/drop_shadow"/>
 </RelativeLayout>

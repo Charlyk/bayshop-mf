@@ -4,6 +4,7 @@ import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.InStockList;
 import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.model.address.AddressToEdit;
+import com.softranger.bayshopmf.model.address.AddressesList;
 import com.softranger.bayshopmf.model.app.ParcelsCount;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.AwaitingArrival;
@@ -177,4 +178,10 @@ public interface BayShopApiInterface {
 
     @GET("balance/")
     Call<ServerResponse<PaymentHistories>> getPaymentHistoryForPeriod(@Query("period") String period);
+
+    @GET("member-address")
+    Call<ServerResponse<AddressesList>> getUserAddresses();
+
+    @DELETE("member-address/{id}")
+    Call<ServerResponse> deleteUserAddress(@Path("id") String addressId);
 }

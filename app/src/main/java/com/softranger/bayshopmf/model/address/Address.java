@@ -2,6 +2,8 @@ package com.softranger.bayshopmf.model.address;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -210,159 +212,25 @@ public class Address implements Parcelable {
         dest.writeByte((byte) (mIsInFavorites ? 1 : 0));
     }
 
-    public static class Builder {
-        private String mClientName;
-        private String mFirstName;
-        private String mLastName;
-        private String mEmail;
-        private String mStreet;
-        private String mCity;
-        private String mCountry;
-        private String mPostalCode;
-        private String mPhoneNumber;
-        private String mPhoneCode;
-        private int mCountryId;
-        private int mId = -1;
-        private boolean mIsInFavorites;
-        private String mState;
+    public static class AddressAction {
+        @StringRes
+        private int title;
+        @DrawableRes
+        private int iconId;
 
-        public Builder clientName(String clientName) {
-            mClientName = clientName;
-            return this;
+        public AddressAction(@StringRes int title, @DrawableRes int iconId) {
+            this.title = title;
+            this.iconId = iconId;
         }
 
-        public Builder firstName(String firstName) {
-            mFirstName = firstName;
-            return this;
+        @StringRes
+        public int getTitle() {
+            return title;
         }
 
-        public Builder lastName(String lastName) {
-            mLastName = lastName;
-            return this;
-        }
-
-        public Builder email(String email) {
-            mEmail = email;
-            return this;
-        }
-
-        public Builder street(String street) {
-            mStreet = street;
-            return this;
-        }
-
-        public Builder city(String city) {
-            mCity = city;
-            return this;
-        }
-
-        public Builder country(String country) {
-            mCountry = country;
-            return this;
-        }
-
-        public Builder postalCode(String postalCode) {
-            mPostalCode = postalCode;
-            return this;
-        }
-
-        public Builder phoneNumber(String phoneNumber) {
-            mPhoneNumber = phoneNumber;
-            return this;
-        }
-
-        public Builder id(int id) {
-            mId = id;
-            return this;
-        }
-
-        public Builder phoneCode(String phoneCode) {
-            mPhoneCode = phoneCode;
-            return this;
-        }
-
-        public Builder countryId(int countryId) {
-            mCountryId = countryId;
-            return this;
-        }
-
-        public Builder isInFavorites(boolean isInFavorites) {
-            mIsInFavorites = isInFavorites;
-            return this;
-        }
-
-        public Builder state(String state) {
-            mState = state;
-            return this;
-        }
-
-        public Address build() {
-            Address address = new Address();
-            address.mClientName = this.mClientName;
-            address.mFirstName = this.mFirstName;
-            address.mLastName = this.mLastName;
-            address.mEmail = this.mEmail;
-            address.mStreet = this.mStreet;
-            address.mCity = this.mCity;
-            address.mCountry = this.mCountry;
-            address.mPostalCode = this.mPostalCode;
-            address.mPhoneNumber = this.mPhoneNumber;
-            address.mPhoneCode = this.mPhoneCode;
-            address.mCountryId = this.mCountryId;
-            address.mId = this.mId;
-            address.mIsInFavorites = this.mIsInFavorites;
-            address.mState = this.mState;
-            return address;
-        }
-    }
-
-    @JsonDeserialize(using = CountriesDeserializer.class)
-    public static class AddressCountries implements Parcelable {
-        private int mId;
-        private String mName;
-
-        protected AddressCountries(Parcel in) {
-            mId = in.readInt();
-            mName = in.readString();
-        }
-
-        public static final Creator<AddressCountries> CREATOR = new Creator<AddressCountries>() {
-            @Override
-            public AddressCountries createFromParcel(Parcel in) {
-                return new AddressCountries(in);
-            }
-
-            @Override
-            public AddressCountries[] newArray(int size) {
-                return new AddressCountries[size];
-            }
-        };
-
-        public int getId() {
-            return mId;
-        }
-
-        public void setId(int id) {
-            mId = id;
-        }
-
-        public String getName() {
-            return mName;
-        }
-
-        public void setName(String name) {
-            mName = name;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(mId);
-            dest.writeString(mName);
+        @DrawableRes
+        public int getIconId() {
+            return iconId;
         }
     }
 }

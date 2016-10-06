@@ -131,21 +131,24 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
             mRecyclerView.setItemViewCacheSize(mInStocks.size());
             toggleTotalsVisibility(false);
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<InStockList>> call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
     };
 

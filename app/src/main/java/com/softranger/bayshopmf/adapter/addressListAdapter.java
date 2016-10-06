@@ -4,14 +4,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.ParentActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,13 +32,10 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
     private ArrayList<Address> mAddresses;
     private OnAddressClickListener mOnAddressClickListener;
-    private ButtonType mButtonType;
 
-    public AddressListAdapter(ArrayList<Address> addresses, ButtonType buttonType) {
+    public AddressListAdapter(ArrayList<Address> addresses) {
         mAddresses = addresses;
         sortListByName();
-        if (buttonType == null) buttonType = ButtonType.select;
-        mButtonType = buttonType;
     }
 
     private void sortListByName() {
@@ -78,15 +78,6 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         holder.mCountry.setText(holder.mAddressObj.getCountry());
         holder.mPostalCode.setText(holder.mAddressObj.getPostalCode());
         holder.mClientName.setText(holder.mAddressObj.getClientName());
-
-        switch (mButtonType) {
-            case delete:
-                holder.mDeleteButton.setVisibility(View.VISIBLE);
-                break;
-            default:
-                holder.mDeleteButton.setVisibility(View.GONE);
-                break;
-        }
     }
 
     @Override
@@ -99,7 +90,8 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         return mAddresses.get(position).getClientName().substring(0, 1);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, AddressSpinnerAdapter.OnItemClickListener {
+
         @BindView(R.id.addressItemNameLabel) TextView mClientName;
         @BindView(R.id.addressStreetLabel) TextView mStreet;
         @BindView(R.id.addressPhoneNumberLabel) TextView mPhoneNumber;
@@ -107,7 +99,13 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         @BindView(R.id.addressCountryLabel) TextView mCountry;
         @BindView(R.id.addressPostalCodeLabel) TextView mPostalCode;
         @BindView(R.id.addressAddToFavoritesButton) ImageButton mAddToFavorite;
-        @BindView(R.id.addressDeleteButton) Button mDeleteButton;
+        @BindView(R.id.addressItemSpinner)
+        Spinner mSpinner;
+
+        final Address.AddressAction[] mActions = {
+                new Address.AddressAction(R.string.edit_address, R.mipmap.ic_edit_black_24dp),
+                new Address.AddressAction(R.string.delete, R.mipmap.ic_delete_black_24dp)
+        };
 
         Address mAddressObj;
 
@@ -115,13 +113,17 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+
+            AddressSpinnerAdapter adapter = new AddressSpinnerAdapter(Application.getInstance(),
+                    R.layout.spinner_list_item, mActions);
+            adapter.setOnItemClickListener(this);
+
+            mSpinner.setAdapter(adapter);
         }
 
         @OnClick(R.id.addressEditButton)
         void editAddress() {
-            if (mOnAddressClickListener != null) {
-                mOnAddressClickListener.onEditAddressClick(mAddressObj, getAdapterPosition());
-            }
+            mSpinner.performClick();
         }
 
         @OnClick(R.id.addressAddToFavoritesButton)
@@ -131,17 +133,23 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
             }
         }
 
-        @OnClick(R.id.addressDeleteButton)
-        void deleteAddress() {
-            if (mOnAddressClickListener != null) {
-                mOnAddressClickListener.onDeleteAddressClick(mAddressObj, getAdapterPosition());
-            }
-        }
-
         @Override
         public void onClick(View v) {
             if (mOnAddressClickListener != null) {
                 mOnAddressClickListener.onSelectAddressClick(mAddressObj, getAdapterPosition());
+            }
+        }
+
+        @Override
+        public void onItemClicked(int position) {
+            if (mOnAddressClickListener == null) return;
+            switch (position) {
+                case 0:
+                    mOnAddressClickListener.onEditAddressClick(mAddressObj, getAdapterPosition());
+                    break;
+                case 1:
+                    mOnAddressClickListener.onDeleteAddressClick(mAddressObj, getAdapterPosition());
+                    break;
             }
         }
     }

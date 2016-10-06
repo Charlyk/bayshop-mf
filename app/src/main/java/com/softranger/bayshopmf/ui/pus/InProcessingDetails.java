@@ -451,7 +451,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
     @Override
     public void onSelectAddressClick(PUSParcelDetailed item, int position) {
-        mActivity.addFragment(AddressesListFragment.newInstance(AddressListAdapter.ButtonType.select), true);
+        mActivity.addFragment(AddressesListFragment.newInstance(true), true);
     }
 
     //----------------------- TAKEN TO DELIVERY -----------------------//

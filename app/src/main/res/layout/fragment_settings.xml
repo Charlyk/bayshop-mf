@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <!--user settings title-->
+        <TextView
+            android:id="@+id/settingsUserSettingsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/user_settings"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"/>
+
+        <!--user data-->
+        <TextView
+            android:id="@+id/settingsUserDataBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/user_data"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"/>
+
+        <!--change password-->
+        <TextView
+            android:id="@+id/settingsChangePassBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/change_password"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"/>
+
+        <!--addresses-->
+        <TextView
+            android:id="@+id/settingsAddressesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/addresses"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"/>
+
+        <!--autopackaging title-->
+        <RelativeLayout
+            android:id="@+id/settingsAutopackagingBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/autopacking"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/settingsAutopackagingSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                tools:checked="true"/>
+        </RelativeLayout>
+
+        <!--autopckaging buttons layout-->
+        <LinearLayout
+            android:id="@+id/settingsAutoPackagingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <!--address-->
+            <RelativeLayout
+                android:id="@+id/settingsAutopackagingAddressBtn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="?selectableItemBackground"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/settingsAutoPackingAddressTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="?selectableItemBackground"
+                    android:text="@string/address"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/settingsAutopackagingAddressSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/settingsAutoPackingAddressTitle"
+                    android:layout_toRightOf="@id/settingsAutoPackingAddressTitle"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:singleLine="true"
+                    tools:text="Eduard Albu"/>
+            </RelativeLayout>
+
+            <!--shipping-->
+            <RelativeLayout
+                android:id="@+id/settingsAutopackagingShippingBtn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="?selectableItemBackground"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/settingsAutoPackingShippingTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="?selectableItemBackground"
+                    android:text="@string/shipping_by"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/settingsAutopackagingShippingSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/settingsAutoPackingShippingTitle"
+                    android:layout_toRightOf="@id/settingsAutoPackingShippingTitle"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:singleLine="true"
+                    tools:text="BayShop Air Post"/>
+            </RelativeLayout>
+
+            <!--insurance-->
+            <RelativeLayout
+                android:id="@+id/settingsAutopackagingInsuranceBtn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="?selectableItemBackground"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/settingsAutoPackingInsuranceTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="?selectableItemBackground"
+                    android:text="@string/insurance"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp"/>
+
+                <CheckBox
+                    android:id="@+id/settingsAutopackagingInsuranceCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!--notifications title-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/notifications"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"/>
+
+        <!--sms-->
+        <RelativeLayout
+            android:id="@+id/settingsNotificationsSmsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/settingsNotificationsSmsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="?selectableItemBackground"
+                android:text="@string/sms"
+                android:textColor="@color/textColor"
+                android:textSize="18sp"/>
+
+            <CheckBox
+                android:id="@+id/settingsNotificationsSmsCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <!--notifications-->
+        <RelativeLayout
+            android:id="@+id/settingsNotificationsNotifyBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/settingsNotificationsNotifyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="?selectableItemBackground"
+                android:text="@string/notifications"
+                android:textColor="@color/textColor"
+                android:textSize="18sp"/>
+
+            <CheckBox
+                android:id="@+id/settingsNotificationsNotifyCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <!--emails-->
+        <RelativeLayout
+            android:id="@+id/settingsNotificationsEmailsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/settingsNotificationsEmailsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="?selectableItemBackground"
+                android:text="@string/emails"
+                android:textColor="@color/textColor"
+                android:textSize="18sp"/>
+
+            <CheckBox
+                android:id="@+id/settingsNotificationsEmailsCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <!--log out-->
+        <TextView
+            android:id="@+id/settingsLogOutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/log_out"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"/>
+    </LinearLayout>
+</ScrollView>

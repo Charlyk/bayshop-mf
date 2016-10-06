@@ -34,27 +34,21 @@ public class SpinnerAdapter<T extends SpinnerObj> extends ArrayAdapter<T> {
     @Override
     public View getDropDownView(int position, View convertView,
                                 ViewGroup parent) {
-        // TODO Auto-generated method stub
         return getCustomView(position, convertView, parent);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         return getCustomView(position, convertView, parent);
     }
 
     public View getCustomView(final int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         //return super.getView(position, convertView, parent);
         final T object = mCountries.get(position);
         View row = LayoutInflater.from(mContext).inflate(R.layout.country_spinner_item, parent, false);
-        row.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnCountryClickListener != null) {
-                    mOnCountryClickListener.onCountryClick(object, position);
-                }
+        row.setOnClickListener(v -> {
+            if (mOnCountryClickListener != null) {
+                mOnCountryClickListener.onCountryClick(object, position);
             }
         });
         TextView codeLabel = (TextView) row.findViewById(R.id.countryNameLabel);

@@ -7,18 +7,12 @@
     android:layout_height="match_parent"
     tools:context="com.softranger.bayshopmf.ui.settings.SettingsActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="false"
-        app:layout_scrollFlags="scroll|enterAlways"
-        android:id="@+id/view">
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/settingsActivityToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:navigationIcon="@mipmap/ic_arrow_back_white"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:theme="@style/ToolbarColoredBackArrow">
 
@@ -31,16 +25,15 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/settings"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"/>
         </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/settingsActivityContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/view"/>
+        android:layout_below="@+id/settingsActivityToolbar"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -48,4 +41,10 @@
         android:id="@+id/settingsProgressBar"
         android:visibility="gone"
         android:layout_centerInParent="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/drop_shadow"
+        android:layout_below="@id/settingsActivityToolbar"/>
 </RelativeLayout>

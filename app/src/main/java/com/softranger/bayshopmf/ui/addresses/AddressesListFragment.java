@@ -3,14 +3,12 @@ package com.softranger.bayshopmf.ui.addresses;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,9 +27,9 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.AddressListAdapter;
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.address.Address;
+import com.softranger.bayshopmf.model.address.AddressesList;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.InStock;
-import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.steps.ShippingMethodFragment;
 import com.softranger.bayshopmf.util.Application;
@@ -49,9 +47,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class AddressesListFragment extends ParentFragment implements AddressListAdapter.OnAddressClickListener,
         FloatingActionsMenu.OnFloatingActionsMenuUpdateListener {
 
@@ -63,8 +59,9 @@ public class AddressesListFragment extends ParentFragment implements AddressList
     private AddressListAdapter mAdapter;
     private AlertDialog mDeleteDialog;
     private Unbinder mUnbinder;
-    private AddressListAdapter.ButtonType mButtonType;
     private Call<ServerResponse<CreationDetails>> mResponseCall;
+    private Call<ServerResponse<AddressesList>> mAddressesCall;
+    private Call<ServerResponse> mDeleteCall;
     private ArrayList<InStock> mInStocks;
     private CreationDetails mCreationDetails;
 
@@ -73,14 +70,18 @@ public class AddressesListFragment extends ParentFragment implements AddressList
     @BindView(R.id.addressActionMenu) FloatingActionsMenu mActionsMenu;
     @BindView(R.id.addressFabBg) FrameLayout mFabBg;
 
+    public boolean mIsGetRequest;
+    public boolean mSendBack;
+
     public AddressesListFragment() {
         // Required empty public constructor
     }
 
-    public static AddressesListFragment newInstance(@Nullable AddressListAdapter.ButtonType buttonType) {
+    public static AddressesListFragment newInstance(boolean sendBack) {
         Bundle args = new Bundle();
+        args.putBoolean("isGet", true);
+        args.putBoolean("sendBack", sendBack);
         AddressesListFragment fragment = new AddressesListFragment();
-        fragment.mButtonType = buttonType;
         fragment.setArguments(args);
         return fragment;
     }
@@ -109,17 +110,25 @@ public class AddressesListFragment extends ParentFragment implements AddressList
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ArrayList<Address> addresses = new ArrayList<>();
-        mAdapter = new AddressListAdapter(addresses, mButtonType);
+        mAdapter = new AddressListAdapter(addresses);
         mAdapter.setOnAddressClickListener(this);
 
         if (getArguments().containsKey(BOXES_ARG)) {
             mInStocks = getArguments().getParcelableArrayList(BOXES_ARG);
+        } else if (getArguments().containsKey("isGet")) {
+            mIsGetRequest = getArguments().getBoolean("isGet");
+            mSendBack = getArguments().getBoolean("sendBack");
         }
 
         mRecyclerView.setAdapter(mAdapter);
         mFastScroller.setRecyclerView(mRecyclerView);
 
-        getAddressesList(mInStocks);
+        if (!mIsGetRequest) {
+            getAddressesList(mInStocks);
+        } else {
+            mAddressesCall = Application.apiInterface().getUserAddresses();
+            mAddressesCall.enqueue(mAddressesListResponseCallback);
+        }
         return rootView;
     }
 
@@ -134,6 +143,10 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         mResponseCall.enqueue(mResponseCallback);
     }
 
+
+    /**
+     * Response callback used to receive all data in case of parcel building
+     */
     private ResponseCallback<CreationDetails> mResponseCallback = new ResponseCallback<CreationDetails>() {
         @Override
         public void onSuccess(CreationDetails data) {
@@ -158,18 +171,25 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         }
     };
 
+    /**
+     * Receives actions to update addresses list
+     */
     private BroadcastReceiver mTitleReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case EditAddressActivity.ACTION_REFRESH_ADDRESS:
-                    if (mInStocks != null) {
+                    if (mInStocks != null && !mIsGetRequest) {
                         getAddressesList(mInStocks);
+                    } else {
+                        mAddressesCall = Application.apiInterface().getUserAddresses();
+                        mAddressesCall.enqueue(mAddressesListResponseCallback);
                     }
                     break;
             }
         }
     };
+
 
     @OnClick(R.id.addressCreateFloatingBtn)
     void createNewAddress() {
@@ -189,14 +209,17 @@ public class AddressesListFragment extends ParentFragment implements AddressList
 
     @Override
     public void onSelectAddressClick(Address address, int position) {
-        if (mCreationDetails != null) {
+        if (mCreationDetails != null && !mIsGetRequest) {
             mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
                     String.valueOf(address.getId())), true);
+        } else if (mSendBack) {
+            Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
+            changeAddress.putExtra("address", address);
+            mActivity.sendBroadcast(changeAddress);
+            mActivity.onBackPressed();
+        } else {
+            onEditAddressClick(address, position);
         }
-//        Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
-//        changeAddress.putExtra("address", address);
-//        mActivity.sendBroadcast(changeAddress);
-//        mActivity.onBackPressed();
     }
 
     @Override
@@ -223,7 +246,8 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         mDeleteDialog = mActivity.getDialog(getString(R.string.delete_address), message, R.mipmap.ic_delete_address_24dp, getString(R.string.confirm),
                 v -> {
                     mAdapter.removeItem(position);
-                    ApiClient.getInstance().delete(Constants.Api.urlGetAddress(String.valueOf(address.getId())), mHandler);
+                    mDeleteCall = Application.apiInterface().deleteUserAddress(String.valueOf(address.getId()));
+                    mDeleteCall.enqueue(mDeleteCallback);
                     mDeleteDialog.dismiss();
                 }, getString(R.string.cancel), v -> mDeleteDialog.dismiss(), 0);
         mDeleteDialog.show();
@@ -284,4 +308,49 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         });
         animator.start();
     }
+
+
+    /**
+     * Callback used to receive the response for delete address click
+     */
+    private ResponseCallback mDeleteCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            Toast.makeText(mActivity, data.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
+    /**
+     * Callback which receives addresses from get request
+     */
+    private ResponseCallback<AddressesList> mAddressesListResponseCallback = new ResponseCallback<AddressesList>() {
+        @Override
+        public void onSuccess(AddressesList data) {
+            mActivity.toggleLoadingProgress(false);
+            mAdapter.refreshList(data.getAddresses());
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<AddressesList>> call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
 }

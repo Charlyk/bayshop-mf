@@ -167,24 +167,20 @@
         android:layout_marginBottom="10dp"
         android:background="#b1b1b1"/>
 
-    <Button
-        style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_width="wrap_content"
-        android:layout_below="@id/confirmPassDivider"
-        android:minWidth="100dp"
-        android:layout_height="40dp"
-        android:layout_margin="16dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textSize="16sp"
-        android:text="@string/save"
-        android:id="@+id/changePassSaveButton"
-        android:background="@drawable/green_button_bg"
-        android:textColor="@android:color/white"/>
-
     <View
         android:id="@+id/changePassFocusIndicator"
         android:layout_width="5dp"
         android:layout_height="?actionBarSize"
         android:background="@color/colorAccent"/>
+
+    <Button
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/save"
+        android:textSize="18sp"
+        android:id="@+id/changePassSaveButton"
+        android:background="@drawable/green_button_bg"
+        android:textColor="@android:color/white"/>
 </RelativeLayout>

@@ -156,5 +156,6 @@ public class AdditionalPhotoFragment extends ParentFragment {
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
+        mActivity.hideKeyboard();
     }
 }

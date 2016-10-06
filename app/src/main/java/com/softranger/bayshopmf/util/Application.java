@@ -30,11 +30,16 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class Application extends android.app.Application {
 
-    public static final String TOKEN_READY = "TOKEN_READY_BROADCAST";
     private static final String PREFERENCE_NAME = "BayShop MF preferences";
+    private static final String AUTOPACK_PREFS = "com.softranger.bayshopmf.settings.AutopackagingPreferences";
+    private static final String NOTIFICATIONS_PREFS = "com.softranger.bayshopmf.settings.NotificationsPreferences";
     private static final String AUTH_TOKEN = "Auth token for Bay";
     private static Application instance;
+
     private static SharedPreferences preferences;
+    public static SharedPreferences autoPackPrefs;
+    public static SharedPreferences notifyPrefs;
+
     public static String currentToken;
     public static User user;
     private static SimpleDateFormat serverFormat;
@@ -53,6 +58,9 @@ public class Application extends android.app.Application {
         instance = this;
 
         preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        autoPackPrefs = getSharedPreferences(AUTOPACK_PREFS, MODE_PRIVATE);
+        notifyPrefs = getSharedPreferences(NOTIFICATIONS_PREFS, MODE_PRIVATE);
+
         currentToken = preferences.getString(AUTH_TOKEN, "no token");
         // initialize counters hashmap
         counters = new HashMap<>();
