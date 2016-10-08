@@ -54,7 +54,7 @@ public class GalleryActivity extends ParentActivity {
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
 
     }
 

@@ -11,14 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * email eduard.albu@gmail.com
  */
 public class ShippingMethod implements Parcelable {
-    @JsonProperty("id") int mId;
-    @JsonProperty("title") String mName;
-    @JsonProperty("time") String mEstimatedTime;
+    @JsonProperty("id")
+    private int mId;
+    @JsonProperty("title")
+    private String mName;
+    @JsonProperty("time")
+    private String mEstimatedTime;
     private double mMaxWeight;
     private double mCalculatedPrice;
     private int mRank;
     private String mCurrency;
-    @JsonProperty("description") String mDescription;
+    @JsonProperty("description")
+    private String mDescription;
 
     private ShippingMethod() {
     }

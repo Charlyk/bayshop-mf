@@ -70,7 +70,7 @@ public class SearchMailActivity extends ParentActivity implements MenuItemCompat
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
 
     }
 

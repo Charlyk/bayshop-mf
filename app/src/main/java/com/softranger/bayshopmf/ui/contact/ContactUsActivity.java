@@ -103,7 +103,7 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
 
     }
 

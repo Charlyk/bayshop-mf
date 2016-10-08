@@ -1,10 +1,8 @@
 package com.softranger.bayshopmf.ui.addresses;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PagerAdapter;
@@ -24,12 +22,7 @@ public class WarehouseAddressesActivity extends ParentActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         setUpTabsForAllStorages();
     }
@@ -57,7 +50,7 @@ public class WarehouseAddressesActivity extends ParentActivity {
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
 
     }
 

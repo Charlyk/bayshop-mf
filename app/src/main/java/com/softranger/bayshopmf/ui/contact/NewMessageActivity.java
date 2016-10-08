@@ -111,7 +111,7 @@ public class NewMessageActivity extends ParentActivity implements MenuItem.OnMen
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
 
     }
 

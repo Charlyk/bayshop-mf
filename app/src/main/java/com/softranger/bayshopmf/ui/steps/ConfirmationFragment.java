@@ -109,10 +109,15 @@ public class ConfirmationFragment extends ParentFragment {
             mInsurancePriceValue = mCreationDetails.getInsuranceMax();
         }
 
+
         mInsurancePriceLabel.setText(mCreationDetails.getCurrencySign() + mInsurancePriceValue);
         mDeliveryPrice.setText(mCreationDetails.getCurrencySign() + shippingPrice);
         mTotalPriceValue = shippingPrice;
         mDeclarationPrice.setText(mCreationDetails.getCurrencySign() + mCreationDetails.getDeclarationPrice());
+
+        if (Application.hasInsurance()) {
+            selectInsurance();
+        }
         return view;
     }
 

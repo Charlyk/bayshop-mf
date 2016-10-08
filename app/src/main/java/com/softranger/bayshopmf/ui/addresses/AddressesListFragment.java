@@ -26,11 +26,14 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.AddressListAdapter;
 import com.softranger.bayshopmf.model.CreationDetails;
+import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.model.address.AddressesList;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.ui.settings.SettingsFragment;
+import com.softranger.bayshopmf.ui.steps.ConfirmationFragment;
 import com.softranger.bayshopmf.ui.steps.ShippingMethodFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -57,7 +60,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
 
     private ParentActivity mActivity;
     private AddressListAdapter mAdapter;
-    private AlertDialog mDeleteDialog;
+    private AlertDialog mAlertDialog;
     private Unbinder mUnbinder;
     private Call<ServerResponse<CreationDetails>> mResponseCall;
     private Call<ServerResponse<AddressesList>> mAddressesCall;
@@ -72,6 +75,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
 
     public boolean mIsGetRequest;
     public boolean mSendBack;
+
 
     public AddressesListFragment() {
         // Required empty public constructor
@@ -151,8 +155,42 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         @Override
         public void onSuccess(CreationDetails data) {
             mCreationDetails = data;
-            mAdapter.refreshList(data.getAddresses());
             mActivity.toggleLoadingProgress(false);
+            // get addresses from creation details object
+            ArrayList<Address> addresses = data.getAddresses();
+            // get shippers from creation details object
+            ArrayList<Shipper> methods = data.getShippers();
+            // check if Autopackaging is enabled
+            if (Application.isAutopackaging()) {
+                // create a new temporary shipper object
+                Shipper temp = new Shipper().setId(Application.getSelectedShipperId());
+                // check if server addresses list contains our selected address
+                boolean hasAddress = addresses.contains(new Address().setId(Application.getSelectedAddressId()));
+                // check if shippers list contains our selected shipper
+                boolean hasShipper = methods.contains(temp);
+                // if we have the selected shipper and address
+                // we can jump right to confirmation fragment;
+                if (hasAddress && hasShipper) {
+                    // get detailed shipper from the list
+                    Shipper shipper = methods.get(methods.indexOf(temp));
+                    // add confirmation fragment
+                    mActivity.replaceFragment(ConfirmationFragment.newInstance(mCreationDetails,
+                            String.valueOf(Application.getSelectedAddressId()),
+                            Application.getSelectedShipperId(), shipper.getCalculatedPrice()));
+                    mActivity.setToolbarTitle(getString(R.string.confirm));
+                    return;
+                } else if (hasAddress) {
+                    // if the list does not contain the selected shipper
+                    // we need to open shippers fragment
+                    mActivity.replaceFragment(ShippingMethodFragment.newInstance(mCreationDetails,
+                            String.valueOf(Application.getSelectedAddressId())));
+                    mActivity.setToolbarTitle(getString(R.string.shipping_method));
+                    return;
+                }
+            }
+            // else if autopackaging is diabled or address is not selected
+            // just refresh the list for current fragment
+            mAdapter.refreshList(data.getAddresses());
         }
 
         @Override
@@ -191,39 +229,91 @@ public class AddressesListFragment extends ParentFragment implements AddressList
     };
 
 
+    /**
+     * Starts {@link EditAddressActivity}
+     */
     @OnClick(R.id.addressCreateFloatingBtn)
     void createNewAddress() {
         Intent editAddress = new Intent(mActivity, EditAddressActivity.class);
         mActivity.startActivity(editAddress);
     }
 
+    // TODO: 10/8/16 add search address to application
     @OnClick(R.id.addressSearchFloatingBtn)
     void searchAnAddress() {
 
     }
 
+    /**
+     * called by background layout to collapse action menu
+     */
     @OnClick(R.id.addressFabBg)
     void collapseActionMenu() {
         mActionsMenu.collapse();
     }
 
+    /**
+     * {@link AddressListAdapter#mOnAddressClickListener}
+     * Called when an address is clicked
+     *
+     * @param address  which was clicked
+     * @param position position within adapter for clicked address
+     */
     @Override
     public void onSelectAddressClick(Address address, int position) {
+        // if mCreationDetails object is not null and is not a get request
+        // this means we are at the first step of building a parcel
+        // so we need to start shipping method fragment
         if (mCreationDetails != null && !mIsGetRequest) {
-            mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
-                    String.valueOf(address.getId())), true);
+            if (Application.isAutopackaging() && !Application.isAutopackagingAddressSelected()) {
+                mAlertDialog = mActivity.getDialog(getString(R.string.save_address),
+                        getString(R.string.save_selected_address), R.mipmap.ic_address_36dp,
+                        getString(R.string.yes), (view) -> {
+                            // save selected address to preferences
+                            Application.autoPackPrefs.edit().putString(SettingsFragment.ADDRESS_ID,
+                                    String.valueOf(address.getId())).apply();
+                            Application.autoPackPrefs.edit().putString(SettingsFragment.ADDRESS_NAME,
+                                    address.getClientName()).apply();
+                            // dismiss dialog and add shipping method fragment
+                            mAlertDialog.dismiss();
+                            mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
+                                    String.valueOf(address.getId())), true);
+                        }, getString(R.string.no), (view) -> {
+                            // dismiss dialog and add shipping method fragment
+                            mAlertDialog.dismiss();
+                            mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
+                                    String.valueOf(address.getId())), true);
+                        }, R.color.colorAccent);
+                mAlertDialog.show();
+            } else {
+                mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
+                        String.valueOf(address.getId())), true);
+            }
         } else if (mSendBack) {
+            // otherwise if send back is true we need to send selected address as a broadcast message
+            // and just close current fragment
             Intent changeAddress = new Intent(Constants.ACTION_CHANGE_ADDRESS);
             changeAddress.putExtra("address", address);
             mActivity.sendBroadcast(changeAddress);
             mActivity.onBackPressed();
         } else {
+            // and finally if we are not building a parcel and we do not need to send the address back
+            // just open edit activity so user can just edit selected address
             onEditAddressClick(address, position);
         }
     }
 
+    /**
+     * {@link AddressListAdapter#mOnAddressClickListener}
+     * Called when add to favorites butten for an address is clicked
+     *
+     * @param address  for clicked button
+     * @param position within the adapter
+     * @param button   which was clicked
+     */
     @Override
     public void onAddToFavoritesClick(Address address, int position, ImageButton button) {
+        // for now we just change button icon
         if (address.isInFavorites()) {
             button.setImageResource(R.mipmap.ic_star_silver_24dpi);
             address.setInFavorites(false);
@@ -233,24 +323,39 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         }
     }
 
+    /**
+     * {@link com.softranger.bayshopmf.adapter.AddressSpinnerAdapter#mOnItemClickListener}
+     * Called when spinner edit button for an address item is clicked
+     *
+     * @param address  for clicked button
+     * @param position within the adapter
+     */
     @Override
     public void onEditAddressClick(Address address, int position) {
+
         Intent editAddress = new Intent(mActivity, EditAddressActivity.class);
         editAddress.putExtra(EditAddressActivity.ADDRESS_ID_EXTRA, address.getId());
         mActivity.startActivity(editAddress);
     }
 
+    /**
+     * {@link com.softranger.bayshopmf.adapter.AddressSpinnerAdapter#mOnItemClickListener}
+     * Called when spinner delete button for an address item is clicked
+     *
+     * @param address  for clicked button
+     * @param position within the adapter
+     */
     @Override
     public void onDeleteAddressClick(final Address address, final int position) {
         String message = getString(R.string.confirm_address_deleteing) + " " + address.getClientName() + " " + getString(R.string.address);
-        mDeleteDialog = mActivity.getDialog(getString(R.string.delete_address), message, R.mipmap.ic_delete_address_24dp, getString(R.string.confirm),
+        mAlertDialog = mActivity.getDialog(getString(R.string.delete_address), message, R.mipmap.ic_delete_address_24dp, getString(R.string.confirm),
                 v -> {
                     mAdapter.removeItem(position);
                     mDeleteCall = Application.apiInterface().deleteUserAddress(String.valueOf(address.getId()));
                     mDeleteCall.enqueue(mDeleteCallback);
-                    mDeleteDialog.dismiss();
-                }, getString(R.string.cancel), v -> mDeleteDialog.dismiss(), 0);
-        mDeleteDialog.show();
+                    mAlertDialog.dismiss();
+                }, getString(R.string.cancel), v -> mAlertDialog.dismiss(), 0);
+        mAlertDialog.show();
     }
 
     @Override
@@ -271,6 +376,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         mUnbinder.unbind();
     }
 
+    //--------------------------- Action Menu Callbacks ---------------------------//
     @Override
     public void onMenuExpanded() {
         mFabBg.setVisibility(View.VISIBLE);

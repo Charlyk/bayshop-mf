@@ -1,6 +1,5 @@
 package com.softranger.bayshopmf.ui.steps;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -90,7 +89,7 @@ public class CreateParcelActivity extends ParentActivity {
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.createFragmentContainer, fragment, fragment.getClass().getSimpleName());

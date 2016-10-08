@@ -327,7 +327,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getSimpleName());
@@ -420,8 +420,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 //                break;
         }
         selectedFromMenu = selectedFragment;
-        if (closeDrawer)
+        if (closeDrawer) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
+            toggleActionMenuVisibility(false);
+        }
         return true;
     }
 

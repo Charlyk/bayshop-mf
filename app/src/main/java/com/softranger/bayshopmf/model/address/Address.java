@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -35,7 +36,7 @@ public class Address implements Parcelable {
 
     private boolean mIsInFavorites;
 
-    private Address() {
+    public Address() {
 
     }
 
@@ -126,8 +127,10 @@ public class Address implements Parcelable {
         return mId;
     }
 
-    public void setId(int id) {
+    @JsonIgnore
+    public Address setId(int id) {
         mId = id;
+        return this;
     }
 
     public String getFirstName() {
@@ -210,6 +213,11 @@ public class Address implements Parcelable {
         dest.writeString(mState);
         dest.writeInt(mId);
         dest.writeByte((byte) (mIsInFavorites ? 1 : 0));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Address && getId() == ((Address) obj).getId();
     }
 
     public static class AddressAction {

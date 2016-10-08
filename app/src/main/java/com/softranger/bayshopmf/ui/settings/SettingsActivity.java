@@ -1,14 +1,10 @@
 package com.softranger.bayshopmf.ui.settings;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -64,7 +60,7 @@ public class SettingsActivity extends ParentActivity implements FragmentManager.
         runOnUiThread(() -> mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE));
     }
 
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.settingsActivityContainer, fragment);

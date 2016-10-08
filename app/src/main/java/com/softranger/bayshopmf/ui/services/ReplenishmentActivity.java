@@ -32,7 +32,7 @@ public class ReplenishmentActivity extends ParentActivity {
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
 
     }
 

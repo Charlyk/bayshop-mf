@@ -182,7 +182,7 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
 
     }
 

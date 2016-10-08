@@ -45,7 +45,7 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
 
     public abstract void toggleLoadingProgress(boolean show);
 
-    public abstract void replaceFragment(Fragment fragment);
+    public abstract void replaceFragment(ParentFragment fragment);
 
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {

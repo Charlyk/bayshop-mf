@@ -298,7 +298,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.loginActivityContainer, fragment);

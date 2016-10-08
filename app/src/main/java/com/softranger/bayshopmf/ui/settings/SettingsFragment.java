@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,19 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.adapter.AddressListAdapter;
-import com.softranger.bayshopmf.adapter.SettingsAdapter;
 import com.softranger.bayshopmf.model.address.Address;
-import com.softranger.bayshopmf.model.app.Setting;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +40,7 @@ public class SettingsFragment extends ParentFragment {
     public static final String ADDRESS_NAME = "addressName";
     public static final String ADDRESS_ID = "addressId";
     public static final String SHIPPING_NAME = "shippingName";
+    public static final String SHIPPING_ID = "shippingMethodId";
     public static final String INSURANCE = "insurance";
 
     private SettingsActivity mActivity;
@@ -202,5 +194,6 @@ public class SettingsFragment extends ParentFragment {
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 }

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.user.User;
 import com.softranger.bayshopmf.network.BayShopApiInterface;
+import com.softranger.bayshopmf.ui.settings.SettingsFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -101,30 +102,89 @@ public class Application extends android.app.Application {
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
     }
 
+    /**
+     * Check if autopackaging is enabled
+     */
+    public static boolean isAutopackaging() {
+        return autoPackPrefs.getBoolean(SettingsFragment.AUTOPACKAGING, false);
+    }
+
+    public static boolean isAutopackagingAddressSelected() {
+        return autoPackPrefs.contains(SettingsFragment.ADDRESS_ID);
+    }
+
+    public static int getSelectedAddressId() {
+        String stringId = autoPackPrefs.getString(SettingsFragment.ADDRESS_ID, "-1");
+        return Integer.parseInt(stringId);
+    }
+
+    public static boolean isAutopackagingShipperSelected() {
+        return autoPackPrefs.contains(SettingsFragment.SHIPPING_ID);
+    }
+
+    public static String getSelectedShipperId() {
+        return autoPackPrefs.getString(SettingsFragment.SHIPPING_ID, "-1");
+    }
+
+    public static boolean hasInsurance() {
+        return autoPackPrefs.getBoolean(SettingsFragment.INSURANCE, false);
+    }
+
+    /**
+     * Save authentication token for current user
+     *
+     * @param authToken token obtained from server
+     */
     public void setAuthToken(String authToken) {
         preferences.edit().putString(AUTH_TOKEN, authToken).apply();
     }
 
+    /**
+     * Set true if user is logged in otherwise set false
+     * @param isLoggedIn user login status
+     */
     public void setLoginStatus(boolean isLoggedIn) {
         preferences.edit().putBoolean("is logged in", isLoggedIn).apply();
     }
 
+    /**
+     * Save current user uid to set it in navigation header
+     * @param userId logged in user id
+     */
     public void setUserId(String userId) {
         preferences.edit().putString("userId", userId).apply();
     }
 
+    /**
+     * Get saved user uid or an empty string if it was not saved
+     * @return either user id or an empty string
+     */
     public String getUserId() {
         return preferences.getString("userId", "");
     }
 
+    /**
+     * Check if user is loged in
+     * @return user login status
+     */
     public boolean isLoggedIn() {
         return preferences.getBoolean("is logged in", false);
     }
 
+    /**
+     * Check if an email address is valid
+     * @param email address you want to check
+     * @return validation result
+     */
     public static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    /**
+     * Get number of parcels for the given status
+     * @param parcelStatus for which you need the count
+     * @return number of parcels with gien status
+     */
     public static int getCount(String parcelStatus) {
         try {
             return counters.get(parcelStatus);
@@ -143,10 +203,21 @@ public class Application extends android.app.Application {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 
+    /**
+     * Create an instance of BayShop api interface
+     * @return {@link BayShopApiInterface}
+     */
     public static BayShopApiInterface apiInterface() {
         return retrofit.create(BayShopApiInterface.class);
     }
 
+    /**
+     * Returns a string with date formatted as "dd.MM.yyyy" and it also contains
+     * how many days already elapsed from given date to current or if the date is today it just
+     * return "Today"
+     * @param date which you want to format
+     * @return string with formatted date
+     */
     public static String getFormattedDate(Date date) {
         Date today = new Date();
         if (date == null) date = new Date();

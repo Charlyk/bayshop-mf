@@ -186,7 +186,7 @@ public class ChatActivity extends ParentActivity implements TextWatcher, ChatAda
     }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(ParentFragment fragment) {
 
     }
 

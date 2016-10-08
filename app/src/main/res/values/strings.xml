@@ -357,4 +357,8 @@
     <string name="volume_y">Volume Y:</string>
     <string name="volume_z">Volume Z:</string>
     <string name="user_settings">User settings</string>
+    <string name="save_address">Save address</string>
+    <string name="save_selected_address">Do you want to save this address as selected for autopackaging?</string>
+    <string name="save_shipper">Save shipping method</string>
+    <string name="save_selected_method">Do you want to save selected shipping method for autopackaging?</string>
 </resources>

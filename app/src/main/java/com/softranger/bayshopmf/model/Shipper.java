@@ -3,6 +3,7 @@ package com.softranger.bayshopmf.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -95,6 +96,12 @@ public class Shipper implements Parcelable {
             return new Shipper[size];
         }
     };
+
+    @JsonIgnore
+    public Shipper setId(String id) {
+        mId = id;
+        return this;
+    }
 
     public String getId() {
         return mId;
@@ -263,5 +270,10 @@ public class Shipper implements Parcelable {
         dest.writeInt(mVolumeWeight);
         dest.writeString(mShipperMeasureId);
         dest.writeDouble(mCalculatedPrice);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Shipper && getId().equals(((Shipper) obj).getId());
     }
 }
