@@ -15,12 +15,12 @@
             android:title="@string/warehouse_usa"/>
         <item
             android:id="@+id/nav_parcels"
-            android:icon="@mipmap/in_forming_24dp"
+            android:icon="@mipmap/ic_parcels_30dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/parcels"/>
         <item
             android:id="@+id/nav_received"
-            android:icon="@mipmap/received_24dp"
+            android:icon="@mipmap/ic_received_30dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/received"/>
     </group>
@@ -29,7 +29,7 @@
         <menu>
             <item
                 android:id="@+id/nav_paymentHistory"
-                android:icon="@mipmap/payment_history_24dp"
+                android:icon="@mipmap/ic_payment_history_30dp"
                 android:title="@string/payment_history"/>
             <!--<item-->
                 <!--android:id="@+id/nav_accountReplenishment"-->
@@ -37,15 +37,15 @@
                 <!--android:title="@string/account_replenishment"/>-->
             <item
                 android:id="@+id/nav_addresses"
-                android:icon="@mipmap/addresses_24dp"
+                android:icon="@mipmap/ic_address_usa_30dp"
                 android:title="@string/addresses"/>
             <item
                 android:id="@+id/nav_shippingCalculator"
-                android:icon="@mipmap/shipping_calculator_24dp"
+                android:icon="@mipmap/ic_shipping_calculator_30dp"
                 android:title="@string/shipping_calculator"/>
             <item
                 android:id="@+id/nav_contactUs"
-                android:icon="@mipmap/inner_mail_24dp"
+                android:icon="@mipmap/ic_inner_mail_30dp"
                 android:title="@string/inner_mail"/>
         </menu>
     </item>
@@ -54,7 +54,7 @@
         <menu>
             <item
                 android:id="@+id/nav_profileSettings"
-                android:icon="@mipmap/profile_settings_24dp"
+                android:icon="@mipmap/ic_profile_settings_30dp"
                 android:title="@string/profile_settings"/>
         </menu>
     </item>
