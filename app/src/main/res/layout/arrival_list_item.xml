@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="7.5dp"
                 android:background="@drawable/selectable_background"
                 android:clickable="true"
                 android:orientation="vertical">
@@ -16,6 +16,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
         android:background="?selectableItemBackgroundBorderless"
         android:src="@mipmap/ic_delete_24dpi"/>
 
@@ -23,10 +24,9 @@
         android:id="@+id/awaitingUidLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/colorAccent"
@@ -50,32 +50,22 @@
         android:textSize="16sp"
         tools:text="Computer shiushit"/>
 
-    <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
-        android:id="@+id/awaitingTrackingStatusBarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_below="@id/awaitingDescriptionLabel"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/weight"
-        android:layout_marginTop="5dp"
         android:id="@+id/awaitingWeightTitle"
-        android:layout_below="@id/awaitingTrackingStatusBarView"
+        android:layout_below="@+id/awaitingTrackingStatusBarView"
         android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/price"
-        android:layout_marginTop="5dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:id="@+id/awaitingPriceTitle"
-        android:layout_below="@id/awaitingTrackingStatusBarView"
+        android:layout_below="@+id/awaitingTrackingStatusBarView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
@@ -129,7 +119,7 @@
         android:layout_height="2dp"
         android:background="@drawable/drop_shadow"
         android:layout_below="@id/awaitingDateLabel"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -140,4 +130,16 @@
         android:layout_alignBottom="@+id/awaitingWeightTitle"
         android:layout_alignLeft="@+id/awaitingTrackingStatusBarView"
         android:layout_alignStart="@+id/awaitingTrackingStatusBarView"/>
+
+    <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
+        android:id="@+id/awaitingTrackingStatusBarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7.5dp"
+        android:layout_marginBottom="7.5dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@+id/awaitingDescriptionLabel"
+        android:layout_alignLeft="@+id/awaitingDescriptionLabel"
+        android:layout_alignStart="@+id/awaitingDescriptionLabel"/>
 </RelativeLayout>

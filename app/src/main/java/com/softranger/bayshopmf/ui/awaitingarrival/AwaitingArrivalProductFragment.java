@@ -57,7 +57,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
     @BindView(R.id.awaitingDetailsCheckProductBtn) Button mCheckProduct;
     @BindView(R.id.awaitingDetailsAdditionalPhotosBtn) Button mAdditionalPhoto;
     @BindView(R.id.awaitingDetailsStorageIcon) ImageView mStorageIcon;
-    @BindView(R.id.awaitingArrivalDetailsImageList) RecyclerView mRecyclerView;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
 
