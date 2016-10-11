@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/noInsuranceSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -10,8 +9,7 @@
     <RelativeLayout
         android:id="@+id/noInsuranceButtonLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp">
+        android:layout_height="wrap_content">
 
         <!-- Want insurance selector -->
         <RadioButton
@@ -28,15 +26,16 @@
         <!-- Shield image view -->
         <ImageView
             android:id="@+id/noInsuranceWarningImage"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:src="@mipmap/ic_warning_24dpi"/>
+            android:layout_marginTop="16dp"
+            android:src="@mipmap/ic_no_insurance_30dp"/>
 
         <!-- Want insurance title -->
         <TextView

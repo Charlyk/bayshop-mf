@@ -4,8 +4,9 @@
               android:id="@+id/pusItemHolder"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:clickable="true"
               android:background="@drawable/selectable_background"
-              android:layout_marginBottom="10dp"
+              android:layout_marginBottom="7.5dp"
               android:orientation="vertical">
 
     <RelativeLayout
@@ -28,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/pusItemCodeNumberLabel"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"/>
 
@@ -36,6 +37,7 @@
             android:id="@+id/textView45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="13sp"
             android:layout_alignLeft="@+id/pusItemStatusBar"
             android:layout_alignStart="@+id/pusItemStatusBar"
             android:layout_below="@+id/pusItemStatusBar"
@@ -49,6 +51,7 @@
             android:layout_alignStart="@+id/textView47"
             android:layout_below="@+id/textView47"
             android:textColor="@android:color/black"
+            android:textSize="13sp"
             tools:text="10kg"/>
 
         <TextView
@@ -60,18 +63,11 @@
             android:layout_below="@+id/textView45"
             android:layout_toLeftOf="@id/pusItemWeightLabel"
             android:layout_toStartOf="@id/pusItemWeightLabel"
+            android:textSize="13sp"
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@android:color/black"
             tools:text="12.10.16 (3 days ago)"/>
-
-        <TextView
-            android:id="@+id/textView47"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView45"
-            android:layout_centerHorizontal="true"
-            android:text="@string/weight"/>
 
         <TextView
             android:id="@+id/pusItemPriceLabel"
@@ -82,6 +78,7 @@
             android:layout_below="@+id/textView47"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:textSize="13sp"
             android:textColor="@android:color/black"
             tools:text="$450"/>
 
@@ -92,9 +89,19 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/textView47"
+            android:textSize="13sp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:text="@string/price"/>
+
+        <TextView
+            android:id="@+id/textView47"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/weight"
+            android:layout_above="@+id/pusItemDateLabel"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 

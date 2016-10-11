@@ -9,11 +9,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <TextView
+        android:id="@+id/insuranceDescriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:maxLines="3"
+        android:visibility="gone"
+        android:ellipsize="end"
+        android:text="@string/lorem_ipsum"
+        android:gravity="center"/>
+
     <RelativeLayout
         android:id="@+id/insuranceButtonLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp">
+        android:layout_height="wrap_content">
 
         <!-- Want insurance selector -->
         <RadioButton
@@ -30,12 +42,13 @@
         <!-- Shield image view -->
         <ImageView
             android:id="@+id/insuranceShieldImage"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_shield_24dpi"/>
+            android:src="@mipmap/ic_insurance_30dp"/>
 
         <!-- Want insurance title -->
         <LinearLayout
@@ -68,19 +81,6 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/insuranceDescriptionLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:maxLines="3"
-        android:visibility="gone"
-        android:ellipsize="end"
-        android:text="@string/lorem_ipsum"
-        android:gravity="center"/>
 
     <View
         android:layout_width="match_parent"

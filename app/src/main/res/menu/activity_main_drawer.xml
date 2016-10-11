@@ -5,13 +5,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_waitingArrival"
-            android:icon="@mipmap/awaiting_arrival_24dp"
+            android:icon="@mipmap/ic_awaiting_arrival_30dp"
             app:actionLayout="@layout/nav_counter"
             android:checked="true"
             android:title="@string/awaiting_arrival"/>
         <item
             android:id="@+id/nav_inStock"
-            android:icon="@mipmap/warehouse_usa_24dp"
             app:actionLayout="@layout/nav_counter"
             android:title="@string/warehouse_usa"/>
         <item

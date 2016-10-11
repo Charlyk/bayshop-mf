@@ -103,8 +103,8 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         Spinner mSpinner;
 
         final Address.AddressAction[] mActions = {
-                new Address.AddressAction(R.string.edit_address, R.mipmap.ic_edit_black_24dp),
-                new Address.AddressAction(R.string.delete, R.mipmap.ic_delete_black_24dp)
+                new Address.AddressAction(R.string.edit_address, R.mipmap.ic_edit_30dp),
+                new Address.AddressAction(R.string.delete, R.mipmap.ic_delete_30dp)
         };
 
         Address mAddressObj;

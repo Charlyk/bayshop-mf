@@ -5,16 +5,6 @@
               android:layout_height="wrap_content"
     android:background="@android:color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:padding="16dp"
-        android:gravity="center"
-        android:text="@string/three_services"
-        android:id="@+id/textView15"
-        android:layout_gravity="center_horizontal"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +19,8 @@
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:background="?selectableItemBackground"
-            android:drawableTop="@mipmap/ic_aditional_photo_85dp"
+            android:drawableLeft="@mipmap/additional_photo_55dp"
+            android:drawableStart="@mipmap/additional_photo_55dp"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -48,7 +39,8 @@
             android:layout_weight="1"
             android:background="?selectableItemBackground"
             android:drawablePadding="10dp"
-            android:drawableTop="@mipmap/ic_check_product_75dp"
+            android:drawableLeft="@mipmap/check_product_55dp"
+            android:drawableStart="@mipmap/check_product_55dp"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -71,7 +63,8 @@
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:background="?selectableItemBackground"
-            android:drawableTop="@mipmap/ic_devide_parcel_80dp"
+            android:drawableLeft="@mipmap/divide_parcel_55dp"
+            android:drawableStart="@mipmap/divide_parcel_55dp"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -90,7 +83,8 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="?selectableItemBackground"
-            android:drawableTop="@mipmap/ic_packing_80dp"
+            android:drawableLeft="@mipmap/repacking_55dp"
+            android:drawableStart="@mipmap/repacking_55dp"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
