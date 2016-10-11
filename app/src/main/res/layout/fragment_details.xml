@@ -25,16 +25,17 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#b1b1b1"/>
+                android:layout_height="15dp"
+                android:background="#ededed"
+                android:id="@+id/view"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -64,7 +65,6 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_below="@id/inStockDetailsStorageIcon"
-                    android:layout_marginTop="5dp"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     tools:text="Product name will be here"/>
@@ -73,23 +73,10 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
                 android:background="#b1b1b1"/>
 
             <include
-                layout="@layout/detailed_item_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#b1b1b1"/>
+                layout="@layout/detailed_item_details"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/inStockDetailsImageList"

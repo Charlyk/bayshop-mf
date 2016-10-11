@@ -103,8 +103,10 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     @SuppressWarnings("unused")
     @OnClick(R.id.editAwaitingAddFieldButton)
     void addNewFields() {
-        mDeclarationAdapter.addNewProductCard();
-        mRecyclerView.smoothScrollToPosition(mDeclarationAdapter.getItemCount() - 1);
+        if (mDeclarationAdapter != null) {
+            mDeclarationAdapter.addNewProductCard();
+            mRecyclerView.smoothScrollToPosition(mDeclarationAdapter.getItemCount() - 1);
+        }
     }
 
     @SuppressWarnings("unused")
@@ -159,6 +161,8 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
 
         @Override
         public void onError(Call<ServerResponse<Declaration>> call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
             mActivity.toggleLoadingProgress(false);
         }
     };

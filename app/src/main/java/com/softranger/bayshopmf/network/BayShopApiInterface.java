@@ -40,16 +40,11 @@ public interface BayShopApiInterface {
 
     @FormUrlEncoded
     @POST("parcel-change-address/{parcelId}")
-    Call<ServerResponse> returnToSellerAddress(
-            @Path("parcelId") String parcelId,
-            @Field("shipping_first_name") String firstName,
-            @Field("shipping_last_name") String lastName,
-            @Field("shipping_address") String address,
-            @Field("shipping_city") String city,
-            @Field("shipping_country") String country,
-            @Field("shipping_zip") String postalCode,
-            @Field("shipping_phone") String phoneNumber,
-            @Field("shipping_state") String state);
+    Call<ServerResponse> returnToSellerAddress(@Path("parcelId") String parcelId,
+                                               @Field("shipping_first_name") String firstName, @Field("shipping_last_name") String lastName,
+                                               @Field("shipping_address") String address, @Field("shipping_city") String city,
+                                               @Field("shipping_country") String country, @Field("shipping_zip") String postalCode,
+                                               @Field("shipping_phone") String phoneNumber, @Field("shipping_state") String state);
 
     // change "us" to needed storage, for now we have just "us"
     @GET("waiting-mf-list/us")
@@ -77,7 +72,6 @@ public interface BayShopApiInterface {
     @FormUrlEncoded
     @POST("waiting-mf/add")
     Call<ServerResponse<AwaitingArrival>> addNewAwaitingParcel(@Field("storage") String storage,
-                                                               @Field("tracking") String tracking,
                                                                @Field("title") String description,
                                                                @Field("url") String url,
                                                                @Field("packagePrice") String packagePrice);

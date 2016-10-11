@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnFocusChange;
 import butterknife.Unbinder;
 
 /**
@@ -66,8 +67,15 @@ public class EditAwaitingFragment extends ParentFragment implements
         mUnbinder = ButterKnife.bind(this, rootView);
         mActivity = (MainActivity) getActivity();
 
-        mProducts = new ArrayList<>();
-        mAdapter = new DeclarationListAdapter(mProducts, true);
+        AwaitingArrivalDetails details = getArguments().getParcelable(PRODUCT_ARG);
+        if (details == null) {
+            mActivity.onBackPressed();
+            return rootView;
+        }
+
+        mTrackingNumField.setText(details.getTracking());
+        mProducts = details.getProducts();
+        mAdapter = new DeclarationListAdapter(mProducts, mProducts.size() > 0);
         mAdapter.setOnActionButtonsClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -85,6 +93,15 @@ public class EditAwaitingFragment extends ParentFragment implements
     void addNewField() {
         mAdapter.addNewProductCard();
         mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+    }
+
+    @OnFocusChange(R.id.editAwaitingTrackingNumInput)
+    void trackingFieldFocusChanged(View view, boolean hasFocus) {
+        if (hasFocus) {
+            mTrackingNumField.setHint("");
+        } else {
+            mTrackingNumField.setHint(getString(R.string.tracking_example));
+        }
     }
 
     @SuppressWarnings("unused")

@@ -3,14 +3,17 @@ package com.softranger.bayshopmf.model.box;
 import android.os.Parcel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
 
 /**
  * Created by Eduard Albu on 9/21/16, 09, 2016
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AwaitingArrivalDetails extends AwaitingArrival {
 
     @JsonProperty("currency") private String mCurrency;
@@ -18,6 +21,8 @@ public class AwaitingArrivalDetails extends AwaitingArrival {
     @JsonProperty("verificationPackageRequestedComments") private String mVerificationComment;
     @JsonProperty("photosPackageRequested") private int mPhotoRequested;
     @JsonProperty("photosPackageRequestedComments") private String mPhotoComment;
+    @JsonProperty("declarations")
+    private ArrayList<Product> mProducts;
 
     public AwaitingArrivalDetails() {
         // empty constructor for jackson
@@ -30,6 +35,7 @@ public class AwaitingArrivalDetails extends AwaitingArrival {
         mVerificationComment = in.readString();
         mPhotoRequested = in.readInt();
         mPhotoComment = in.readString();
+        in.readTypedList(mProducts, Product.CREATOR);
     }
 
     public static final Creator<AwaitingArrivalDetails> CREATOR = new Creator<AwaitingArrivalDetails>() {
@@ -64,6 +70,10 @@ public class AwaitingArrivalDetails extends AwaitingArrival {
         return mPhotoComment;
     }
 
+    public ArrayList<Product> getProducts() {
+        return mProducts;
+    }
+
     @JsonIgnore
     public void setVerificationRequested(int verificationRequested) {
         mVerificationRequested = verificationRequested;
@@ -82,5 +92,6 @@ public class AwaitingArrivalDetails extends AwaitingArrival {
         parcel.writeString(mVerificationComment);
         parcel.writeInt(mPhotoRequested);
         parcel.writeString(mPhotoComment);
+        parcel.writeTypedList(mProducts);
     }
 }

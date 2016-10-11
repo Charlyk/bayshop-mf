@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.box.AwaitingArrival;
-import com.softranger.bayshopmf.model.product.Product;
 import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.box.AwaitingArrival;
+import com.softranger.bayshopmf.model.box.Product;
 import com.softranger.bayshopmf.network.ResponseCallback;
-import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +70,6 @@ public class AddAwaitingFragment extends ParentFragment {
 
     private MainActivity mActivity;
     private Product mProduct;
-    private View mRootView;
     private Unbinder mUnbinder;
     private Call<ServerResponse<AwaitingArrival>> mAddAwaitingCall;
 
@@ -90,14 +88,13 @@ public class AddAwaitingFragment extends ParentFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_add_awaiting, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_add_awaiting, container, false);
         mActivity = (MainActivity) getActivity();
-        mUnbinder = ButterKnife.bind(this, mRootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
-        mProduct = new Product.Builder().build();
-        mProduct.setDeposit(Constants.USA);
+        mProduct = new Product();
 
-        return mRootView;
+        return rootView;
     }
 
     @OnFocusChange({R.id.addAwaitingLinkToProductInput, R.id.addAwaitingTrackingInput,
@@ -164,19 +161,13 @@ public class AddAwaitingFragment extends ParentFragment {
                     mProductPriceInput.setError("Please specify product price");
                     return;
                 }
-                if (mProduct.getDeposit() == null) {
-                    Snackbar.make(mRootView, "Please select depot.", Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                mProduct.setProductPrice(productPrice);
-                mProduct.setTrackingNumber(trackingNum);
-                mProduct.setProductName(productName);
-                mProduct.setProductUrl(productUrl);
+                mProduct.setPrice(productPrice);
+                mProduct.setTitle(productName);
+                mProduct.setUrl(productUrl);
 
                 mActivity.toggleLoadingProgress(true);
-                mAddAwaitingCall = Application.apiInterface().addNewAwaitingParcel(mProduct.getDeposit(),
-                        mProduct.getTrackingNumber(), mProduct.getProductName(),
-                        mProduct.getProductUrl(), mProduct.getProductPrice());
+                mAddAwaitingCall = Application.apiInterface().addNewAwaitingParcel(Constants.USA,
+                        mProduct.getTitle(), mProduct.getUrl(), mProduct.getPrice());
                 mAddAwaitingCall.enqueue(mResponseCallback);
                 break;
         }

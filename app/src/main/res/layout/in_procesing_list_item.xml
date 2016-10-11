@@ -4,44 +4,46 @@
               android:id="@+id/pusItemHolder"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginBottom="7.5dp"
               android:background="@drawable/selectable_background"
-              android:layout_marginBottom="10dp"
               android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp">
 
         <RatingBar
+            android:id="@+id/receivedParcelRatigBar"
             style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
-            android:theme="@style/RatingBarThemeSmall"
             android:layout_width="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="false"
             android:isIndicator="true"
             android:numStars="5"
-            tools:rating="3"
-            android:clickable="false"
             android:stepSize="1"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/receivedParcelRatigBar"/>
+            android:theme="@style/RatingBarThemeSmall"
+            tools:rating="3"/>
 
         <TextView
             android:id="@+id/receivedItemUidLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
             android:layout_alignParentLeft="true"
-            android:singleLine="true"
-            android:ellipsize="end"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/receivedParcelRatigBar"
             android:layout_toStartOf="@id/receivedParcelRatigBar"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/colorAccent"
             android:textSize="18sp"
             tools:text="PUS2131432133"/>
 
@@ -49,17 +51,16 @@
             android:id="@+id/receivedItemDescriptionLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            tools:text="iPhone 5s"
+            android:layout_below="@id/receivedItemUidLabel"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_toLeftOf="@id/receivedParcelRatigBar"
             android:layout_toStartOf="@id/receivedParcelRatigBar"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/textColor"
             android:textSize="16sp"
-            android:layout_below="@id/receivedItemUidLabel"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"/>
+            tools:text="iPhone 5s"/>
 
         <TextView
             android:id="@+id/textView45"
@@ -68,7 +69,8 @@
             android:layout_alignLeft="@+id/receivedItemDescriptionLabel"
             android:layout_alignStart="@+id/receivedItemDescriptionLabel"
             android:layout_below="@+id/receivedItemDescriptionLabel"
-            android:text="@string/date"/>
+            android:text="@string/date"
+            android:textSize="13sp"/>
 
         <TextView
             android:id="@+id/receivedItemWeightLabel"
@@ -78,6 +80,7 @@
             android:layout_alignStart="@+id/textView47"
             android:layout_below="@+id/textView47"
             android:textColor="@android:color/black"
+            android:textSize="13sp"
             tools:text="10kg"/>
 
         <TextView
@@ -92,6 +95,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@android:color/black"
+            android:textSize="13sp"
             tools:text="12.10.16 (3 days ago)"/>
 
         <TextView
@@ -100,7 +104,8 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/textView45"
             android:layout_centerHorizontal="true"
-            android:text="@string/weight"/>
+            android:text="@string/weight"
+            android:textSize="13sp"/>
 
         <TextView
             android:id="@+id/receivedItemPriceLabel"
@@ -112,6 +117,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:textColor="@android:color/black"
+            android:textSize="13sp"
             tools:text="$450"/>
 
         <TextView
@@ -123,13 +129,13 @@
             android:layout_alignTop="@+id/textView47"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:text="@string/price"/>
+            android:text="@string/price"
+            android:textSize="13sp"/>
     </RelativeLayout>
-
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/drop_shadow"/>
 </LinearLayout>

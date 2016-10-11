@@ -160,7 +160,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
 
         @Override
         public void onError(Call<ServerResponse<AwaitingArrivalDetails>> call, Throwable t) {
-            // TODO: 9/21/16 handle network error
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
             mActivity.toggleLoadingProgress(false);
         }
     };

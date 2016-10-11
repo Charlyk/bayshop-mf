@@ -1,6 +1,7 @@
 package com.softranger.bayshopmf.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
@@ -63,44 +64,80 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof ItemHolder) {
             ItemHolder itemHolder = (ItemHolder) holder;
             itemHolder.mInStock = mInStocks.get(position);
+
+            // set parcel uid
             itemHolder.mUidLabel.setText(itemHolder.mInStock.getUid());
 
-            @DrawableRes int image = itemHolder.mInStock.isSelected() ? R.mipmap.ic_check_45dp : R.mipmap.ic_uncheck_45dp;
+            // set item image and background
+            @DrawableRes int image;
+            // check if declaration is filled
+            if (itemHolder.mInStock.getDeclarationFilled() != 0) {
+                // if is filled check if item is selected and get for it the right image
+                image = itemHolder.mInStock.isSelected() ? R.mipmap.ic_check_button_50dp : R.mipmap.ic_red_button_50dp;
+
+                // if is selected set item background as selection color
+                if (itemHolder.mInStock.isSelected()) {
+                    @ColorInt int color = mContext.getResources().getColor(R.color.colorSelection);
+                    itemHolder.mView.setBackgroundColor(color);
+                } else {
+                    // otherwise set it as selectable item
+                    Drawable drawable = mContext.getResources().getDrawable(R.drawable.selectable_background);
+                    itemHolder.mView.setBackgroundDrawable(drawable);
+                }
+            } else {
+                // if declaration is not filled just set gray image as item icon
+                // and the background as selectable item
+                image = R.mipmap.ic_silver_button_50dp;
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.selectable_background);
+                itemHolder.mView.setBackgroundDrawable(drawable);
+            }
+
+            // finally set the image into image view
             itemHolder.mImageView.setImageResource(image);
 
-            @ColorInt int color = itemHolder.mInStock.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
-                    mContext.getResources().getColor(R.color.colorPrimary);
-            itemHolder.mView.setBackgroundColor(color);
-
+            // check if item title (general description) is null or not
             boolean isNullTitle = itemHolder.mInStock.getTitle() == null;
 
+            // if is null set text as "Declaration is not filled" and text color to darker_gray
             if (isNullTitle) {
                 itemHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
                 itemHolder.mDescriptionLabel.setText(mContext.getString(R.string.declaration_not_filled));
             } else {
+                // otherwise set text color to black
                 itemHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.black));
+                // and set description into text view
                 itemHolder.mDescriptionLabel.setText(itemHolder.mInStock.getTitle());
             }
 
+            // get parcel creation date
             Date parcelDate = new Date();
             if (itemHolder.mInStock.getCreatedDate() != null) {
                 parcelDate = itemHolder.mInStock.getCreatedDate();
             }
 
+            // convert weight from grams to kilograms
             double price = Double.parseDouble(itemHolder.mInStock.getPrice());
             int grams = Integer.parseInt(itemHolder.mInStock.getWeight());
             double kilos = grams / 1000;
 
+            // set the date into it's label
             itemHolder.mDateLabel.setText(mDateFormat.format(parcelDate));
+
+            // set the weight into it's label
             itemHolder.mWeightLabel.setText(kilos + "kg");
+
+            // set the price into it's label
             itemHolder.mPriceLabel.setText("$" + price);
 
+            // calculate how many days current parcel spent at warehouse
             int spent = getSpentDays(itemHolder.mInStock);
             int remains = 45 - spent;
             String remained = mContext.getString(R.string.remained) + " " + remains +
                     " " + mContext.getString(R.string.days);
+            // set the result into remaining label
             itemHolder.mRemainingLabel.setText(remained);
 
+            // set remaining text background to correspond to spent time
             itemHolder.mRemainingLabel.setBackgroundDrawable(mContext.getResources()
                     .getDrawable(getBarColors(spent)));
         }
@@ -161,14 +198,18 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Override
         public void onAnimationStarted() {
-            @ColorInt int color = mInStock.isSelected() ? mContext.getResources().getColor(R.color.colorSelection) :
-                    mContext.getResources().getColor(R.color.colorPrimary);
-            mView.setBackgroundColor(color);
+            if (mInStock.isSelected()) {
+                @ColorInt int color = mContext.getResources().getColor(R.color.colorPrimary);
+                mView.setBackgroundColor(color);
+            } else {
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.selectable_background);
+                mView.setBackgroundDrawable(drawable);
+            }
         }
 
         @Override
         public void onAnimationFinished() {
-            @DrawableRes int image = mInStock.isSelected() ? R.mipmap.ic_check_45dp : R.mipmap.ic_uncheck_45dp;
+            @DrawableRes int image = mInStock.isSelected() ? R.mipmap.ic_check_button_50dp : R.mipmap.ic_red_button_50dp;
             mImageView.setImageResource(image);
         }
     }
