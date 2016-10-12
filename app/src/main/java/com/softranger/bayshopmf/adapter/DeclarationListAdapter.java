@@ -28,11 +28,12 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private ArrayList<Product> mProducts;
     private OnActionButtonsClick mOnActionButtonsClick;
+    private static final int TRACKING = 0, ITEM = 1;
+    private boolean mShowTracking;
 
-    public DeclarationListAdapter(ArrayList<Product> products, boolean hasDeclaration) {
+    public DeclarationListAdapter(ArrayList<Product> products, boolean hasDeclaration, boolean showTracking) {
         mProducts = products;
-        ;
-
+        mShowTracking = showTracking;
         if (!hasDeclaration) {
             addNewProductCard();
         }
@@ -58,41 +59,64 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         notifyItemRemoved(position);
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (mShowTracking && position == TRACKING) {
+            return TRACKING;
+        }
+        return ITEM;
+    }
+
     public ArrayList<Product> getProducts() {
         return mProducts;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.declaration_item_layout, parent, false);
-        return new ItemViewHolder(view);
+        switch (viewType) {
+            case TRACKING: {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tracking_number_layout, parent, false);
+                return new TrackingHolder(view);
+            }
+            default: {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.declaration_item_layout, parent, false);
+                return new ItemViewHolder(view);
+            }
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ItemViewHolder itemHolder = (ItemViewHolder) holder;
-        Product product = mProducts.get(position);
-        itemHolder.mProduct = product;
-        itemHolder.mProductName.addTextChangedListener(new NameTextWatcher(itemHolder.mProduct));
-        itemHolder.mProductName.setText(product.getTitle());
-        itemHolder.mProductUrl.addTextChangedListener(new UrlTextWatcher(itemHolder.mProduct));
-        itemHolder.mProductUrl.setText(product.getUrl());
-        itemHolder.mProductPrice.addTextChangedListener(new PriceTextWatcher(itemHolder.mProduct));
-        itemHolder.mProductPrice.setText(String.valueOf(product.getPrice()));
-        itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProduct));
-        itemHolder.mProductQuantity.setText(String.valueOf(product.getQuantity()));
+        if (holder instanceof ItemViewHolder) {
+            ItemViewHolder itemHolder = (ItemViewHolder) holder;
+            Product product = mProducts.get(mShowTracking ? position - 1 : position);
+            itemHolder.mProduct = product;
+            itemHolder.mProductName.addTextChangedListener(new NameTextWatcher(itemHolder.mProduct));
+            itemHolder.mProductName.setText(product.getTitle());
+            itemHolder.mProductUrl.addTextChangedListener(new UrlTextWatcher(itemHolder.mProduct));
+            itemHolder.mProductUrl.setText(product.getUrl());
+            itemHolder.mProductPrice.addTextChangedListener(new PriceTextWatcher(itemHolder.mProduct));
+            itemHolder.mProductPrice.setText(String.valueOf(product.getPrice()));
+            itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProduct));
+            itemHolder.mProductQuantity.setText(String.valueOf(product.getQuantity()));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mProducts.size();
+        if (mShowTracking) return mProducts.size() + 1;
+        else return mProducts.size();
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.productNameInput) EditText mProductName;
-        @BindView(R.id.productUrlInput) EditText mProductUrl;
-        @BindView(R.id.productQuantityInput) EditText mProductQuantity;
-        @BindView(R.id.productPriceInput) EditText mProductPrice;
+        @BindView(R.id.productNameInput)
+        EditText mProductName;
+        @BindView(R.id.productUrlInput)
+        EditText mProductUrl;
+        @BindView(R.id.productQuantityInput)
+        EditText mProductQuantity;
+        @BindView(R.id.productPriceInput)
+        EditText mProductPrice;
         Product mProduct;
 
         public ItemViewHolder(View itemView) {
@@ -139,6 +163,43 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     else mProductPrice.setHint(Application.getInstance().getString(R.string._0_0));
                     break;
             }
+        }
+    }
+
+    class TrackingHolder extends RecyclerView.ViewHolder implements TextWatcher {
+        @BindView(R.id.addAwaitingTrackingNumInput)
+        EditText mEditText;
+
+        public TrackingHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            mEditText.addTextChangedListener(this);
+        }
+
+        @OnFocusChange(R.id.addAwaitingTrackingNumInput)
+        void onFocusChanged(View view, boolean hasFocus) {
+            if (hasFocus) {
+                mEditText.setHint("");
+            } else {
+                mEditText.setHint(Application.getInstance().getString(R.string.tracking_example));
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (mOnActionButtonsClick != null) {
+                mOnActionButtonsClick.onTrackingChanged(s.toString());
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     }
 
@@ -243,5 +304,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         void onDeleteClick(Product product, int position);
 
         void onOpenUrl(String url, int position);
+
+        void onTrackingChanged(String currentTracking);
     }
 }
