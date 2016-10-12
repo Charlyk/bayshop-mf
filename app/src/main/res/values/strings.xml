@@ -361,4 +361,6 @@
     <string name="save_selected_address">Do you want to save this address as selected for autopackaging?</string>
     <string name="save_shipper">Save shipping method</string>
     <string name="save_selected_method">Do you want to save selected shipping method for autopackaging?</string>
+    <string name="pre_order_checking">Pre-order checking</string>
+    <string name="help">Help</string>
 </resources>

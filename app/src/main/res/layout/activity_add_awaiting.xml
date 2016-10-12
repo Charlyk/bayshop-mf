@@ -1,0 +1,280 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ededed"
+                tools:context=".ui.awaitingarrival.EditAwaitingFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/addAwaitingToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorAccent"
+        app:navigationIcon="@mipmap/ic_close_white_24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/add_awaiting_package"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/addAwaitingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/addAwaitingToolbar"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:paddingTop="7.5dp"
+        tools:listitem="@layout/declaration_item_layout"/>
+
+    <!-- BOTTOM ACTION BUTTONS -->
+    <LinearLayout
+        android:id="@+id/editAwaitingButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ade153"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addAwaitingAddFieldButton"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="0.25dp"
+            android:layout_marginRight="0.25dp"
+            android:layout_weight="1"
+            android:background="@drawable/green_button_bg"
+            android:gravity="center"
+            android:text="@string/add_item"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/addAwaitingSaveButton"
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="0.25dp"
+            android:layout_marginStart="0.25dp"
+            android:layout_weight="1"
+            android:background="@drawable/green_button_bg"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <!-- ADDITIONAL SERVICES COLLAPSED LAYOUT -->
+    <RelativeLayout
+        android:id="@+id/addAwaitingServicesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/editAwaitingButtonsLayout"
+        android:background="@drawable/selectable_background"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:paddingEnd="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:paddingStart="10dp">
+
+        <ImageView
+            android:id="@+id/addAwaitingPhoto"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/addAwaitingRepack"
+            android:layout_toStartOf="@+id/addAwaitingRepack"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/pre_order_photos"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_pre_aditional_photo_40dp"/>
+
+        <ImageView
+            android:id="@+id/addAwaitingRepack"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/pre_order_checking"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_repacking_priceless_40dp"/>
+
+
+        <ImageView
+            android:id="@+id/addAwaitingCheck"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/addAwaitingPhoto"
+            android:layout_toStartOf="@id/addAwaitingPhoto"
+            android:contentDescription="@string/repacking"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_check_priceless_40dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/addAwaitingCheck"
+            android:layout_toStartOf="@id/addAwaitingCheck"
+            android:text="@string/additional_services"
+            android:textColor="@color/textColor"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/addAwaitingServicesLayout"
+        android:background="@drawable/drop_shadow"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/addAwaitingExpandedServicesLayout"
+        android:background="@drawable/drop_shadow"/>
+
+    <!-- ADDITIONAL SERVICES EXPANDED LAYOUT -->
+    <LinearLayout
+        android:id="@+id/addAwaitingExpandedServicesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/editAwaitingButtonsLayout"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/addAwaitingPreCheckBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp">
+
+            <CheckBox
+                android:id="@+id/addAwaitingPreCheckCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_toLeftOf="@id/addAwaitingPreCheckCheckBox"
+                android:layout_toStartOf="@id/addAwaitingPreCheckCheckBox"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:drawablePadding="10dp"
+                android:text="@string/pre_order_checking"
+                android:drawableLeft="@mipmap/ic_check_priceless_40dp"
+                android:drawableStart="@mipmap/ic_check_priceless_40dp"
+                android:gravity="center_vertical"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/addAwaitingPrePhotoBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp">
+
+            <CheckBox
+                android:id="@+id/addAwaitingPrePhotoCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_toLeftOf="@id/addAwaitingPrePhotoCheckBox"
+                android:layout_toStartOf="@id/addAwaitingPrePhotoCheckBox"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:drawablePadding="10dp"
+                android:text="@string/pre_order_photos"
+                android:drawableLeft="@mipmap/ic_pre_aditional_photo_40dp"
+                android:drawableStart="@mipmap/ic_pre_aditional_photo_40dp"
+                android:gravity="center_vertical"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/addAwaitingRepackBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingRight="10dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:paddingEnd="10dp">
+
+            <CheckBox
+                android:id="@+id/addAwaitingRepackCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_toLeftOf="@id/addAwaitingRepackCheckBox"
+                android:layout_toStartOf="@id/addAwaitingRepackCheckBox"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="@string/repacking"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@mipmap/ic_repacking_priceless_40dp"
+                android:drawableStart="@mipmap/ic_repacking_priceless_40dp"
+                android:gravity="center_vertical"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/drop_shadow"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@id/addAwaitingToolbar"
+        android:background="@drawable/drop_shadow"/>
+
+    <ProgressBar
+        android:id="@+id/addAwaitingProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+</RelativeLayout>

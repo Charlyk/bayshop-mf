@@ -116,7 +116,8 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
     @OnClick(R.id.addAwaitingFloatingButton)
     void addNewAwaitingParcel() {
-        mActivity.addFragment(AddAwaitingFragment.newInstance(), false);
+        Intent addAwaiting = new Intent(mActivity, AddAwaitingActivity.class);
+        mActivity.startActivity(addAwaiting);
     }
 
     @Override

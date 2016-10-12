@@ -212,9 +212,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:drawableLeft="@mipmap/ic_precheck_product_30dp"
                 android:drawablePadding="10dp"
-                android:drawableStart="@mipmap/ic_precheck_product_30dp"
                 android:gravity="center_vertical"
                 android:text="@string/check_product"
                 android:textColor="@android:color/black"/>
@@ -244,9 +242,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:drawableLeft="@mipmap/ic_pre_aditional_photo_30dp"
                 android:drawablePadding="10dp"
-                android:drawableStart="@mipmap/ic_pre_aditional_photo_30dp"
                 android:gravity="center_vertical"
                 android:text="@string/additional_photo"
                 android:textColor="@android:color/black"/>
@@ -277,20 +273,6 @@
             android:padding="16dp">
 
 
-            <TextView
-                android:id="@+id/textView43"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:drawableLeft="@mipmap/ic_repacking_30dp"
-                android:drawablePadding="10dp"
-                android:drawableStart="@mipmap/ic_repacking_30dp"
-                android:gravity="center_vertical"
-                android:text="@string/repacking"
-                android:textColor="@android:color/black"/>
-
             <CheckBox
                 android:id="@+id/repackingCheckBtn"
                 android:layout_width="wrap_content"
@@ -298,6 +280,18 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/textView43"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/repacking"
+                android:textColor="@android:color/black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
         </RelativeLayout>
 
         <View

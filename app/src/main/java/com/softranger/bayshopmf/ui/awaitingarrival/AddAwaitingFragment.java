@@ -166,8 +166,8 @@ public class AddAwaitingFragment extends ParentFragment {
                 mProduct.setUrl(productUrl);
 
                 mActivity.toggleLoadingProgress(true);
-                mAddAwaitingCall = Application.apiInterface().addNewAwaitingParcel(Constants.USA,
-                        mProduct.getTitle(), mProduct.getUrl(), mProduct.getPrice());
+//                mAddAwaitingCall = Application.apiInterface().addNewAwaitingParcel(Constants.USA,
+//                        mProduct.getTitle(), mProduct.getUrl(), mProduct.getPrice());
                 mAddAwaitingCall.enqueue(mResponseCallback);
                 break;
         }

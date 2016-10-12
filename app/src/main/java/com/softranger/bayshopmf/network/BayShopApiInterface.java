@@ -2,7 +2,6 @@ package com.softranger.bayshopmf.network;
 
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.InStockList;
-import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.model.address.AddressToEdit;
 import com.softranger.bayshopmf.model.address.AddressesList;
 import com.softranger.bayshopmf.model.app.ParcelsCount;
@@ -11,7 +10,6 @@ import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
 import com.softranger.bayshopmf.model.box.Declaration;
 import com.softranger.bayshopmf.model.box.InStockDetailed;
-import com.softranger.bayshopmf.model.payment.History;
 import com.softranger.bayshopmf.model.payment.PaymentHistories;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
@@ -25,7 +23,6 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -72,9 +69,8 @@ public interface BayShopApiInterface {
     @FormUrlEncoded
     @POST("waiting-mf/add")
     Call<ServerResponse<AwaitingArrival>> addNewAwaitingParcel(@Field("storage") String storage,
-                                                               @Field("title") String description,
-                                                               @Field("url") String url,
-                                                               @Field("packagePrice") String packagePrice);
+                                                               @Field("tracking") String trackingNum,
+                                                               @Field("declarations") String productsJsonArray);
 
     @GET("waiting-mf/{id}")
     Call<ServerResponse<AwaitingArrivalDetails>> getAwaitingParcelDetails(@Path("id") String parcelId);

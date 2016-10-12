@@ -75,7 +75,7 @@ public class EditAwaitingFragment extends ParentFragment implements
 
         mTrackingNumField.setText(details.getTracking());
         mProducts = details.getProducts();
-        mAdapter = new DeclarationListAdapter(mProducts, mProducts.size() > 0);
+        mAdapter = new DeclarationListAdapter(mProducts, mProducts.size() > 0, false);
         mAdapter.setOnActionButtonsClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -135,5 +135,10 @@ public class EditAwaitingFragment extends ParentFragment implements
     @Override
     public void onOpenUrl(String url, int position) {
         mTabsIntent.launchUrl(mActivity, Uri.parse(url));
+    }
+
+    @Override
+    public void onTrackingChanged(String currentTracking) {
+
     }
 }

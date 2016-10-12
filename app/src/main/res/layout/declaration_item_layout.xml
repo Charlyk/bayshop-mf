@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingTop="20dp">
+    android:layout_marginBottom="7.5dp">
 
     <!-- Product URL -->
     <RelativeLayout
+        android:id="@+id/editDeclarationUrlInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp"
+        android:background="@android:color/white"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
         <TextView
@@ -57,22 +61,36 @@
             android:background="@android:color/white"
             android:hint="@string/http_example_com_example_product"
             android:inputType="textUri"
-            android:nextFocusDown="@+id/productQuantityInput"
+            android:nextFocusDown="@+id/productNameInput"
             android:padding="2dp"
             android:singleLine="true"
             android:textSize="16sp"/>
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/productUrlInput"
+            android:layout_alignEnd="@id/productUrlInput"
+            android:layout_alignTop="@id/productUrlInput"
+            android:layout_alignBottom="@id/productUrlInput"
+            android:background="@drawable/text_field_end"/>
     </RelativeLayout>
 
     <View
+        android:layout_below="@id/editDeclarationUrlInputLayout"
+        android:id="@+id/editDeclarationUrlSeparator"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="16dp"
         android:background="#b1b1b1"/>
 
     <!-- Product Name-->
     <RelativeLayout
+        android:id="@+id/editDeclarationNameInputLayout"
+        android:layout_below="@id/editDeclarationUrlSeparator"
         android:layout_width="match_parent"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp"
+        android:background="@android:color/white"
         android:layout_height="wrap_content">
 
         <TextView
@@ -99,24 +117,28 @@
             android:background="@android:color/white"
             android:hint="@string/example_product"
             android:inputType="text"
-            android:nextFocusDown="@+id/productUrlInput"
+            android:nextFocusDown="@+id/productQuantityInput"
             android:padding="2dp"
             android:singleLine="true"
             android:textSize="16sp"/>
     </RelativeLayout>
 
     <View
+        android:layout_below="@id/editDeclarationNameInputLayout"
+        android:id="@+id/editDeclarationNameSeparator"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="16dp"
         android:background="#b1b1b1"/>
 
     <!-- Product price and quantity -->
     <LinearLayout
+        android:id="@+id/editDeclarationUnitsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:paddingTop="20dp"
+        android:background="@android:color/white"
+        android:layout_below="@id/editDeclarationNameSeparator"
+        android:paddingBottom="16dp"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -175,7 +197,9 @@
     </LinearLayout>
 
     <View
+        android:layout_below="@id/editDeclarationUnitsLayout"
+        android:id="@+id/editDeclarationUnitsSeparator"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@drawable/drop_shadow"/>
-</LinearLayout>
+</RelativeLayout>

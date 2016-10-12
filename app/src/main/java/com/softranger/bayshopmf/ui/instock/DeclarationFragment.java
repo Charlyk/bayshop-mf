@@ -147,7 +147,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     private ResponseCallback<Declaration> mDeclarationResponseCallback = new ResponseCallback<Declaration>() {
         @Override
         public void onSuccess(Declaration data) {
-            mDeclarationAdapter = new DeclarationListAdapter(data.getProducts(), mInStockDetailed.getDeclarationFilled() != 0);
+            mDeclarationAdapter = new DeclarationListAdapter(data.getProducts(), mInStockDetailed.getDeclarationFilled() != 0, false);
             mDeclarationAdapter.setOnActionButtonsClickListener(DeclarationFragment.this);
             mRecyclerView.setAdapter(mDeclarationAdapter);
             mActivity.toggleLoadingProgress(false);
@@ -208,6 +208,11 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
     @Override
     public void onOpenUrl(String url, int position) {
         mTabsIntent.launchUrl(mActivity, Uri.parse(url));
+    }
+
+    @Override
+    public void onTrackingChanged(String currentTracking) {
+
     }
 
     private boolean isAllDataProvided(Product product) {

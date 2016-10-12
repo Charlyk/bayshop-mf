@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
+
 public class InStock extends Box {
 
     @JsonProperty("remainingDays") private int mRemainingDays;
     @JsonProperty("isDeclarationFilled") private int mDeclarationFilled;
     @JsonProperty("separationRequest") private int mSeparationRequest;
+    @JsonProperty("isHeldByProhibition")
+    private int mIsHeldByProhibition;
 
     @JsonIgnore private boolean mIsSelected;
 
@@ -28,6 +31,7 @@ public class InStock extends Box {
         mRemainingDays = in.readInt();
         mDeclarationFilled = in.readInt();
         mSeparationRequest = in.readInt();
+        mIsHeldByProhibition = in.readInt();
     }
 
     public static final Creator<InStock> CREATOR = new Creator<InStock>() {
@@ -48,6 +52,10 @@ public class InStock extends Box {
 
     public int getSeparationRequest() {
         return mSeparationRequest;
+    }
+
+    public int getIsHeldByProhibition() {
+        return mIsHeldByProhibition;
     }
 
     @JsonIgnore
@@ -83,5 +91,6 @@ public class InStock extends Box {
         parcel.writeInt(mRemainingDays);
         parcel.writeInt(mDeclarationFilled);
         parcel.writeInt(mSeparationRequest);
+        parcel.writeInt(mIsHeldByProhibition);
     }
 }
