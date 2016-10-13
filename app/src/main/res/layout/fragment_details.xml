@@ -2,6 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="true"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
@@ -23,6 +24,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"/>
+
+            <ImageView
+                android:id="@+id/cloudImage"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:scaleType="centerInside"
+                android:background="#ededed"
+                android:src="@drawable/white_cloud"/>
 
             <View
                 android:layout_width="match_parent"
@@ -74,7 +83,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <include
                 layout="@layout/detailed_item_details"/>

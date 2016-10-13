@@ -115,7 +115,7 @@ public class ConfirmationFragment extends ParentFragment {
         mTotalPriceValue = shippingPrice;
         mDeclarationPrice.setText(mCreationDetails.getCurrencySign() + mCreationDetails.getDeclarationPrice());
 
-        if (Application.hasInsurance()) {
+        if (Application.isAutopackaging() && Application.hasInsurance()) {
             selectInsurance();
         }
         return view;

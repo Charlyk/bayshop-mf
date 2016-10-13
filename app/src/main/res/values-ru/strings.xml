@@ -319,4 +319,5 @@
     <string name="your_parcel_added">Your parcel was added successfuly with ID\u0020</string>
     <string name="held_by_user">Held by user</string>
     <string name="payment_details">Payment details</string>
+    <string name="enter_tracking_num">Please enter parcel tracking number</string>
 </resources>

@@ -121,6 +121,8 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         // get in stock item from arguments
         mInStockItem = getArguments().getParcelable(ITEM_ARG);
 
+        mFillDeclaration.setVisibility(View.GONE);
+
         // send request to server for item details
         mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
         mActivity.toggleLoadingProgress(true);
@@ -228,7 +230,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                 mFillDeclaration.setText(mActivity.getString(R.string.fill_in_the_declaration));
             }
             mFillDeclaration.setSelected(detailed.getDeclarationFilled() != 0);
-
+            mFillDeclaration.setVisibility(View.VISIBLE);
             mFillDeclaration.setOnClickListener(DetailsFragment.this);
             mCheckProduct.setOnClickListener(DetailsFragment.this);
             mAdditionalPhoto.setOnClickListener(DetailsFragment.this);

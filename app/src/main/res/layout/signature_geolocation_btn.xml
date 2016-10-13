@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:background="@color/colorGreenActionDivider"
     android:orientation="horizontal"
     android:id="@+id/receivedSignatureOnMapLayout">
 
@@ -15,8 +16,8 @@
         android:id="@+id/geolocationButton"
         android:textColor="@color/colorPrimary"
         android:background="@drawable/green_button_bg"
-        android:layout_marginRight="1dp"
-        android:layout_marginEnd="1dp"
+        android:layout_marginRight="0.25dp"
+        android:layout_marginEnd="0.25dp"
         android:textSize="18sp"
         android:layout_weight="1"/>
 
@@ -28,8 +29,8 @@
         android:text="@string/leave_feedback"
         android:id="@+id/leaveReviewButton"
         android:layout_weight="1"
-        android:layout_marginLeft="1dp"
-        android:layout_marginStart="1dp"
+        android:layout_marginLeft="0.25dp"
+        android:layout_marginStart="0.25dp"
         android:textColor="@color/colorPrimary"
         android:background="@drawable/green_button_bg"
         android:textSize="18sp"/>

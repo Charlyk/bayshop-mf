@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.softranger.bayshopmf.ui.services.CheckProductFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentFragment;
+import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 import java.io.IOException;
 
@@ -44,7 +44,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AwaitingArrivalProductFragment extends ParentFragment {
+public class AwaitingArrivalProductFragment extends ParentFragment implements ParcelStatusBarView.OnStatusBarReadyListener {
 
     private static final String PRODUCT_ARG = "product";
     public static final String ACTION_UPDATE = "update data";
@@ -59,6 +59,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
     @BindView(R.id.awaitingDetailsStorageIcon) ImageView mStorageIcon;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
+    @BindView(R.id.awaitingArrivalStatusBar)
+    ParcelStatusBarView mStatusBarView;
 
     private MainActivity mActivity;
     private Unbinder mUnbinder;
@@ -87,6 +89,9 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
         mActivity = (MainActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, rootView);
 
+        mStatusBarView.setNewColorsMap(AwaitingArrivalFragment.COLOR_MAP);
+        mStatusBarView.setOnStatusBarReadyListener(this);
+
         // hide all layout while we don't have detailed parcel
         mHolderLayout.setVisibility(View.GONE);
 
@@ -94,7 +99,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
-        intentFilter.addAction(ACTION_UPDATE);
+        intentFilter.addAction(AwaitingArrivalFragment.ACTION_ITEM_ADDED);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
         mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
@@ -133,11 +138,9 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
-                case ACTION_UPDATE:
+                case AwaitingArrivalFragment.ACTION_ITEM_ADDED:
                     mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
                     mCall.enqueue(mResponseCallback);
-                    Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
-                    mActivity.sendBroadcast(refresh);
                     break;
             }
         }
@@ -201,7 +204,12 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
 
     @OnClick(R.id.awaitingDetailsEditButton)
     void editParcelDetails() {
-        mActivity.addFragment(EditAwaitingFragment.newInstance(mArrivalDetails), true);
+        Intent editParcel = new Intent(mActivity, AddAwaitingActivity.class);
+        editParcel.putExtra(AddAwaitingActivity.SHOW_TRACKING, true);
+        editParcel.putExtra(AddAwaitingActivity.PRODUCTS_ARRAY, mArrivalDetails.getProducts());
+        editParcel.putExtra(AddAwaitingActivity.AWAITING_ID, mArrivalDetails.getId());
+        editParcel.putExtra(AddAwaitingActivity.TRACKING_NUM, mArrivalDetails.getTracking());
+        mActivity.startActivityForResult(editParcel, AwaitingArrivalFragment.ADD_PARCEL_RC);
     }
 
     @OnClick(R.id.awaitingDetailsDeleteButton)
@@ -287,5 +295,10 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
     @Override
     public MainActivity.SelectedFragment getSelectedFragment() {
         return MainActivity.SelectedFragment.awaiting_arrival;
+    }
+
+    @Override
+    public void onStatusBarReady() {
+        mStatusBarView.setProgress(3, "Some progress");
     }
 }

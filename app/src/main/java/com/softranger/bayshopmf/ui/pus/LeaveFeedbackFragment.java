@@ -65,12 +65,18 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     private static SimpleDateFormat serverFormat;
     private static SimpleDateFormat friendlyFormat;
 
-    @BindView(R.id.leaveFeedbackUidLabel) TextView mUidLabel;
-    @BindView(R.id.leaveFeedbackDescriptionLabel) TextView mDescriptionLabel;
-    @BindView(R.id.leaveFeedbackDateLabel) TextView mDateLabel;
-    @BindView(R.id.leaveFeedbackRatingBar) RatingBar mRatingBar;
-    @BindView(R.id.leaveFeedbackRatingLabel) TextView mRatingLabel;
-    @BindView(R.id.leaveFeedbackCommentLabel) EditText mCommentInput;
+    @BindView(R.id.leaveFeedbackUidLabel)
+    TextView mUidLabel;
+    @BindView(R.id.leaveFeedbackDescriptionLabel)
+    TextView mDescriptionLabel;
+    @BindView(R.id.leaveFeedbackDateLabel)
+    TextView mDateLabel;
+    @BindView(R.id.leaveFeedbackRatingBar)
+    RatingBar mRatingBar;
+    @BindView(R.id.leaveFeedbackRatingLabel)
+    TextView mRatingLabel;
+    @BindView(R.id.leaveFeedbackCommentLabel)
+    EditText mCommentInput;
 
     private HashMap<Float, Integer> mRatingStrings = new HashMap<Float, Integer>() {{
         put(1f, R.string.hated_it);
@@ -118,7 +124,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     }
 
     private String getFormattedDate(String createdDate) {
-        Date today  = new Date();
+        Date today = new Date();
         Date date = new Date();
         String formattedDate = "";
         try {
@@ -196,7 +202,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
                 PackageManager.PERMISSION_GRANTED) {
             dispatchTakePictureIntent();
         } else {
-            String[] permissions = new String[] {Manifest.permission.CAMERA};
+            String[] permissions = new String[]{Manifest.permission.CAMERA};
             ActivityCompat.requestPermissions(mActivity, permissions, CAMERA_PERMISSION_CODE);
         }
     }
@@ -273,6 +279,10 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
 
     @Override
     public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+        if (v < 1.0f) {
+            ratingBar.setRating(1.0f);
+            v = 1.0f;
+        }
         mRatingLabel.setText(getString(mRatingStrings.get(v)));
     }
 

@@ -71,7 +71,7 @@
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressFirstNameInputLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressLastNameLayout"
@@ -102,7 +102,7 @@
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressLastNameLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressStreetLayout"
@@ -133,7 +133,7 @@
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressStreetLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressEmailLayout"
@@ -163,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_below="@id/editAddressEmailLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <LinearLayout
                 android:id="@+id/phoneCodeLayout"
@@ -206,7 +206,7 @@
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@id/phoneCodeLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressPhoneNumberLayout"
@@ -237,7 +237,7 @@
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressPhoneNumberLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressCityLayout"
@@ -267,7 +267,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_below="@id/editAddressCityLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <LinearLayout
                 android:id="@+id/countryLayout"
@@ -283,12 +283,6 @@
                 android:paddingRight="16dp"
                 android:paddingStart="16dp"
                 android:paddingTop="5dp">
-
-                <Spinner
-                    android:id="@+id/countrySpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:id="@+id/textView14"
@@ -316,7 +310,7 @@
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@id/countryLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressPostalCodeLayout"
@@ -347,7 +341,18 @@
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressPostalCodeLayout"
-                android:background="#b1b1b1"/>
+                android:background="#ededed"/>
+
+            <Button
+                android:id="@+id/addAddressSaveAddressButton"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/editAddressPostalCodeDivider"
+                android:background="@drawable/green_button_bg"
+                android:text="@string/save"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"/>
 
             <View
                 android:id="@+id/editAddressInputFocusIndicator"
@@ -358,19 +363,6 @@
                 android:background="@color/colorAccent"/>
         </RelativeLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/addAddressSaveAddressButton"
-        style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/green_button_bg"
-        android:text="@string/save"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"/>
 
     <ProgressBar
         android:id="@+id/editAddressProgressBar"

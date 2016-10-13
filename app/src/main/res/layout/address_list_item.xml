@@ -188,9 +188,19 @@
         tools:text="+37379466284"/>
 
     <View
+        android:id="@+id/addressItemShadowSeparator"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="20dp"
         android:layout_below="@id/addressPhoneNumberLabel"
         android:background="@drawable/drop_shadow"/>
+
+    <View
+        android:id="@+id/addressItemSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ededed"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:layout_below="@id/addressPhoneNumberLabel"/>
 </RelativeLayout>

@@ -8,11 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -105,54 +103,41 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
             // check parcel status and set visibility of additional buttons and views
             // also set the right warning text and icon
-            @DrawableRes int warningImage = 0;
             String warningMessage = "";
             switch (headerHolder.mProcessingParcel.getParcelStatus()) {
                 case processing:
-                    warningImage = R.mipmap.ic_packing_44dp;
                     warningMessage = "Some text for in processing packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case awaiting_sending:
-                    warningImage = R.mipmap.awaiting_sending_24dp;
                     warningMessage = "Some text for awaiting sending packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_due_to_debt:
-                    headerHolder.mWarningImage.setImageResource(R.mipmap.ic_held_due_to_debt_44dp);
-                    warningImage = R.mipmap.ic_held_due_to_debt_44dp;
                     warningMessage = "Some text for held due to debt packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_by_prohibition:
-                    warningImage = R.mipmap.ic_held_by_prohibition_44dp;
                     warningMessage = "Some text for held by prohibition packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_by_damage:
-                    warningImage = R.mipmap.ic_packing_44dp;
                     warningMessage = "Some text for taken to delivery packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case sent:
-                    warningImage = R.mipmap.ic_sent_44dp;
                     warningMessage = "Some text for sent packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_by_customs:
-                    warningImage = R.mipmap.ic_held_by_customs_60dp;
                     warningMessage = headerHolder.mProcessingParcel.getCustomsCause(); // TODO: 7/18/16 replace text
                     break;
                 case local_depot:
-                    warningImage = R.mipmap.ic_local_deposit_44dp;
                     warningMessage = "Some text for local depot packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case in_the_way:
                     headerHolder.mToDeliveryDetails.setVisibility(View.VISIBLE);
-                    warningImage = R.mipmap.ic_take_to_delivery_44dp;
                     warningMessage = "Some text for taken to delivery packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case received:
-                    warningImage = R.mipmap.ic_received_44dp;
                     warningMessage = "Some text for received packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
             }
 
-            headerHolder.mWarningImage.setImageResource(warningImage);
             headerHolder.mWarningTextView.setText(warningMessage);
 
             // set the storage icon before UID label also set the UID text
@@ -247,7 +232,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.inProcessingDetailsShippingPriceLabel) TextView mShippingPrice;
         @BindView(R.id.inProcessingDetailsTotalPriceLabel) TextView mTotalPrice;
         @BindView(R.id.inProcessingDetailsShippingByTracking) TextView mTrackingNumber;
-        @BindView(R.id.warningWithIconLabel) TextView mWarningTextView;
+        @BindView(R.id.warningItemLabel)
+        TextView mWarningTextView;
         @BindView(R.id.inProcessingDetailsShippingByLabel) TextView mShippingBy;
 
         @BindView(R.id.pusDetailsStatusProgress)
@@ -257,13 +243,15 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.addressAddToFavoritesButton) ImageButton mAddToFavorite;
 
         @BindView(R.id.inProcessingDetailsStorageIcon) ImageView mDepositIcon;
-        @BindView(R.id.warningWithIconImageView) ImageView mWarningImage;
 
         @BindView(R.id.takeToDeliveryDetailsHeaderLayout) LinearLayout mToDeliveryDetails;
-        @BindView(R.id.warningLayoutWithIcon)
-        RelativeLayout mWarningWithImage;
+        @BindView(R.id.warningItemLayout)
+        LinearLayout mWarningWithImage;
         @BindView(R.id.shippingByLayoutButton) LinearLayout mShippingByLayout;
-
+        @BindView(R.id.addressItemShadowSeparator)
+        View mAddressShadow;
+        @BindView(R.id.addressItemSeparator)
+        View mAddressSeparator;
 
         GoogleMap mGoogleMap;
         PUSParcelDetailed mProcessingParcel;
@@ -290,6 +278,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             mAddToFavorite.setVisibility(View.GONE);
             mToDeliveryDetails.setVisibility(View.GONE);
             mWarningWithImage.setVisibility(View.GONE);
+            mAddressShadow.setVisibility(View.GONE);
+            mAddressSeparator.setVisibility(View.VISIBLE);
         }
 
         @Override

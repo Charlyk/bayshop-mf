@@ -2,7 +2,6 @@ package com.softranger.bayshopmf.ui.pus;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,21 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
-import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
-import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -35,13 +28,11 @@ import retrofit2.Call;
 import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnItemClickListener,
         PullToRefreshLayout.PullToRefreshListener {
 
-    private ParentActivity mActivity;
+    private MainActivity mActivity;
     private Unbinder mUnbinder;
     private ArrayList<PUSParcel> mPUSParcels;
     private ItemAdapter mAdapter;
@@ -67,7 +58,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
-        mActivity = (ParentActivity) getActivity();
+        mActivity = (MainActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
         mPUSParcels = new ArrayList<>();
         mAdapter = new ItemAdapter(mActivity);
@@ -92,6 +83,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
             mAdapter.refreshList(mPUSParcels);
             mActivity.toggleLoadingProgress(false);
             mRefreshLayout.setRefreshing(false);
+            mActivity.updateParcelCounters(Constants.ParcelStatus.RECEIVED);
         }
 
         @Override

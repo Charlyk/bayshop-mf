@@ -24,8 +24,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawableLeft="@mipmap/additional_photo_55dp"
-            android:drawableStart="@mipmap/additional_photo_55dp"
+            android:drawableLeft="@mipmap/ic_additional_photo_55dp"
+            android:drawableStart="@mipmap/ic_additional_photo_55dp"
             android:text="@string/pre_order_photos"
             android:textColor="@android:color/black"
             android:textSize="16sp"/>
@@ -46,6 +46,14 @@
             android:textColor="@android:color/black"
             android:textSize="16sp"/>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/cloudImage"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:scaleType="centerInside"
+        android:background="#ededed"
+        android:src="@drawable/white_cloud"/>
 
     <View
         android:layout_width="match_parent"
@@ -115,7 +123,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <TextView
         android:id="@+id/awaitingDetailsTrackingTitle"
@@ -144,7 +152,7 @@
         android:layout_height="0.5dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <LinearLayout
         android:layout_width="match_parent"

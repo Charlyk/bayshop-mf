@@ -3,6 +3,7 @@
               android:id="@+id/uploadDocumentLayout"
               android:layout_width="match_parent"
               android:layout_height="50dp"
+              android:background="@color/colorGreenActionDivider"
               android:orientation="horizontal">
 
     <Button
@@ -10,8 +11,8 @@
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
+        android:layout_marginEnd="0.25dp"
+        android:layout_marginRight="0.25dp"
         android:layout_weight="1"
         android:background="@drawable/green_button_bg"
         android:gravity="center"
@@ -24,8 +25,8 @@
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="1dp"
-        android:layout_marginStart="1dp"
+        android:layout_marginLeft="0.25dp"
+        android:layout_marginStart="0.25dp"
         android:layout_weight="1"
         android:background="@drawable/green_button_bg"
         android:gravity="center"

@@ -4,7 +4,7 @@
                 android:layout_height="wrap_content"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:background="@drawable/selectable_background"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="7.5dp"
                 android:clickable="true"
                 android:orientation="horizontal">
 
@@ -28,6 +28,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_centerVertical="true"
+        android:paddingTop="16dp"
+        android:paddingBottom="20dp"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
@@ -47,13 +49,14 @@
             android:id="@+id/inStockDescriptionlabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginBottom="7.5dp"
             android:textColor="@android:color/black"
             tools:text="Some product description"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:orientation="horizontal">
 
             <TextView
@@ -125,21 +128,11 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/inStockTopDivider"
-        android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/inStockItemDataLayout"
-        android:layout_marginBottom="16dp"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
-
-    <View
         android:id="@+id/inStockBottomDivider"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_below="@+id/inStockItemDataLayout"
-        android:background="@drawable/drop_shadow"
-        android:layout_marginTop="16dp"/>
+        android:background="@drawable/drop_shadow"/>
 
     <TextView
         tools:text="TextView"
@@ -149,9 +142,11 @@
         android:layout_alignParentRight="true"
         android:textColor="@android:color/white"
         android:padding="3dp"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:layout_alignParentEnd="true"
         tools:background="@drawable/yelow_5dp_corner"
-        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
         android:id="@+id/inStockRemainingLabel"/>
 </RelativeLayout>

@@ -19,4 +19,5 @@
     <color name="colorLocalDepotDark">#bfa23f</color>
     <color name="white_semi_tranparent">#BCFFFFFF</color>
     <color name="textColor">#424242</color>
+    <color name="colorGreenActionDivider">#ade153</color>
 </resources>

@@ -54,7 +54,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -101,7 +101,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -148,7 +148,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -195,7 +195,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -242,7 +242,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -289,7 +289,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -336,7 +336,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -383,6 +383,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
     </LinearLayout>
 </ScrollView>

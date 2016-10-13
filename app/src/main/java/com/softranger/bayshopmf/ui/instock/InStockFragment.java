@@ -31,6 +31,7 @@ import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.steps.ConfirmationFragment;
 import com.softranger.bayshopmf.ui.steps.CreateParcelActivity;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.widget.TotalsView;
@@ -133,6 +134,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
             mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);
+            mActivity.updateParcelCounters(Constants.ParcelStatus.IN_STOCK);
         }
 
         @Override

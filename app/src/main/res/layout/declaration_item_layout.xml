@@ -35,8 +35,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginStart="50dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
             android:src="@mipmap/ic_delete_24dpi"/>
 
         <ImageButton
@@ -81,7 +81,7 @@
         android:id="@+id/editDeclarationUrlSeparator"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <!-- Product Name-->
     <RelativeLayout
@@ -128,7 +128,7 @@
         android:id="@+id/editDeclarationNameSeparator"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <!-- Product price and quantity -->
     <LinearLayout

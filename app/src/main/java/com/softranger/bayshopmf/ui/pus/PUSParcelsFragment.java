@@ -22,7 +22,7 @@ import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         PullToRefreshLayout.PullToRefreshListener {
 
     private Unbinder mUnbinder;
-    private ParentActivity mActivity;
+    private MainActivity mActivity;
     private ArrayList<PUSParcel> mPUSParcels;
     private PUSParcelsAdapter mAdapter;
     private Call<ServerResponse<PUSStatuses>> mCall;
@@ -65,7 +65,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        mActivity = (ParentActivity) getActivity();
+        mActivity = (MainActivity) getActivity();
 
         IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
@@ -93,6 +93,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
             mRecyclerView.setItemViewCacheSize(mPUSParcels.size());
             mActivity.toggleLoadingProgress(false);
             mRefreshLayout.setRefreshing(false);
+            mActivity.updateParcelCounters(Constants.PARCELS);
         }
 
         @Override

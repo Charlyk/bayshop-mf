@@ -1,448 +1,433 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ededed">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/confirmFinishAndSendBtn"
-        android:background="#f1f1f1">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/select_insurance_layout"/>
+
+        <include layout="@layout/no_insurance_layout"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/drop_shadow"/>
 
         <LinearLayout
+            android:id="@+id/confirmationParcelDetailsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
 
-            <include layout="@layout/select_insurance_layout"/>
-
-            <include layout="@layout/no_insurance_layout"/>
-
+            <!-- Additional services -->
             <LinearLayout
-                android:id="@+id/confirmationParcelDetailsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:background="@android:color/white"
                 android:orientation="vertical">
 
-                <!-- Additional services -->
-                <LinearLayout
+
+                <TextView
+                    android:id="@+id/textView36"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:orientation="vertical">
+                    android:background="#f1f1f1"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="16dp"
+                    android:text="@string/additional_services"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp"/>
 
-
-                    <TextView
-                        android:id="@+id/textView36"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#f1f1f1"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="16dp"
-                        android:text="@string/additional_services"
-                        android:textColor="@color/textColor"
-                        android:textSize="18sp"/>
-
-                    <RelativeLayout
-                        android:id="@+id/confirmAdditionalPackageButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:minHeight="?actionBarSize"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp">
-
-                        <CheckBox
-                            android:id="@+id/confirmAdditionalPackagesCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="@android:color/black"
-                            android:textSize="17sp"/>
-
-                        <ImageView
-                            android:id="@+id/confirmAdditionalPackageDetails"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toLeftOf="@id/confirmAdditionalPackagesCheckBox"
-                            android:layout_toStartOf="@id/confirmAdditionalPackagesCheckBox"
-                            android:clickable="true"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/ic_detail_24dp"/>
-
-                        <TextView
-                            android:id="@+id/confirmAdditionalPackageTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toLeftOf="@id/confirmAdditionalPackageDetails"
-                            android:layout_toStartOf="@id/confirmAdditionalPackageDetails"
-                            android:text="@string/additional_package"
-                            android:textColor="@color/textColor"
-                            android:textSize="16sp"/>
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="#b1b1b1"/>
-
-                    <RelativeLayout
-                        android:id="@+id/confirmLocalDeliveryButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:minHeight="?actionBarSize"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp">
-
-                        <CheckBox
-                            android:id="@+id/confirmLocalDeliveryCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="@android:color/black"
-                            android:textSize="17sp"/>
-
-                        <ImageView
-                            android:id="@+id/confirmLocalDeliveryDetails"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toLeftOf="@id/confirmLocalDeliveryCheckBox"
-                            android:layout_toStartOf="@id/confirmLocalDeliveryCheckBox"
-                            android:clickable="true"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/ic_detail_24dp"/>
-
-                        <TextView
-                            android:id="@+id/confirmLocalDeliveryTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toLeftOf="@id/confirmLocalDeliveryDetails"
-                            android:layout_toStartOf="@id/confirmLocalDeliveryDetails"
-                            android:text="@string/local_delivery"
-                            android:textColor="@color/textColor"
-                            android:textSize="16sp"/>
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="#b1b1b1"/>
-
-                    <RelativeLayout
-                        android:id="@+id/confirmSentOnUserAlertButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:minHeight="?actionBarSize"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp">
-
-                        <CheckBox
-                            android:id="@+id/confirmSentOnUserAlert"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="@android:color/black"/>
-
-                        <ImageView
-                            android:id="@+id/confirmSentOnUserAlertDetails"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toLeftOf="@id/confirmSentOnUserAlert"
-                            android:layout_toStartOf="@id/confirmSentOnUserAlert"
-                            android:clickable="true"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/ic_detail_24dp"/>
-
-                        <TextView
-                            android:id="@+id/confirmSentOnUserAlertTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_toLeftOf="@id/confirmSentOnUserAlertDetails"
-                            android:layout_toStartOf="@id/confirmSentOnUserAlertDetails"
-                            android:text="@string/sent_on_user_alert"
-                            android:textColor="@color/textColor"
-                            android:textSize="16sp"/>
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:background="@drawable/drop_shadow"/>
-                </LinearLayout>
-
-                <!-- Totals layout -->
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/confirmAdditionalPackageButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:orientation="vertical">
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:minHeight="?actionBarSize"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <CheckBox
+                        android:id="@+id/confirmAdditionalPackagesCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"/>
+
+                    <ImageView
+                        android:id="@+id/confirmAdditionalPackageDetails"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/confirmAdditionalPackagesCheckBox"
+                        android:layout_toStartOf="@id/confirmAdditionalPackagesCheckBox"
+                        android:clickable="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_detail_24dp"/>
 
                     <TextView
-                        android:id="@+id/textView35"
-                        android:layout_width="match_parent"
+                        android:id="@+id/confirmAdditionalPackageTitle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#f1f1f1"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="16dp"
-                        android:text="@string/check_parcel_details"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/confirmAdditionalPackageDetails"
+                        android:layout_toStartOf="@id/confirmAdditionalPackageDetails"
+                        android:text="@string/additional_package"
                         android:textColor="@color/textColor"
-                        android:textSize="18sp"/>
+                        android:textSize="16sp"/>
+                </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#ededed"/>
+
+                <RelativeLayout
+                    android:id="@+id/confirmLocalDeliveryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:minHeight="?actionBarSize"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <CheckBox
+                        android:id="@+id/confirmLocalDeliveryCheckBox"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"/>
+
+                    <ImageView
+                        android:id="@+id/confirmLocalDeliveryDetails"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/confirmLocalDeliveryCheckBox"
+                        android:layout_toStartOf="@id/confirmLocalDeliveryCheckBox"
+                        android:clickable="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_detail_24dp"/>
+
+                    <TextView
+                        android:id="@+id/confirmLocalDeliveryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/confirmLocalDeliveryDetails"
+                        android:layout_toStartOf="@id/confirmLocalDeliveryDetails"
+                        android:text="@string/local_delivery"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#ededed"/>
+
+                <RelativeLayout
+                    android:id="@+id/confirmSentOnUserAlertButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:minHeight="?actionBarSize"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <CheckBox
+                        android:id="@+id/confirmSentOnUserAlert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black"/>
+
+                    <ImageView
+                        android:id="@+id/confirmSentOnUserAlertDetails"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/confirmSentOnUserAlert"
+                        android:layout_toStartOf="@id/confirmSentOnUserAlert"
+                        android:clickable="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_detail_24dp"/>
+
+                    <TextView
+                        android:id="@+id/confirmSentOnUserAlertTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp">
+                        android:layout_toLeftOf="@id/confirmSentOnUserAlertDetails"
+                        android:layout_toStartOf="@id/confirmSentOnUserAlertDetails"
+                        android:text="@string/sent_on_user_alert"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp"/>
+                </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/confirmDeliveryPriceLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="@android:color/black"
-                            android:textSize="17sp"
-                            tools:text="$10"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/drop_shadow"/>
+            </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/confirmDeliveryPriceTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@id/confirmDeliveryPriceLabel"
-                            android:layout_toStartOf="@id/confirmDeliveryPriceLabel"
-                            android:text="@string/shipping_price"
-                            android:textSize="17sp"/>
-                    </RelativeLayout>
+            <!-- Totals layout -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:id="@+id/confirmInsurancePriceLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp">
-
-                        <TextView
-                            android:id="@+id/confirmInsurancePriceLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="@android:color/black"
-                            android:textSize="17sp"
-                            tools:text="$10"/>
-
-                        <TextView
-                            android:id="@+id/confirmInsurancePriceTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@id/confirmInsurancePriceLabel"
-                            android:layout_toStartOf="@id/confirmInsurancePriceLabel"
-                            android:text="@string/insurance_price"
-                            android:textSize="17sp"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/confirmDeclarationPriceLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp">
-
-                        <TextView
-                            android:id="@+id/confirmDeclarationPriceLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="@android:color/black"
-                            android:textSize="17sp"
-                            tools:text="$3"/>
-
-                        <TextView
-                            android:id="@+id/confirmDeclarationPriceTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@id/confirmDeclarationPriceLabel"
-                            android:layout_toStartOf="@id/confirmDeclarationPriceLabel"
-                            android:text="@string/declaration"
-                            android:textSize="17sp"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp">
-
-                        <TextView
-                            android:id="@+id/confirmTotalPriceLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="@color/colorGreenAction"
-                            android:textSize="17sp"
-                            tools:text="$3"/>
-
-                        <TextView
-                            android:id="@+id/confirmTotalPriceTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@id/confirmTotalPriceLabel"
-                            android:layout_toStartOf="@id/confirmTotalPriceLabel"
-                            android:text="@string/total_shipping_price"
-                            android:textSize="17sp"/>
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:background="@drawable/drop_shadow"/>
-                </LinearLayout>
-
-                <!-- Terms and codintion -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textView35"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:background="#ededed"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="16dp"
+                    android:text="@string/check_parcel_details"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp">
 
                     <TextView
-                        android:id="@+id/textView37"
-                        android:layout_width="match_parent"
+                        android:id="@+id/confirmDeliveryPriceLabel"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#f1f1f1"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="16dp"
-                        android:text="@string/terms_and_conditions"
-                        android:textColor="@color/textColor"
-                        android:textSize="18sp"/>
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+                        tools:text="$10"/>
 
-                    <RelativeLayout
-                        android:id="@+id/confirmAgreeTermsButton"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/confirmDeliveryPriceTitle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/selectable_background"
-                        android:clickable="true"
-                        android:minHeight="?actionBarSize"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp">
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/confirmDeliveryPriceLabel"
+                        android:layout_toStartOf="@id/confirmDeliveryPriceLabel"
+                        android:text="@string/shipping_price"
+                        android:textSize="17sp"/>
+                </RelativeLayout>
 
-                        <CheckBox
-                            android:id="@+id/confirmAgreeTermsCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="@android:color/black"/>
+                <RelativeLayout
+                    android:id="@+id/confirmInsurancePriceLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
 
-                        <ImageView
-                            android:id="@+id/confirmAgreeTermsDetails"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toLeftOf="@id/confirmAgreeTermsCheckBox"
-                            android:layout_toStartOf="@id/confirmAgreeTermsCheckBox"
-                            android:clickable="true"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/ic_detail_24dp"/>
+                    <TextView
+                        android:id="@+id/confirmInsurancePriceLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+                        tools:text="$10"/>
 
-                        <TextView
-                            android:id="@+id/confirmTermsAndConditionsTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_toLeftOf="@id/confirmAgreeTermsDetails"
-                            android:layout_toStartOf="@id/confirmAgreeTermsDetails"
-                            android:text="@string/accepte_terms_and_conditions"
-                            android:textColor="@color/textColor"
-                            android:textSize="16sp"/>
-                    </RelativeLayout>
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/confirmInsurancePriceTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/confirmInsurancePriceLabel"
+                        android:layout_toStartOf="@id/confirmInsurancePriceLabel"
+                        android:text="@string/insurance_price"
+                        android:textSize="17sp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/confirmDeclarationPriceLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
+
+                    <TextView
+                        android:id="@+id/confirmDeclarationPriceLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+                        tools:text="$3"/>
+
+                    <TextView
+                        android:id="@+id/confirmDeclarationPriceTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/confirmDeclarationPriceLabel"
+                        android:layout_toStartOf="@id/confirmDeclarationPriceLabel"
+                        android:text="@string/declaration"
+                        android:textSize="17sp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
+
+                    <TextView
+                        android:id="@+id/confirmTotalPriceLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/colorGreenAction"
+                        android:textSize="17sp"
+                        tools:text="$3"/>
+
+                    <TextView
+                        android:id="@+id/confirmTotalPriceTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/confirmTotalPriceLabel"
+                        android:layout_toStartOf="@id/confirmTotalPriceLabel"
+                        android:text="@string/total_shipping_price"
+                        android:textSize="17sp"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/drop_shadow"/>
             </LinearLayout>
+
+            <!-- Terms and codintion -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/confirmAgreeTermsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ededed"
+                    android:clickable="true"
+                    android:minHeight="?actionBarSize"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <CheckBox
+                        android:id="@+id/confirmAgreeTermsCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black"/>
+
+                    <ImageView
+                        android:id="@+id/confirmAgreeTermsDetails"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/confirmAgreeTermsCheckBox"
+                        android:layout_toStartOf="@id/confirmAgreeTermsCheckBox"
+                        android:clickable="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_detail_24dp"/>
+
+                    <TextView
+                        android:id="@+id/confirmTermsAndConditionsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_toLeftOf="@id/confirmAgreeTermsDetails"
+                        android:layout_toStartOf="@id/confirmAgreeTermsDetails"
+                        android:text="@string/accepte_terms_and_conditions"
+                        android:textSize="16sp"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/confirmFinishAndSendBtn"
+                style="@style/Base.Widget.AppCompat.ActionButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="end"
+                android:background="@drawable/green_button_bg"
+                android:text="@string/confirm"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"/>
         </LinearLayout>
-    </ScrollView>
-    <Button
-        android:id="@+id/confirmFinishAndSendBtn"
-        style="@style/Base.Widget.AppCompat.ActionButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="end"
-        android:background="@drawable/green_button_bg"
-        android:text="@string/confirm"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"/>
-</RelativeLayout>
+    </LinearLayout>
+</ScrollView>

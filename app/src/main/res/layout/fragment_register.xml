@@ -42,7 +42,7 @@
             android:layout_height="0.5dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <EditText
             android:id="@+id/registerLastNameInput"
@@ -62,7 +62,7 @@
             android:layout_height="0.5dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <EditText
             android:id="@+id/registerEmailInput"
@@ -82,7 +82,7 @@
             android:layout_height="0.5dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <EditText
             android:id="@+id/registerPasswordInput"
@@ -102,7 +102,7 @@
             android:layout_height="0.5dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <EditText
             android:id="@+id/registerConfirmPassword"
@@ -120,7 +120,7 @@
             android:layout_height="0.5dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="#b1b1b1"/>
+            android:background="#ededed"/>
 
         <Button
             android:id="@+id/registerConfirmButton"

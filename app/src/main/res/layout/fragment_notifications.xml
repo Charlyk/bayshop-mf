@@ -10,7 +10,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <RelativeLayout
         android:id="@+id/notificationsInternalMailButton"
@@ -59,7 +59,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <RelativeLayout
         android:id="@+id/notificationsSmsButton"
@@ -108,7 +108,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <RelativeLayout
         android:id="@+id/notificationsPushNotifButton"
@@ -157,7 +157,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <RelativeLayout
         android:id="@+id/notificationsEmailsButton"
@@ -206,7 +206,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <!--<Button-->
         <!--style="@style/Base.Widget.AppCompat.ActionButton"-->

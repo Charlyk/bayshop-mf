@@ -67,10 +67,11 @@ public interface BayShopApiInterface {
                                                     @Field("password") String password);
 
     @FormUrlEncoded
-    @POST("waiting-mf/add")
-    Call<ServerResponse<AwaitingArrival>> addNewAwaitingParcel(@Field("storage") String storage,
-                                                               @Field("tracking") String trackingNum,
-                                                               @Field("declarations") String productsJsonArray);
+    @POST("waiting-mf/{id}")
+    Call<ServerResponse> addNewAwaitingParcel(@Path("id") String parcelId,
+                                              @Field("storage") String storage,
+                                              @Field("tracking") String trackingNum,
+                                              @Field("declarations") String productsJsonArray);
 
     @GET("waiting-mf/{id}")
     Call<ServerResponse<AwaitingArrivalDetails>> getAwaitingParcelDetails(@Path("id") String parcelId);
@@ -154,7 +155,7 @@ public interface BayShopApiInterface {
                                                  @Field("photosPackageRequestedComments") String comment);
 
     @FormUrlEncoded
-    @PUT("waiting-mf/edit/{itemId}")
+    @PUT("waiting-mf/{itemId}")
     Call<ServerResponse> requestCheckForAwaiting(@Path("itemId") String itemdId,
                                                  @Field("verificationPackageRequested") int request,  // 1 or 0
                                                  @Field("verificationPackageRequestedComments") String comment);

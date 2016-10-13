@@ -57,10 +57,10 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ItemHolder itemHolder = (ItemHolder) holder;
             itemHolder.mAwaitingArrival = mAwaitingArrivals.get(position);
             itemHolder.mUidLabel.setText(itemHolder.mAwaitingArrival.getUid());
-            itemHolder.mDescriptionLabel.setText(itemHolder.mAwaitingArrival.getTitle());
+            itemHolder.mDescriptionLabel.setText(itemHolder.mAwaitingArrival.getTracking());
             itemHolder.mDateLabel.setText(Application.getFormattedDate(itemHolder.mAwaitingArrival.getCreatedDate()));
-            itemHolder.mPriceLabel.setText("Set price");
-            itemHolder.mWeightLabel.setText("Set weight");
+            itemHolder.mPriceLabel.setText("---");
+            itemHolder.mWeightLabel.setText("---");
             itemHolder.mStatusBarView.setProgress(position + 1, "Some progress");
         }
     }

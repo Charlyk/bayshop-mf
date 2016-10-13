@@ -30,6 +30,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private OnActionButtonsClick mOnActionButtonsClick;
     private static final int TRACKING = 0, ITEM = 1;
     private boolean mShowTracking;
+    private String mTrackingNum;
 
     public DeclarationListAdapter(ArrayList<Product> products, boolean hasDeclaration, boolean showTracking) {
         mProducts = products;
@@ -43,10 +44,17 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mOnActionButtonsClick = onActionButtonsClickListener;
     }
 
-    public void addNewProductCard() {
+    public void setTrackingNum(String trackingNum) {
+        mTrackingNum = trackingNum;
+    }
+
+    public int addNewProductCard() {
         Product product = new Product();
         mProducts.add(product);
-        notifyItemInserted(mProducts.indexOf(product));
+        int position = mProducts.indexOf(product);
+        final int index = mShowTracking ? position + 1 : position;
+        notifyItemInserted(index);
+        return index;
     }
 
     public void addItem(Product product) {
@@ -55,7 +63,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void removeItem(int position) {
-        mProducts.remove(position);
+        mProducts.remove(mShowTracking ? position - 1 : position);
         notifyItemRemoved(position);
     }
 
@@ -99,6 +107,9 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemHolder.mProductPrice.setText(String.valueOf(product.getPrice()));
             itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProduct));
             itemHolder.mProductQuantity.setText(String.valueOf(product.getQuantity()));
+        } else if (holder instanceof TrackingHolder) {
+            TrackingHolder trackingHolder = (TrackingHolder) holder;
+            trackingHolder.mEditText.setText(mTrackingNum);
         }
     }
 

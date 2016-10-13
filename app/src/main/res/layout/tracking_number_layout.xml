@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/addAwaitingToolbar"
     android:orientation="vertical"
+    android:layout_marginBottom="7.5dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -28,7 +29,7 @@
         android:paddingRight="10dp"
         android:hint="@string/tracking_example"
         android:inputType="textUri"
-        android:nextFocusDown="@+id/productQuantityInput"
+        android:nextFocusDown="@+id/editDeclarationUrlInputLayout"
         android:singleLine="true"/>
 
     <View

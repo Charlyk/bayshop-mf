@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
  * Created by Eduard Albu on 9/22/16, 09, 2016
@@ -93,7 +94,7 @@ public class Product implements Parcelable {
         mUrl = url;
     }
 
-    @JsonIgnore
+    @JsonSetter("id")
     public void setItemId(String itemId) {
         mItemId = itemId;
     }

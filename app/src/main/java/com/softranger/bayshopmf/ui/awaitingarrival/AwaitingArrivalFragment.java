@@ -23,6 +23,7 @@ import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
@@ -42,6 +43,8 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         AwaitingArrivalAdapter.OnAwaitingClickListener {
 
     public static final String ACTION_SHOW_BTN = "SHOW FLOATING BUTTON";
+    public static final String ACTION_ITEM_ADDED = "ADDED NEW AWAITING PARCEL";
+    public static final int ADD_PARCEL_RC = 1101;
 
     private MainActivity mActivity;
     private Unbinder mUnbinder;
@@ -51,7 +54,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     private AwaitingArrivalAdapter mAdapter;
     private ArrayList<AwaitingArrival> mAwaitingArrivals;
 
-    private static final SparseArray<ParcelStatusBarView.BarColor> COLOR_MAP = new SparseArray<ParcelStatusBarView.BarColor>() {{
+    public static final SparseArray<ParcelStatusBarView.BarColor> COLOR_MAP = new SparseArray<ParcelStatusBarView.BarColor>() {{
         put(1, ParcelStatusBarView.BarColor.green);
         put(2, ParcelStatusBarView.BarColor.gray);
         put(3, ParcelStatusBarView.BarColor.red);
@@ -79,7 +82,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (MainActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
+        IntentFilter intentFilter = new IntentFilter(ACTION_ITEM_ADDED);
         intentFilter.addAction(ACTION_SHOW_BTN);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mUnbinder = ButterKnife.bind(this, view);
@@ -117,7 +120,8 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     @OnClick(R.id.addAwaitingFloatingButton)
     void addNewAwaitingParcel() {
         Intent addAwaiting = new Intent(mActivity, AddAwaitingActivity.class);
-        mActivity.startActivity(addAwaiting);
+        addAwaiting.putExtra(AddAwaitingActivity.SHOW_TRACKING, true);
+        mActivity.startActivityForResult(addAwaiting, ADD_PARCEL_RC);
     }
 
     @Override
@@ -138,6 +142,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
             mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
             mActivity.toggleLoadingProgress(false);
             mRefreshLayout.setRefreshing(false);
+            mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
         }
 
         @Override
@@ -158,7 +163,8 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case AddAwaitingFragment.ACTION_ITEM_ADDED:
+                case ACTION_ITEM_ADDED:
+                    onRefresh(mRefreshLayout);
                     break;
                 case ACTION_SHOW_BTN:
                     mActionButton.setVisibility(View.VISIBLE);

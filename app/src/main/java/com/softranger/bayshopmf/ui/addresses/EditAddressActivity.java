@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,8 +56,6 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
     @BindView(R.id.phoneCodeTextlabel) TextView mPhoneCode;
     @BindView(R.id.addAddressCountrylabel) TextView mCountryLabel;
     @BindView(R.id.editAddressToolbarTitle) TextView mToolbarTitle;
-
-    @BindView(R.id.countrySpinner) Spinner mCountriesSpinner;
 
     @BindView(R.id.editAddressToolbar) Toolbar mToolbar;
     @BindView(R.id.editAddressProgressBar) ProgressBar mProgressBar;

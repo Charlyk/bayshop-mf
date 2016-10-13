@@ -6,14 +6,9 @@
               android:background="@android:color/white"
               android:orientation="vertical">
 
-    <include layout="@layout/warning_with_icon"/>
+    <include layout="@layout/warning_item"/>
 
     <include layout="@layout/take_to_delivery_header"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#b1b1b1"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -55,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="16dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <include layout="@layout/address_list_item"/>
 
@@ -68,7 +63,6 @@
         android:stretchColumns="0">
 
         <TableRow>
-
             <TextView
                 android:id="@+id/inProcessingDetailsGoodsPriceTitle"
                 android:layout_column="0"
@@ -85,7 +79,6 @@
         </TableRow>
 
         <TableRow>
-
             <TextView
                 android:id="@+id/inProcessingDetailsCustomsClearanceTitle"
                 android:layout_column="0"
@@ -102,7 +95,6 @@
         </TableRow>
 
         <TableRow>
-
             <TextView
                 android:id="@+id/inProcessingDetailsShippingPriceTitle"
                 android:layout_column="0"
@@ -119,7 +111,6 @@
         </TableRow>
 
         <TableRow>
-
             <TextView
                 android:id="@+id/inProcessingDetailsTotalPriceTitle"
                 android:layout_column="0"
@@ -140,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="10dp"
-        android:background="#b1b1b1"/>
+        android:background="#ededed"/>
 
     <LinearLayout
         android:id="@+id/shippingByLayoutButton"
