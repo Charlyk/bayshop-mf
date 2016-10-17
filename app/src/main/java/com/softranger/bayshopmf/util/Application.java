@@ -226,10 +226,10 @@ public class Application extends android.app.Application {
         long diff = today.getTime() - date.getTime();
         long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-        if (days > 0) {
-            formattedDate = formattedDate + " (" + days + " " + Application.getInstance().getString(R.string.days_ago) + ")";
-        } else {
-            formattedDate = formattedDate + " (" + Application.getInstance().getString(R.string.today) + ")";
+        if (days == 0) {
+            formattedDate = Application.getInstance().getString(R.string.today);
+        } else if (days == 1) {
+            formattedDate = Application.getInstance().getString(R.string.yesterday);
         }
 
         return formattedDate;

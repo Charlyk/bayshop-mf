@@ -3,125 +3,119 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@android:color/white"
               android:orientation="vertical">
 
     <include layout="@layout/warning_item"/>
 
     <include layout="@layout/take_to_delivery_header"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/inProcessingDetailsParcelIdLabel"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
+        android:paddingTop="16dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:id="@+id/inProcessingDetailsStorageIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerInside"
-            tools:src="@mipmap/ic_uk_flag"/>
-
-        <TextView
-            android:id="@+id/inProcessingDetailsParcelIdLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            tools:text="MF3121241412"/>
-    </LinearLayout>
+        android:paddingStart="16dp"
+        android:paddingRight="16dp"
+        android:paddingEnd="16dp"
+        android:background="@android:color/white"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        tools:text="MF3121241412"/>
 
     <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
         android:id="@+id/pusDetailsStatusProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"/>
+        android:background="@android:color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="16dp"
         android:background="#ededed"/>
 
-    <include layout="@layout/address_list_item"/>
+    <include
+        layout="@layout/address_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"/>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+        android:paddingTop="20dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:paddingBottom="20dp"
+        android:background="@android:color/white"
         android:stretchColumns="0">
 
         <TableRow>
+
             <TextView
                 android:id="@+id/inProcessingDetailsGoodsPriceTitle"
                 android:layout_column="0"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="20dp"
                 android:text="@string/goods_price"/>
 
             <TextView
                 android:id="@+id/inProcessingDetailsGoodsPriceLabel"
                 android:layout_column="1"
                 android:layout_gravity="end"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="20dp"
                 android:textColor="@color/textColor"
                 tools:text="$ 200"/>
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/inProcessingDetailsCustomsClearanceTitle"
                 android:layout_column="0"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="20dp"
                 android:text="@string/customs_clearance"/>
 
             <TextView
                 android:id="@+id/inProcessingDetailsCustomsClearanceLabel"
                 android:layout_column="1"
                 android:layout_gravity="end"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="20dp"
                 android:textColor="@color/textColor"
                 tools:text="$ 2.5"/>
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/inProcessingDetailsShippingPriceTitle"
                 android:layout_column="0"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="20dp"
                 android:text="@string/shipping_price"/>
 
             <TextView
                 android:id="@+id/inProcessingDetailsShippingPriceLabel"
                 android:layout_column="1"
                 android:layout_gravity="end"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="20dp"
                 android:textColor="@color/textColor"
                 tools:text="$ 25.00"/>
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/inProcessingDetailsTotalPriceTitle"
                 android:layout_column="0"
-                android:layout_marginBottom="5dp"
                 android:text="@string/total_price"/>
 
             <TextView
                 android:id="@+id/inProcessingDetailsTotalPriceLabel"
                 android:layout_column="1"
                 android:layout_gravity="end"
-                android:layout_marginBottom="5dp"
                 android:textColor="@color/textColor"
                 tools:text="$ 280"/>
         </TableRow>
@@ -130,19 +124,19 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
         android:background="#ededed"/>
 
     <LinearLayout
         android:id="@+id/shippingByLayoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
+        android:background="@drawable/selectable_background"
         android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="10dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -157,16 +151,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="5dp"
-            android:layout_marginBottom="10dp"
             android:stretchColumns="0">
 
             <TableRow>
+
                 <TextView
                     android:id="@+id/inProcessingDetailsShippingByLabel"
                     android:layout_column="0"
                     android:layout_marginBottom="5dp"
-                    android:textSize="16sp"
                     android:textColor="@color/textColor"
+                    android:textSize="16sp"
                     tools:text="BayShop AirPost"/>
 
                 <TextView
@@ -174,8 +168,8 @@
                     android:layout_column="1"
                     android:layout_gravity="end"
                     android:layout_marginBottom="5dp"
-                    android:textSize="16sp"
                     android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
                     tools:text="tracking21323122432"/>
             </TableRow>
         </TableLayout>
@@ -183,16 +177,17 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="2dp"
         android:background="@drawable/drop_shadow"/>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="#f1f1f1"
-        android:gravity="center_vertical"
-        android:paddingRight="16dp"
+        android:layout_height="42.5dp"
+        android:background="#ededed"
+        android:gravity="bottom"
+        android:paddingBottom="10dp"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:text="@string/parcel_components"
         android:textColor="@color/textColor"
         android:textSize="18sp"/>

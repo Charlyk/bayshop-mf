@@ -58,7 +58,6 @@
         android:layout_toLeftOf="@id/addressAddToFavoritesButton"
         android:layout_toStartOf="@id/addressAddToFavoritesButton"
         android:drawableLeft="@mipmap/ic_shipping_address"
-        android:drawablePadding="5dp"
         android:drawableStart="@mipmap/ic_shipping_address"
         android:ellipsize="end"
         android:gravity="center_vertical"
@@ -190,7 +189,7 @@
     <View
         android:id="@+id/addressItemShadowSeparator"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginTop="20dp"
         android:layout_below="@id/addressPhoneNumberLabel"
         android:background="@drawable/drop_shadow"/>

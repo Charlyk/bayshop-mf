@@ -4,7 +4,6 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginBottom="10dp"
-              android:background="@android:color/white"
               android:clipToPadding="false"
               android:orientation="vertical">
 
@@ -15,8 +14,9 @@
 
     <TextView
         android:id="@+id/inProcessingDetailsProductMfId"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="10dp"
@@ -26,111 +26,108 @@
 
     <TextView
         android:id="@+id/inProcessingDetailsProductNameLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         tools:text="Used Mac Book"/>
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:paddingTop="7.5dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:stretchColumns="2">
+        android:orientation="horizontal">
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="5dp"
+                android:textSize="13sp"
                 android:text="@string/item"/>
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:paddingEnd="15dp"
-                android:paddingRight="15dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/price"/>
-
-            <TextView
-                android:id="@+id/inProcessingDetailsProductWeightTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:paddingLeft="10dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:text="@string/weight"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/inProcessingDetailsProductItemsCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:paddingEnd="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="5dp"
-                tools:text="2"
-                android:textColor="@android:color/black"/>
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                tools:text="2"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/inProcessingDetailsProductPrice"
+                android:id="@+id/inProcessingDetailsProductWeightTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:paddingEnd="5dp"
-                android:paddingLeft="10dp"
-                android:paddingStart="10dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                tools:text="$ 200"
-                android:textColor="@android:color/black"/>
+                android:textSize="13sp"
+                android:text="@string/weight"/>
 
             <TextView
                 android:id="@+id/inProcessingDetailsProductWeightLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:paddingEnd="5dp"
-                android:paddingLeft="10dp"
-                android:paddingStart="10dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
                 android:text="@string/place_holder"
-                tools:text="21kg"
-                android:textColor="@android:color/black"/>
-        </TableRow>
-    </TableLayout>
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                tools:text="21kg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:text="@string/price"/>
+
+
+            <TextView
+                android:id="@+id/inProcessingDetailsProductPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                tools:text="$ 20"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/inProcessingDetailsProductImagesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:clipToPadding="false"/>
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@android:color/white"
+        android:clipToPadding="false"
+        android:paddingBottom="15dp"
+        android:paddingTop="10dp"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="2dp"
         android:background="@drawable/drop_shadow"/>
 </LinearLayout>

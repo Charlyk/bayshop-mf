@@ -5,13 +5,19 @@
             tools:context="com.softranger.bayshopmf.ui.addresses.WarehouseAddressFragment">
 
     <LinearLayout
+        android:id="@+id/warehouseAddressLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/warning_item"/>
+
         <RelativeLayout
+            android:id="@+id/warehouseAddressFullName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
             android:padding="16dp">
 
             <LinearLayout
@@ -35,20 +41,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
             </LinearLayout>
-
-
-            <Button
-                android:id="@+id/addressesFullNameCopyButton"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/copy"
-                android:textColor="@color/colorGreenAction"
-                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View
@@ -57,8 +49,11 @@
             android:background="#ededed"/>
 
         <RelativeLayout
+            android:id="@+id/warehouseAddressAddressLineOne"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
             android:padding="16dp">
 
             <LinearLayout
@@ -82,20 +77,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
             </LinearLayout>
-
-
-            <Button
-                android:id="@+id/addressesLineOneCopyButton"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/copy"
-                android:textColor="@color/colorGreenAction"
-                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View
@@ -104,8 +85,11 @@
             android:background="#ededed"/>
 
         <RelativeLayout
+            android:id="@+id/warehouseAddressAddressLineTwo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
             android:padding="16dp">
 
             <LinearLayout
@@ -129,20 +113,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
             </LinearLayout>
-
-
-            <Button
-                android:id="@+id/addressesLineTwoCopyButton"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/copy"
-                android:textColor="@color/colorGreenAction"
-                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View
@@ -151,8 +121,11 @@
             android:background="#ededed"/>
 
         <RelativeLayout
+            android:id="@+id/warehouseAddressCity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
             android:padding="16dp">
 
             <LinearLayout
@@ -176,20 +149,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
             </LinearLayout>
-
-
-            <Button
-                android:id="@+id/addressesCityCopyButton"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/copy"
-                android:textColor="@color/colorGreenAction"
-                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View
@@ -198,8 +157,11 @@
             android:background="#ededed"/>
 
         <RelativeLayout
+            android:id="@+id/warehouseAddressState"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
             android:padding="16dp">
 
             <LinearLayout
@@ -223,20 +185,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
             </LinearLayout>
-
-
-            <Button
-                android:id="@+id/addressesStateCopyButton"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/copy"
-                android:textColor="@color/colorGreenAction"
-                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View
@@ -245,8 +193,11 @@
             android:background="#ededed"/>
 
         <RelativeLayout
+            android:id="@+id/warehouseAddressPostalCode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
             android:padding="16dp">
 
             <LinearLayout
@@ -270,20 +221,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp"/>
             </LinearLayout>
-
-
-            <Button
-                android:id="@+id/addressesPostalCodeCopyButton"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/copy"
-                android:textColor="@color/colorGreenAction"
-                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View
@@ -292,8 +229,11 @@
             android:background="#ededed"/>
 
         <RelativeLayout
+            android:id="@+id/warehouseAddressCountry"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
             android:padding="16dp">
 
             <LinearLayout
@@ -317,20 +257,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp"/>
             </LinearLayout>
-
-
-            <Button
-                android:id="@+id/addressesCountryCopyButton"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/copy"
-                android:textColor="@color/colorGreenAction"
-                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View
@@ -339,8 +265,11 @@
             android:background="#ededed"/>
 
         <RelativeLayout
+            android:id="@+id/warehouseAddressPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
             android:padding="16dp">
 
             <LinearLayout
@@ -364,20 +293,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp"/>
             </LinearLayout>
-
-
-            <Button
-                android:id="@+id/addressesPhoneNumberCopyButton"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/copy"
-                android:textColor="@color/colorGreenAction"
-                android:textSize="16sp"/>
         </RelativeLayout>
 
         <View

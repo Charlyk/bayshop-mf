@@ -6,6 +6,20 @@
                 android:background="?selectableItemBackground"
                 android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/paymentHistoryItemMethodIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="20dp"
+        android:minHeight="20dp"
+        android:maxWidth="30dp"
+        android:maxHeight="30dp"
+        android:adjustViewBounds="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"/>
 
     <ImageView
         android:id="@+id/paymentHistoryItemSpentImage"
@@ -26,18 +40,18 @@
         android:layout_toLeftOf="@+id/paymentHistoryItemSpentImage"
         android:layout_toStartOf="@+id/paymentHistoryItemSpentImage"
         android:textColor="@color/colorGreenAction"
-        android:textSize="19sp"
+        android:textSize="18sp"
         tools:text="400"/>
 
     <TextView
         android:id="@+id/paymentHistoryItemDescriptionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_toRightOf="@id/paymentHistoryItemMethodIcon"
+        android:layout_toEndOf="@id/paymentHistoryItemMethodIcon"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_toLeftOf="@id/paymentHistoryItemAmountLabel"
         android:layout_toStartOf="@id/paymentHistoryItemAmountLabel"
         android:textColor="@android:color/black"
@@ -48,12 +62,10 @@
         android:id="@+id/paymentHistoryItemDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignLeft="@id/paymentHistoryItemDescriptionLabel"
+        android:layout_alignStart="@id/paymentHistoryItemDescriptionLabel"
         android:layout_below="@id/paymentHistoryItemDescriptionLabel"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginBottom="20dp"
         android:layout_toLeftOf="@id/paymentHistoryItemAmountLabel"
         android:layout_toStartOf="@id/paymentHistoryItemAmountLabel"
         tools:text="28 Mar 2016 11:20"/>

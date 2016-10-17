@@ -1,18 +1,23 @@
 package com.softranger.bayshopmf.model.payment;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.softranger.bayshopmf.util.Imageble;
 
 import java.util.Date;
 
 /**
  * Created by macbook on 6/30/16.
  */
-public class History implements Parcelable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class History implements Parcelable, Imageble {
     private PaymentType mPaymentType;
+    private Bitmap mIcon;
     @JsonProperty("comment")
     private String mComment;
     @JsonProperty("created")
@@ -29,6 +34,8 @@ public class History implements Parcelable {
     private String mTransactionId;
     @JsonProperty("sign")
     private String mCurrency;
+    @JsonProperty("img_payment")
+    private String[] mImageUrl;
 
     private History() {
 
@@ -99,6 +106,25 @@ public class History implements Parcelable {
     }
 
     @Override
+    public void setImage(Bitmap bitmap) {
+        mIcon = bitmap;
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return mIcon;
+    }
+
+    @Override
+    public String getImageUrl() {
+        return mImageUrl[0];
+    }
+
+    public String getCommission() {
+        return mCommission;
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -113,6 +139,7 @@ public class History implements Parcelable {
         dest.writeString(mTransactionId);
         dest.writeString(mCurrency);
         dest.writeSerializable(mDate);
+        dest.writeStringArray(mImageUrl);
     }
 
     public enum PaymentType {

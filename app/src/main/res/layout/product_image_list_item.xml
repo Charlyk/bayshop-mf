@@ -7,8 +7,8 @@
              android:layout_margin="2.5dp">
 
     <ImageView
-        android:layout_width="270dp"
-        android:layout_height="185dp"
+        android:layout_width="160dp"
+        android:layout_height="120dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         tools:src="@drawable/no_image"

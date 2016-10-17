@@ -1,7 +1,6 @@
 package com.softranger.bayshopmf.util;
 
 import android.animation.ObjectAnimator;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -229,7 +228,8 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         received(R.string.received),
         storage(R.string.storage),
         login_fragment(R.string.login),
-        select_address(R.string.select_address);
+        select_address(R.string.select_address),
+        warehouse_address(R.string.warehouse_addresses);
 
         @StringRes
         private int mFragmentName;

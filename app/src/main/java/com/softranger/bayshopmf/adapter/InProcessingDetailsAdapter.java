@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -141,7 +140,6 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             headerHolder.mWarningTextView.setText(warningMessage);
 
             // set the storage icon before UID label also set the UID text
-            headerHolder.mDepositIcon.setImageResource(getStorageIcon(null)); // null return USA storage icon
             headerHolder.mParcelId.setText(headerHolder.mProcessingParcel.getCodeNumber());
 
             // get shipping address and set all texts in their positions
@@ -241,8 +239,6 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
         @BindView(R.id.addressEditButton) ImageButton mEditButton;
         @BindView(R.id.addressAddToFavoritesButton) ImageButton mAddToFavorite;
-
-        @BindView(R.id.inProcessingDetailsStorageIcon) ImageView mDepositIcon;
 
         @BindView(R.id.takeToDeliveryDetailsHeaderLayout) LinearLayout mToDeliveryDetails;
         @BindView(R.id.warningItemLayout)

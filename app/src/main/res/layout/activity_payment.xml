@@ -35,43 +35,26 @@
         </android.support.v7.widget.Toolbar>
     </RelativeLayout>
 
-    <uk.co.imallan.jellyrefresh.JellyRefreshLayout
-        android:id="@+id/paymentJellyRefresh"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:jellyColor="@color/colorAccent"
-        app:pullHeight="128dp"
-        app:loadingViewLayout="@layout/refresh_header"
-        app:triggerHeight="96dp"
-        app:headerHeight="56dp"
-        android:layout_below="@id/paymentActivityToolbarLayout">
+        android:layout_below="@id/paymentActivityToolbarLayout"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <android.support.design.widget.TabLayout
+            android:id="@+id/paymentTabBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorAccent"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="#f1a5a9"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/paymentViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/paymentActivityToolbarLayout"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/paymentTabBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:tabIndicatorColor="@color/colorAccent"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@android:color/black"
-                app:tabTextColor="#898989"/>
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/paymentViewPager"
-                android:layout_width="match_parent"
-                android:layout_below="@id/paymentTabBarLayout"
-                android:layout_height="match_parent"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@id/paymentTabBarLayout"
-                android:background="@drawable/drop_shadow"/>
-        </RelativeLayout>
-    </uk.co.imallan.jellyrefresh.JellyRefreshLayout>
+            android:layout_below="@id/paymentTabBarLayout"/>
+    </RelativeLayout>
 </RelativeLayout>

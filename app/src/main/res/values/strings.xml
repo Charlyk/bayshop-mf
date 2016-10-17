@@ -26,12 +26,12 @@
     <string name="logo">Logo</string>
     <string name="transition_image_view">Logo transition name</string>
     <string name="fill_in_the_declaration">Fill in the declaration</string>
-    <string name="check_product">Check the product</string>
+    <string name="check_product">Check product</string>
     <string name="check_in_progress">Checking in progress</string>
     <string name="additional_photo">Additional photo</string>
     <string name="photos_in_progress">Photos in progress</string>
     <string name="tracking">Tracking</string>
-    <string name="weight">"Weight: "</string>
+    <string name="weight">"Weight &amp; Volume: "</string>
     <string name="date">Date</string>
     <string name="price">Price:</string>
     <string name="check_product_cost">The service costs $10</string>
@@ -117,7 +117,7 @@
     <string name="declaration">Declaration filling:</string>
     <string name="you_don_t_have_any_item_yet">You don\'t have any parcels yet</string>
     <string name="select_address">Select address</string>
-    <string name="edit_address">Edit address</string>
+    <string name="edit_address">Edit</string>
     <string name="local_delivery">Local delivery</string>
     <string name="additional_package">Use additional package ($10)</string>
     <string name="sent_on_user_alert">Sent at user’s request</string>
@@ -364,4 +364,11 @@
     <string name="pre_order_checking">Pre-order checking</string>
     <string name="help">Help</string>
     <string name="enter_tracking_num">Please enter parcel tracking number</string>
+    <string name="please_tap_the_button">Please tap the button</string>
+    <string name="to_add_a_new_awaiting_parcel">to add a new awaiting parcel</string>
+    <string name="order_checking">Order checking</string>
+    <string name="order_photos">Order photos</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="photo">Photo</string>
+    <string name="click_on_field_to_copy">You can click on each field below to cope the text within it.</string>
 </resources>

@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -15,11 +13,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.util.Application;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,6 +74,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             processingHolder.mDescriptionLabel.setText(processingHolder.mProduct.getGeneralDescription());
             processingHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.black));
         }
+        processingHolder.mRatingBar.setRating(processingHolder.mProduct.getRating());
         processingHolder.mDateLabel.setText(Application.getFormattedDate(processingHolder.mProduct.getFieldTime()));
         processingHolder.mPriceLabel.setText(processingHolder.mProduct.getCurrency() + processingHolder.mProduct.getPrice());
 

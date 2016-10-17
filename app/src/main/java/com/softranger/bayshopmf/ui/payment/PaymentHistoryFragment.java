@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,9 +23,9 @@ import com.softranger.bayshopmf.adapter.HistoryAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.payment.History;
 import com.softranger.bayshopmf.model.payment.PaymentHistories;
+import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,8 +35,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.Call;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
-public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.OnHistoryClickListener {
+public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.OnHistoryClickListener,
+        PullToRefreshLayout.PullToRefreshListener {
 
     private static final String PERIOD = "PERIOD";
     private PaymentActivity mActivity;
@@ -46,6 +51,8 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
 
     @BindView(R.id.paymentHistoryRecyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.jellyPullToRefresh)
+    JellyRefreshLayout mRefreshLayout;
 
     public PaymentHistoryFragment() {
         // Required empty public constructor
@@ -79,6 +86,7 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
         mRecyclerView.setAdapter(mAdapter);
 
         period = getArguments().getString(PERIOD);
+        mRefreshLayout.setPullToRefreshListener(this);
 
         mCall = Application.apiInterface().getPaymentHistoryForPeriod(period.toString());
         mCall.enqueue(mResponseCallback);
@@ -94,22 +102,34 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
             }
             Collections.sort(mAllHistories, (lhs, rhs) -> lhs.getDate().compareTo(rhs.getDate()));
             Collections.reverse(mAllHistories);
-            mAdapter.refreshList(mAllHistories);
-            mActivity.mRefreshLayout.setRefreshing(false);
+            new ImageDownloadThread<>(mAllHistories, mHandler, mActivity).start();
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Log.e("PaymentHistory", errorData.getMessage());
-            mActivity.mRefreshLayout.setRefreshing(false);
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<PaymentHistories>> call, Throwable t) {
             t.printStackTrace();
-            mActivity.mRefreshLayout.setRefreshing(false);
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
+        }
+    };
+
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == ImageDownloadThread.FINISHED) {
+                mAdapter.refreshList(mAllHistories);
+                if (mRefreshLayout != null)
+                    mRefreshLayout.setRefreshing(false);
+            }
         }
     };
 
@@ -138,5 +158,12 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
         Intent showDetails = new Intent(mActivity, PaymentDetailsActivity.class);
         showDetails.putExtra("history", history);
         mActivity.startActivity(showDetails);
+
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period.toString());
+        mCall.enqueue(mResponseCallback);
     }
 }

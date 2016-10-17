@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,14 +53,15 @@ import retrofit2.Call;
  */
 public class DetailsFragment extends ParentFragment implements View.OnClickListener, ImagesAdapter.OnImageClickListener {
 
-
     private static final String ITEM_ARG = "ITEM ARGUMENT";
     private MainActivity mActivity;
     private Unbinder mUnbinder;
 
     @BindView(R.id.fill_declarationButton) Button mFillDeclaration;
-    @BindView(R.id.check_productButton) Button mCheckProduct;
-    @BindView(R.id.additional_photoButton) Button mAdditionalPhoto;
+    @BindView(R.id.check_productButton)
+    TextView mCheckProduct;
+    @BindView(R.id.additional_photoButton)
+    TextView mAdditionalPhoto;
     @BindView(R.id.inStockDetailsImageList) RecyclerView mRecyclerView;
     @BindView(R.id.inStockDetailsHolderLayout) LinearLayout mHolderLayout;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotoLayout;
@@ -73,7 +73,6 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
 
     @BindView(R.id.inStockDetailsItemId)  TextView uid;
     @BindView(R.id.inStockDetailsProductName)  TextView description;
-    @BindView(R.id.inStockDetailsStorageIcon)  ImageView storage;
 
     private InStockDetailed mInStockDetailed;
     private InStock mInStockItem;
@@ -95,10 +94,9 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_in_stock_details, container, false);
         mActivity = (MainActivity) getActivity(); // used as context to create views programmatically
         mUnbinder = ButterKnife.bind(this, rootView);
         // hide entire layout while we are loading data
@@ -209,7 +207,6 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             }
             description.setText(strDescription);
             description.setTextColor(getResources().getColor(textColor));
-            storage.setImageResource(R.mipmap.ic_usa_flag);
 
             tracking.setText(detailed.getTracking());
             date.setText(outputFormat.format(detailed.getCreatedDate()));

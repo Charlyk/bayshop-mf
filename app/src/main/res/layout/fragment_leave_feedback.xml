@@ -23,24 +23,23 @@
                 android:id="@+id/leaveFeedbackUidLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:text="New Text"
                 android:textColor="@color/colorAccent"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/leaveFeedbackDescriptionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="7.5dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:text="New Text"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,12 +55,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
+                    android:textSize="13sp"
                     android:text="@string/received_date"/>
 
                 <TextView
                     android:id="@+id/leaveFeedbackDateLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
                     android:text="New Text"
                     android:textColor="@android:color/black"/>
             </LinearLayout>
@@ -82,22 +83,21 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:numStars="5"
-                android:rating="5"
                 android:stepSize="1"
-                android:theme="@style/RatingBarTheme"/>
+                style="@style/RatingBarTheme"/>
 
             <TextView
                 android:id="@+id/leaveFeedbackRatingLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="4.5"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:background="#ededed"/>
 
             <EditText
@@ -107,13 +107,17 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@android:color/white"
                 android:gravity="start"
+                android:textSize="16sp"
                 android:hint="@string/enter_your_comment"
                 android:minHeight="150dp"
-                android:padding="5dp"/>
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                android:layout_marginBottom="5dp"/>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="2dp"
                 android:background="@drawable/drop_shadow"/>
         </LinearLayout>
     </ScrollView>
@@ -141,7 +145,7 @@
             android:layout_marginRight="0.25dp"
             android:layout_weight="1"
             android:background="@drawable/green_button_bg"
-            android:text="@string/upload_photo"
+            android:text="@string/photo"
             android:textColor="@android:color/white"
             android:textSize="18sp"/>
 

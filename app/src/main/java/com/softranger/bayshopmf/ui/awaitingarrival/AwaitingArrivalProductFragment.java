@@ -11,8 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,16 +45,16 @@ import retrofit2.Response;
 public class AwaitingArrivalProductFragment extends ParentFragment implements ParcelStatusBarView.OnStatusBarReadyListener {
 
     private static final String PRODUCT_ARG = "product";
-    public static final String ACTION_UPDATE = "update data";
 
     @BindView(R.id.awaitingDetailsItemId) TextView mProductId;
     @BindView(R.id.awaitingDetailsProductName) TextView mProductName;
     @BindView(R.id.awaitingDetailsProductTracking) TextView mProductTracking;
     @BindView(R.id.awaitingDetailsDate) TextView mProductDate;
     @BindView(R.id.awaitingDetailsPrice) TextView mProductPrice;
-    @BindView(R.id.awaitingDetailsCheckProductBtn) Button mCheckProduct;
-    @BindView(R.id.awaitingDetailsAdditionalPhotosBtn) Button mAdditionalPhoto;
-    @BindView(R.id.awaitingDetailsStorageIcon) ImageView mStorageIcon;
+    @BindView(R.id.awaitingDetailsCheckProductBtn)
+    TextView mCheckProduct;
+    @BindView(R.id.awaitingDetailsAdditionalPhotosBtn)
+    TextView mAdditionalPhoto;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
     @BindView(R.id.awaitingArrivalStatusBar)
@@ -82,8 +80,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
         mActivity = (MainActivity) getActivity();
@@ -105,8 +102,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
 
         mNoPhotosHolder.setVisibility(View.VISIBLE);
-
-        mStorageIcon.setImageResource(R.mipmap.ic_usa_flag);
 
         mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
         mActivity.toggleLoadingProgress(true);
@@ -220,56 +215,50 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     private void deleteItem(final AwaitingArrival product) {
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
                         + product.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
-                getString(R.string.yes), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mActivity.toggleLoadingProgress(true);
+                getString(R.string.yes), v -> {
+                    mActivity.toggleLoadingProgress(true);
 
-                        Application.apiInterface().deleteAwaitingParcel(mArrivalDetails.getId()).enqueue(new Callback<ServerResponse>() {
-                            @Override
-                            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                                if (response.body() != null) {
-                                    if (response.body().getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
-                                        Intent intent = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
-                                        mActivity.sendBroadcast(intent);
-                                        mActivity.onBackPressed();
+                    Application.apiInterface().deleteAwaitingParcel(mArrivalDetails.getId()).enqueue(new Callback<ServerResponse>() {
+                        @Override
+                        public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                            if (response.body() != null) {
+                                if (response.body().getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
+                                    Intent intent = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
+                                    mActivity.sendBroadcast(intent);
+                                    mActivity.onBackPressed();
 
-                                        // get parcels count
-                                        int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
-                                        // decrease it by one
-                                        count -= 1;
-                                        // put it back
-                                        Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
-                                        // update counters from menu
-                                        mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
-                                    } else {
-                                        Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
+                                    // get parcels count
+                                    int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                                    // decrease it by one
+                                    count -= 1;
+                                    // put it back
+                                    Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
+                                    // update counters from menu
+                                    mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
                                 } else {
-                                    try {
-                                        ServerResponse serverResponse = new ObjectMapper().readValue(response.errorBody().string(), ServerResponse.class);
-                                        Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
+                                    Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                try {
+                                    ServerResponse serverResponse = new ObjectMapper().readValue(response.errorBody().string(), ServerResponse.class);
+                                    Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
                             }
+                        }
 
-                            @Override
-                            public void onFailure(Call<ServerResponse> call, Throwable t) {
-                                Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                mActivity.toggleLoadingProgress(false);
-                            }
-                        });
+                        @Override
+                        public void onFailure(Call<ServerResponse> call, Throwable t) {
+                            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            mActivity.toggleLoadingProgress(false);
+                        }
+                    });
 
-                        // close the dialog
-                        mAlertDialog.dismiss();
-                    }
-                }, getString(R.string.no), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mAlertDialog != null) mAlertDialog.dismiss();
-                    }
+                    // close the dialog
+                    mAlertDialog.dismiss();
+                }, getString(R.string.no), v -> {
+                    if (mAlertDialog != null) mAlertDialog.dismiss();
                 }, 0);
         if (mAlertDialog != null) mAlertDialog.show();
     }

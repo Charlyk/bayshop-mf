@@ -24,6 +24,8 @@ public class PUSParcel implements Parcelable {
     @JsonProperty("totalPrice") private String mPrice;
     @JsonProperty("currency") private String mCurrency;
     @JsonProperty("generalDescription") private String mGeneralDescription;
+    @JsonProperty("rating")
+    private int mRating;
 
     private PUSStatus mParcelStatus;
     private String mRealWeight;
@@ -40,6 +42,7 @@ public class PUSParcel implements Parcelable {
         fieldTime = (Date) in.readSerializable();
         mPrice = in.readString();
         mCurrency = in.readString();
+        mRating = in.readInt();
     }
 
     public static final Creator<PUSParcel> CREATOR = new Creator<PUSParcel>() {
@@ -107,6 +110,10 @@ public class PUSParcel implements Parcelable {
         }
     }
 
+    public int getRating() {
+        return mRating;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -120,6 +127,7 @@ public class PUSParcel implements Parcelable {
         parcel.writeSerializable(fieldTime);
         parcel.writeString(mPrice);
         parcel.writeString(mCurrency);
+        parcel.writeInt(mRating);
     }
 
     public enum PUSStatus {

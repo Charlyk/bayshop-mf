@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.network;
 
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.InStockList;
+import com.softranger.bayshopmf.model.WarehouseAddress;
 import com.softranger.bayshopmf.model.address.AddressToEdit;
 import com.softranger.bayshopmf.model.address.AddressesList;
 import com.softranger.bayshopmf.model.app.ParcelsCount;
@@ -175,4 +176,7 @@ public interface BayShopApiInterface {
 
     @DELETE("member-address/{id}")
     Call<ServerResponse> deleteUserAddress(@Path("id") String addressId);
+
+    @GET("get-member-mf-addresses")
+    Call<ServerResponse<ArrayList<WarehouseAddress>>> getWarehouseAddress();
 }

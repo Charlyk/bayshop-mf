@@ -26,6 +26,7 @@ public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
     private ArrayList<AwaitingArrival> mAwaitingArrivals;
     private MainActivity mActivity;
     private AwaitingArrivalAdapter mAdapter;
+    private OnDeleteListener mOnDeleteListener;
 
     public DeleteAsyncTask(int itemPosition, ArrayList<AwaitingArrival> awaitingArrivals,
                            MainActivity activity, AwaitingArrivalAdapter adapter)
@@ -34,6 +35,10 @@ public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
         mAwaitingArrivals = awaitingArrivals;
         mActivity = activity;
         mAdapter = adapter;
+    }
+
+    public void setOnDeleteListener(OnDeleteListener onDeleteListener) {
+        mOnDeleteListener = onDeleteListener;
     }
 
     @Override
@@ -69,5 +74,10 @@ public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
         Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
         // update counters from menu
         mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+        if (mOnDeleteListener != null) mOnDeleteListener.onItemDeleted();
+    }
+
+    public interface OnDeleteListener {
+        void onItemDeleted();
     }
 }

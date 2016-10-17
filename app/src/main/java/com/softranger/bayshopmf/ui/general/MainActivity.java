@@ -41,7 +41,6 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment;
-import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
 import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
 import com.softranger.bayshopmf.ui.instock.InStockFragment;
 import com.softranger.bayshopmf.ui.payment.PaymentActivity;
@@ -368,11 +367,11 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                 startActivity(payment);
                 closeDrawer = false;
                 break;
-            case R.id.nav_shippingCalculator:
-                Intent calculator = new Intent(this, ShippingCalculatorActivity.class);
-                startActivity(calculator);
-                closeDrawer = false;
-                break;
+//            case R.id.nav_shippingCalculator:
+//                Intent calculator = new Intent(this, ShippingCalculatorActivity.class);
+//                startActivity(calculator);
+//                closeDrawer = false;
+//                break;
             case R.id.nav_contactUs:
                 Intent contactUs = new Intent(this, ContactUsActivity.class);
                 startActivity(contactUs);

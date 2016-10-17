@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"
         android:background="?selectableItemBackgroundBorderless"
-        android:src="@mipmap/ic_delete_24dpi"/>
+        android:src="@mipmap/ic_cancel_30dp"/>
 
     <TextView
         android:id="@+id/awaitingUidLabel"

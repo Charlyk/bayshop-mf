@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,10 +27,10 @@ import com.softranger.bayshopmf.model.user.Language;
 import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.util.ParentActivity;
-import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.SpinnerObj;
 
 import org.json.JSONArray;
@@ -163,7 +162,7 @@ public class UserDataFragment extends ParentFragment {
                 .add("surname", Application.user.getLastName())
                 .add("name", Application.user.getFirstName())
                 .add("countryId", String.valueOf(Application.user.getCountryId()))
-                .add("phoneCode", String.valueOf(Application.user.getPhoneCode()))
+                .add("phone_code", String.valueOf(Application.user.getPhoneCode()))
                 .add("phone", Application.user.getPhoneNumber())
                 .add("languageId", String.valueOf(Application.user.getLanguageId()))
                 .build();

@@ -9,23 +9,58 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.WarehouseAddress;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WarehouseAddressFragment extends Fragment implements View.OnClickListener {
+public class WarehouseAddressFragment extends ParentFragment implements View.OnClickListener {
 
 
     private static final String STORAGE = "storage argument";
 
-    private TextView mFullName, mLineOne, mLineTwo, mCity, mState, mPostalCode, mCountry, mPhone;
+    @BindView(R.id.addressesFullNameLabel)
+    TextView mFullName;
+    @BindView(R.id.addressesLineOneLabel)
+    TextView mLineOne;
+    @BindView(R.id.addressesLineTwoLabel)
+    TextView mLineTwo;
+    @BindView(R.id.addressesCityLabel)
+    TextView mCity;
+    @BindView(R.id.addressesStateLabel)
+    TextView mState;
+    @BindView(R.id.addressesPostalCodeLabel)
+    TextView mPostalCode;
+    @BindView(R.id.addressesCountryLabel)
+    TextView mCountry;
+    @BindView(R.id.addressesPhoneNumberLabel)
+    TextView mPhone;
+    @BindView(R.id.warningItemLabel)
+    TextView mWarningLabel;
+    @BindView(R.id.warehouseAddressLayout)
+    LinearLayout mFragmentLayout;
 
     private WarehouseAddressesActivity mActivity;
+    private Unbinder mUnbinder;
+    private Call<ServerResponse<ArrayList<WarehouseAddress>>> mCall;
 
     private String mStorage;
 
@@ -42,45 +77,58 @@ public class WarehouseAddressFragment extends Fragment implements View.OnClickLi
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_warehouse_address, container, false);
-
+        mUnbinder = ButterKnife.bind(this, view);
         mActivity = (WarehouseAddressesActivity) getActivity();
+
+        mWarningLabel.setText(R.string.click_on_field_to_copy);
+
+        mFragmentLayout.setVisibility(View.GONE);
 
         mStorage = getArguments().getString(STORAGE);
 
-        Button fullNameCopy = (Button) view.findViewById(R.id.addressesFullNameCopyButton);
-        Button lineOneCopy = (Button) view.findViewById(R.id.addressesLineOneCopyButton);
-        Button lineTwoCopy = (Button) view.findViewById(R.id.addressesLineTwoCopyButton);
-        Button cityCopy = (Button) view.findViewById(R.id.addressesCityCopyButton);
-        Button stateCopy = (Button) view.findViewById(R.id.addressesStateCopyButton);
-        Button postalCopy = (Button) view.findViewById(R.id.addressesPostalCodeCopyButton);
-        Button countryCopy = (Button) view.findViewById(R.id.addressesCountryCopyButton);
-        Button phoneCopy = (Button) view.findViewById(R.id.addressesPhoneNumberCopyButton);
-
-        fullNameCopy.setOnClickListener(this);
-        lineOneCopy.setOnClickListener(this);
-        lineTwoCopy.setOnClickListener(this);
-        cityCopy.setOnClickListener(this);
-        stateCopy.setOnClickListener(this);
-        postalCopy.setOnClickListener(this);
-        countryCopy.setOnClickListener(this);
-        phoneCopy.setOnClickListener(this);
-
-        mFullName = (TextView) view.findViewById(R.id.addressesFullNameLabel);
-        mLineOne = (TextView) view.findViewById(R.id.addressesLineOneLabel);
-        mLineTwo = (TextView) view.findViewById(R.id.addressesLineTwoLabel);
-        mCity = (TextView) view.findViewById(R.id.addressesCityLabel);
-        mState = (TextView) view.findViewById(R.id.addressesStateLabel);
-        mPostalCode = (TextView) view.findViewById(R.id.addressesPostalCodeLabel);
-        mCountry = (TextView) view.findViewById(R.id.addressesCountryLabel);
-        mPhone = (TextView) view.findViewById(R.id.addressesPhoneNumberLabel);
+        mCall = Application.apiInterface().getWarehouseAddress();
+        mCall.enqueue(mResponseCallback);
+        mActivity.toggleLoadingProgress(true);
         return view;
     }
 
-    @Override
+    private ResponseCallback<ArrayList<WarehouseAddress>> mResponseCallback = new ResponseCallback<ArrayList<WarehouseAddress>>() {
+        @Override
+        public void onSuccess(ArrayList<WarehouseAddress> data) {
+            if (data == null || data.size() <= 0) return;
+            WarehouseAddress address = data.get(0);
+            mFullName.setText(address.getFullName());
+            mLineOne.setText(address.getAddressLine1());
+            mLineTwo.setText(address.getAddressLine2());
+            mCity.setText(address.getCity());
+            mState.setText(address.getState());
+            mPostalCode.setText(address.getPostalCode());
+            mCountry.setText(address.getCountryTitle());
+            mPhone.setText(address.getPhone());
+            mFragmentLayout.setVisibility(View.VISIBLE);
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<ArrayList<WarehouseAddress>>> call, Throwable t) {
+            t.printStackTrace();
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
+
+    @OnClick({R.id.warehouseAddressFullName, R.id.warehouseAddressAddressLineOne, R.id.warehouseAddressAddressLineTwo,
+            R.id.warehouseAddressCity, R.id.warehouseAddressState, R.id.warehouseAddressPostalCode, R.id.warehouseAddressCountry,
+            R.id.warehouseAddressPhoneNumber})
     public void onClick(View v) {
         // Gets a handle to the clipboard service.
         ClipboardManager clipboard = (ClipboardManager)
@@ -89,28 +137,28 @@ public class WarehouseAddressFragment extends Fragment implements View.OnClickLi
         String copiedText = "";
 
         switch (v.getId()) {
-            case R.id.addressesFullNameCopyButton:
+            case R.id.warehouseAddressFullName:
                 copiedText = String.valueOf(mFullName.getText());
                 break;
-            case R.id.addressesLineOneCopyButton:
+            case R.id.warehouseAddressAddressLineOne:
                 copiedText = String.valueOf(mLineOne.getText());
                 break;
-            case R.id.addressesLineTwoCopyButton:
+            case R.id.warehouseAddressAddressLineTwo:
                 copiedText = String.valueOf(mLineTwo.getText());
                 break;
-            case R.id.addressesCityCopyButton:
+            case R.id.warehouseAddressCity:
                 copiedText = String.valueOf(mCity.getText());
                 break;
-            case R.id.addressesStateCopyButton:
+            case R.id.warehouseAddressState:
                 copiedText = String.valueOf(mState.getText());
                 break;
-            case R.id.addressesPostalCodeCopyButton:
+            case R.id.warehouseAddressPostalCode:
                 copiedText = String.valueOf(mPostalCode.getText());
                 break;
-            case R.id.addressesCountryCopyButton:
+            case R.id.warehouseAddressCountry:
                 copiedText = String.valueOf(mCountry.getText());
                 break;
-            case R.id.addressesPhoneNumberCopyButton:
+            case R.id.warehouseAddressPhoneNumber:
                 copiedText = String.valueOf(mPhone.getText());
                 break;
         }
@@ -123,5 +171,22 @@ public class WarehouseAddressFragment extends Fragment implements View.OnClickLi
 
             Toast.makeText(mActivity, getString(R.string.copied), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public String getFragmentTitle() {
+        return getString(R.string.warehouse_addresses);
+    }
+
+    @Override
+    public ParentActivity.SelectedFragment getSelectedFragment() {
+        return ParentActivity.SelectedFragment.warehouse_address;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mCall != null) mCall.cancel();
+        mUnbinder.unbind();
     }
 }

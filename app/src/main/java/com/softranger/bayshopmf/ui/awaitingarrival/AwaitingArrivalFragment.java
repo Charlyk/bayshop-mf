@@ -10,9 +10,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -40,7 +42,7 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 
 public class AwaitingArrivalFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener,
-        AwaitingArrivalAdapter.OnAwaitingClickListener {
+        AwaitingArrivalAdapter.OnAwaitingClickListener, DeleteAsyncTask.OnDeleteListener {
 
     public static final String ACTION_SHOW_BTN = "SHOW FLOATING BUTTON";
     public static final String ACTION_ITEM_ADDED = "ADDED NEW AWAITING PARCEL";
@@ -53,6 +55,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     private Call<ServerResponse<ArrayList<AwaitingArrival>>> mWaitingListCall;
     private AwaitingArrivalAdapter mAdapter;
     private ArrayList<AwaitingArrival> mAwaitingArrivals;
+    private View mPlaceHolder;
 
     public static final SparseArray<ParcelStatusBarView.BarColor> COLOR_MAP = new SparseArray<ParcelStatusBarView.BarColor>() {{
         put(1, ParcelStatusBarView.BarColor.green);
@@ -64,6 +67,8 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.addAwaitingFloatingButton) FloatingActionButton mActionButton;
     @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
+    @BindView(R.id.fragmentFrameLayout)
+    FrameLayout mFrameLayout;
 
     public AwaitingArrivalFragment() {
         // Required empty public constructor
@@ -132,17 +137,40 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         mUnbinder.unbind();
     }
 
+    private void togglePlaceholder(boolean add) {
+        if (add) {
+            // add a placeholder to layout so user can know that there are no parcels
+            LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mPlaceHolder = inflater.inflate(R.layout.no_awaiting_placeholder, null, false);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.CENTER;
+            mFrameLayout.addView(mPlaceHolder, layoutParams);
+        } else {
+            // remove place holder from layout if it is added
+            if (mPlaceHolder != null) {
+                mFrameLayout.removeView(mPlaceHolder);
+            }
+        }
+    }
+
     /**
      * Awaiting arrival list request callback
      */
     private ResponseCallback<ArrayList<AwaitingArrival>> mResponseCallback = new ResponseCallback<ArrayList<AwaitingArrival>>() {
         @Override
         public void onSuccess(ArrayList<AwaitingArrival> data) {
-            mAdapter.refreshList(data);
-            mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
-            mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
-            mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+            if (data != null && data.size() > 0) {
+                togglePlaceholder(false);
+                // add items to adapter
+                mAdapter.refreshList(data);
+                mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
+                mActivity.toggleLoadingProgress(false);
+                mRefreshLayout.setRefreshing(false);
+                mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+            } else {
+                togglePlaceholder(true);
+            }
         }
 
         @Override
@@ -199,5 +227,10 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
         mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems();
         mWaitingListCall.enqueue(mResponseCallback);
+    }
+
+    @Override
+    public void onItemDeleted() {
+        togglePlaceholder(mAdapter.getItemCount() <= 0);
     }
 }

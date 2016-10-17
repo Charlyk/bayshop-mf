@@ -14,35 +14,40 @@
         android:background="@android:color/white"
         android:orientation="horizontal">
 
-        <Button
+        <TextView
             android:id="@+id/awaitingDetailsAdditionalPhotosBtn"
-            style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
-            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="7dp"
+            android:paddingStart="7dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="?selectableItemBackgroundBorderless"
             android:drawableLeft="@mipmap/ic_additional_photo_55dp"
             android:drawableStart="@mipmap/ic_additional_photo_55dp"
-            android:text="@string/pre_order_photos"
+            android:text="@string/order_photos"
             android:textColor="@android:color/black"
             android:textSize="16sp"/>
 
-        <Button
+        <TextView
             android:id="@+id/awaitingDetailsCheckProductBtn"
-            style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
-            android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:layout_gravity="center"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center_vertical"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawableLeft="@mipmap/check_product_55dp"
-            android:drawableStart="@mipmap/check_product_55dp"
-            android:text="@string/pre_order_checking"
+            android:drawableLeft="@mipmap/ic_check_products_55dp"
+            android:drawableStart="@mipmap/ic_check_products_55dp"
+            android:text="@string/order_checking"
             android:textColor="@android:color/black"
             android:textSize="16sp"/>
     </LinearLayout>
@@ -72,21 +77,10 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/awaitingDetailsStorageIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:scaleType="centerInside"
-            tools:src="@mipmap/ic_uk_flag"/>
-
         <TextView
             android:id="@+id/awaitingDetailsItemId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/awaitingDetailsStorageIcon"
-            android:layout_toRightOf="@id/awaitingDetailsStorageIcon"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
             tools:text="MF3121241412"/>
@@ -97,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@id/awaitingDetailsStorageIcon"
+            android:layout_below="@id/awaitingDetailsItemId"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             tools:text="Product name will be here"/>
@@ -108,10 +102,10 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignBottom="@id/awaitingDetailsProductName"
+            android:layout_alignTop="@id/awaitingDetailsItemId"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:src="@mipmap/ic_delete_24dpi"/>
+            android:src="@mipmap/ic_cancel_30dp"/>
 
         <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
             android:id="@+id/awaitingArrivalStatusBar"
@@ -194,29 +188,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/awaitingDetailsPriceTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/price"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/awaitingDetailsPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="13sp"
-                tools:text="400$"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
                 android:id="@+id/awaitingDetailsWeightTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -230,6 +201,29 @@
                 android:text="@string/kg"
                 android:textColor="@android:color/black"
                 android:textSize="13sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/awaitingDetailsPriceTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/awaitingDetailsPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="13sp"
+                tools:text="400$"/>
         </LinearLayout>
     </LinearLayout>
 

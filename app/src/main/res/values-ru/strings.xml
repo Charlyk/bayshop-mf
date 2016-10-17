@@ -117,7 +117,7 @@
     <string name="declaration">Заполнение декларации:</string>
     <string name="you_don_t_have_any_item_yet">У вас пока что нет посылок</string>
     <string name="select_address">Выбрать адрес</string>
-    <string name="edit_address">Редактировать адрес</string>
+    <string name="edit_address">Редактировать</string>
     <string name="local_delivery">Доставка по Молдове</string>
     <string name="additional_package">Использовать дополнительную упаковку ($10)</string>
     <string name="sent_on_user_alert">Отправлена по запросу пользователя</string>
@@ -320,4 +320,10 @@
     <string name="held_by_user">Held by user</string>
     <string name="payment_details">Payment details</string>
     <string name="enter_tracking_num">Please enter parcel tracking number</string>
+    <string name="please_tap_the_button">Please tap the button</string>
+    <string name="to_add_a_new_awaiting_parcel">to add a new awaiting parcel</string>
+    <string name="order_checking">Заказать проверку</string>
+    <string name="order_photos">Заказать фото</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="photo">Photo</string>
 </resources>

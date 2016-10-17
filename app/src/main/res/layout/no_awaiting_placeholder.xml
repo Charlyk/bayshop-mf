@@ -1,0 +1,31 @@
+<LinearLayout
+    android:id="@+id/noAwaitingPlaceHolderLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/noAwaitingFirstLineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/please_tap_the_button"
+        android:gravity="center"
+        android:drawablePadding="5dp"
+        android:textColor="#898989"
+        android:drawableRight="@mipmap/add_parcel_plus_45dp"
+        android:drawableEnd="@mipmap/add_parcel_plus_45dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/noAwaitingSecondLineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#898989"
+        android:textSize="20sp"
+        android:text="@string/to_add_a_new_awaiting_parcel"
+        android:layout_gravity="center"/>
+</LinearLayout>

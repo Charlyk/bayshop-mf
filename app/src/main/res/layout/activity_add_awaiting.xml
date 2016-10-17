@@ -33,7 +33,6 @@
         android:clipToPadding="false"
         android:paddingBottom="100dp"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        android:paddingTop="7.5dp"
         tools:listitem="@layout/declaration_item_layout"/>
 
     <!-- BOTTOM ACTION BUTTONS -->

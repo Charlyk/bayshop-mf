@@ -15,8 +15,10 @@ import com.softranger.bayshopmf.model.payment.History;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by macbook on 6/30/16.
@@ -60,6 +62,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.mSumm.setText(summ);
         holder.mSumm.setTextColor(getTextColor(holder.mHistory.getPaymentType()));
         holder.mImageView.setImageResource(getTransactionIcon(holder.mHistory.getPaymentType()));
+        holder.mIcon.setImageBitmap(holder.mHistory.getImage());
     }
 
     @DrawableRes
@@ -86,18 +89,21 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView mDescription;
-        final TextView mDate;
-        final TextView mSumm;
-        final ImageView mImageView;
+        @BindView(R.id.paymentHistoryItemDescriptionLabel)
+        TextView mDescription;
+        @BindView(R.id.paymentHistoryItemDateLabel)
+        TextView mDate;
+        @BindView(R.id.paymentHistoryItemAmountLabel)
+        TextView mSumm;
+        @BindView(R.id.paymentHistoryItemSpentImage)
+        ImageView mImageView;
+        @BindView(R.id.paymentHistoryItemMethodIcon)
+        ImageView mIcon;
         History mHistory;
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mDescription = (TextView) itemView.findViewById(R.id.paymentHistoryItemDescriptionLabel);
-            mDate = (TextView) itemView.findViewById(R.id.paymentHistoryItemDateLabel);
-            mSumm = (TextView) itemView.findViewById(R.id.paymentHistoryItemAmountLabel);
-            mImageView = (ImageView) itemView.findViewById(R.id.paymentHistoryItemSpentImage);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override

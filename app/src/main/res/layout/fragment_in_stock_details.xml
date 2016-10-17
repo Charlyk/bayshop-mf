@@ -20,10 +20,7 @@
             android:orientation="vertical">
 
             <include
-                layout="@layout/additional_buttons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"/>
+                layout="@layout/additional_buttons"/>
 
             <ImageView
                 android:id="@+id/cloudImage"
@@ -49,21 +46,10 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/inStockDetailsStorageIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:scaleType="centerInside"
-                    tools:src="@mipmap/ic_uk_flag"/>
-
                 <TextView
                     android:id="@+id/inStockDetailsItemId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/inStockDetailsStorageIcon"
-                    android:layout_toRightOf="@id/inStockDetailsStorageIcon"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
                     tools:text="MF3121241412"/>
@@ -74,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@id/inStockDetailsStorageIcon"
+                    android:layout_below="@id/inStockDetailsItemId"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     tools:text="Product name will be here"/>

@@ -20,7 +20,6 @@
         android:id="@+id/details_tracking_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textSize="16sp"
@@ -51,40 +50,15 @@
                 android:id="@+id/details_date_titleLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="@string/date"/>
 
             <TextView
                 android:id="@+id/details_date_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 tools:text="23.01.2016"
-                android:textColor="@android:color/black"/>
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/details_price_titleLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="@string/price"/>
-
-            <TextView
-                android:id="@+id/details_price_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="16sp"
-                tools:text="$ 25"
                 android:textColor="@android:color/black"/>
         </LinearLayout>
 
@@ -99,16 +73,38 @@
                 android:id="@+id/details_weight_titleLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="@string/weight"/>
 
             <TextView
                 android:id="@+id/details_weight_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_marginTop="5dp"
+                android:textSize="13sp"
                 tools:text="0.05 kg."
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/details_price_titleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:text="@string/price"/>
+
+            <TextView
+                android:id="@+id/details_price_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                tools:text="$ 25"
                 android:textColor="@android:color/black"/>
         </LinearLayout>
     </LinearLayout>

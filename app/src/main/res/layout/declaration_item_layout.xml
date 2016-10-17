@@ -35,9 +35,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp"
-            android:src="@mipmap/ic_delete_24dpi"/>
+            android:src="@mipmap/ic_cancel_30dp"/>
 
         <ImageButton
             android:id="@+id/declarationOpenUrlBtn"
@@ -47,7 +45,7 @@
             android:layout_toLeftOf="@id/declarationItemDeleteButton"
             android:layout_toStartOf="@id/declarationItemDeleteButton"
             android:background="?selectableItemBackground"
-            android:src="@mipmap/ic_link_26dp"/>
+            android:src="@mipmap/ic_link_30dp"/>
 
         <EditText
             android:id="@+id/productUrlInput"
@@ -200,6 +198,6 @@
         android:layout_below="@id/editDeclarationUnitsLayout"
         android:id="@+id/editDeclarationUnitsSeparator"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@drawable/drop_shadow"/>
 </RelativeLayout>

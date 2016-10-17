@@ -17,19 +17,19 @@
 
         <RatingBar
             android:id="@+id/receivedParcelRatigBar"
-            style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="16dp"
+            android:layout_alignBottom="@+id/receivedItemUidLabel"
             android:layout_marginEnd="16dp"
             android:clickable="false"
             android:isIndicator="true"
             android:numStars="5"
             android:stepSize="1"
-            android:theme="@style/RatingBarThemeSmall"
+            style="@style/RatingBarThemeSmall"
             tools:rating="3"/>
 
         <TextView
