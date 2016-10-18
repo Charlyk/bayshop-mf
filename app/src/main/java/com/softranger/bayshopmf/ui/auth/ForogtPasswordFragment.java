@@ -1,7 +1,6 @@
 package com.softranger.bayshopmf.ui.auth;
 
 
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,28 +9,35 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.network.ApiClient;
-import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
-import com.softranger.bayshopmf.util.Constants;
 
-import org.json.JSONObject;
-
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ForogtPasswordFragment extends ParentFragment implements View.OnClickListener {
+public class ForogtPasswordFragment extends ParentFragment {
 
-    private EditText mEmailInput;
-    private ProgressBar mProgressBar;
-    private Button mRestoreBtn;
+    @BindView(R.id.restorePassEmailInput)
+    EditText mEmailInput;
+    @BindView(R.id.restorePasswordProgressBar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.forgotRestoreButton)
+    Button mRestoreBtn;
     private LoginActivity mActivity;
+    private Unbinder mUnbinder;
+    private Call<ServerResponse> mCall;
 
     public ForogtPasswordFragment() {
         // Required empty public constructor
@@ -44,50 +50,54 @@ public class ForogtPasswordFragment extends ParentFragment implements View.OnCli
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_forogt_password, container, false);
         mActivity = (LoginActivity) getActivity();
-        mRestoreBtn = (Button) view.findViewById(R.id.forgotRestoreButton);
-        mRestoreBtn.setOnClickListener(this);
-        mEmailInput = (EditText) view.findViewById(R.id.restorePasswordEmailInput);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.restorePasswordProgressBar);
+        mUnbinder = ButterKnife.bind(this, view);
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
+    @SuppressWarnings("unused")
+    @OnClick(R.id.forgotRestoreButton)
+    void restoreUserPassword() {
         String email = String.valueOf(mEmailInput.getText());
-        if (email.equals("") && !email.contains("@")) {
+        if (!Application.isValidEmail(email)) {
             mEmailInput.setError(getString(R.string.enter_valid_email));
             return;
         }
 
-        mRestoreBtn.setVisibility(View.GONE);
+        mRestoreBtn.setVisibility(View.INVISIBLE);
+        mRestoreBtn.setClickable(false);
         mProgressBar.setVisibility(View.VISIBLE);
 
-        RequestBody body = new FormBody.Builder()
-                .add("email", email)
-                .build();
-        ApiClient.getInstance().postRequest(body, Constants.Api.urlRestorePassword(), mHandler);
+        mCall = Application.apiInterface().requestPasswordRestoring(email);
+        mCall.enqueue(mResponseCallback);
     }
 
-    @Override
-    public void onServerResponse(JSONObject response) {
-        mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.restore_password),
-                R.drawable.ic_mail, getString(R.string.email_has_been_sent), getString(R.string.reset_your_password),
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FragmentManager fm = mActivity.getFragmentManager();
-                        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
-                            fm.popBackStack();
-                        }
-                    }
-                }), true);
-    }
+    private ResponseCallback mResponseCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            mActivity.showResultActivity(getString(R.string.email_has_been_sent), R.mipmap.ic_mail_has_be_sent_250dp,
+                    getString(R.string.reset_your_password));
+            mProgressBar.setVisibility(View.GONE);
+            mRestoreBtn.setVisibility(View.VISIBLE);
+            mRestoreBtn.setClickable(true);
+        }
 
-    @Override
-    public void onHandleMessageEnd() {
-        mProgressBar.setVisibility(View.GONE);
-        mRestoreBtn.setVisibility(View.VISIBLE);
-    }
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mProgressBar.setVisibility(View.GONE);
+            mRestoreBtn.setVisibility(View.VISIBLE);
+            mRestoreBtn.setClickable(true);
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            t.printStackTrace();
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mProgressBar.setVisibility(View.GONE);
+            mRestoreBtn.setVisibility(View.VISIBLE);
+            mRestoreBtn.setClickable(true);
+        }
+    };
 
     @Override
     public String getFragmentTitle() {
@@ -97,5 +107,12 @@ public class ForogtPasswordFragment extends ParentFragment implements View.OnCli
     @Override
     public ParentActivity.SelectedFragment getSelectedFragment() {
         return ParentActivity.SelectedFragment.forgot_password;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mCall != null) mCall.cancel();
+        mUnbinder.unbind();
     }
 }

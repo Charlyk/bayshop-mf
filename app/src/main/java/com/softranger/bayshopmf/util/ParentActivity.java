@@ -183,12 +183,11 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
 
     }
 
-    public void showResultActivity(@NonNull String topTitle, @NonNull String secondTitle,
+    public void showResultActivity(@NonNull String title,
                                    @DrawableRes int image, @NonNull String descriptiom) {
         // build intent for result activity
         Intent showResult = new Intent(this, ResultActivity.class);
-        showResult.putExtra(ResultActivity.TOP_TITLE, topTitle);
-        showResult.putExtra(ResultActivity.SECOND_TITLE, secondTitle);
+        showResult.putExtra(ResultActivity.TITLE, title);
         showResult.putExtra(ResultActivity.IMAGE_ID, image);
         showResult.putExtra(ResultActivity.DESCRIPTION, descriptiom);
         // show result activity

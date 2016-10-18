@@ -35,11 +35,10 @@ import android.widget.Toast;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
-import com.softranger.bayshopmf.adapter.AddressListAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
-import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
@@ -560,8 +559,8 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     private ResponseCallback mDisbandResponeCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
-            mActivity.showResultActivity(getString(R.string.parcel_deleted),
-                    getString(R.string.disband_request_sent), R.mipmap.ic_to_disband_30dp,
+            // TODO: 10/18/16 change icon
+            mActivity.showResultActivity(getString(R.string.disband_request_sent), R.mipmap.ic_to_disband_30dp,
                     getString(R.string.request_received));
             Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
             int count = Application.counters.get(Constants.PARCELS);
@@ -589,8 +588,8 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     private ResponseCallback mAllowShippingCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
-            mActivity.showResultActivity(getString(R.string.allow_shipping),
-                    getString(R.string.allow_request_sent) + " " + mPUSParcelDetailed.getCodeNumber(),
+            // TODO: 10/18/16 change icon
+            mActivity.showResultActivity(getString(R.string.allow_request_sent) + " " + mPUSParcelDetailed.getCodeNumber(),
                     R.mipmap.ic_to_disband_30dp, getString(R.string.we_will_send_parcel));
             Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
             int count = Application.counters.get(Constants.PARCELS);

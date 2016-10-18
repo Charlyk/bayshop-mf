@@ -13,13 +13,11 @@ import com.softranger.bayshopmf.R;
 
 public class ResultActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String TOP_TITLE = "topTitle";
-    public static final String SECOND_TITLE = "secondTitle";
+    public static final String TITLE = "secondTitle";
     public static final String DESCRIPTION = "description";
     public static final String IMAGE_ID = "imageId";
 
-    private String mTopTitle;
-    private String mSecondTitle;
+    private String mTitle;
     private String mDescription;
     @DrawableRes private int mImageId;
 
@@ -35,10 +33,8 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        if (intent.hasExtra(TOP_TITLE) && intent.hasExtra(SECOND_TITLE)
-                && intent.hasExtra(DESCRIPTION) && intent.hasExtra(IMAGE_ID)) {
-            mTopTitle = intent.getExtras().getString(TOP_TITLE);
-            mSecondTitle = intent.getExtras().getString(SECOND_TITLE);
+        if (intent.hasExtra(TITLE) && intent.hasExtra(DESCRIPTION) && intent.hasExtra(IMAGE_ID)) {
+            mTitle = intent.getExtras().getString(TITLE);
             mDescription = intent.getExtras().getString(DESCRIPTION);
             mImageId = intent.getExtras().getInt(IMAGE_ID);
         } else {
@@ -47,13 +43,11 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
         Button button = (Button) findViewById(R.id.registerResultDoneButton);
         button.setOnClickListener(this);
-        TextView topTitle = (TextView) findViewById(R.id.resultFragmentTopTitle);
         TextView secondTitle = (TextView) findViewById(R.id.resultFragmentSecondTitle);
         TextView description = (TextView) findViewById(R.id.resultFragmentDescription);
         ImageView imageView = (ImageView) findViewById(R.id.resultFragmentImage);
 
-        topTitle.setText(mTopTitle);
-        secondTitle.setText(mSecondTitle);
+        secondTitle.setText(mTitle);
         description.setText(mDescription);
         imageView.setImageResource(mImageId);
     }

@@ -17,7 +17,6 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.network.ResponseCallback;
-import com.softranger.bayshopmf.ui.general.ResultActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -231,12 +230,9 @@ public class ConfirmationFragment extends ParentFragment {
             Intent update = new Intent(ACTION_BUILD_FINISHED);
             mActivity.sendBroadcast(update);
 
-            Intent intent = new Intent(mActivity, ResultActivity.class);
-            intent.putExtra(ResultActivity.TOP_TITLE, getString(R.string.parcel_created));
-            intent.putExtra(ResultActivity.IMAGE_ID, R.mipmap.ic_parcel_50dp);
-            intent.putExtra(ResultActivity.SECOND_TITLE, data + " " + getString(R.string.parcel_added));
-            intent.putExtra(ResultActivity.DESCRIPTION, getString(R.string.your_parcel_added) + data);
-            mActivity.startActivity(intent);
+            // TODO: 10/18/16 change icon
+            mActivity.showResultActivity(data + " " + getString(R.string.parcel_added), R.mipmap.ic_parcel_50dp,
+                    getString(R.string.your_parcel_added) + data);
             mActivity.finish();
         }
 

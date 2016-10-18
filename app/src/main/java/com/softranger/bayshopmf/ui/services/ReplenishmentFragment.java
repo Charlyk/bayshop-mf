@@ -1,7 +1,6 @@
 package com.softranger.bayshopmf.ui.services;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Button;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.ui.general.ResultActivity;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
@@ -57,15 +55,9 @@ public class ReplenishmentFragment extends ParentFragment implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        // TODO: 8/24/16 replace with translated text
+        // TODO: 8/24/16 replace with translated text and change icon
         // build intent for result activity
-        Intent showResult = new Intent(mActivity, ResultActivity.class);
-        showResult.putExtra(ResultActivity.TOP_TITLE, "Account replenished");
-        showResult.putExtra(ResultActivity.SECOND_TITLE, "Your account was successfully replenished.");
-        showResult.putExtra(ResultActivity.IMAGE_ID, R.mipmap.ic_confirm_35dp);
-        showResult.putExtra(ResultActivity.DESCRIPTION, "Thanks for replenishing your account, the money will arrive in you wallet in about twenty minutes.");
-
-        // show result activity
-        startActivity(showResult);
+        mActivity.showResultActivity("Your account was successfully replenished.", R.mipmap.ic_confirm_35dp,
+                "Thanks for replenishing your account, the money will arrive in you wallet in about twenty minutes.");
     }
 }

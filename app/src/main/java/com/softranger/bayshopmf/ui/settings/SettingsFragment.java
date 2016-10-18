@@ -1,6 +1,7 @@
 package com.softranger.bayshopmf.ui.settings;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -161,7 +162,8 @@ public class SettingsFragment extends ParentFragment {
     // log out button click
     @OnClick(R.id.settingsLogOutBtn)
     void logOut() {
-
+        mActivity.setResult(Activity.RESULT_OK);
+        mActivity.finish();
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {

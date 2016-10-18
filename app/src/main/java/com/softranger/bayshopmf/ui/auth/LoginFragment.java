@@ -1,9 +1,8 @@
 package com.softranger.bayshopmf.ui.auth;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
-import android.text.Html;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,21 +50,7 @@ public class LoginFragment extends ParentFragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (LoginActivity) getActivity();
-        initializeViews(view);
         return view;
-    }
-
-    /**
-     * Bind all needed views from this activity
-     */
-    private void initializeViews(View view) {
-        Button signUpButton = (Button) view.findViewById(R.id.signUpButton);
-        String actionColor = "#e64d50";
-        String questionText = mActivity.getColoredSpanned(getString(R.string.haveAnAccountText), actionColor);
-        String blackColor = "#000000";
-        String signUpText = mActivity.getColoredSpanned(getString(R.string.signup), blackColor);
-        String underlinedText = "<u>" + signUpText + "</u>";
-        signUpButton.setText(Html.fromHtml(questionText + " " + underlinedText));
     }
 
     /**

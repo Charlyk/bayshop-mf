@@ -256,7 +256,8 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     private ResponseCallback mResponseCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
-            mActivity.showResultActivity(getString(R.string.feedback_sent), getString(R.string.feedback_added),
+            // TODO: 10/18/16 change icon
+            mActivity.showResultActivity(getString(R.string.feedback_added),
                     R.mipmap.ic_confirm_35dp, getString(R.string.feedback_comment));
             mActivity.onBackPressed();
             mActivity.toggleLoadingProgress(false);

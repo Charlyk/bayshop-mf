@@ -179,4 +179,13 @@ public interface BayShopApiInterface {
 
     @GET("get-member-mf-addresses")
     Call<ServerResponse<ArrayList<WarehouseAddress>>> getWarehouseAddress();
+
+    @FormUrlEncoded
+    @POST("auth/restore")
+    Call<ServerResponse> requestPasswordRestoring(@Field("email") String email);
+
+    @FormUrlEncoded
+    @POST("auth/register")
+    Call<ServerResponse> createNewAccount(@Field("email") String email, @Field("first_name") String firstName,
+                                          @Field("last_name") String lastName, @Field("password") String password);
 }

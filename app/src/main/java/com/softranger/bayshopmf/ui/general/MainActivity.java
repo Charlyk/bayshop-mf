@@ -64,6 +64,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     public static final String ACTION_ITEM_DELETED = "ITEM_DELETED";
     private static final int PERMISSION_REQUEST_CODE = 1535;
+    private static final int LOG_OUT_RC = 1110;
     public static final String ACTION_UPDATE_TITLE = "update toolbar title";
     public ActionBarDrawerToggle mDrawerToggle;
     private static String[] permissions;
@@ -178,6 +179,13 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             switch (requestCode) {
                 case AwaitingArrivalFragment.ADD_PARCEL_RC:
                     sendBroadcast(new Intent(AwaitingArrivalFragment.ACTION_ITEM_ADDED));
+                    break;
+                case LOG_OUT_RC:
+                    Application.getInstance().setLoginStatus(false);
+                    Application.user = null;
+                    Intent login = new Intent(this, LoginActivity.class);
+                    startActivity(login);
+                    finish();
                     break;
             }
         }
@@ -359,7 +367,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         switch (id) {
             case R.id.nav_profileSettings:
                 Intent settings = new Intent(this, SettingsActivity.class);
-                startActivity(settings);
+                startActivityForResult(settings, LOG_OUT_RC);
                 closeDrawer = false;
                 break;
             case R.id.nav_paymentHistory:

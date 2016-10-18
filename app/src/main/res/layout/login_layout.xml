@@ -2,48 +2,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_log_in_125dp"
+        android:layout_marginBottom="20dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/logo_circle"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/logo_circle"
-            android:contentDescription="@null"/>
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/logo_letters"
-            android:contentDescription="@null"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button"
             style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
@@ -51,21 +31,23 @@
             android:drawableLeft="@mipmap/ic_login_fb"
             android:drawableStart="@mipmap/ic_login_fb"
             android:onClick="loginWithFacebook"
+            android:textSize="18sp"
             android:text="@string/facebook"
             android:textColor="@android:color/white"/>
 
         <Button
             android:id="@+id/button2"
             style="@style/Base.Widget.AppCompat.ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/google_btn_bg"
-            android:drawableLeft="@mipmap/ic_login_google"
-            android:drawableStart="@mipmap/ic_login_google"
+            android:drawableLeft="@mipmap/ic_google_30dp"
+            android:drawableStart="@mipmap/ic_google_30dp"
             android:onClick="loginWithGoogle"
             android:paddingLeft="16dp"
             android:paddingStart="16dp"
+            android:textSize="18sp"
             android:text="@string/google"
             android:textColor="@android:color/white"/>
     </LinearLayout>
@@ -77,6 +59,7 @@
         android:layout_gravity="center_horizontal"
         android:ems="10"
         android:gravity="center"
+        android:textSize="16sp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"/>
 
@@ -86,37 +69,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:ems="10"
+        android:textSize="16sp"
         android:gravity="center"
         android:hint="@string/password"
         android:inputType="textPassword"/>
 
     <Button
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/declaration_btn_background"
-        android:onClick="loginWithBayApi"
-        android:text="@string/login"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"/>
-
-    <ProgressBar
-        android:id="@+id/loginProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"/>
-
-    <Button
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Forgot your password?"
+        android:layout_height="50dp"
+        android:text="@string/forgot_your_password"
         android:layout_marginTop="10dp"
         android:textColor="@color/colorAccent"
         android:onClick="forgotPassword"
+        android:textSize="16sp"
         android:background="?selectableItemBackgroundBorderless"
         android:id="@+id/loginFragmentForgotPassBtn"
         android:layout_gravity="center_horizontal"/>
@@ -126,11 +92,10 @@
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:gravity="center"
-        tools:text="Don't have an account? Signup"
+        android:textColor="@color/colorAccent"
+        android:text="@string/create_new_account"
         android:onClick="signUpToBayShop"
         android:textSize="16sp"/>
-
-
 </LinearLayout>
