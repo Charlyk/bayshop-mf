@@ -10,6 +10,7 @@ import com.softranger.bayshopmf.model.address.Coordinates;
 import com.softranger.bayshopmf.model.box.Box;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Eduard Albu on 9/16/16, 09, 2016
@@ -19,23 +20,23 @@ import java.util.ArrayList;
 public class PUSParcelDetailed extends PUSParcel {
 
     @JsonProperty("created")
-    private String mCreated;
+    private Date mCreated;
     @JsonProperty("sentTime")
-    private String mSentTime;
+    private Date mSentTime;
     @JsonProperty("packedTime")
-    private String mPackedTime;
+    private Date mPackedTime;
     @JsonProperty("receivedTime")
-    private String mReceivedTime;
+    private Date mReceivedTime;
     @JsonProperty("takenToDeliveryTime")
-    private String mTakenToDeliveryTime;
+    private Date mTakenToDeliveryTime;
     @JsonProperty("customsHeldTime")
-    private String mCustomsHeldTime;
+    private Date mCustomsHeldTime;
     @JsonProperty("localDepoTime")
-    private String mLocalDepoTime;
+    private Date mLocalDepoTime;
     @JsonProperty("heldByProhibitionTime")
-    private String mHeldByProhibitionTime;
+    private Date mHeldByProhibitionTime;
     @JsonProperty("heldByDamageTime")
-    private String mHeldByDamageTime;
+    private Date mHeldByDamageTime;
     @JsonProperty("customsCause")
     private String mCustomsCause;
     @JsonProperty("totalPrice")
@@ -79,15 +80,15 @@ public class PUSParcelDetailed extends PUSParcel {
 
     protected PUSParcelDetailed(Parcel in) {
         super(in);
-        mCreated = in.readString();
-        mSentTime = in.readString();
-        mPackedTime = in.readString();
-        mReceivedTime = in.readString();
-        mTakenToDeliveryTime = in.readString();
-        mCustomsHeldTime = in.readString();
-        mLocalDepoTime = in.readString();
-        mHeldByProhibitionTime = in.readString();
-        mHeldByDamageTime = in.readString();
+        mCreated = (Date) in.readSerializable();
+        mSentTime = (Date) in.readSerializable();
+        mPackedTime = (Date) in.readSerializable();
+        mReceivedTime = (Date) in.readSerializable();
+        mTakenToDeliveryTime = (Date) in.readSerializable();
+        mCustomsHeldTime = (Date) in.readSerializable();
+        mLocalDepoTime = (Date) in.readSerializable();
+        mHeldByProhibitionTime = (Date) in.readSerializable();
+        mHeldByDamageTime = (Date) in.readSerializable();
         mCustomsCause = in.readString();
         mTotalPrice = in.readString();
         mDeliveryPrice = in.readString();
@@ -115,39 +116,39 @@ public class PUSParcelDetailed extends PUSParcel {
         }
     };
 
-    public String getCreated() {
+    public Date getCreated() {
         return mCreated;
     }
 
-    public String getSentTime() {
+    public Date getSentTime() {
         return mSentTime;
     }
 
-    public String getPackedTime() {
+    public Date getPackedTime() {
         return mPackedTime;
     }
 
-    public String getReceivedTime() {
+    public Date getReceivedTime() {
         return mReceivedTime;
     }
 
-    public String getTakenToDeliveryTime() {
+    public Date getTakenToDeliveryTime() {
         return mTakenToDeliveryTime;
     }
 
-    public String getCustomsHeldTime() {
+    public Date getCustomsHeldTime() {
         return mCustomsHeldTime;
     }
 
-    public String getLocalDepoTime() {
+    public Date getLocalDepoTime() {
         return mLocalDepoTime;
     }
 
-    public String getHeldByProhibitionTime() {
+    public Date getHeldByProhibitionTime() {
         return mHeldByProhibitionTime;
     }
 
-    public String getHeldByDamageTime() {
+    public Date getHeldByDamageTime() {
         return mHeldByDamageTime;
     }
 
@@ -214,15 +215,15 @@ public class PUSParcelDetailed extends PUSParcel {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
-        parcel.writeString(mCreated);
-        parcel.writeString(mSentTime);
-        parcel.writeString(mPackedTime);
-        parcel.writeString(mReceivedTime);
-        parcel.writeString(mTakenToDeliveryTime);
-        parcel.writeString(mCustomsHeldTime);
-        parcel.writeString(mLocalDepoTime);
-        parcel.writeString(mHeldByProhibitionTime);
-        parcel.writeString(mHeldByDamageTime);
+        parcel.writeSerializable(mCreated);
+        parcel.writeSerializable(mSentTime);
+        parcel.writeSerializable(mPackedTime);
+        parcel.writeSerializable(mReceivedTime);
+        parcel.writeSerializable(mTakenToDeliveryTime);
+        parcel.writeSerializable(mCustomsHeldTime);
+        parcel.writeSerializable(mLocalDepoTime);
+        parcel.writeSerializable(mHeldByProhibitionTime);
+        parcel.writeSerializable(mHeldByDamageTime);
         parcel.writeString(mCustomsCause);
         parcel.writeString(mTotalPrice);
         parcel.writeString(mDeliveryPrice);

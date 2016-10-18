@@ -2,7 +2,6 @@ package com.softranger.bayshopmf.ui.instock;
 
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
@@ -24,7 +23,6 @@ import com.softranger.bayshopmf.model.box.Declaration;
 import com.softranger.bayshopmf.model.box.InStockDetailed;
 import com.softranger.bayshopmf.model.box.Product;
 import com.softranger.bayshopmf.network.ResponseCallback;
-import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -172,9 +170,7 @@ public class DeclarationFragment extends ParentFragment implements DeclarationLi
         public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
             if (response.body() != null) {
                 if (response.body().getMessage().equalsIgnoreCase(Constants.ApiResponse.OK_MESSAGE)) {
-                    Intent update = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
-                    mActivity.sendBroadcast(update);
-                    mActivity.onBackPressed();
+
                     Snackbar.make(mRecyclerView, getString(R.string.declaration_saved), Snackbar.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();

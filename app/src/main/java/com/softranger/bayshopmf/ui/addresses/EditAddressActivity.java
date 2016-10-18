@@ -87,6 +87,7 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
             mToolbarTitle.setText(getString(R.string.add_new_address));
             mAddressId = -1;
             mResponseCall = Application.apiInterface().getPhoneCodes();
+            mAddress = new AddressToEdit();
         }
 
         toggleLoading(true);

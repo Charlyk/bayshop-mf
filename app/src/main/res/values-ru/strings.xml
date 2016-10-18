@@ -326,4 +326,7 @@
     <string name="order_photos">Заказать фото</string>
     <string name="yesterday">Yesterday</string>
     <string name="photo">Photo</string>
+    <string name="thank_you_register">Thank you for registering, now you can login with your credentials.</string>
+    <string name="wait_parcel">Your parcel was added as awaiting, we will notify you when it will arrive to our warehouse.</string>
+    <string name="products">products</string>
 </resources>

@@ -38,7 +38,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -71,8 +70,8 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
     private static SimpleDateFormat serverFormat;
     private static SimpleDateFormat friendlyFormat;
 
-    private static double latitude = 47.043252904877306;
-    private static double longitude = 28.868207931518555;
+    private static double latitude;
+    private static double longitude;
 
     public ReceivedSignature() {
         // Required empty public constructor
@@ -95,7 +94,6 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (ParentActivity) getActivity();
 
-        serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         friendlyFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
 
         // map view
@@ -122,14 +120,8 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
         mUidLabel.setText(received.getCodeNumber());
         mDescriptionlabel.setText(received.getGeneralDescription());
 
-        Date date = new Date();
-        try {
-            date = serverFormat.parse(received.getReceivedTime());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        String strDate = friendlyFormat.format(date);
+        String strDate = friendlyFormat.format(received.getReceivedTime());
         mReceivedDateLabel.setText(strDate);
 
         // compute kilos from grams and set the result in weight label

@@ -116,7 +116,7 @@
         </activity>
         <activity android:name=".ui.payment.PaymentDetailsActivity">
         </activity>
-        <activity android:name=".ui.awaitingarrival.AddAwaitingActivity">
+        <activity android:name=".ui.general.DeclarationActivity">
         </activity>
     </application>
 

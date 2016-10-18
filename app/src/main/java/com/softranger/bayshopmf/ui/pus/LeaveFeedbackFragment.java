@@ -38,7 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +61,6 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     private Call<ServerResponse> mCall;
     private PUSParcelDetailed mParcelDetailed;
 
-    private static SimpleDateFormat serverFormat;
     private static SimpleDateFormat friendlyFormat;
 
     @BindView(R.id.leaveFeedbackUidLabel)
@@ -107,41 +105,17 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         mActivity = (ParentActivity) getActivity();
         mRatingBar.setOnRatingBarChangeListener(this);
 
-        serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
 
         mParcelDetailed = getArguments().getParcelable(DETAILED_PARCEL);
 
         if (mParcelDetailed != null) {
-            mDateLabel.setText(getFormattedDate(mParcelDetailed.getReceivedTime()));
+            mDateLabel.setText(friendlyFormat.format(mParcelDetailed.getReceivedTime()));
             mUidLabel.setText(mParcelDetailed.getCodeNumber());
             mDescriptionLabel.setText(mParcelDetailed.getGeneralDescription());
         }
 
         return view;
-    }
-
-    private String getFormattedDate(String createdDate) {
-        Date today = new Date();
-        Date date = new Date();
-        String formattedDate = "";
-        try {
-            if (createdDate != null && !createdDate.equals(""))
-                date = serverFormat.parse(createdDate);
-            formattedDate = friendlyFormat.format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            long diff = today.getTime() - date.getTime();
-            long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-
-            if (days > 0) {
-                formattedDate = formattedDate + " (" + days + " " + mActivity.getString(R.string.days_ago) + ")";
-            } else {
-                formattedDate = formattedDate + " (" + mActivity.getString(R.string.today) + ")";
-            }
-        }
-        return formattedDate;
     }
 
     @Override
@@ -259,6 +233,8 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             // TODO: 10/18/16 change icon
             mActivity.showResultActivity(getString(R.string.feedback_added),
                     R.mipmap.ic_confirm_35dp, getString(R.string.feedback_comment));
+            Intent update = new Intent(ReceivedFragment.ACTION_UPDATE);
+            mActivity.sendBroadcast(update);
             mActivity.onBackPressed();
             mActivity.toggleLoadingProgress(false);
         }

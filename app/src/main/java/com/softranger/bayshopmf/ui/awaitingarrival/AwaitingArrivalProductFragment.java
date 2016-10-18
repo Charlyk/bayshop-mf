@@ -21,6 +21,7 @@ import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
 import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.ui.general.DeclarationActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
@@ -96,7 +97,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
-        intentFilter.addAction(AwaitingArrivalFragment.ACTION_ITEM_ADDED);
+        intentFilter.addAction(AwaitingArrivalFragment.ACTION_LIST_CHANGED);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
         mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
@@ -133,7 +134,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
-                case AwaitingArrivalFragment.ACTION_ITEM_ADDED:
+                case AwaitingArrivalFragment.ACTION_LIST_CHANGED:
                     mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
                     mCall.enqueue(mResponseCallback);
                     break;
@@ -165,7 +166,9 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
 
     private void setDataInPlace(AwaitingArrivalDetails arrivalDetails) {
         mProductId.setText(arrivalDetails.getUid());
-        mProductName.setText(arrivalDetails.getTitle());
+        int quantity = arrivalDetails.getProducts().size();
+        String desc = quantity + " " + (quantity > 1 ? getString(R.string.products) : getString(R.string.product));
+        mProductName.setText(desc);
         mProductTracking.setText(arrivalDetails.getTracking());
 
         mProductDate.setText(Application.getFormattedDate(arrivalDetails.getCreatedDate()));
@@ -199,11 +202,11 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
 
     @OnClick(R.id.awaitingDetailsEditButton)
     void editParcelDetails() {
-        Intent editParcel = new Intent(mActivity, AddAwaitingActivity.class);
-        editParcel.putExtra(AddAwaitingActivity.SHOW_TRACKING, true);
-        editParcel.putExtra(AddAwaitingActivity.PRODUCTS_ARRAY, mArrivalDetails.getProducts());
-        editParcel.putExtra(AddAwaitingActivity.AWAITING_ID, mArrivalDetails.getId());
-        editParcel.putExtra(AddAwaitingActivity.TRACKING_NUM, mArrivalDetails.getTracking());
+        Intent editParcel = new Intent(mActivity, DeclarationActivity.class);
+        editParcel.putExtra(DeclarationActivity.SHOW_TRACKING, true);
+        editParcel.putExtra(DeclarationActivity.PRODUCTS_ARRAY, mArrivalDetails.getProducts());
+        editParcel.putExtra(DeclarationActivity.AWAITING_ID, mArrivalDetails.getId());
+        editParcel.putExtra(DeclarationActivity.TRACKING_NUM, mArrivalDetails.getTracking());
         mActivity.startActivityForResult(editParcel, AwaitingArrivalFragment.ADD_PARCEL_RC);
     }
 
@@ -223,7 +226,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                         public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                             if (response.body() != null) {
                                 if (response.body().getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
-                                    Intent intent = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
+                                    Intent intent = new Intent(AwaitingArrivalFragment.ACTION_LIST_CHANGED);
                                     mActivity.sendBroadcast(intent);
                                     mActivity.onBackPressed();
 

@@ -188,7 +188,7 @@
     <string name="restore">Restore</string>
     <string name="restore_password">Restore password</string>
     <string name="email_has_been_sent">Email has been sent.</string>
-    <string name="reset_your_password">When you receive your login information, follow the link to reset your password</string>
+    <string name="reset_your_password">When you receive your login information, follow the link to reset your password.</string>
     <string name="done">Done</string>
     <string name="insurance_agreement">Insurance agreement</string>
     <string name="_400">$400</string>
@@ -371,4 +371,11 @@
     <string name="yesterday">Yesterday</string>
     <string name="photo">Photo</string>
     <string name="click_on_field_to_copy">You can click on each field below to cope the text within it.</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="subscribe_to_news_letters">Subscribe to news letters</string>
+    <string name="registration_completed">Registration completed</string>
+    <string name="thank_you_register">Thank you for registering, now you can login with your credentials.</string>
+    <string name="wait_parcel">Your parcel was added as awaiting, we will notify you when it will arrive to our warehouse.</string>
+    <string name="products">products</string>
+    <string name="product">product</string>
 </resources>

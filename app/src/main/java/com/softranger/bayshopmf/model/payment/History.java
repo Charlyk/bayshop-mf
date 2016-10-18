@@ -35,7 +35,7 @@ public class History implements Parcelable, Imageble {
     @JsonProperty("sign")
     private String mCurrency;
     @JsonProperty("img_payment")
-    private String[] mImageUrl;
+    private String mImageUrl;
 
     private History() {
 
@@ -50,6 +50,7 @@ public class History implements Parcelable, Imageble {
         mTransactionId = in.readString();
         mCurrency = in.readString();
         mDate = (Date) in.readSerializable();
+        mImageUrl = in.readString();
     }
 
     public static final Creator<History> CREATOR = new Creator<History>() {
@@ -117,7 +118,7 @@ public class History implements Parcelable, Imageble {
 
     @Override
     public String getImageUrl() {
-        return mImageUrl[0];
+        return mImageUrl;
     }
 
     public String getCommission() {
@@ -139,7 +140,7 @@ public class History implements Parcelable, Imageble {
         dest.writeString(mTransactionId);
         dest.writeString(mCurrency);
         dest.writeSerializable(mDate);
-        dest.writeStringArray(mImageUrl);
+        dest.writeString(mImageUrl);
     }
 
     public enum PaymentType {

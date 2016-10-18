@@ -26,7 +26,6 @@ import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
-import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.steps.ConfirmationFragment;
 import com.softranger.bayshopmf.ui.steps.CreateParcelActivity;
@@ -50,6 +49,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     public static final String ACTION_CREATE_PARCEL = "START CREATING PARCEL";
     public static final String ACTION_HIDE_TOTALS = "HIDE TOTALS VIEW";
+    public static final String ACTION_UPDATE_LIST = "com.softranger.bayshopmf.ui.instock.UPDATE_LIST";
 
     private Unbinder mUnbinder;
     private MainActivity mActivity;
@@ -97,7 +97,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         mTotalsView.setOnCreateParcelClickListener(this);
 
         // register broadcast receiver to get notified when an item is changed
-        IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
+        IntentFilter intentFilter = new IntentFilter(ACTION_UPDATE_LIST);
         intentFilter.addAction(AddressesListFragment.ACTION_START_ANIM);
         intentFilter.addAction(ACTION_CREATE_PARCEL);
         intentFilter.addAction(ACTION_HIDE_TOTALS);

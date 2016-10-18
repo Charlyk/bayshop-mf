@@ -1,6 +1,10 @@
 package com.softranger.bayshopmf.ui.pus;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +36,7 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnItemClickListener,
         PullToRefreshLayout.PullToRefreshListener {
 
+    public static final String ACTION_UPDATE = "com.softranger.bayshopmf.ui.pus.UPDATE_LIST";
     private MainActivity mActivity;
     private Unbinder mUnbinder;
     private ArrayList<PUSParcel> mPUSParcels;
@@ -60,6 +65,10 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (MainActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
+
+        IntentFilter intentFilter = new IntentFilter(ACTION_UPDATE);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
         mPUSParcels = new ArrayList<>();
         mAdapter = new ItemAdapter(mActivity);
 
@@ -70,9 +79,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         mRefreshLayout.setPullToRefreshListener(this);
 
         mActivity.toggleLoadingProgress(true);
-        mCall = Application.apiInterface().getParcelsByStatus(Constants.ParcelStatus.RECEIVED);
-        mCall.enqueue(mResponseCallback);
-
+        onRefresh(mRefreshLayout);
         return view;
     }
 
@@ -101,6 +108,13 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         }
     };
 
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onRefresh(mRefreshLayout);
+        }
+    };
+
     @Override
     public String getFragmentTitle() {
         return getString(R.string.received);
@@ -114,6 +128,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
     }

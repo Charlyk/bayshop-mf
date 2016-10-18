@@ -50,9 +50,7 @@ public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
             Response<ServerResponse> response = call.execute();
             // check if response is successful
             if (response.body().getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
-
                 mAwaitingArrivals.remove(mItemPosition);
-
             } else {
                 Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
             }

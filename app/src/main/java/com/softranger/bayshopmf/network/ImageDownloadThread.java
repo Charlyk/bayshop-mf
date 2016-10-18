@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 
-import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.Imageble;
 
@@ -27,12 +27,19 @@ public class ImageDownloadThread<T extends Imageble> extends Thread {
     private Handler mHandler;
     private Context mContext;
     private ArrayList<T> mObjects;
+    private int width = Application.getPixelsFromDp(160);
+    private int height = Application.getPixelsFromDp(120);
 
     public ImageDownloadThread(ArrayList<T> objects, Handler handler, Context context) {
         mHandler = handler;
         mObjects = new ArrayList<>();
         mObjects.addAll(objects);
         mContext = context;
+    }
+
+    public void setImageSize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     @SafeVarargs
@@ -54,11 +61,6 @@ public class ImageDownloadThread<T extends Imageble> extends Thread {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                // TODO: 9/20/16 set image resource in adapters instead of decoding it
-                if (object.getImage() == null) {
-                    Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.no_image);
-                    object.setImage(image);
-                }
                 Message message = mHandler.obtainMessage();
                 message.obj = object;
                 mHandler.sendMessage(message);
@@ -82,10 +84,43 @@ public class ImageDownloadThread<T extends Imageble> extends Thread {
             outputStream.flush();
             outputStream.close();
         }
-        return BitmapFactory.decodeFile(image.getAbsolutePath());
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(image.getAbsolutePath(), options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, width, height);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(image.getAbsolutePath(), options);
     }
 
     private String urlToFileName(String url) {
         return url.replace("/", "").replace(".", "") + ".png";
+    }
+
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }

@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.ui.awaitingarrival;
+package com.softranger.bayshopmf.ui.general;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,13 +21,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.DeclarationListAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.model.box.Declaration;
 import com.softranger.bayshopmf.model.box.Product;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,19 +44,23 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
 
-public class AddAwaitingActivity extends AppCompatActivity implements Animator.AnimatorListener,
+public class DeclarationActivity extends ParentActivity implements Animator.AnimatorListener,
         MenuItem.OnMenuItemClickListener, DeclarationListAdapter.OnActionButtonsClick {
 
     // this is key to get products array from intent extras
-    public static final String PRODUCTS_ARRAY = "PRODUCTS ARRAY KEY";
+    public static final String PRODUCTS_ARRAY = "com.softranger.bayshopmf.ui.general.PRODUCTS ARRAY KEY";
     // key for show tracking boolean value used by adapter
-    public static final String SHOW_TRACKING = "SHOW TRACKING FIELD";
+    public static final String SHOW_TRACKING = "com.softranger.bayshopmf.ui.general.SHOW TRACKING FIELD";
     // key to ge id for parcel needed to edit
-    public static final String AWAITING_ID = "PARCEL TO EDIT ID";
+    public static final String AWAITING_ID = "com.softranger.bayshopmf.ui.general.PARCEL TO EDIT ID";
     // tracking number key
-    public static final String TRACKING_NUM = "TRACKING NUMBER";
+    public static final String TRACKING_NUM = "com.softranger.bayshopmf.ui.general.TRACKING NUMBER";
     // this is action to put in result intent
-    public static final String ACTION_REFRESH_AWAITING = "REFRESH AWAITING LIST";
+    public static final String ACTION_REFRESH_AWAITING = "com.softranger.bayshopmf.ui.general.REFRESH AWAITING LIST";
+    // key for in stock item id
+    public static final String IN_STOCK_ID = "com.softranger.bayshopmf.ui.general.IN_STOCK_ID";
+    // key to know if declaration is filled
+    public static final String HAS_DECLARATION = "com.softranger.bayshopmf.ui.general.HAS_DECLARATION";
 
     // maximum height for bottom additional services layout
     private static final int MAX_HEIGHT = Application.getPixelsFromDp(150);
@@ -68,12 +77,15 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
     private CustomTabsIntent mTabsIntent;
     // call to server for saving parcel details
     private Call<ServerResponse> mCall;
+    private Call<ServerResponse<Declaration>> mDeclarationCall;
 
     // current entered parcel tracking number
     private String mTrackingNumber;
     // parcel to edit id
     private String mParcelId;
     private boolean mShowTracking;
+    private boolean mIsInStock;
+    private String mInStockId;
 
     @BindView(R.id.addAwaitingToolbar)
     Toolbar mToolbar;
@@ -85,6 +97,8 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
     CheckBox mRepack;
     @BindView(R.id.addAwaitingExpandedServicesLayout)
     LinearLayout mExpandedServicesLayout;
+    @BindView(R.id.addAwaitingServicesLayout)
+    RelativeLayout mCollapsedServicesLayout;
     @BindView(R.id.addAwaitingRecyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.addAwaitingProgressBar)
@@ -116,6 +130,14 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
             mParcelId = "";
         }
 
+        if (intent.hasExtra(IN_STOCK_ID)) {
+            mInStockId = intent.getExtras().getString(IN_STOCK_ID);
+        }
+
+        boolean hasDeclaration = intent.hasExtra(HAS_DECLARATION) && intent.getExtras().getBoolean(HAS_DECLARATION);
+        mIsInStock = mInStockId != null;
+        mCollapsedServicesLayout.setVisibility(mIsInStock ? View.GONE : View.VISIBLE);
+
         if (intent.hasExtra(TRACKING_NUM)) {
             mTrackingNumber = intent.getExtras().getString(TRACKING_NUM);
         } else {
@@ -131,7 +153,12 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
             mProducts = new ArrayList<>();
         }
         // create an instance of adater
-        mAdapter = new DeclarationListAdapter(mProducts, mProducts.size() > 0, mShowTracking);
+        if (mIsInStock) {
+            mAdapter = new DeclarationListAdapter(mProducts, hasDeclaration, false);
+        } else {
+            mAdapter = new DeclarationListAdapter(mProducts, mProducts.size() > 0, mShowTracking);
+        }
+
         mAdapter.setOnActionButtonsClickListener(this);
         mAdapter.setTrackingNum(mTrackingNumber);
         // set the adapter to recycler view
@@ -141,6 +168,22 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
         CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
         tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorAccent));
         mTabsIntent = tabsBuilder.build();
+
+        if (mIsInStock && hasDeclaration) {
+            toggleLoadingProgress(true);
+            mDeclarationCall = Application.apiInterface().getInStockItemDeclaration(mInStockId);
+            mDeclarationCall.enqueue(mDeclarationResponseCallback);
+        }
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+
+    }
+
+    @Override
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
+
     }
 
     /**
@@ -148,8 +191,14 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
      *
      * @param show true to set as visible or false to set as gone
      */
-    private void toggleLoadingProgress(boolean show) {
+    @Override
+    public void toggleLoadingProgress(boolean show) {
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void replaceFragment(ParentFragment fragment) {
+
     }
 
     @Override
@@ -207,7 +256,7 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
     }
 
     /**
-     * Add a new empty product card and a product to {@link AddAwaitingActivity#mProducts}
+     * Add a new empty product card and a product to {@link DeclarationActivity#mProducts}
      */
     @OnClick(R.id.addAwaitingAddFieldButton)
     void addNewProduct() {
@@ -220,6 +269,13 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
      */
     @OnClick(R.id.addAwaitingSaveButton)
     void saveAwaitingParcel() {
+        // if this is an in stock declaration
+        // save it and return
+        if (mIsInStock) {
+            toggleLoadingProgress(true);
+            saveInStockDeclaration();
+            return;
+        }
         // check if thracking number is not empty
         if (mShowTracking && (mTrackingNumber == null || mTrackingNumber.length() <= 0)) {
             Toast.makeText(this, getString(R.string.enter_tracking_num), Toast.LENGTH_SHORT).show();
@@ -248,6 +304,44 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void saveInStockDeclaration() {
+        JSONArray jsonArray = new JSONArray();
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        for (Product product : mProducts) {
+            // check if all data was specified
+            int productIndex = mProducts.indexOf(product);
+            if (productIndex < (mProducts.size() - 1)) {
+                if (!isAllDataProvided(product)) {
+                    if (!product.getTitle().equals(""))
+                        Snackbar.make(mRecyclerView, getString(R.string.specify_all_data) + " "
+                                + product.getTitle(), Snackbar.LENGTH_SHORT).show();
+                    else
+                        Snackbar.make(mRecyclerView, getString(R.string.specify_all_data) + " item "
+                                + (mProducts.indexOf(product) + 1), Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            // create a json array for server
+            try {
+                String object = ow.writeValueAsString(product);
+                JSONObject jsonObject = new JSONObject(object);
+                jsonArray.put(jsonObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        mCall = Application.apiInterface().saveInStockItemDeclaration(mInStockId,
+                jsonArray.toString());
+        mCall.enqueue(mResponseCallback);
+    }
+
+    private boolean isAllDataProvided(Product product) {
+        return !product.getTitle().equals("") && !product.getUrl().equals("")
+                && !product.getPrice().equals("") && !product.getQuantity().equals("")
+                && !product.getQuantity().equals("0") && !product.getPrice().equals("0");
     }
 
     /**
@@ -303,7 +397,7 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
     }
 
     /**
-     * Delete a product from {@link AddAwaitingActivity#mProducts} and from {@link DeclarationListAdapter}
+     * Delete a product from {@link DeclarationActivity#mProducts} and from {@link DeclarationListAdapter}
      * @param product which will be removed
      * @param position for this product in the adapter
      */
@@ -313,7 +407,7 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
     }
 
     /**
-     * Open product url in {@link AddAwaitingActivity#mTabsIntent}
+     * Open product url in {@link DeclarationActivity#mTabsIntent}
      * @param url to be opened
      * @param position for the product with above url
      */
@@ -339,20 +433,59 @@ public class AddAwaitingActivity extends AppCompatActivity implements Animator.A
         public void onSuccess(Object data) {
             Intent refreshIntent = new Intent(ACTION_REFRESH_AWAITING);
             setResult(RESULT_OK, refreshIntent);
-            // TODO: 10/13/16 start result activity
+            if (!mIsInStock) {
+                showResultActivity(getString(R.string.parcel_added), R.mipmap.ic_confirm_250dp,
+                        getString(R.string.wait_parcel));
+            }
             finish();
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             toggleLoadingProgress(false);
-            Toast.makeText(AddAwaitingActivity.this, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(DeclarationActivity.this, errorData.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(Call call, Throwable t) {
+            t.printStackTrace();
             toggleLoadingProgress(false);
-            Toast.makeText(AddAwaitingActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(DeclarationActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     };
+
+    private ResponseCallback<Declaration> mDeclarationResponseCallback = new ResponseCallback<Declaration>() {
+        @Override
+        public void onSuccess(Declaration data) {
+            mProducts.clear();
+            mProducts.addAll(data.getProducts());
+            mAdapter.notifyDataSetChanged();
+            toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            toggleLoadingProgress(false);
+            Toast.makeText(DeclarationActivity.this, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<Declaration>> call, Throwable t) {
+            t.printStackTrace();
+            toggleLoadingProgress(false);
+            Toast.makeText(DeclarationActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    @Override
+    public void onBackStackChanged() {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCall != null) mCall.cancel();
+        if (mDeclarationCall != null) mDeclarationCall.cancel();
+    }
 }

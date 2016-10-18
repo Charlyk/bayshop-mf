@@ -42,7 +42,6 @@ import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
-import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
@@ -562,7 +561,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
             // TODO: 10/18/16 change icon
             mActivity.showResultActivity(getString(R.string.disband_request_sent), R.mipmap.ic_to_disband_30dp,
                     getString(R.string.request_received));
-            Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
+            Intent refresh = new Intent(PUSParcelsFragment.ACTION_UPDATE);
             int count = Application.counters.get(Constants.PARCELS);
             count = count - 1;
             Application.counters.put(Constants.PARCELS, count);
@@ -591,7 +590,7 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
             // TODO: 10/18/16 change icon
             mActivity.showResultActivity(getString(R.string.allow_request_sent) + " " + mPUSParcelDetailed.getCodeNumber(),
                     R.mipmap.ic_to_disband_30dp, getString(R.string.we_will_send_parcel));
-            Intent refresh = new Intent(AddAwaitingFragment.ACTION_ITEM_ADDED);
+            Intent refresh = new Intent(PUSParcelsFragment.ACTION_UPDATE);
             int count = Application.counters.get(Constants.PARCELS);
             count = count - 1;
             Application.counters.put(Constants.PARCELS, count);

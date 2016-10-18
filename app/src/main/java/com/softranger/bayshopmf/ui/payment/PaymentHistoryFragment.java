@@ -102,7 +102,9 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
             }
             Collections.sort(mAllHistories, (lhs, rhs) -> lhs.getDate().compareTo(rhs.getDate()));
             Collections.reverse(mAllHistories);
-            new ImageDownloadThread<>(mAllHistories, mHandler, mActivity).start();
+            ImageDownloadThread<History> downloadThread = new ImageDownloadThread<>(mAllHistories, mHandler, mActivity);
+            downloadThread.setImageSize(Application.getPixelsFromDp(30), Application.getPixelsFromDp(30));
+            downloadThread.start();
         }
 
         @Override

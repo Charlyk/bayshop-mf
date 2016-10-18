@@ -42,6 +42,7 @@ import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment;
 import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
+import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.instock.InStockFragment;
 import com.softranger.bayshopmf.ui.payment.PaymentActivity;
 import com.softranger.bayshopmf.ui.pus.PUSParcelsFragment;
@@ -178,7 +179,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case AwaitingArrivalFragment.ADD_PARCEL_RC:
-                    sendBroadcast(new Intent(AwaitingArrivalFragment.ACTION_ITEM_ADDED));
+                    sendBroadcast(new Intent(AwaitingArrivalFragment.ACTION_LIST_CHANGED));
+                    break;
+                case DetailsFragment.DECLARATION_RC:
+                    sendBroadcast(new Intent(InStockFragment.ACTION_UPDATE_LIST));
                     break;
                 case LOG_OUT_RC:
                     Application.getInstance().setLoginStatus(false);

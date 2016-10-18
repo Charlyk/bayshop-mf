@@ -19,7 +19,6 @@ import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.pus.PUSStatuses;
 import com.softranger.bayshopmf.network.ResponseCallback;
-import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -36,6 +35,8 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdapter.OnPusItemClickListener,
         PullToRefreshLayout.PullToRefreshListener {
+
+    public static final String ACTION_UPDATE = "com.softranger.bayshopmf.ui.pus.UPDATE_LIST";
 
     private Unbinder mUnbinder;
     private MainActivity mActivity;
@@ -67,7 +68,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (MainActivity) getActivity();
 
-        IntentFilter intentFilter = new IntentFilter(AddAwaitingFragment.ACTION_ITEM_ADDED);
+        IntentFilter intentFilter = new IntentFilter(ACTION_UPDATE);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);

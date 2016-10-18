@@ -29,7 +29,7 @@ import com.softranger.bayshopmf.model.box.InStockDetailed;
 import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.network.ResponseCallback;
-import com.softranger.bayshopmf.ui.awaitingarrival.AddAwaitingFragment;
+import com.softranger.bayshopmf.ui.general.DeclarationActivity;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
@@ -54,6 +54,7 @@ import retrofit2.Call;
 public class DetailsFragment extends ParentFragment implements View.OnClickListener, ImagesAdapter.OnImageClickListener {
 
     private static final String ITEM_ARG = "ITEM ARGUMENT";
+    public static final int DECLARATION_RC = 1528;
     private MainActivity mActivity;
     private Unbinder mUnbinder;
 
@@ -106,7 +107,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
-        intentFilter.addAction(AddAwaitingFragment.ACTION_ITEM_ADDED);
+        intentFilter.addAction(InStockFragment.ACTION_UPDATE_LIST);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
         // set up recycler view
@@ -148,7 +149,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
-                case AddAwaitingFragment.ACTION_ITEM_ADDED:
+                case InStockFragment.ACTION_UPDATE_LIST:
                     // send request to server for item details
                     mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
 //                    mActivity.toggleLoadingProgress(true);
@@ -184,7 +185,8 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         @Override
         public void onError(Call<ServerResponse<InStockDetailed>> call, Throwable t) {
             mActivity.toggleLoadingProgress(false);
-            // TODO: 9/22/16 hanlde errors
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
         }
     };
 
@@ -199,7 +201,7 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
 
         mActivity.runOnUiThread(() -> {
             uid.setText(detailed.getUid());
-            String strDescription = mInStockItem.getTitle();
+            String strDescription = detailed.getTitle();
             @ColorRes int textColor = android.R.color.black;
             if (strDescription == null || strDescription.equals("null") || strDescription.equals("")) {
                 strDescription = getString(R.string.declaration_not_filled);
@@ -238,7 +240,10 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fill_declarationButton:
-                mActivity.addFragment(DeclarationFragment.newInstance(mInStockDetailed), true);
+                Intent editDeclaration = new Intent(mActivity, DeclarationActivity.class);
+                editDeclaration.putExtra(DeclarationActivity.IN_STOCK_ID, mInStockDetailed.getId());
+                editDeclaration.putExtra(DeclarationActivity.HAS_DECLARATION, mInStockDetailed.getDeclarationFilled() != 0);
+                mActivity.startActivityForResult(editDeclaration, DECLARATION_RC);
                 break;
             case R.id.check_productButton:
                 mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mInStockDetailed.getId()),

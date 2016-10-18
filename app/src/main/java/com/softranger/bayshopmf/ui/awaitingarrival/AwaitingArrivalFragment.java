@@ -23,6 +23,7 @@ import com.softranger.bayshopmf.adapter.AwaitingArrivalAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.ui.general.DeclarationActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -45,7 +46,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         AwaitingArrivalAdapter.OnAwaitingClickListener, DeleteAsyncTask.OnDeleteListener {
 
     public static final String ACTION_SHOW_BTN = "SHOW FLOATING BUTTON";
-    public static final String ACTION_ITEM_ADDED = "ADDED NEW AWAITING PARCEL";
+    public static final String ACTION_LIST_CHANGED = "com.softranger.bayshopmf.ui.awaitingarrival.LIST_CHANGED";
     public static final int ADD_PARCEL_RC = 1101;
 
     private MainActivity mActivity;
@@ -87,7 +88,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recycler_and_refresh, container, false);
         mActivity = (MainActivity) getActivity();
-        IntentFilter intentFilter = new IntentFilter(ACTION_ITEM_ADDED);
+        IntentFilter intentFilter = new IntentFilter(ACTION_LIST_CHANGED);
         intentFilter.addAction(ACTION_SHOW_BTN);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mUnbinder = ButterKnife.bind(this, view);
@@ -124,8 +125,8 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
     @OnClick(R.id.addAwaitingFloatingButton)
     void addNewAwaitingParcel() {
-        Intent addAwaiting = new Intent(mActivity, AddAwaitingActivity.class);
-        addAwaiting.putExtra(AddAwaitingActivity.SHOW_TRACKING, true);
+        Intent addAwaiting = new Intent(mActivity, DeclarationActivity.class);
+        addAwaiting.putExtra(DeclarationActivity.SHOW_TRACKING, true);
         mActivity.startActivityForResult(addAwaiting, ADD_PARCEL_RC);
     }
 
@@ -165,12 +166,13 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
                 // add items to adapter
                 mAdapter.refreshList(data);
                 mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
-                mActivity.toggleLoadingProgress(false);
-                mRefreshLayout.setRefreshing(false);
-                mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
             } else {
                 togglePlaceholder(true);
             }
+            mActivity.toggleLoadingProgress(false);
+            mRefreshLayout.setRefreshing(false);
+            Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, data != null ? data.size() : 0);
+            mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
         }
 
         @Override
@@ -191,7 +193,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case ACTION_ITEM_ADDED:
+                case ACTION_LIST_CHANGED:
                     onRefresh(mRefreshLayout);
                     break;
                 case ACTION_SHOW_BTN:
@@ -215,7 +217,9 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
                         + product.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
                 getString(R.string.yes), ((view) ->  {mActivity.toggleLoadingProgress(true);
-                    new DeleteAsyncTask(position, mAwaitingArrivals, mActivity, mAdapter).execute(product);
+                    DeleteAsyncTask deleteAsyncTask = new DeleteAsyncTask(position, mAwaitingArrivals, mActivity, mAdapter);
+                    deleteAsyncTask.setOnDeleteListener(this);
+                    deleteAsyncTask.execute(product);
                     // close the dialog
                     mAlertDialog.dismiss();
 
