@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -13,7 +12,6 @@ import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.product.ShippingMethod;
 
 import java.util.ArrayList;
-import java.util.StringJoiner;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +27,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private ArrayList<Shipper> mShippingMethods;
     private OnShippingClickListener mOnShippingClickListener;
     private String mCurrency;
+    private boolean mShowPrice;
 
     public ShippingMethodAdapter(ArrayList<Shipper> shippingMethods, String currency) {
         mShippingMethods = shippingMethods;
@@ -37,6 +36,10 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void setOnShippingClickListener(OnShippingClickListener onShippingClickListener) {
         mOnShippingClickListener = onShippingClickListener;
+    }
+
+    public void setShowPrice(boolean showPrice) {
+        mShowPrice = showPrice;
     }
 
     @Override
@@ -68,10 +71,14 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ViewHolder itemHolder = (ViewHolder) holder;
             itemHolder.mShippingMethodObj = mShippingMethods.get(position - 1);
             itemHolder.mShippingMethod.setText(itemHolder.mShippingMethodObj.getTitle());
-            String price = String.valueOf(mCurrency + itemHolder.mShippingMethodObj.getCalculatedPrice());
-            itemHolder.mMethodPrice.setText(price);
             itemHolder.mVolumeLabel.setText(String.valueOf(itemHolder.mShippingMethodObj.getMaxVolume()));
             itemHolder.mTimeLabel.setText(itemHolder.mShippingMethodObj.getTime());
+
+            if (mShowPrice) {
+                String price = String.valueOf(mCurrency + itemHolder.mShippingMethodObj.getCalculatedPrice());
+                itemHolder.mMethodPrice.setText(price);
+            }
+            itemHolder.mMethodPrice.setVisibility(mShowPrice ? View.VISIBLE : View.GONE);
 
             String html = itemHolder.mShippingMethodObj.getDescription();
             html = html.replaceAll("<(.*?)\\>", " ");//Removes all items in brackets

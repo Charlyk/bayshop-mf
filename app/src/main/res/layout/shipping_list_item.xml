@@ -91,7 +91,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@drawable/drop_shadow"
         android:layout_below="@id/shippingMethodVolumeLabel"
         android:layout_marginTop="20dp"/>

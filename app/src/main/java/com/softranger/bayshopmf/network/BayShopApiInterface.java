@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.network;
 
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.InStockList;
+import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.WarehouseAddress;
 import com.softranger.bayshopmf.model.address.AddressToEdit;
 import com.softranger.bayshopmf.model.address.AddressesList;
@@ -188,4 +189,16 @@ public interface BayShopApiInterface {
     @POST("auth/register")
     Call<ServerResponse> createNewAccount(@Field("email") String email, @Field("first_name") String firstName,
                                           @Field("last_name") String lastName, @Field("password") String password);
+
+    @GET("member-shippers")
+    Call<ServerResponse<ArrayList<Shipper>>> getMemberShippers();
+
+    @FormUrlEncoded
+    @POST("member/personal-data")
+    Call<ServerResponse> saveUserPersonalData(@Field("surname") String surname,
+                                              @Field("name") String name,
+                                              @Field("countryId") String countryId,
+                                              @Field("phone_code") String phoneCode,
+                                              @Field("phone") String phone,
+                                              @Field("languageId") String languageId);
 }

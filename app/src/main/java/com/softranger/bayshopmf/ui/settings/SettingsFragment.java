@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.util.Application;
@@ -40,6 +41,7 @@ public class SettingsFragment extends ParentFragment {
     public static final String AUTOPACKAGING = "autopackaging";
     public static final String ADDRESS_NAME = "addressName";
     public static final String ADDRESS_ID = "addressId";
+    public static final String ADDRESS_COUNTRY = "addressCountryId";
     public static final String SHIPPING_NAME = "shippingName";
     public static final String SHIPPING_ID = "shippingMethodId";
     public static final String INSURANCE = "insurance";
@@ -80,6 +82,7 @@ public class SettingsFragment extends ParentFragment {
         mActivity = (SettingsActivity) getActivity();
 
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
+        intentFilter.addAction(ShippersFragment.SHIPPER_SELECTED);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         setValuesFromPreferences();
@@ -131,7 +134,7 @@ public class SettingsFragment extends ParentFragment {
 
     @OnClick(R.id.settingsAutopackagingShippingBtn)
     void changeShippingMethod() {
-
+        mActivity.addFragment(ShippersFragment.newInstance(), false);
     }
 
     @OnClick(R.id.settingsAutopackagingInsuranceBtn)
@@ -173,9 +176,18 @@ public class SettingsFragment extends ParentFragment {
                 case Constants.ACTION_CHANGE_ADDRESS:
                     Address address = intent.getExtras().getParcelable("address");
                     if (address != null) {
-                        Application.autoPackPrefs.edit().putString(ADDRESS_NAME, address.getClientName()).apply();
-                        Application.autoPackPrefs.edit().putString(ADDRESS_ID, String.valueOf(address.getId())).apply();
+                        Application.autoPackPrefs.edit().putString(ADDRESS_NAME, address.getClientName())
+                                .putString(ADDRESS_ID, String.valueOf(address.getId()))
+                                .putInt(ADDRESS_COUNTRY, address.getCountryId()).apply();
                         mAddressSubtitle.setText(address.getFirstName() + " " + address.getLastName());
+                    }
+                    break;
+                case ShippersFragment.SHIPPER_SELECTED:
+                    Shipper shipper = intent.getExtras().getParcelable("shipper");
+                    if (shipper != null) {
+                        Application.autoPackPrefs.edit().putString(SHIPPING_NAME, shipper.getTitle())
+                                .putString(SHIPPING_ID, shipper.getId()).apply();
+                        mShippingSubtitle.setText(shipper.getTitle());
                     }
                     break;
             }

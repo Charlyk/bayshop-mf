@@ -9,10 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softranger.bayshopmf.model.address.Country;
 import com.softranger.bayshopmf.model.address.CountryCode;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by macbook on 6/29/16.
@@ -28,11 +27,13 @@ public class User implements Parcelable {
     @JsonProperty("phoneCode") private String mPhoneCode;
     @JsonProperty("phone") private String mPhoneNumber;
     @JsonProperty("languageId")
-    @JsonIgnore private int mLanguageId;
+    private int mLanguageId;
     @JsonIgnore private String mLanguageName;
     @JsonIgnore private String mCountryName;
     @JsonProperty("countries") private ArrayList<Country> mCountries;
     @JsonIgnore private ArrayList<Language> mLanguages;
+    @JsonProperty("languages")
+    private HashMap<Integer, String> mLanguagesMap;
     @JsonProperty("phoneFormats") private ArrayList<CountryCode> mCountryCodes;
 
     private User() {
@@ -149,23 +150,15 @@ public class User implements Parcelable {
     }
 
     public ArrayList<Language> getLanguages() {
-        return mLanguages;
-    }
-
-    @JsonIgnore
-    public void setLanguages(JSONObject jsonLanguages) throws Exception {
         mLanguages = new ArrayList<>();
-        Iterator<String> keys = jsonLanguages.keys();
-        while (keys.hasNext()) {
-            String key = keys.next();
+        for (Map.Entry<Integer, String> set : mLanguagesMap.entrySet()) {
             Language language = new Language.Builder()
-                    .id(Integer.parseInt(key))
-                    .name(jsonLanguages.getString(key))
+                    .id(set.getKey())
+                    .name(set.getValue())
                     .build();
-            if (getLanguageId() == language.getId())
-                setLanguageName(language.getName());
             mLanguages.add(language);
         }
+        return mLanguages;
     }
 
     public ArrayList<CountryCode> getCountryCodes() {
@@ -204,97 +197,5 @@ public class User implements Parcelable {
         dest.writeTypedList(mCountryCodes);
         dest.writeString(mToken);
         dest.writeString(mId);
-    }
-
-    public static class Builder {
-        private String mUserId;
-        private String mFirstName;
-        private String mLastName;
-        private int mCountryId;
-        private String mPhoneCode;
-        private String mPhoneNumber;
-        private int mLanguageId;
-        private String mLanguageName;
-        private String mCountryName;
-        private ArrayList<Country> mCountries;
-        private ArrayList<Language> mLanguages;
-        private ArrayList<CountryCode> mCountryCodes;
-
-        public Builder userId(String userId) {
-            mUserId = userId;
-            return this;
-        }
-
-        public Builder firstName(String firstName) {
-            mFirstName = firstName;
-            return this;
-        }
-
-        public Builder lastName(String lastName) {
-            mLastName = lastName;
-            return this;
-        }
-
-        public Builder countryId(int countryId) {
-            mCountryId = countryId;
-            return this;
-        }
-
-        public Builder phoneCode(String phoneCode) {
-            mPhoneCode = phoneCode;
-            return this;
-        }
-
-        public Builder phoneNumber(String phoneNumber) {
-            mPhoneNumber = phoneNumber;
-            return this;
-        }
-
-        public Builder languageId(int languageId) {
-            mLanguageId = languageId;
-            return this;
-        }
-
-        public Builder languageName(String languageName) {
-            mLanguageName = languageName;
-            return this;
-        }
-
-        public Builder countryName(String countryName) {
-            mCountryName = countryName;
-            return this;
-        }
-
-        public Builder countries(ArrayList<Country> countries) {
-            mCountries = countries;
-            return this;
-        }
-
-        public Builder languages(ArrayList<Language> languages) {
-            mLanguages = languages;
-            return this;
-        }
-
-        public Builder countryCodes(ArrayList<CountryCode> countryCodes) {
-            mCountryCodes = countryCodes;
-            return this;
-        }
-
-        public User build() {
-            User user = new User();
-            user.mUserId = this.mUserId;
-            user.mFirstName = this.mFirstName;
-            user.mLastName = this.mLastName;
-            user.mCountryId = this.mCountryId;
-            user.mPhoneCode = this.mPhoneCode;
-            user.mPhoneNumber = this.mPhoneNumber;
-            user.mLanguageId = this.mLanguageId;
-            user.mLanguageName = this.mLanguageName;
-            user.mCountryName = this.mCountryName;
-            user.mCountries = this.mCountries;
-            user.mLanguages = this.mLanguages;
-            user.mCountryCodes = this.mCountryCodes;
-            return user;
-        }
     }
 }

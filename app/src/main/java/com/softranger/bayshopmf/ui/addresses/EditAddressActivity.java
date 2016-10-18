@@ -87,7 +87,6 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
             mToolbarTitle.setText(getString(R.string.add_new_address));
             mAddressId = -1;
             mResponseCall = Application.apiInterface().getPhoneCodes();
-            mAddress = new AddressToEdit();
         }
 
         toggleLoading(true);
@@ -128,7 +127,10 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
     };
 
     private void setDataOnPosition(Address address) {
-        if (address == null) return;
+        if (address == null) {
+            mAddress.setAddress(new Address());
+            return;
+        }
         mFirstNameInput.setText(address.getFirstName());
         mLastNameInput.setText(address.getLastName());
         mEmailInput.setText(address.getEmail());

@@ -378,4 +378,7 @@
     <string name="wait_parcel">Your parcel was added as awaiting, we will notify you when it will arrive to our warehouse.</string>
     <string name="products">products</string>
     <string name="product">product</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

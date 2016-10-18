@@ -54,6 +54,7 @@ import retrofit2.Call;
 public class AddressesListFragment extends ParentFragment implements AddressListAdapter.OnAddressClickListener,
         FloatingActionsMenu.OnFloatingActionsMenuUpdateListener {
 
+    public static final String ACTION_ADDRESS_SELECT = "com.softranger.bayshopmf.ui.addresses.SELECT_ADDRESS";
     public static final String ACTION_START_ANIM = "START TOTALS ANIMATION";
     private static final String SHOW_SELECT_ARG = "show select button argument";
     private static final String BOXES_ARG = "BOXES ARG KEY";
@@ -110,6 +111,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         mActionsMenu.setOnFloatingActionsMenuUpdateListener(this);
 
         IntentFilter intentFilter = new IntentFilter(EditAddressActivity.ACTION_REFRESH_ADDRESS);
+        intentFilter.addAction(ACTION_ADDRESS_SELECT);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -167,12 +169,18 @@ public class AddressesListFragment extends ParentFragment implements AddressList
                 // check if server addresses list contains our selected address
                 boolean hasAddress = addresses.contains(new Address().setId(Application.getSelectedAddressId()));
                 // check if shippers list contains our selected shipper
-                boolean hasShipper = methods.contains(temp);
+                ArrayList<Shipper> allowedShippers = new ArrayList<>();
+                for (Shipper s : methods) {
+                    if (s.getCountryId() == Application.getSelectedAddressCountry()) {
+                        allowedShippers.add(s);
+                    }
+                }
+                boolean hasShipper = allowedShippers.contains(temp);
                 // if we have the selected shipper and address
                 // we can jump right to confirmation fragment;
                 if (hasAddress && hasShipper) {
                     // get detailed shipper from the list
-                    Shipper shipper = methods.get(methods.indexOf(temp));
+                    Shipper shipper = allowedShippers.get(allowedShippers.indexOf(temp));
                     // add confirmation fragment
                     mActivity.replaceFragment(ConfirmationFragment.newInstance(mCreationDetails,
                             String.valueOf(Application.getSelectedAddressId()),
@@ -182,8 +190,10 @@ public class AddressesListFragment extends ParentFragment implements AddressList
                 } else if (hasAddress) {
                     // if the list does not contain the selected shipper
                     // we need to open shippers fragment
-                    mActivity.replaceFragment(ShippingMethodFragment.newInstance(mCreationDetails,
-                            String.valueOf(Application.getSelectedAddressId())));
+                    Address address = new Address();
+                    address.setCountryId(Application.getSelectedAddressCountry());
+                    address.setId(Application.getSelectedAddressId());
+                    mActivity.replaceFragment(ShippingMethodFragment.newInstance(mCreationDetails, address));
                     mActivity.setToolbarTitle(getString(R.string.shipping_method));
                     return;
                 }
@@ -224,6 +234,9 @@ public class AddressesListFragment extends ParentFragment implements AddressList
                         mAddressesCall.enqueue(mAddressesListResponseCallback);
                     }
                     break;
+                case ACTION_ADDRESS_SELECT:
+                    // TODO: 10/18/16 select address passed through intent
+                    break;
             }
         }
     };
@@ -241,7 +254,8 @@ public class AddressesListFragment extends ParentFragment implements AddressList
     // TODO: 10/8/16 add search address to application
     @OnClick(R.id.addressSearchFloatingBtn)
     void searchAnAddress() {
-
+        Intent search = new Intent(mActivity, SearchAddressActivity.class);
+        mActivity.startActivity(search);
     }
 
     /**
@@ -272,22 +286,24 @@ public class AddressesListFragment extends ParentFragment implements AddressList
                             // save selected address to preferences
                             Application.autoPackPrefs.edit().putString(SettingsFragment.ADDRESS_ID,
                                     String.valueOf(address.getId())).apply();
+                            Application.autoPackPrefs.edit().putInt(SettingsFragment.ADDRESS_COUNTRY,
+                                    address.getCountryId()).apply();
                             Application.autoPackPrefs.edit().putString(SettingsFragment.ADDRESS_NAME,
                                     address.getClientName()).apply();
                             // dismiss dialog and add shipping method fragment
                             mAlertDialog.dismiss();
                             mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
-                                    String.valueOf(address.getId())), true);
+                                    address), true);
                         }, getString(R.string.no), (view) -> {
                             // dismiss dialog and add shipping method fragment
                             mAlertDialog.dismiss();
                             mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
-                                    String.valueOf(address.getId())), true);
+                                    address), true);
                         }, R.color.colorAccent);
                 mAlertDialog.show();
             } else {
                 mActivity.addFragment(ShippingMethodFragment.newInstance(mCreationDetails,
-                        String.valueOf(address.getId())), true);
+                        address), true);
             }
         } else if (mSendBack) {
             // otherwise if send back is true we need to send selected address as a broadcast message

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Shipper implements Parcelable {
     @JsonProperty("id") private String mId;
     @JsonProperty("systemName") private String mSystemName;
@@ -30,7 +31,8 @@ public class Shipper implements Parcelable {
     @JsonProperty("isFollowByTracking") private int mIsFollowByTracking;
     @JsonProperty("rank") private int mRank;
     @JsonProperty("haveCurrier") private int mHaveCourier;
-    @JsonProperty("countryId") private String mCountryId;
+    @JsonProperty("countryId")
+    private int mCountryId;
     @JsonProperty("remoteId") private String mRemoteId;
     @JsonProperty("isManualSend") private int mIsManualSend;
     @JsonProperty("useMinimalPrice") private int mUseMinimalPrice;
@@ -68,7 +70,7 @@ public class Shipper implements Parcelable {
         mIsFollowByTracking = in.readInt();
         mRank = in.readInt();
         mHaveCourier = in.readInt();
-        mCountryId = in.readString();
+        mCountryId = in.readInt();
         mRemoteId = in.readString();
         mIsManualSend = in.readInt();
         mUseMinimalPrice = in.readInt();
@@ -171,7 +173,7 @@ public class Shipper implements Parcelable {
         return mHaveCourier;
     }
 
-    public String getCountryId() {
+    public int getCountryId() {
         return mCountryId;
     }
 
@@ -255,7 +257,7 @@ public class Shipper implements Parcelable {
         dest.writeInt(mIsFollowByTracking);
         dest.writeInt(mRank);
         dest.writeInt(mHaveCourier);
-        dest.writeString(mCountryId);
+        dest.writeInt(mCountryId);
         dest.writeString(mRemoteId);
         dest.writeInt(mIsManualSend);
         dest.writeInt(mUseMinimalPrice);

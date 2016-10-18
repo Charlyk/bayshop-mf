@@ -1,12 +1,11 @@
 package com.softranger.bayshopmf.ui.contact;
 
-import android.app.Fragment;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,12 +37,7 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        mToolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         mToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         mProgressBar = (ProgressBar) findViewById(R.id.mailActivityProgressBar);
@@ -120,8 +114,8 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
     }
 
     private void invalidateToolbar(boolean isEditMode) {
-        @ColorRes int color = isEditMode ? R.color.colorPrimaryDark : android.R.color.white;
-        @DrawableRes int navIcon = isEditMode ? R.mipmap.ic_back_white_24dp : R.mipmap.ic_back_24dp;
+        @ColorRes int color = isEditMode ? R.color.colorPrimaryDark : R.color.colorAccent;
+        @DrawableRes int navIcon = R.mipmap.ic_back_white_24dp;
 
 
         String title = isEditMode ? "" : getString(R.string.internal_mail);

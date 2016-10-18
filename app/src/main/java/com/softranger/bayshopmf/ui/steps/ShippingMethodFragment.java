@@ -16,6 +16,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ShippingMethodAdapter;
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.Shipper;
+import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.ui.settings.SettingsFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
@@ -33,25 +34,26 @@ import butterknife.Unbinder;
 public class ShippingMethodFragment extends ParentFragment implements ShippingMethodAdapter.OnShippingClickListener {
 
     private static final String SHIPPING_METHODS = "SHIPPING METHODS ARGS";
-    private static final String SELECTED_ADDRESS_ID = "ID FOR SELECTED ADDRESS";
+    private static final String SELECTED_ADDRESS = "ID FOR SELECTED ADDRESS";
 
     private Unbinder mUnbinder;
     private ParentActivity mActivity;
     private CreationDetails mCreationDetails;
-    private String mSelectedAddressId;
+    private Address mSelectedAddress;
     private AlertDialog mAlertDialog;
 
-    @BindView(R.id.shippingMethodRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.shippingMethodRecyclerView)
+    RecyclerView mRecyclerView;
 
     public ShippingMethodFragment() {
         // Required empty public constructor
     }
 
     public static ShippingMethodFragment newInstance(@NonNull CreationDetails creationDetails,
-                                                     @NonNull String selectedAddressId) {
+                                                     @NonNull Address selectedAddress) {
         Bundle args = new Bundle();
         args.putParcelable(SHIPPING_METHODS, creationDetails);
-        args.putString(SELECTED_ADDRESS_ID, selectedAddressId);
+        args.putParcelable(SELECTED_ADDRESS, selectedAddress);
         ShippingMethodFragment fragment = new ShippingMethodFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,17 +69,28 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
         mCreationDetails = getArguments().getParcelable(SHIPPING_METHODS);
         if (mCreationDetails != null) {
             ArrayList<Shipper> shippingMethods = mCreationDetails.getShippers();
-            mSelectedAddressId = getArguments().getString(SELECTED_ADDRESS_ID);
-            if (mSelectedAddressId == null)
+            // create a list of allowed shippers for adapter
+            ArrayList<Shipper> allowedShippers = new ArrayList<>();
+            // get selected address from arguments
+            mSelectedAddress = getArguments().getParcelable(SELECTED_ADDRESS);
+            if (mSelectedAddress == null)
                 throw new RuntimeException("Selected address id is null");
-            if (Application.isAutopackaging() && canGoFurther(shippingMethods)) {
+
+            // filter shippers
+            for (Shipper shipper : shippingMethods) {
+                if (shipper.getCountryId() == mSelectedAddress.getCountryId()) {
+                    allowedShippers.add(shipper);
+                }
+            }
+
+            if (Application.isAutopackaging() && canGoFurther(allowedShippers)) {
                 Shipper shipper = shippingMethods.get(shippingMethods.indexOf(
                         new Shipper().setId(Application.getSelectedShipperId())));
                 mActivity.replaceFragment(ConfirmationFragment.newInstance(mCreationDetails,
-                        mSelectedAddressId, shipper.getId(), shipper.getCalculatedPrice()));
+                        String.valueOf(mSelectedAddress.getId()), shipper.getId(), shipper.getCalculatedPrice()));
                 mActivity.setToolbarTitle(getString(R.string.confirm));
             } else {
-                ShippingMethodAdapter adapter = new ShippingMethodAdapter(shippingMethods, mCreationDetails.getCurrencySign());
+                ShippingMethodAdapter adapter = new ShippingMethodAdapter(allowedShippers, mCreationDetails.getCurrencySign());
                 adapter.setOnShippingClickListener(this);
 
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -90,7 +103,8 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
     }
 
     private boolean canGoFurther(ArrayList<Shipper> shippers) {
-        return shippers.contains(new Shipper().setId(Application.getSelectedShipperId()));
+        Shipper savedShipper = new Shipper().setId(Application.getSelectedShipperId());
+        return shippers.contains(savedShipper);
     }
 
     @Override
@@ -127,17 +141,17 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
                                 shippingMethod.getTitle()).apply();
                         // dismiss dialog and add confirmation fragment
                         mAlertDialog.dismiss();
-                        mActivity.addFragment(ConfirmationFragment.newInstance(mCreationDetails, mSelectedAddressId,
+                        mActivity.addFragment(ConfirmationFragment.newInstance(mCreationDetails, String.valueOf(mSelectedAddress.getId()),
                                 shippingMethod.getId(), shippingMethod.getCalculatedPrice()), true);
                     }, getString(R.string.no), (view) -> {
                         // dismiss dialog and add confirmation fragment
                         mAlertDialog.dismiss();
-                        mActivity.addFragment(ConfirmationFragment.newInstance(mCreationDetails, mSelectedAddressId,
+                        mActivity.addFragment(ConfirmationFragment.newInstance(mCreationDetails, String.valueOf(mSelectedAddress.getId()),
                                 shippingMethod.getId(), shippingMethod.getCalculatedPrice()), true);
                     }, R.color.colorAccent);
             mAlertDialog.show();
         } else {
-            mActivity.addFragment(ConfirmationFragment.newInstance(mCreationDetails, mSelectedAddressId,
+            mActivity.addFragment(ConfirmationFragment.newInstance(mCreationDetails, String.valueOf(mSelectedAddress.getId()),
                     shippingMethod.getId(), shippingMethod.getCalculatedPrice()), true);
         }
     }

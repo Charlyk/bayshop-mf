@@ -118,6 +118,10 @@ public class Application extends android.app.Application {
         return Integer.parseInt(stringId);
     }
 
+    public static int getSelectedAddressCountry() {
+        return autoPackPrefs.getInt(SettingsFragment.ADDRESS_COUNTRY, -1);
+    }
+
     public static boolean isAutopackagingShipperSelected() {
         return autoPackPrefs.contains(SettingsFragment.SHIPPING_ID);
     }

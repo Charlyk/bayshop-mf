@@ -8,11 +8,6 @@ import android.support.annotation.StringRes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.softranger.bayshopmf.util.CountriesDeserializer;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by Eduard Albu on 5/13/16, 05, 2016
@@ -33,7 +28,6 @@ public class Address implements Parcelable {
     @JsonProperty("phone") private String mPhoneNumber;
     @JsonProperty("countryId") private int mCountryId;
     @JsonProperty("country") private String mCountry;
-
     private boolean mIsInFavorites;
 
     public Address() {

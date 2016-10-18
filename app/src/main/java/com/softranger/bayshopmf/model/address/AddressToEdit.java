@@ -35,4 +35,8 @@ public class AddressToEdit {
     public Address getAddress() {
         return mAddress;
     }
+
+    public void setAddress(Address address) {
+        mAddress = address;
+    }
 }

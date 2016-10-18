@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:navigationIcon="@mipmap/ic_back_24dp">
+            app:navigationIcon="@mipmap/ic_back_white_24dp">
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -28,7 +28,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/new_message"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"/>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
