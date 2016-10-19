@@ -131,7 +131,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
 
     @Override
     public void onPusItemClick(PUSParcel pusParcel, int position) {
-        mActivity.addFragment(InProcessingDetails.newInstance(pusParcel), true);
+        mActivity.addFragment(PUSParcelDetails.newInstance(pusParcel), true);
     }
 
     @Override

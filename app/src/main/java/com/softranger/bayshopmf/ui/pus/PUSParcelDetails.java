@@ -64,7 +64,7 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InProcessingDetails extends ParentFragment implements ImagesAdapter.OnImageClickListener,
+public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.OnImageClickListener,
         InProcessingDetailsAdapter.OnItemClickListener, LoadingDialogFragment.OnDoneListener,
         PullToRefreshLayout.PullToRefreshListener {
 
@@ -87,14 +87,14 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     private CustomTabsIntent mTabsIntent;
     private Call<ServerResponse<PUSParcelDetailed>> mCall;
 
-    public InProcessingDetails() {
+    public PUSParcelDetails() {
         // Required empty public constructor
     }
 
-    public static InProcessingDetails newInstance(@NonNull PUSParcel product) {
+    public static PUSParcelDetails newInstance(@NonNull PUSParcel product) {
         Bundle args = new Bundle();
         args.putParcelable(PRODUCT_ARG, product);
-        InProcessingDetails fragment = new InProcessingDetails();
+        PUSParcelDetails fragment = new PUSParcelDetails();
         fragment.setArguments(args);
         return fragment;
     }
@@ -159,11 +159,11 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
 
             setBottomButtonsListeners();
 
-            mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, mActivity, InProcessingDetails.this);
+            mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, mActivity, PUSParcelDetails.this);
             if (mPUSParcelDetailed.getParcelStatus() == PUSParcel.PUSStatus.in_the_way) {
                 mAdapter.setShowMap(true);
             }
-            mAdapter.setOnItemClickListener(InProcessingDetails.this);
+            mAdapter.setOnItemClickListener(PUSParcelDetails.this);
             mRecyclerView.setAdapter(mAdapter);
             mActivity.toggleLoadingProgress(false);
             mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
@@ -514,27 +514,42 @@ public class InProcessingDetails extends ParentFragment implements ImagesAdapter
     public void onUserHeldSendClick() {
         mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
                         + " " + mPUSParcelDetailed.getAddress().getClientName(), R.mipmap.send_parcel_white_30dp,
-                getString(R.string.confirm), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
-                                R.mipmap.ic_confirm_25dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mActivity.onBackPressed();
-                                    }
-                                }), false);
-                        mAlertDialog.dismiss();
-                    }
-                }, getString(R.string.cancel), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
-                    }
-                }, R.color.colorGreenAction);
+                getString(R.string.confirm), v -> {
+                    mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
+                            R.mipmap.ic_confirm_25dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
+                            v1 -> {
+                                Application.apiInterface().sendHeldByUserParcel(mPUSParcelDetailed.getId(), 1)
+                                        .enqueue(mResponseCallback);
+                                mActivity.toggleLoadingProgress(true);
+                            }), false);
+                    mAlertDialog.dismiss();
+                }, getString(R.string.cancel), v -> mAlertDialog.dismiss(), R.color.colorGreenAction);
         mAlertDialog.show();
     }
+
+    private ResponseCallback mResponseCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            Intent update = new Intent(PUSParcelsFragment.ACTION_UPDATE);
+            mActivity.sendBroadcast(update);
+            mActivity.showResultActivity(getString(R.string.send_request), R.mipmap.ic_photo_product_250dp,
+                    getString(R.string.parcel_will_be_sent));
+            mActivity.getFragmentManager().popBackStack();
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+            t.printStackTrace();
+        }
+    };
 
     //----------------------- HELD BY DAMAGE -----------------------//
 

@@ -1,6 +1,7 @@
 package com.softranger.bayshopmf.ui.general;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -63,7 +64,8 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     public static final String HAS_DECLARATION = "com.softranger.bayshopmf.ui.general.HAS_DECLARATION";
 
     // maximum height for bottom additional services layout
-    private static final int MAX_HEIGHT = Application.getPixelsFromDp(150);
+    private static final int MAX_HEIGHT_EXPANDED = Application.getPixelsFromDp(150);
+    private static final int MAX_HEIGHT_COLLAPSED = Application.getPixelsFromDp(50);
     // show if bottom layout is expanded or not
     private boolean mIsExpanded;
     // show if currently bottom layout is animating
@@ -227,32 +229,52 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
         // if is already animating, let it finish
         if (mIsAnimating) return;
         // get start and end values
-        float fromHeight;
-        float toHeight;
+        float fromHeightExp;
+        float fromHeightColl;
+        float toHeightExp;
+        float toHeightColl;
         if (!mIsExpanded) {
-            // if is not expanded we need to start from 0 to MAX_HEIGHT
-            fromHeight = 0;
-            toHeight = MAX_HEIGHT;
+            // if is not expanded we need to start from 0 to MAX_HEIGHT_EXPANDED
+            fromHeightExp = 0;
+            toHeightExp = MAX_HEIGHT_EXPANDED;
+            fromHeightColl = MAX_HEIGHT_COLLAPSED;
+            toHeightColl = 0;
         } else {
-            // otherwise start from MAX_HEIGHT and finish to 0
-            fromHeight = MAX_HEIGHT;
-            toHeight = 0;
+            // otherwise start from MAX_HEIGHT_EXPANDED and finish to 0
+            fromHeightExp = MAX_HEIGHT_EXPANDED;
+            toHeightExp = 0;
+            fromHeightColl = 0;
+            toHeightColl = MAX_HEIGHT_COLLAPSED;
         }
 
         // get services layout params
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mExpandedServicesLayout.getLayoutParams();
+        RelativeLayout.LayoutParams expandedParams = (RelativeLayout.LayoutParams) mExpandedServicesLayout.getLayoutParams();
+        RelativeLayout.LayoutParams collapsedParams = (RelativeLayout.LayoutParams) mCollapsedServicesLayout.getLayoutParams();
 
         // create an animation for expand or collapse action
-        ValueAnimator animation = ValueAnimator.ofFloat(fromHeight, toHeight);
-        animation.setDuration(300);
-        animation.setInterpolator(new DecelerateInterpolator());
-        animation.addUpdateListener(animation1 -> {
+        ValueAnimator expandedAnimation = ValueAnimator.ofFloat(fromHeightExp, toHeightExp);
+        expandedAnimation.addUpdateListener(animation1 -> {
             float animatedValue = (float) animation1.getAnimatedValue();
-            layoutParams.height = (int) animatedValue;
-            mExpandedServicesLayout.setLayoutParams(layoutParams);
+            expandedParams.height = (int) animatedValue;
+            mExpandedServicesLayout.setLayoutParams(expandedParams);
         });
-        animation.addListener(this);
-        animation.start();
+
+
+        ValueAnimator collapsedAnimation = ValueAnimator.ofFloat(fromHeightColl, toHeightColl);
+        collapsedAnimation.addUpdateListener(animation12 -> {
+            float animatedValue = (float) animation12.getAnimatedValue();
+            collapsedParams.height = (int) animatedValue;
+            mCollapsedServicesLayout.setLayoutParams(collapsedParams);
+        });
+
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.addListener(this);
+        animatorSet.setDuration(300);
+        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        if (mIsExpanded) animatorSet.playSequentially(expandedAnimation, collapsedAnimation);
+        else animatorSet.playSequentially(collapsedAnimation, expandedAnimation);
+        animatorSet.start();
     }
 
     /**

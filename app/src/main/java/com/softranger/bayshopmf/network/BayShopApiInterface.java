@@ -106,6 +106,11 @@ public interface BayShopApiInterface {
 
     @FormUrlEncoded
     @POST("parcels/view/{parcelId}")
+    Call<ServerResponse> sendHeldByUserParcel(@Path("parcelId") String parcelId,
+                                              @Field("sentOnUserAlert") int send);
+
+    @FormUrlEncoded
+    @POST("parcels/view/{parcelId}")
     Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Field("comment") String comment,
                                        @Field("rating") String rating);
 

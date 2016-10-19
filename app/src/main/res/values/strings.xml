@@ -386,4 +386,6 @@
     <string name="additional_photo_cost">This service costs $3</string>
     <string name="repacking_description">This is the description of repacking service, I don\'t know what should be here so I wrote this stuff.</string>
     <string name="repacking_cost">This service cost: $5</string>
+    <string name="send_request">Request received</string>
+    <string name="parcel_will_be_sent">Thanks for your request, we will send you parcel to specified address asap.</string>
 </resources>

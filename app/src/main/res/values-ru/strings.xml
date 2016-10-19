@@ -333,4 +333,5 @@
     <string name="password_has_bee_changed">Your password has been successfuly changed, you can now log in with your new password.</string>
     <string name="repacking_description">This is the description of repacking service, I don\'t know what should be here so I wrote this stuff.</string>
     <string name="repacking_cost">This service cost: $5</string>
+    <string name="parcel_will_be_sent">Thanks for your request, we will send you parcel to specified address asap.</string>
 </resources>

@@ -136,7 +136,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     @Override
     public void onInProcessingProductClick(PUSParcel processingPackage, int position) {
         processingPackage.setParcelStatus(Constants.ParcelStatus.RECEIVED);
-        mActivity.addFragment(InProcessingDetails.newInstance(processingPackage), true);
+        mActivity.addFragment(PUSParcelDetails.newInstance(processingPackage), true);
     }
 
     @Override
