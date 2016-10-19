@@ -108,16 +108,35 @@
         <activity
             android:name=".ui.general.ResultActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.addresses.EditAddressActivity">
-        </activity>
-        <activity android:name=".ui.steps.CreateParcelActivity">
-        </activity>
-        <activity android:name=".ui.addresses.SearchAddressActivity">
-        </activity>
-        <activity android:name=".ui.payment.PaymentDetailsActivity">
-        </activity>
-        <activity android:name=".ui.general.DeclarationActivity">
-        </activity>
+        <activity
+            android:name=".ui.addresses.EditAddressActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.steps.CreateParcelActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.addresses.SearchAddressActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.payment.PaymentDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.general.DeclarationActivity"
+            android:screenOrientation="portrait"/>
+
+        <service
+            android:name=".util.push.MessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".util.push.InstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
@@ -171,6 +173,8 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
         }
+
+        Log.e("Token", FirebaseInstanceId.getInstance().getToken());
     }
 
     @Override

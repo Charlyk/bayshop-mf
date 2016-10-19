@@ -2,10 +2,9 @@
     <string name="app_name">BayShop MF</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="server_client_id">675996002572-a8ubjajrhundd08o76cipt37l9ngeqqh.apps.googleusercontent.com</string>
-    <string name="google_api_key">675996002572-el6qlu6q7jtolhmk89smsi000drtq9me.apps.googleusercontent.com</string>
-    <string name="facebook_app_id">1448296545440676</string>
-    <string name="fb_login_protocol_scheme">1448296545440676</string>
+    <string name="server_client_id" translatable="false">675996002572-a8ubjajrhundd08o76cipt37l9ngeqqh.apps.googleusercontent.com</string>
+    <string name="facebook_app_id" translatable="false">1448296545440676</string>
+    <string name="fb_login_protocol_scheme" translatable="false">1448296545440676</string>
     <string name="warehouse_usa">Warehouse in USA</string>
     <string name="in_processing">In processing</string>
     <string name="awaiting_sending">Awaiting sending</string>
