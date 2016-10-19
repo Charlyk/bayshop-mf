@@ -135,7 +135,7 @@ public interface BayShopApiInterface {
                                                           @Field("shipping_zip") String zip,
                                                           @Field("shipping_phone_code") String phoneCode,
                                                           @Field("shipping_phone") String phoneNumber,
-                                                          @Field("countryId") String countryId,
+                                                          @Field("countryId") int countryId,
                                                           @Field("shipping_state") String state);
 
     @FormUrlEncoded
@@ -165,10 +165,18 @@ public interface BayShopApiInterface {
 
     @FormUrlEncoded
     @POST("storage")
-    Call<ServerResponse> requestServiceForInStock(@Field("id") String parcelId,
-                                                  @Field("request") String request,
-                                                  @Field("package") int quantity,
-                                                  @Field("comments") String comment);
+    Call<ServerResponse> requestParcelVerification(@Field("id") String parcelId, @Field("comments") String comment,
+                                                   @Field("verification") int enable);
+
+    @FormUrlEncoded
+    @POST("storage")
+    Call<ServerResponse> requestAdditionalPhotos(@Field("id") String parcelId, @Field("comments") String comment,
+                                                 @Field("photo") int enable);
+
+    @FormUrlEncoded
+    @POST("storage")
+    Call<ServerResponse> requestParcelRepacking(@Field("id") String parcelId, @Field("comments") String comment,
+                                                @Field("repacking") int enable);
 
     @GET("balance/")
     Call<ServerResponse<PaymentHistories>> getPaymentHistoryForPeriod(@Query("period") String period);

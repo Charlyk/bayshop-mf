@@ -228,7 +228,8 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         storage(R.string.storage),
         login_fragment(R.string.login),
         select_address(R.string.select_address),
-        warehouse_address(R.string.warehouse_addresses);
+        warehouse_address(R.string.warehouse_addresses),
+        repacking(R.string.repacking);
 
         @StringRes
         private int mFragmentName;

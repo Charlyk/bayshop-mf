@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.model.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ServerResponse<T> {
     @JsonProperty("code") int mCode;
     @JsonProperty("error") boolean mError;

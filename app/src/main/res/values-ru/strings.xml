@@ -34,7 +34,7 @@
     <string name="weight">"Вес: "</string>
     <string name="date">Дата</string>
     <string name="price">Цена:</string>
-    <string name="check_product_cost">Стоимость услуги: $10</string>
+    <string name="check_product_cost">Стоимость услуги: $8</string>
     <string name="check_product_description">Во время проверки товара на складе вы разрешаете открыть посылку и снять оригинальную упаковку. Если мы найдем повреждение, вы получите автоматическое уведомление об этом.</string>
     <string name="additional_photo_description">Мы предоставляем 2 фотографии товара бесплатно. Сотрудники BayShop сделают их, когда посылка будет доставлена на склад.\n\nПри необходимости вы можете заказать 8 дополнительных фотографий.</string>
     <string name="leave_comment">Оставить комментарий</string>
@@ -331,4 +331,6 @@
     <string name="products">products</string>
     <string name="password_changed">Password changed</string>
     <string name="password_has_bee_changed">Your password has been successfuly changed, you can now log in with your new password.</string>
+    <string name="repacking_description">This is the description of repacking service, I don\'t know what should be here so I wrote this stuff.</string>
+    <string name="repacking_cost">This service cost: $5</string>
 </resources>

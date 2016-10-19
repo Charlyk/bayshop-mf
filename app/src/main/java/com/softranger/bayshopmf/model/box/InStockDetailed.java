@@ -80,6 +80,18 @@ public class InStockDetailed extends InStock {
         return mStorage;
     }
 
+    public void setCheckInProgress(boolean checkInProgress) {
+        mCheckInProgress = checkInProgress;
+    }
+
+    public void setSeparationRequested(boolean separationRequested) {
+        mSeparationRequested = separationRequested;
+    }
+
+    public void setPhotosInProgress(int photosInProgress) {
+        mPhotosInProgress = photosInProgress;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);

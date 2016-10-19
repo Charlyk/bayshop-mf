@@ -34,6 +34,7 @@ import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
+import com.softranger.bayshopmf.ui.services.RepackingFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentFragment;
@@ -44,6 +45,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
 
@@ -51,7 +53,7 @@ import retrofit2.Call;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailsFragment extends ParentFragment implements View.OnClickListener, ImagesAdapter.OnImageClickListener {
+public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnImageClickListener {
 
     private static final String ITEM_ARG = "ITEM ARGUMENT";
     public static final int DECLARATION_RC = 1528;
@@ -63,11 +65,14 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
     TextView mCheckProduct;
     @BindView(R.id.additional_photoButton)
     TextView mAdditionalPhoto;
+    @BindView(R.id.repack_productButton)
+    TextView mRepackingBtn;
+    @BindView(R.id.divide_photoButton)
+    TextView mPhoto;
     @BindView(R.id.inStockDetailsImageList) RecyclerView mRecyclerView;
     @BindView(R.id.inStockDetailsHolderLayout) LinearLayout mHolderLayout;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotoLayout;
 
-    @BindView(R.id.details_tracking_label) TextView tracking;
     @BindView(R.id.details_date_label)  TextView date;
     @BindView(R.id.details_weight_label)  TextView weight;
     @BindView(R.id.details_price_label)  TextView price;
@@ -134,25 +139,28 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case CheckProductFragment.ACTION_CHECK_IN_PROCESSING:
+                    mInStockDetailed.setCheckInProgress(true);
                     mCheckProduct.setSelected(true);
                     mCheckProduct.setText(mActivity.getString(R.string.check_in_progress));
                     break;
                 case AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING:
+                    mInStockDetailed.setPhotosInProgress(1);
                     mAdditionalPhoto.setSelected(true);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
                     break;
                 case AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST:
+                    mInStockDetailed.setPhotosInProgress(0);
                     mAdditionalPhoto.setSelected(false);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.additional_photo));
                     break;
                 case CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT:
+                    mInStockDetailed.setCheckInProgress(false);
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
                 case InStockFragment.ACTION_UPDATE_LIST:
                     // send request to server for item details
                     mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
-//                    mActivity.toggleLoadingProgress(true);
                     mActivity.hideKeyboard();
                     mCall.enqueue(mResponseCallback);
                     break;
@@ -210,7 +218,6 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             description.setText(strDescription);
             description.setTextColor(getResources().getColor(textColor));
 
-            tracking.setText(detailed.getTracking());
             date.setText(outputFormat.format(detailed.getCreatedDate()));
             weight.setText(detailed.getWeight() + "kg");
             price.setText(detailed.getCurrency() + detailed.getPrice());
@@ -230,14 +237,11 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             }
             mFillDeclaration.setSelected(detailed.getDeclarationFilled() != 0);
             mFillDeclaration.setVisibility(View.VISIBLE);
-            mFillDeclaration.setOnClickListener(DetailsFragment.this);
-            mCheckProduct.setOnClickListener(DetailsFragment.this);
-            mAdditionalPhoto.setOnClickListener(DetailsFragment.this);
         });
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.repack_productButton, R.id.fill_declarationButton, R.id.check_productButton, R.id.additional_photoButton})
+    void onButtnsAreClicked(View v) {
         switch (v.getId()) {
             case R.id.fill_declarationButton:
                 Intent editDeclaration = new Intent(mActivity, DeclarationActivity.class);
@@ -252,6 +256,10 @@ public class DetailsFragment extends ParentFragment implements View.OnClickListe
             case R.id.additional_photoButton:
                 mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mInStockDetailed.getId()),
                         mInStockDetailed.getPhotosInProgress() == Constants.IN_PROGRESS, false), true);
+                break;
+            case R.id.repack_productButton:
+                // TODO: 10/19/16 replace isInProgress with actual value
+                mActivity.addFragment(RepackingFragment.newInstance(false, String.valueOf(mInStockDetailed.getId())), true);
                 break;
         }
     }

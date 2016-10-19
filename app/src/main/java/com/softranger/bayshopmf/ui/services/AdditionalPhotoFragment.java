@@ -3,6 +3,7 @@ package com.softranger.bayshopmf.ui.services;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,26 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.app.ServerResponse;
-import com.softranger.bayshopmf.network.ApiClient;
 import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentFragment;
-import com.softranger.bayshopmf.ui.general.MainActivity;
-import com.softranger.bayshopmf.util.Constants;
-
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 
 /**
@@ -43,9 +39,16 @@ public class AdditionalPhotoFragment extends ParentFragment {
     private static final String PREORDER_ARG = "is preorder argument";
     private static final String STATUS_ARG = "status argument";
 
-    @BindView(R.id.check_product_commentInput)
+
+    @BindView(R.id.additionalServiceImage)
+    ImageView mServiceImage;
+    @BindView(R.id.additionalServiceDescription)
+    TextView mDescriptionaLabel;
+    @BindView(R.id.additionalServicePrice)
+    TextView mPriceLabel;
+    @BindView(R.id.additionalServiceCommentInput)
     EditText mCommentInput;
-    @BindView(R.id.check_product_confirmBtn)
+    @BindView(R.id.additionalServiceConfirmBtn)
     Button mConfirmButton;
 
     private Unbinder mUnbinder;
@@ -73,41 +76,43 @@ public class AdditionalPhotoFragment extends ParentFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_additional_photo, container, false);
+        View view = inflater.inflate(R.layout.fragment_additional_services, container, false);
         mActivity = (MainActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
+
+        // set service default views
+        mServiceImage.setImageResource(R.mipmap.ic_check_product_250dp);
+        mDescriptionaLabel.setText(getString(R.string.additional_photo_description));
+        mPriceLabel.setText(getString(R.string.additional_photo_cost));
+
         mId = getArguments().getString(ID_ARG);
         mIsInProgress = getArguments().getBoolean(STATUS_ARG);
         mIsPreorder = getArguments().getBoolean(PREORDER_ARG);
 
         if (mIsInProgress) {
             mConfirmButton.setText(getString(R.string.cancel_request));
-            mConfirmButton.setBackgroundColor(mActivity.getResources().getColor(R.color.colorAccent));
+            Drawable redBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
+            mConfirmButton.setBackgroundDrawable(redBg);
         }
 
         return view;
     }
 
-    @OnClick(R.id.additionalPhotoDetailsButton)
+    @OnClick(R.id.additionalServiceDetailsBtn)
     void showDetails() {
 
     }
 
-    @OnClick(R.id.check_product_confirmBtn)
+    @OnClick(R.id.additionalServiceConfirmBtn)
     void sendRequest() {
         String comment = String.valueOf(mCommentInput.getText());
         mActivity.toggleLoadingProgress(true);
-        if (!mIsInProgress && !mIsPreorder) {
-            mCall = Application.apiInterface().requestServiceForInStock(mId, Constants.Api.OPTION_PHOTO, 10, comment);
-            mCall.enqueue(mResponseCallback);
-        } else if (mIsPreorder) {
-            mCall = Application.apiInterface().requestPhotoForAwaiting(mId, mIsInProgress ? 0 : 1, comment);
+        if (!mIsPreorder) {
+            mCall = Application.apiInterface().requestAdditionalPhotos(mId, comment, mIsInProgress ? 0 : 1);
             mCall.enqueue(mResponseCallback);
         } else {
-            mActivity.toggleLoadingProgress(false);
-            Intent intent = new Intent(ACTION_CANCEL_PHOTO_REQUEST);
-            mActivity.sendBroadcast(intent);
-            mActivity.onBackPressed();
+            mCall = Application.apiInterface().requestPhotoForAwaiting(mId, mIsInProgress ? 0 : 1, comment);
+            mCall.enqueue(mResponseCallback);
         }
     }
 
@@ -119,11 +124,15 @@ public class AdditionalPhotoFragment extends ParentFragment {
                 Intent intent = new Intent(ACTION_CANCEL_PHOTO_REQUEST);
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
-                return;
+            } else if (mIsInProgress) {
+                Intent intent = new Intent(ACTION_CANCEL_PHOTO_REQUEST);
+                mActivity.sendBroadcast(intent);
+                mActivity.onBackPressed();
+            } else {
+                Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
+                mActivity.sendBroadcast(intent);
+                mActivity.onBackPressed();
             }
-            Intent intent = new Intent(ACTION_PHOTO_IN_PROCESSING);
-            mActivity.sendBroadcast(intent);
-            mActivity.onBackPressed();
         }
 
         @Override
