@@ -23,7 +23,7 @@
             android:drawableLeft="@mipmap/ic_additional_photo_55dp"
             android:drawableStart="@mipmap/ic_additional_photo_55dp"
             android:gravity="center_vertical"
-            android:text="@string/divide_parcel"
+            android:text="@string/additional_photo"
             android:textColor="@android:color/black"
             android:textSize="16sp"/>
 
@@ -39,7 +39,7 @@
             android:drawableLeft="@mipmap/ic_check_products_55dp"
             android:drawableStart="@mipmap/ic_check_products_55dp"
             android:gravity="center_vertical"
-            android:text="@string/divide_parcel"
+            android:text="@string/check_product"
             android:textColor="@android:color/black"
             android:textSize="16sp"/>
     </LinearLayout>

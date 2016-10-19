@@ -119,6 +119,7 @@ public class UserDataFragment extends ParentFragment {
         mActivity = (SettingsActivity) getActivity();
 
         mScrollView.setVisibility(View.GONE);
+        mSaveButton.setVisibility(View.GONE);
 
         // create lists
         mCountries = new ArrayList<>();
@@ -223,6 +224,7 @@ public class UserDataFragment extends ParentFragment {
 
             mActivity.toggleLoadingProgress(false);
             mScrollView.setVisibility(View.VISIBLE);
+            mSaveButton.setVisibility(View.VISIBLE);
         }
 
         @Override

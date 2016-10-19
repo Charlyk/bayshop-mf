@@ -198,7 +198,7 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
             return;
         }
 
-        mResponseCall = Application.apiInterface().saveMemberAddress(mAddressId > -1 ? String.valueOf(mAddress) : "",
+        mResponseCall = Application.apiInterface().saveMemberAddress(mAddressId > -1 ? String.valueOf(mAddressId) : "",
                 firstName, lastName, email, streetName, city, postalCode, countryCode, phoneNumber, country,
                 String.valueOf(mAddress.getAddress().getCountryId())
         );

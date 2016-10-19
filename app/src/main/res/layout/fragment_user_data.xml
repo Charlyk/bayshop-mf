@@ -20,14 +20,16 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/userDataFirstNameInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
+                android:paddingTop="5dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/userDataFirstNameInput"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
+                    android:textSize="16sp"
                     android:background="@android:color/white"
                     android:hint="@string/first_name"
                     android:inputType="textPersonName"/>
@@ -43,7 +45,8 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/userDataLastNameInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
+                android:paddingTop="5dp"
                 android:layout_below="@id/fNameDivider"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
@@ -51,7 +54,8 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/userDataLastNameInput"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
+                    android:textSize="16sp"
                     android:background="@android:color/white"
                     android:hint="@string/last_name"
                     android:inputType="textPersonName"/>
@@ -67,7 +71,7 @@
             <LinearLayout
                 android:id="@+id/userDataPhoneCodeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_below="@id/lNameDivider"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
@@ -93,9 +97,9 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
-                    android:hint="@string/_373"
+                    android:hint="@string/select_phone_code"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <Spinner
                     android:id="@+id/userDataPhoneCodeSpinner"
@@ -114,7 +118,8 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/userDataPhoneNumberInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
+                android:paddingTop="5dp"
                 android:layout_below="@id/userDataPhoneCodeDivider"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
@@ -122,7 +127,8 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/userDataPhoneNumberInput"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
+                    android:textSize="16sp"
                     android:background="@android:color/white"
                     android:hint="@string/phone_number"
                     android:inputType="phone"/>
@@ -138,7 +144,7 @@
             <LinearLayout
                 android:id="@+id/userDataCountryLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_below="@id/userDataPhoneNumberDivider"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
@@ -166,7 +172,7 @@
                     android:layout_marginTop="5dp"
                     android:hint="@string/moldova"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <Spinner
                     android:id="@+id/userDataCountrySpinner"
@@ -185,7 +191,7 @@
             <LinearLayout
                 android:id="@+id/userDataLanguageLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_below="@id/userDataCountryDivider"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
@@ -213,7 +219,7 @@
                     android:layout_marginTop="5dp"
                     android:hint="@string/english"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <Spinner
                     android:id="@+id/userDataLanguageSpinner"
@@ -232,7 +238,7 @@
             <View
                 android:id="@+id/inputFocusIndicator"
                 android:layout_width="5dp"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:background="@color/colorAccent"/>

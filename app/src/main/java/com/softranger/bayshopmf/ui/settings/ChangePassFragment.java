@@ -2,38 +2,54 @@ package com.softranger.bayshopmf.ui.settings;
 
 
 import android.animation.ObjectAnimator;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.ui.general.MainActivity;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnFocusChange;
+import butterknife.Unbinder;
+import retrofit2.Call;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChangePassFragment extends ParentFragment implements View.OnClickListener, View.OnFocusChangeListener {
+public class ChangePassFragment extends ParentFragment {
 
-    private EditText mCurrentPassInput;
-    private EditText mNewPassInput;
-    private EditText mConfirmPassInput;
+    @BindView(R.id.changePassCurrentInput)
+    TextInputEditText mCurrentPassInput;
+    @BindView(R.id.changePassNewInput)
+    TextInputEditText mNewPassInput;
+    @BindView(R.id.changePassConfirmInput)
+    TextInputEditText mConfirmPassInput;
+    @BindView(R.id.changePassCurrentInputLayout)
+    TextInputLayout mCurrentLayout;
+    @BindView(R.id.changePassNewInputLayout)
+    TextInputLayout mNewLayout;
+    @BindView(R.id.changePassConfirmInputLayout)
+    TextInputLayout mConfirmLayout;
+    @BindView(R.id.changePassFocusIndicator)
+    View mFocusIndicator;
 
-    private RelativeLayout mCurrentPassLayout;
-    private RelativeLayout mNewPassLayout;
-    private RelativeLayout mConfirmPassLayout;
-
+    private Unbinder mUnbinder;
     private SettingsActivity mActivity;
-    private View mFocusIndicator;
+    private Call<ServerResponse> mCall;
 
     public ChangePassFragment() {
         // Required empty public constructor
@@ -54,34 +70,33 @@ public class ChangePassFragment extends ParentFragment implements View.OnClickLi
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_change_pass, container, false);
         mActivity = (SettingsActivity) getActivity();
-
-        mCurrentPassInput = (EditText) view.findViewById(R.id.currentPassInput);
-        mNewPassInput = (EditText) view.findViewById(R.id.newPassInput);
-        mConfirmPassInput = (EditText) view.findViewById(R.id.confirmPassInput);
-
-        mCurrentPassInput.setOnFocusChangeListener(this);
-        mNewPassInput.setOnFocusChangeListener(this);
-        mConfirmPassInput.setOnFocusChangeListener(this);
-
-        mCurrentPassLayout = (RelativeLayout) view.findViewById(R.id.currentPassLayout);
-        mNewPassLayout = (RelativeLayout) view.findViewById(R.id.newPassLayout);
-        mConfirmPassLayout = (RelativeLayout) view.findViewById(R.id.confirmPassLayout);
-
-        mFocusIndicator = view.findViewById(R.id.changePassFocusIndicator);
-
-        Button save = (Button) view.findViewById(R.id.changePassSaveButton);
-        save.setOnClickListener(this);
+        mUnbinder = ButterKnife.bind(this, view);
         return view;
     }
 
+    @OnFocusChange({R.id.changePassCurrentInput, R.id.changePassNewInput, R.id.changePassConfirmInput})
+    void onInputFocusChanged(View view, boolean hasFocus) {
+        if (!hasFocus) return;
+        if (mFocusIndicator.getVisibility() != View.VISIBLE)
+            mFocusIndicator.setVisibility(View.VISIBLE);
+        switch (view.getId()) {
+            case R.id.changePassCurrentInput:
+                ObjectAnimator.ofFloat(mFocusIndicator, "y", mCurrentLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.changePassNewInput:
+                ObjectAnimator.ofFloat(mFocusIndicator, "y", mNewLayout.getY()).setDuration(300).start();
+                break;
+            case R.id.changePassConfirmInput:
+                ObjectAnimator.ofFloat(mFocusIndicator, "y", mConfirmLayout.getY()).setDuration(300).start();
+                break;
+        }
+    }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick(R.id.changePassSaveButton)
+    void saveNewPassword() {
         String currentPass = String.valueOf(mCurrentPassInput.getText());
         String newPass = String.valueOf(mNewPassInput.getText());
         String confirmPass = String.valueOf(mConfirmPassInput.getText());
-
-        mActivity.onBackPressed();
 
         if (currentPass.length() < 6) {
             mCurrentPassInput.setError(getString(R.string.enter_valid_password));
@@ -97,7 +112,35 @@ public class ChangePassFragment extends ParentFragment implements View.OnClickLi
             mConfirmPassInput.setError(getString(R.string.passwords_does_not_match));
             return;
         }
+
+        mCall = Application.apiInterface().changeUserPassword(currentPass, confirmPass);
+        mCall.enqueue(mResponseCallback);
     }
+
+    private ResponseCallback mResponseCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            mActivity.showResultActivity(getString(R.string.password_changed), R.mipmap.ic_forgot_your_password_250dp,
+                    getString(R.string.password_has_bee_changed));
+            mNewPassInput.setText("");
+            mCurrentPassInput.setText("");
+            mConfirmPassInput.setText("");
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+            mActivity.toggleLoadingProgress(false);
+        }
+    };
 
     @Override
     public void onServerResponse(JSONObject response) throws Exception {
@@ -117,24 +160,8 @@ public class ChangePassFragment extends ParentFragment implements View.OnClickLi
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mCall != null) mCall.cancel();
         mActivity.hideKeyboard();
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()) {
-            case R.id.currentPassInput:
-                if (hasFocus)
-                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mCurrentPassLayout.getY()).setDuration(300).start();
-                break;
-            case R.id.newPassInput:
-                if (hasFocus)
-                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mNewPassLayout.getY()).setDuration(300).start();
-                break;
-            case R.id.confirmPassInput:
-                if (hasFocus)
-                    ObjectAnimator.ofFloat(mFocusIndicator, "y", mConfirmPassLayout.getY()).setDuration(300).start();
-                break;
-        }
+        mUnbinder.unbind();
     }
 }

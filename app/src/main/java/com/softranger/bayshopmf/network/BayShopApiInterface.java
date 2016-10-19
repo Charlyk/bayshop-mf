@@ -19,6 +19,7 @@ import com.softranger.bayshopmf.model.pus.PUSStatuses;
 import com.softranger.bayshopmf.model.user.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -201,4 +202,15 @@ public interface BayShopApiInterface {
                                               @Field("phone_code") String phoneCode,
                                               @Field("phone") String phone,
                                               @Field("languageId") String languageId);
+
+    @FormUrlEncoded
+    @POST("member/new-password")
+    Call<ServerResponse> changeUserPassword(@Field("old") String oldPassword,
+                                            @Field("new") String newPassword);
+
+    @FormUrlEncoded
+    @POST("member/mail-options/")
+    Call<ServerResponse<HashMap<String, Integer>>> changeUserNotificationsSettings(@Field("obtainSms") int sms,
+                                                                                   @Field("obtainGcm") int push,
+                                                                                   @Field("obtainMails") int emails);
 }

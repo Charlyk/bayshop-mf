@@ -27,16 +27,11 @@
         android:id="@+id/editAddressFieldsHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="5dp"
-        android:clipToPadding="false"
+        android:layout_below="@id/editAddressToolbar"
         android:background="@android:color/white"
-        android:paddingBottom="5dp"
-        android:layout_above="@+id/addAddressSaveAddressButton"
-        android:layout_below="@id/editAddressToolbar">
+        android:clipToPadding="false">
 
         <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/editAddressLayoutHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,83 +40,75 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressFirstNameInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_alignParentTop="true"
-                android:background="@android:color/white">
+                android:background="@android:color/white"
+                android:paddingTop="5dp">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressFirstNameInput"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
                     android:background="@android:color/white"
-                    android:gravity="center_vertical"
                     android:hint="@string/first_name"
                     android:inputType="textCapWords"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:textSize="16sp"/>
             </android.support.design.widget.TextInputLayout>
 
             <View
                 android:id="@+id/editAddressFirstNameDivider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressFirstNameInputLayout"
                 android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressLastNameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_below="@id/editAddressFirstNameDivider"
-                android:background="@android:color/white">
+                android:background="@android:color/white"
+                android:paddingTop="5dp">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressLastNameInput"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
                     android:background="@android:color/white"
-                    android:gravity="center_vertical"
                     android:hint="@string/last_name"
                     android:inputType="textCapWords"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:textSize="16sp"/>
             </android.support.design.widget.TextInputLayout>
 
             <View
                 android:id="@+id/editAddressLastNameDivider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressLastNameLayout"
                 android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressStreetLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
+                android:paddingTop="5dp"
                 android:layout_below="@id/editAddressLastNameDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressStreetInput"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
                     android:background="@android:color/white"
-                    android:gravity="center_vertical"
                     android:hint="@string/street_name"
                     android:inputType="textPostalAddress"
                     android:singleLine="true"/>
@@ -131,28 +118,25 @@
                 android:id="@+id/editAddressStreetDivider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressStreetLayout"
                 android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressEmailLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
+                android:paddingTop="5dp"
                 android:layout_below="@id/editAddressStreetDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressEmailInput"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
                     android:background="@android:color/white"
-                    android:gravity="center_vertical"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"/>
@@ -168,7 +152,7 @@
             <LinearLayout
                 android:id="@+id/phoneCodeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_below="@id/editAddressEmailDivider"
                 android:layout_marginBottom="5dp"
                 android:background="?selectableItemBackground"
@@ -195,37 +179,34 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
-                    android:hint="@string/_373"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"
+                    android:hint="@string/select_phone_code"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <View
                 android:id="@+id/editAddressPhoneCodeDivider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_below="@id/phoneCodeLayout"
                 android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressPhoneNumberLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
+                android:paddingTop="5dp"
                 android:layout_below="@id/editAddressPhoneCodeDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressPhoneNumberInput"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
                     android:background="@android:color/white"
-                    android:gravity="center_vertical"
                     android:hint="@string/phone_number"
                     android:inputType="phone"
                     android:singleLine="true"/>
@@ -235,28 +216,25 @@
                 android:id="@+id/editAddressPhoneNumberDivider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressPhoneNumberLayout"
                 android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressCityLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
+                android:paddingTop="5dp"
                 android:layout_below="@id/editAddressPhoneNumberDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressCityInput"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
                     android:background="@android:color/white"
-                    android:gravity="center_vertical"
                     android:hint="@string/city"
                     android:inputType="textCapWords"
                     android:singleLine="true"/>
@@ -272,7 +250,7 @@
             <LinearLayout
                 android:id="@+id/countryLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_below="@id/editAddressCityDivider"
                 android:layout_marginBottom="5dp"
                 android:background="?selectableItemBackground"
@@ -298,38 +276,35 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="5dp"
+                    android:textSize="16sp"
                     android:layout_marginTop="5dp"
-                    android:hint="@string/moldova"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"/>
+                    android:hint="@string/select_country"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <View
                 android:id="@+id/editAddressCountryDivider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_below="@id/countryLayout"
                 android:background="#ededed"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editAddressPostalCodeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
+                android:paddingTop="5dp"
                 android:layout_below="@id/editAddressCountryDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressPostalCodeInput"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
                     android:background="@android:color/white"
-                    android:gravity="center_vertical"
                     android:hint="@string/postal_code"
                     android:inputType="textPostalAddress"
                     android:singleLine="true"/>
@@ -339,8 +314,8 @@
                 android:id="@+id/editAddressPostalCodeDivider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_below="@id/editAddressPostalCodeLayout"
+                android:layout_marginBottom="5dp"
                 android:background="#ededed"/>
 
             <Button
@@ -357,7 +332,7 @@
             <View
                 android:id="@+id/editAddressInputFocusIndicator"
                 android:layout_width="5dp"
-                android:layout_height="?actionBarSize"
+                android:layout_height="55dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:background="@color/colorAccent"/>

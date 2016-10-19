@@ -329,4 +329,6 @@
     <string name="thank_you_register">Thank you for registering, now you can login with your credentials.</string>
     <string name="wait_parcel">Your parcel was added as awaiting, we will notify you when it will arrive to our warehouse.</string>
     <string name="products">products</string>
+    <string name="password_changed">Password changed</string>
+    <string name="password_has_bee_changed">Your password has been successfuly changed, you can now log in with your new password.</string>
 </resources>

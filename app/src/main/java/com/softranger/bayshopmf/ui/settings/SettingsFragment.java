@@ -15,20 +15,26 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.address.Address;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,8 +52,13 @@ public class SettingsFragment extends ParentFragment {
     public static final String SHIPPING_ID = "shippingMethodId";
     public static final String INSURANCE = "insurance";
 
+    private static final String _SMS = "obtainSms";
+    private static final String _PUSH = "obtainGcm";
+    private static final String _EMAIL = "obtainMails";
+
     private SettingsActivity mActivity;
     private Unbinder mUnbinder;
+    private Call<ServerResponse<HashMap<String, Integer>>> mCall;
 
     // autopackaging views
     @BindView(R.id.settingsAutopackagingAddressSubtitle)
@@ -148,18 +159,21 @@ public class SettingsFragment extends ParentFragment {
     void toggleSmsNotifications() {
         mSmsCheckBox.setChecked(!mSmsCheckBox.isChecked());
         Application.notifyPrefs.edit().putBoolean(SMS, mSmsCheckBox.isChecked()).apply();
+        saveNotificationsSettings();
     }
 
     @OnClick(R.id.settingsNotificationsNotifyBtn)
     void togglePushNotifications() {
         mNotifyCheckBox.setChecked(!mNotifyCheckBox.isChecked());
         Application.notifyPrefs.edit().putBoolean(PUSH, mNotifyCheckBox.isChecked()).apply();
+        saveNotificationsSettings();
     }
 
     @OnClick(R.id.settingsNotificationsEmailsBtn)
     void toggleEmailNotifications() {
         mEmailsCheckbox.setChecked(!mEmailsCheckbox.isChecked());
         Application.notifyPrefs.edit().putBoolean(EMAILS, mEmailsCheckbox.isChecked()).apply();
+        saveNotificationsSettings();
     }
 
     // log out button click
@@ -167,6 +181,14 @@ public class SettingsFragment extends ParentFragment {
     void logOut() {
         mActivity.setResult(Activity.RESULT_OK);
         mActivity.finish();
+    }
+
+    private void saveNotificationsSettings() {
+        int sms = mSmsCheckBox.isChecked() ? 1 : 0;
+        int push = mNotifyCheckBox.isChecked() ? 1 : 0;
+        int email = mEmailsCheckbox.isChecked() ? 1 : 0;
+        mCall = Application.apiInterface().changeUserNotificationsSettings(sms, push, email);
+        mCall.enqueue(mResponseCallback);
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -194,6 +216,29 @@ public class SettingsFragment extends ParentFragment {
         }
     };
 
+    private ResponseCallback<HashMap<String, Integer>> mResponseCallback = new ResponseCallback<HashMap<String, Integer>>() {
+        @Override
+        public void onSuccess(HashMap<String, Integer> data) {
+            boolean sms = data.get(_SMS) != 0;
+            boolean push = data.get(_PUSH) != 0;
+            boolean mail = data.get(_EMAIL) != 0;
+
+            mSmsCheckBox.setChecked(sms);
+            mNotifyCheckBox.setChecked(push);
+            mEmailsCheckbox.setChecked(mail);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<HashMap<String, Integer>>> call, Throwable t) {
+            Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
     @Override
     public String getFragmentTitle() {
         return getString(R.string.settings);
@@ -207,6 +252,7 @@ public class SettingsFragment extends ParentFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
         mActivity.unregisterReceiver(mBroadcastReceiver);
     }
