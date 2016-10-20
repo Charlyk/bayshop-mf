@@ -55,9 +55,8 @@ public class ReplenishmentFragment extends ParentFragment implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        // TODO: 8/24/16 replace with translated text and change icon
         // build intent for result activity
-        mActivity.showResultActivity("Your account was successfully replenished.", R.mipmap.ic_confirm_35dp,
-                "Thanks for replenishing your account, the money will arrive in you wallet in about twenty minutes.");
+        mActivity.showResultActivity(getString(R.string.account_replenished), R.mipmap.ic_confirm_replenish_250dp,
+                getString(R.string.thanks_for_replenishing));
     }
 }

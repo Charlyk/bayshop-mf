@@ -93,7 +93,8 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setItemViewCacheSize(mPUSParcels.size());
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
             mActivity.updateParcelCounters(Constants.PARCELS);
         }
 
@@ -101,14 +102,16 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<PUSStatuses>> call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
     };
 

@@ -171,7 +171,8 @@ public class AddressesListFragment extends ParentFragment implements AddressList
                 // check if shippers list contains our selected shipper
                 ArrayList<Shipper> allowedShippers = new ArrayList<>();
                 for (Shipper s : methods) {
-                    if (s.getCountryId() == Application.getSelectedAddressCountry()) {
+                    int addressCountry = Application.getSelectedAddressCountry();
+                    if (s.getCountryId() == addressCountry) {
                         allowedShippers.add(s);
                     }
                 }

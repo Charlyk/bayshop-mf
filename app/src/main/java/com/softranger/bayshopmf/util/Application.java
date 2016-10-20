@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.util.TypedValue;
+import android.view.WindowManager;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -35,11 +36,14 @@ public class Application extends android.app.Application {
     private static final String AUTOPACK_PREFS = "com.softranger.bayshopmf.settings.AutopackagingPreferences";
     private static final String NOTIFICATIONS_PREFS = "com.softranger.bayshopmf.settings.NotificationsPreferences";
     private static final String AUTH_TOKEN = "Auth token for Bay";
+    public static final String ACTION_RETRY = "com.softranger.bayshopmf.RETRY_TO_CONNECT";
     private static Application instance;
 
     private static SharedPreferences preferences;
     public static SharedPreferences autoPackPrefs;
     public static SharedPreferences notifyPrefs;
+
+    private WindowManager mWindowManager;
 
     public static String currentToken;
     public static User user;

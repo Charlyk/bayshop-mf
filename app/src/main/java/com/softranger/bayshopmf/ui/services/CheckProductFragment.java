@@ -80,7 +80,7 @@ public class CheckProductFragment extends ParentFragment {
         mUnbinder = ButterKnife.bind(this, view);
 
         // set service default views
-        mServiceImage.setImageResource(R.mipmap.ic_photo_product_250dp);
+        mServiceImage.setImageResource(R.mipmap.ic_check_product_250dp);
         mDescriptionaLabel.setText(getString(R.string.check_product_description));
         mPriceLabel.setText(getString(R.string.check_product_cost));
 

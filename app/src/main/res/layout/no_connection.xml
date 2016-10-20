@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/noInternetImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="50dp"
+        android:src="@mipmap/ic_no_net_225dp"/>
+
+    <TextView
+        android:id="@+id/noInternetTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/noInternetImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/no_internet_connection"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/noInternetDescriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/noInternetTitleLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/check_your_internet_connection_and_try_again"/>
+
+    <Button
+        android:id="@+id/noInternetTryAgainBtn"
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/green_button_bg"
+        android:text="@string/try_again"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+</RelativeLayout>

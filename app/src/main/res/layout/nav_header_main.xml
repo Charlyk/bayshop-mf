@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/bayshop_logo_header"
+        android:src="@mipmap/ic_logo_150dp"
         android:id="@+id/imageView2"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

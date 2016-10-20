@@ -456,7 +456,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
             Intent refreshIntent = new Intent(ACTION_REFRESH_AWAITING);
             setResult(RESULT_OK, refreshIntent);
             if (!mIsInStock) {
-                showResultActivity(getString(R.string.parcel_added), R.mipmap.ic_confirm_250dp,
+                showResultActivity(getString(R.string.parcel_added), R.mipmap.ic_confirm_awaiting_250dp,
                         getString(R.string.wait_parcel));
             }
             finish();

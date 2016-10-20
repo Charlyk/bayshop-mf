@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.softranger.bayshopmf.R;
@@ -16,6 +17,7 @@ import java.util.Date;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PUSParcel implements Parcelable {
     @JsonProperty("id") String mId;
     @JsonProperty("codeNumber") String mCodeNumber;

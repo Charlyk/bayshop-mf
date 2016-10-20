@@ -186,7 +186,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     @Override
     public void onItemClick(InStock inStock, int position) {
-        mActivity.addFragment(DetailsFragment.newInstance(inStock), true);
+        mActivity.addFragment(DetailsFragment.newInstance(inStock), false);
     }
 
     @Override

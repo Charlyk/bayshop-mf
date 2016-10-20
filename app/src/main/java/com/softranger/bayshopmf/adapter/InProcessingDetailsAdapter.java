@@ -123,7 +123,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                     warningMessage = "Some text for sent packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
                 case held_by_customs:
-                    warningMessage = headerHolder.mProcessingParcel.getCustomsCause(); // TODO: 7/18/16 replace text
+                    warningMessage = headerHolder.mProcessingParcel.getCustomsCause();
                     break;
                 case local_depot:
                     warningMessage = "Some text for local depot packages description will go here at the top"; // TODO: 7/18/16 replace text

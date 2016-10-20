@@ -230,8 +230,7 @@ public class ConfirmationFragment extends ParentFragment {
             Intent update = new Intent(ACTION_BUILD_FINISHED);
             mActivity.sendBroadcast(update);
 
-            // TODO: 10/18/16 change icon
-            mActivity.showResultActivity(data + " " + getString(R.string.parcel_added), R.mipmap.ic_parcel_50dp,
+            mActivity.showResultActivity(data + " " + getString(R.string.parcel_added), R.mipmap.ic_confirm_3steps_250dp,
                     getString(R.string.your_parcel_added) + data);
             mActivity.finish();
         }

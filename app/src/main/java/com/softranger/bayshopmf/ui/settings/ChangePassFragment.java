@@ -9,6 +9,8 @@ import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
@@ -46,6 +48,10 @@ public class ChangePassFragment extends ParentFragment {
     TextInputLayout mConfirmLayout;
     @BindView(R.id.changePassFocusIndicator)
     View mFocusIndicator;
+    @BindView(R.id.changePassProgressBar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.changePassSaveButton)
+    Button mButton;
 
     private Unbinder mUnbinder;
     private SettingsActivity mActivity;
@@ -92,6 +98,16 @@ public class ChangePassFragment extends ParentFragment {
         }
     }
 
+    private void toggleLoading(boolean show) {
+        if (show) {
+            mButton.setVisibility(View.GONE);
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mButton.setVisibility(View.VISIBLE);
+        }
+    }
+
     @OnClick(R.id.changePassSaveButton)
     void saveNewPassword() {
         String currentPass = String.valueOf(mCurrentPassInput.getText());
@@ -115,6 +131,7 @@ public class ChangePassFragment extends ParentFragment {
 
         mCall = Application.apiInterface().changeUserPassword(currentPass, confirmPass);
         mCall.enqueue(mResponseCallback);
+        toggleLoading(true);
     }
 
     private ResponseCallback mResponseCallback = new ResponseCallback() {
@@ -125,20 +142,20 @@ public class ChangePassFragment extends ParentFragment {
             mNewPassInput.setText("");
             mCurrentPassInput.setText("");
             mConfirmPassInput.setText("");
-            mActivity.toggleLoadingProgress(false);
+            toggleLoading(false);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            toggleLoading(false);
         }
 
         @Override
         public void onError(Call call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             t.printStackTrace();
-            mActivity.toggleLoadingProgress(false);
+            toggleLoading(false);
         }
     };
 

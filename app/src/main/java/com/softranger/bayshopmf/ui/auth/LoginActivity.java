@@ -31,7 +31,6 @@ import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import retrofit2.Call;
-import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 public class LoginActivity extends ParentActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnLoginDataReadyListener {
@@ -185,7 +184,6 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
             t.printStackTrace();
-            // TODO: 9/21/16 handle errors
             mLoginFragment.hideLoading();
         }
     };
@@ -210,7 +208,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
             t.printStackTrace();
-            // TODO: 9/21/16 handle errors
+            Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mLoginFragment.hideLoading();
         }
     };
@@ -229,7 +227,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
             } catch (Exception e) {
                 e.printStackTrace();
                 mLoginFragment.hideLoading();
-                // TODO: 9/21/16 handle the error
+                Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -242,7 +240,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         @Override
         public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
             t.printStackTrace();
-            // TODO: 9/21/16 handle errors
+            Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mLoginFragment.hideLoading();
         }
     };

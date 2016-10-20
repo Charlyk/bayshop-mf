@@ -330,4 +330,14 @@
     <string name="repacking_description">This is the description of repacking service, I don\'t know what should be here so I wrote this stuff.</string>
     <string name="repacking_cost">This service cost: $5</string>
     <string name="parcel_will_be_sent">Thanks for your request, we will send you parcel to specified address asap.</string>
+    <string name="need_photo_permission">We need your permission to take a picture.</string>
+    <string name="account_replenished">Your account replenished</string>
+    <string name="thanks_for_replenishing">Thanks for replenishing your account, the money will arrive in you wallet in about twenty minutes.</string>
+    <string name="request_received">Request received</string>
+    <string name="return_request_received">Your parcel will soon be sent back to the seller, we will notify you when this happens.</string>
+    <string name="repacking_in_progress">Rpacking in progress</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="check_your_internet_connection_and_try_again">Check your internet connection and try again</string>
+    <string name="try_again">Try again</string>
+    <string name="awaiting_instruction">Please push the button to add new awaiting parcel</string>
 </resources>

@@ -113,6 +113,7 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
         intentFilter.addAction(InStockFragment.ACTION_UPDATE_LIST);
+        intentFilter.addAction(RepackingFragment.TOGGLE_REPACKING);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
         // set up recycler view
@@ -163,6 +164,13 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
                     mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
                     mActivity.hideKeyboard();
                     mCall.enqueue(mResponseCallback);
+                    break;
+                case RepackingFragment.TOGGLE_REPACKING:
+                    mInStockDetailed.setRepackingRequested(intent.getExtras().getInt("enable"));
+                    mRepackingBtn.setSelected(mInStockDetailed.getRepackingRequested() != 0);
+                    String title = mInStockDetailed.getRepackingRequested() != 0 ?
+                            getString(R.string.repacking_in_progress) : getString(R.string.repacking);
+                    mRepackingBtn.setText(title);
                     break;
             }
         }
@@ -258,8 +266,7 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
                         mInStockDetailed.getPhotosInProgress() == Constants.IN_PROGRESS, false), true);
                 break;
             case R.id.repack_productButton:
-                // TODO: 10/19/16 replace isInProgress with actual value
-                mActivity.addFragment(RepackingFragment.newInstance(false, String.valueOf(mInStockDetailed.getId())), true);
+                mActivity.addFragment(RepackingFragment.newInstance(mInStockDetailed.getRepackingRequested() != 0, String.valueOf(mInStockDetailed.getId())), true);
                 break;
         }
     }

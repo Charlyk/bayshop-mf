@@ -3,8 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:background="@android:color/white"
-                tools:context="com.softranger.bayshopmf.ui.auth.ForgotResultFragment">
+                android:background="@android:color/white">
 
 
     <TextView

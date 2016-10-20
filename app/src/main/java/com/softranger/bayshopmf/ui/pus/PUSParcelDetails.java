@@ -41,7 +41,6 @@ import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.AddressesListFragment;
-import com.softranger.bayshopmf.ui.auth.ForgotResultFragment;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
@@ -177,6 +176,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
         @Override
         public void onError(Call<ServerResponse<PUSParcelDetailed>> call, Throwable t) {
+            t.printStackTrace();
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
         }
@@ -302,8 +302,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
                     PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent();
             } else {
-                // TODO: 7/22/16 change with string resource
-                Toast.makeText(mActivity, "We need your permission to take a picture", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, getString(R.string.need_photo_permission), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -374,26 +373,18 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
     public void onDone(int action) {
         String topMessage = "";
         @DrawableRes int image = R.mipmap.logo_toolbar;
-        String middleMessage = "";
         String bottomMessage = getString(R.string.upload_wait);
         switch (action) {
             case UPLOAD_RESULT_CODE:
                 topMessage = getString(R.string.document_uploaded);
-                image = R.mipmap.ic_doc_55dp;
-                middleMessage = getString(R.string.thank_you_for_document);
+                image = R.mipmap.ic_upload_document_250dp;
                 break;
             case TAKE_PICTURE_CODE:
                 topMessage = getString(R.string.photo_taken);
-                image = R.mipmap.ic_photo_55dp;
-                middleMessage = getString(R.string.thank_you_for_photo);
+                image = R.mipmap.ic_take_photo_250dp;
                 break;
         }
-        mActivity.addFragment(ForgotResultFragment.newInstance(topMessage, image, middleMessage, bottomMessage, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mActivity.onBackPressed();
-            }
-        }), false);
+        mActivity.showResultActivity(topMessage, image, bottomMessage);
     }
 
     public void onUploadDocumentClick() {
@@ -439,9 +430,9 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
                         + " " + mPUSParcelDetailed.getAddress().getClientName(), R.mipmap.ic_order_delivery_white_30dp,
                 getString(R.string.confirm), v -> {
-                    mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
-                            R.mipmap.ic_order_sent_75dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
-                            v1 -> mActivity.onBackPressed()), false);
+                    // TODO: 10/20/16 implement order delivery api
+                    mActivity.showResultActivity(getString(R.string.order_sent), R.mipmap.ic_confirm_local_depot_250dp,
+                            getString(R.string.please_wait_call));
                     mAlertDialog.dismiss();
                 }, getString(R.string.cancel), v -> mAlertDialog.dismiss(), R.color.colorGreenAction);
         mAlertDialog.show();
@@ -515,13 +506,9 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
                         + " " + mPUSParcelDetailed.getAddress().getClientName(), R.mipmap.send_parcel_white_30dp,
                 getString(R.string.confirm), v -> {
-                    mActivity.addFragment(ForgotResultFragment.newInstance(getString(R.string.order_sent),
-                            R.mipmap.ic_confirm_25dp, getString(R.string.thank_you_delivery), getString(R.string.please_wait_call),
-                            v1 -> {
-                                Application.apiInterface().sendHeldByUserParcel(mPUSParcelDetailed.getId(), 1)
-                                        .enqueue(mResponseCallback);
-                                mActivity.toggleLoadingProgress(true);
-                            }), false);
+                    Application.apiInterface().sendHeldByUserParcel(mPUSParcelDetailed.getId(), 1)
+                            .enqueue(mResponseCallback);
+                    mActivity.toggleLoadingProgress(true);
                     mAlertDialog.dismiss();
                 }, getString(R.string.cancel), v -> mAlertDialog.dismiss(), R.color.colorGreenAction);
         mAlertDialog.show();
@@ -532,7 +519,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         public void onSuccess(Object data) {
             Intent update = new Intent(PUSParcelsFragment.ACTION_UPDATE);
             mActivity.sendBroadcast(update);
-            mActivity.showResultActivity(getString(R.string.send_request), R.mipmap.ic_photo_product_250dp,
+            mActivity.showResultActivity(getString(R.string.send_request), R.mipmap.ic_confirm_held_by_user_250dp,
                     getString(R.string.parcel_will_be_sent));
             mActivity.getFragmentManager().popBackStack();
         }
@@ -573,9 +560,8 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
     private ResponseCallback mDisbandResponeCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
-            // TODO: 10/18/16 change icon
-            mActivity.showResultActivity(getString(R.string.disband_request_sent), R.mipmap.ic_to_disband_30dp,
-                    getString(R.string.request_received));
+            mActivity.showResultActivity(getString(R.string.disband_request_sent), R.mipmap.ic_disband_250dp,
+                    getString(R.string.disband_request_received));
             Intent refresh = new Intent(PUSParcelsFragment.ACTION_UPDATE);
             int count = Application.counters.get(Constants.PARCELS);
             count = count - 1;
@@ -602,9 +588,8 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
     private ResponseCallback mAllowShippingCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
-            // TODO: 10/18/16 change icon
             mActivity.showResultActivity(getString(R.string.allow_request_sent) + " " + mPUSParcelDetailed.getCodeNumber(),
-                    R.mipmap.ic_to_disband_30dp, getString(R.string.we_will_send_parcel));
+                    R.mipmap.ic_allow_shipping_250dp, getString(R.string.we_will_send_parcel));
             Intent refresh = new Intent(PUSParcelsFragment.ACTION_UPDATE);
             int count = Application.counters.get(Constants.PARCELS);
             count = count - 1;

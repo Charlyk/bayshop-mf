@@ -17,7 +17,6 @@ import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,8 +58,8 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
         holder.mStatusBarView.setProgress(holder.mPUSParcel.getParcelStatus().index(),
                 mContext.getString(holder.mPUSParcel.getParcelStatus().statusName()));
 
-        // TODO: 9/20/16 set parcel date
-        holder.mDateLabel.setText(Application.getFormattedDate(new Date()));
+
+        holder.mDateLabel.setText(Application.getFormattedDate(holder.mPUSParcel.getFieldTime()));
 
         holder.mCodeLabel.setText(holder.mPUSParcel.getCodeNumber());
 

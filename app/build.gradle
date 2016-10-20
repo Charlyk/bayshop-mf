@@ -45,7 +45,6 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    // retrofit, gson
     compile project(':jellyrefresh')
     compile project(':library')
     compile('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
@@ -71,11 +70,11 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
     compile 'com.futuremind.recyclerfastscroll:fastscroll:0.2.4'
+    compile 'com.google.firebase:firebase-messaging:9.6.1'
+    compile 'com.google.firebase:firebase-auth:9.6.1'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
-    compile 'com.google.firebase:firebase-messaging:9.6.1'
-    compile 'com.google.firebase:firebase-core:9.6.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -31,6 +31,8 @@ import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
+import java.net.ConnectException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -186,6 +188,11 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         public void onError(Call<ServerResponse<ArrayList<AwaitingArrival>>> call, Throwable t) {
             mActivity.toggleLoadingProgress(false);
             mRefreshLayout.setRefreshing(false);
+            if (t instanceof ConnectException || t instanceof UnknownHostException) {
+//                mActivity.getNoConnectionView();
+            } else {
+                Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     };
 

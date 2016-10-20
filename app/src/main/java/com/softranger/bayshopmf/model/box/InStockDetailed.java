@@ -17,6 +17,8 @@ public class InStockDetailed extends InStock {
     @JsonProperty("checkProductInProgress") private boolean mCheckInProgress;
     @JsonProperty("separationRequested") private boolean mSeparationRequested;
     @JsonProperty("additionalPhotosRequested") private boolean mAdditionalPhotoRequested;
+    @JsonProperty("repackingRequested")
+    private int mRepackingRequested;
     @JsonProperty("status") private String mStatus;
     @JsonProperty("storage") private String mStorage;
 
@@ -34,6 +36,7 @@ public class InStockDetailed extends InStock {
         mAdditionalPhotoRequested = in.readByte() != 0;
         mStatus = in.readString();
         mStorage = in.readString();
+        mRepackingRequested = in.readInt();
     }
 
     public static final Creator<InStockDetailed> CREATOR = new Creator<InStockDetailed>() {
@@ -92,6 +95,14 @@ public class InStockDetailed extends InStock {
         mPhotosInProgress = photosInProgress;
     }
 
+    public int getRepackingRequested() {
+        return mRepackingRequested;
+    }
+
+    public void setRepackingRequested(int repackingRequested) {
+        mRepackingRequested = repackingRequested;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
@@ -103,5 +114,6 @@ public class InStockDetailed extends InStock {
         dest.writeByte((byte) (mAdditionalPhotoRequested ? 1 : 0));
         dest.writeString(mStatus);
         dest.writeString(mStorage);
+        dest.writeInt(mRepackingRequested);
     }
 }

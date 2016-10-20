@@ -150,24 +150,14 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
         LatLng latLng = new LatLng(latitude, longitude);
 
         // disable marker click
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                return false;
-            }
-        });
+        googleMap.setOnMarkerClickListener(marker -> false);
 
         final Marker marker = googleMap.addMarker(new MarkerOptions().position(latLng).title("Received location"));
         // googleMap in the Google Map
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
 
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
-            }
-        }, 300);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition())), 300);
     }
 
     private AsyncTask<String, Void, Bitmap> mDownloadSignatureTask = new AsyncTask<String, Void, Bitmap>() {

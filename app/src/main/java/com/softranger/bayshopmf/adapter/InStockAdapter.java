@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.box.InStock;
-import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ViewAnimator;
-import com.softranger.bayshopmf.util.widget.Circle;
-import com.softranger.bayshopmf.util.widget.CircleAngleAnimation;
-import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +36,9 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<InStock> mInStocks;
     private Context mContext;
     private OnInStockClickListener mOnInStockClickListener;
+    private OnAdditionalBtnsClickListener mOnAdditionalBtnsClickListener;
     private SimpleDateFormat mDateFormat;
+    private static final int HEADER = 0;
 
     public InStockAdapter(ArrayList<InStock> inStocks, Context context) {
         mInStocks = inStocks;
@@ -53,17 +50,36 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mOnInStockClickListener = onInStockClickListener;
     }
 
+    public void setOnAdditionalBtnsClickListener(OnAdditionalBtnsClickListener onAdditionalBtnsClickListener) {
+        mOnAdditionalBtnsClickListener = onAdditionalBtnsClickListener;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == HEADER) return HEADER;
+        else return position;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_stock_item, parent, false);
-        return new ItemHolder(view);
+        switch (viewType) {
+            case HEADER: {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.additional_buttons, parent, false);
+                return new ServicesHolder(view);
+            }
+
+            default: {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_stock_item, parent, false);
+                return new ItemHolder(view);
+            }
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemHolder) {
             ItemHolder itemHolder = (ItemHolder) holder;
-            itemHolder.mInStock = mInStocks.get(position);
+            itemHolder.mInStock = mInStocks.get(position - 1);
 
             // set parcel uid
             itemHolder.mUidLabel.setText(itemHolder.mInStock.getUid());
@@ -145,7 +161,7 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mInStocks.size();
+        return mInStocks.size() + 1;
     }
 
     class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
@@ -214,6 +230,42 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    public class ServicesHolder extends RecyclerView.ViewHolder {
+        public ServicesHolder(View itemView) {
+            super(itemView);
+            itemView.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
+            ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.additional_photoButton)
+        void showInfoAboutAdditionalPhoto() {
+            if (mOnAdditionalBtnsClickListener != null) {
+                mOnAdditionalBtnsClickListener.additionalPhotoClick();
+            }
+        }
+
+        @OnClick(R.id.check_productButton)
+        void showInfoAboutParcelVerification() {
+            if (mOnAdditionalBtnsClickListener != null) {
+                mOnAdditionalBtnsClickListener.verificationClick();
+            }
+        }
+
+        @OnClick(R.id.divide_photoButton)
+        void showInfoAboutDividingParcel() {
+            if (mOnAdditionalBtnsClickListener != null) {
+                mOnAdditionalBtnsClickListener.divideParcelClick();
+            }
+        }
+
+        @OnClick(R.id.repack_productButton)
+        void showInfoAboutRepacking() {
+            if (mOnAdditionalBtnsClickListener != null) {
+                mOnAdditionalBtnsClickListener.repackingClick();
+            }
+        }
+    }
+
     @DrawableRes
     private int getBarColors(int remains) {
         if (remains <= 15) {
@@ -236,9 +288,17 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public interface OnInStockClickListener {
         void onItemClick(InStock inStock, int position);
-
         void onIconClick(InStock inStock, boolean isSelected, int position);
-
         void onNoDeclarationClick(InStock inStock, int position);
+    }
+
+    public interface OnAdditionalBtnsClickListener {
+        void additionalPhotoClick();
+
+        void verificationClick();
+
+        void divideParcelClick();
+
+        void repackingClick();
     }
 }

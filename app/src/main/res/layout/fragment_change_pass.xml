@@ -105,4 +105,12 @@
         android:id="@+id/changePassSaveButton"
         android:background="@drawable/green_button_bg"
         android:textColor="@android:color/white"/>
+
+    <ProgressBar
+        android:id="@+id/changePassProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

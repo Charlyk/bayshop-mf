@@ -2,6 +2,7 @@ package com.softranger.bayshopmf.model.pus;
 
 import android.os.Parcel;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.softranger.bayshopmf.model.product.ShippingMethod;
@@ -17,8 +18,8 @@ import java.util.Date;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PUSParcelDetailed extends PUSParcel {
-
     @JsonProperty("created")
     private Date mCreated;
     @JsonProperty("sentTime")
@@ -63,6 +64,8 @@ public class PUSParcelDetailed extends PUSParcel {
     private Coordinates mCoordinates;
     @JsonProperty("signature")
     private String mSignatureUrl;
+    @JsonProperty("volumeWeight")
+    private double mVolumeWeight;
 
     public PUSParcelDetailed() {
 
@@ -102,6 +105,7 @@ public class PUSParcelDetailed extends PUSParcel {
         mTrackingUrl = in.readString();
         mCoordinates = in.readParcelable(Coordinates.class.getClassLoader());
         mSignatureUrl = in.readString();
+        mVolumeWeight = in.readDouble();
     }
 
     public static final Creator<PUSParcelDetailed> CREATOR = new Creator<PUSParcelDetailed>() {
@@ -194,8 +198,6 @@ public class PUSParcelDetailed extends PUSParcel {
         return mPercent;
     }
 
-
-
     public String getTrackingNum() {
         return mTrackingNum;
     }
@@ -210,6 +212,10 @@ public class PUSParcelDetailed extends PUSParcel {
 
     public String getSignatureUrl() {
         return mSignatureUrl;
+    }
+
+    public double getVolumeWeight() {
+        return mVolumeWeight;
     }
 
     @Override
@@ -237,5 +243,6 @@ public class PUSParcelDetailed extends PUSParcel {
         parcel.writeString(mTrackingUrl);
         parcel.writeParcelable(mCoordinates, i);
         parcel.writeString(mSignatureUrl);
+        parcel.writeDouble(mVolumeWeight);
     }
 }

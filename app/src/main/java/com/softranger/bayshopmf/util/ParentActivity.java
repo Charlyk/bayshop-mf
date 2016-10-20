@@ -36,6 +36,9 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 public abstract class ParentActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener,
         PullToRefreshLayout.PullToRefreshListener {
 
+    public static final String ACTION_RETRY = "com.softranger.bayshopmf.RETRY_TO_CONNECT";
+    private static final int CHECK_OVERLAY_PERMISSION_REQUEST_CODE = 2006;
+
     public static SelectedFragment selectedFragment;
 
     public abstract void setToolbarTitle(String title);
@@ -248,4 +251,34 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
 
     }
+
+//    public void getNoConnectionView() {
+//        if(Build.VERSION.SDK_INT >= 23) {
+//            /** check if we already  have permission to draw over other apps */
+//            if (!Settings.canDrawOverlays(this)) {
+//                /** if not construct intent to request permission */
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + getPackageName()));
+//                /** request permission via start activity for result */
+//                startActivityForResult(intent, CHECK_OVERLAY_PERMISSION_REQUEST_CODE);
+//            }
+//        }
+//
+//        if(Build.VERSION.SDK_INT >=23 && Settings.canDrawOverlays(this)) {
+//            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+//            WindowManager.LayoutParams windowParams = new WindowManager.LayoutParams(
+//                    WindowManager.LayoutParams.WRAP_CONTENT,
+//                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+//                    PixelFormat.TRANSLUCENT
+//            );
+//            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//            View view = inflater.inflate(R.layout.no_connection, null);
+//            Button tryAgain = (Button) view.findViewById(R.id.noInternetTryAgainBtn);
+//            tryAgain.setOnClickListener((v) -> {
+//                windowManager.removeView(view);
+//                Application.getInstance().sendBroadcast(new Intent(ACTION_RETRY));
+//            });
+//            windowManager.addView(view, windowParams);
+//        }
+//    }
 }

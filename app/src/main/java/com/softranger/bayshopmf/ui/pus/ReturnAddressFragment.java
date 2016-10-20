@@ -222,9 +222,8 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
         if (response.body() != null) {
             ServerResponse serverResponse = response.body();
             if (serverResponse.getMessage().equalsIgnoreCase(Constants.ApiResponse.OK_MESSAGE)) {
-                // TODO: 10/18/16 change icon and text
-                mActivity.showResultActivity("Return to seller request received",
-                        R.mipmap.ic_confirm_35dp, "Yeour parcel will soon be sent back to the seller, we will notify you when this happens.");
+                mActivity.showResultActivity(getString(R.string.request_received),
+                        R.mipmap.ic_confirm_prohibition_250dp, getString(R.string.return_request_received));
             } else {
                 Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
             }

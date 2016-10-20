@@ -85,4 +85,18 @@
             android:textColor="@android:color/black"
             android:textSize="16sp"/>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/cloudImage"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:scaleType="centerInside"
+        android:background="#ededed"
+        android:src="@drawable/white_cloud"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="#ededed"
+        android:id="@+id/view"/>
 </LinearLayout>
