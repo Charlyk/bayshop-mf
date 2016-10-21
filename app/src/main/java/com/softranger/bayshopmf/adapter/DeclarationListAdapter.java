@@ -63,7 +63,7 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void removeItem(int position) {
-        if ((mProducts.size() == 1 && !mShowTracking) || (mProducts.size() == 2 && mShowTracking))
+        if (mProducts.size() == 1)
             return;
         mProducts.remove(mShowTracking ? position - 1 : position);
         notifyItemRemoved(position);

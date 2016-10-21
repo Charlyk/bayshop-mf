@@ -28,7 +28,6 @@ import com.softranger.bayshopmf.adapter.AddressListAdapter;
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.address.Address;
-import com.softranger.bayshopmf.model.address.AddressesList;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.network.ResponseCallback;
@@ -64,7 +63,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
     private AlertDialog mAlertDialog;
     private Unbinder mUnbinder;
     private Call<ServerResponse<CreationDetails>> mResponseCall;
-    private Call<ServerResponse<AddressesList>> mAddressesCall;
+    private Call<ServerResponse<ArrayList<Address>>> mAddressesCall;
     private Call<ServerResponse> mDeleteCall;
     private ArrayList<InStock> mInStocks;
     private CreationDetails mCreationDetails;
@@ -130,6 +129,17 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         mFastScroller.setRecyclerView(mRecyclerView);
 
         if (!mIsGetRequest) {
+            if (!Application.isAutopackaging() && !Application.askedAboutAutoPackaging()) {
+                mAlertDialog = mActivity.getDialog(getString(R.string.use_autopacking),
+                        getString(R.string.autopacking_descriptio), R.mipmap.ic_auto_packaging_36dp,
+                        getString(R.string.enable),
+                        view -> {
+                            Application.autoPackPrefs.edit().putBoolean(SettingsFragment.AUTOPACKAGING, true).apply();
+                            mAlertDialog.dismiss();
+                        }, getString(R.string.no_thanks),
+                        view -> mAlertDialog.dismiss(), R.color.colorAccent);
+                Application.setAskedAutoPackaging(true);
+            }
             getAddressesList(mInStocks);
         } else {
             mAddressesCall = Application.apiInterface().getUserAddresses();
@@ -457,11 +467,11 @@ public class AddressesListFragment extends ParentFragment implements AddressList
     /**
      * Callback which receives addresses from get request
      */
-    private ResponseCallback<AddressesList> mAddressesListResponseCallback = new ResponseCallback<AddressesList>() {
+    private ResponseCallback<ArrayList<Address>> mAddressesListResponseCallback = new ResponseCallback<ArrayList<Address>>() {
         @Override
-        public void onSuccess(AddressesList data) {
+        public void onSuccess(ArrayList<Address> data) {
             mActivity.toggleLoadingProgress(false);
-            mAdapter.refreshList(data.getAddresses());
+            mAdapter.refreshList(data);
         }
 
         @Override
@@ -471,7 +481,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         }
 
         @Override
-        public void onError(Call<ServerResponse<AddressesList>> call, Throwable t) {
+        public void onError(Call<ServerResponse<ArrayList<Address>>> call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
         }

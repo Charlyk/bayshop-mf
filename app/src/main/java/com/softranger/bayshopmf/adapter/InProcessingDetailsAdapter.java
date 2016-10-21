@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.model.box.Box;
+import com.softranger.bayshopmf.model.pus.PUSParcel;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -137,6 +138,10 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                     break;
             }
 
+            if (headerHolder.mProcessingParcel.getParcelStatus() == PUSParcel.PUSStatus.processing) {
+                headerHolder.mShippingPriceTitle.setText(R.string.shipping_price_aproximate);
+            }
+
             headerHolder.mWarningTextView.setText(warningMessage);
 
             // set the storage icon before UID label also set the UID text
@@ -233,6 +238,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.warningItemLabel)
         TextView mWarningTextView;
         @BindView(R.id.inProcessingDetailsShippingByLabel) TextView mShippingBy;
+        @BindView(R.id.inProcessingDetailsShippingPriceTitle)
+        TextView mShippingPriceTitle;
 
         @BindView(R.id.pusDetailsStatusProgress)
         ParcelStatusBarView mStatusBarView;

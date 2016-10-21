@@ -94,6 +94,11 @@ public class Address implements Parcelable {
         mCountry = country;
     }
 
+    @JsonSetter("country_title")
+    public void setCountryTitle(String countryTitle) {
+        mCountry = countryTitle;
+    }
+
     @JsonSetter("shipping_country")
     public void setShippingCountry(String shippingCountry) {
         mCountry = shippingCountry;
@@ -165,6 +170,7 @@ public class Address implements Parcelable {
         return mCountryId;
     }
 
+    @JsonSetter("country_id")
     public void setCountryId(int countryId) {
         mCountryId = countryId;
     }

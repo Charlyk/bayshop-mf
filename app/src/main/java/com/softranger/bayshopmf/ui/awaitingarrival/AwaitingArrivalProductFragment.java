@@ -202,6 +202,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
 
     @OnClick(R.id.awaitingDetailsEditButton)
     void editParcelDetails() {
+        if (mArrivalDetails == null) return;
         Intent editParcel = new Intent(mActivity, DeclarationActivity.class);
         editParcel.putExtra(DeclarationActivity.SHOW_TRACKING, true);
         editParcel.putExtra(DeclarationActivity.PRODUCTS_ARRAY, mArrivalDetails.getProducts());

@@ -138,6 +138,14 @@ public class Application extends android.app.Application {
         return autoPackPrefs.getBoolean(SettingsFragment.INSURANCE, false);
     }
 
+    public static void setAskedAutoPackaging(boolean askedAutoPackaging) {
+        autoPackPrefs.edit().putBoolean("asked", askedAutoPackaging).apply();
+    }
+
+    public static boolean askedAboutAutoPackaging() {
+        return autoPackPrefs.getBoolean("asked", false);
+    }
+
     /**
      * Save authentication token for current user
      *

@@ -340,4 +340,8 @@
     <string name="check_your_internet_connection_and_try_again">Check your internet connection and try again</string>
     <string name="try_again">Try again</string>
     <string name="awaiting_instruction">Please push the button to add new awaiting parcel</string>
+    <string name="shipping_price_aproximate">Shipping price (approximate):</string>
+    <string name="autopacking_descriptio">Enable autopackagind to save your selection for future use so you can pass all steps automaticaly.</string>
+    <string name="enable">Enable</string>
+    <string name="no_thanks">No, thanks</string>
 </resources>

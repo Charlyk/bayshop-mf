@@ -36,6 +36,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
         tools:text="@string/reset_your_password"
         android:id="@+id/resultFragmentDescription"

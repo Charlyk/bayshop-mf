@@ -136,6 +136,7 @@ public class SettingsFragment extends ParentFragment {
         mAutopackagingSwitch.setChecked(!mAutopackagingSwitch.isChecked());
         mAutopackagingLayout.setVisibility(mAutopackagingSwitch.isChecked() ? View.VISIBLE : View.GONE);
         Application.autoPackPrefs.edit().putBoolean(AUTOPACKAGING, mAutopackagingSwitch.isChecked()).apply();
+        Application.setAskedAutoPackaging(true);
     }
 
     @OnClick(R.id.settingsAutopackagingAddressBtn)

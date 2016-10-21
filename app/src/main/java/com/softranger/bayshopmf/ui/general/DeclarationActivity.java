@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -64,7 +66,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     public static final String HAS_DECLARATION = "com.softranger.bayshopmf.ui.general.HAS_DECLARATION";
 
     // maximum height for bottom additional services layout
-    private static final int MAX_HEIGHT_EXPANDED = Application.getPixelsFromDp(150);
+    private static final int MAX_HEIGHT_EXPANDED = Application.getPixelsFromDp(175);
     private static final int MAX_HEIGHT_COLLAPSED = Application.getPixelsFromDp(50);
     // show if bottom layout is expanded or not
     private boolean mIsExpanded;
@@ -233,6 +235,8 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
         float fromHeightColl;
         float toHeightExp;
         float toHeightColl;
+        Interpolator startInterpolator = new DecelerateInterpolator();
+        Interpolator endInterpolator = new AccelerateInterpolator();
         if (!mIsExpanded) {
             // if is not expanded we need to start from 0 to MAX_HEIGHT_EXPANDED
             fromHeightExp = 0;
@@ -245,6 +249,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
             toHeightExp = 0;
             fromHeightColl = 0;
             toHeightColl = MAX_HEIGHT_COLLAPSED;
+
         }
 
         // get services layout params
@@ -267,14 +272,26 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
             mCollapsedServicesLayout.setLayoutParams(collapsedParams);
         });
 
+        if (mIsExpanded) {
+            expandedAnimation.setInterpolator(startInterpolator);
+            collapsedAnimation.setInterpolator(endInterpolator);
+        } else {
+            expandedAnimation.setInterpolator(endInterpolator);
+            collapsedAnimation.setInterpolator(startInterpolator);
+        }
+
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.addListener(this);
         animatorSet.setDuration(300);
-        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         if (mIsExpanded) animatorSet.playSequentially(expandedAnimation, collapsedAnimation);
         else animatorSet.playSequentially(collapsedAnimation, expandedAnimation);
         animatorSet.start();
+    }
+
+    @OnClick(R.id.addAwaitingExpandedServicesCollapseBtn)
+    void collapseServicesLayout() {
+        expandServicesLayout();
     }
 
     /**
@@ -284,6 +301,21 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     void addNewProduct() {
         int position = mAdapter.addNewProductCard();
         mRecyclerView.smoothScrollToPosition(position);
+    }
+
+    @OnClick(R.id.addAwaitingPreCheckDetails)
+    void showPreCheckServiceDetails() {
+
+    }
+
+    @OnClick(R.id.addAwaitingPrePhotoDetails)
+    void showPrePhotoServiceDetails() {
+
+    }
+
+    @OnClick(R.id.addAwaitingRepackingDetails)
+    void showRepackingServiceDetails() {
+
     }
 
     /**
