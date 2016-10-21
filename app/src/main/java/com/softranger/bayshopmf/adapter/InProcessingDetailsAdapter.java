@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,6 +47,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     private OnItemClickListener mOnItemClickListener;
     private boolean mShowMap;
     private Context mContext;
+    private String mCurrency;
 
     public InProcessingDetailsAdapter(PUSParcelDetailed parcel, Context context,
                                       ImagesAdapter.OnImageClickListener onImageClickListener) {
@@ -96,6 +98,11 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         if (mItems.get(position) instanceof PUSParcelDetailed) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.mProcessingParcel = (PUSParcelDetailed) mItems.get(position);
+
+            if (mCurrency == null) {
+                mCurrency = headerHolder.mProcessingParcel.getCurrency();
+            }
+
             headerHolder.mWarningWithImage.setVisibility(View.VISIBLE);
 
             headerHolder.mStatusBarView.setProgress(headerHolder.mProcessingParcel.getParcelStatus().index(),
@@ -157,14 +164,37 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             // build full name from first and last names
             String clientFullName = address.getFirstName() + " " + address.getLastName();
             headerHolder.mClientName.setText(clientFullName);
+
+            String productsPrice = headerHolder.mProcessingParcel.getCurrency() + headerHolder.mProcessingParcel.getBoxesPrice();
+            headerHolder.mGoodsPrice.setText(productsPrice);
+
             // append the currency to delivery price and set it in label
             String deliveryPrice = headerHolder.mProcessingParcel.getCurrency() + ""
                     + headerHolder.mProcessingParcel.getDeliveryPrice();
             headerHolder.mShippingPrice.setText(deliveryPrice);
+
+            if (headerHolder.mProcessingParcel.getInsurancePrice() > 0) {
+                String insurancePrice = headerHolder.mProcessingParcel.getCurrency() + headerHolder.mProcessingParcel.getInsurancePrice();
+                headerHolder.mInsurancePrice.setText(insurancePrice);
+            } else {
+                headerHolder.mInsurancePriceLayout.setVisibility(View.GONE);
+            }
+
+            if (headerHolder.mProcessingParcel.getAdditionalMaterialsPrice() > 0) {
+                String packagePrice = headerHolder.mProcessingParcel.getCurrency() + headerHolder.mProcessingParcel.getAdditionalMaterialsPrice();
+                headerHolder.mPackagePrice.setText(packagePrice);
+            } else {
+                headerHolder.mPackagePriceLayout.setVisibility(View.GONE);
+            }
+
+            String declaredPrice = headerHolder.mProcessingParcel.getCurrency() + headerHolder.mProcessingParcel.getDeclarationPrice();
+            headerHolder.mDeclaredPrice.setText(declaredPrice);
+
             // append the currency to total price and set it in label
             String totalPrice = headerHolder.mProcessingParcel.getCurrency() + ""
                     + headerHolder.mProcessingParcel.getTotalPrice();
             headerHolder.mTotalPrice.setText(totalPrice);
+
             // set shipping method name
             headerHolder.mShippingBy.setText(headerHolder.mProcessingParcel.getShippingMethod().getName());
 
@@ -176,7 +206,13 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             itemHolder.mProduct = (Box) mItems.get(position);
             itemHolder.mProductId.setText(itemHolder.mProduct.getUid());
             itemHolder.mProductName.setText(itemHolder.mProduct.getTitle());
-            itemHolder.mPrice.setText(itemHolder.mProduct.getPrice());
+
+            String price = itemHolder.mProduct.getPrice();
+            if (mCurrency != null) {
+                price = mCurrency + itemHolder.mProduct.getPrice();
+            }
+
+            itemHolder.mPrice.setText(price);
             itemHolder.mItemCount.setText(String.valueOf(itemHolder.mProduct.getQuantity()));
             if (itemHolder.mProduct.getPhotos().size() > 0) {
                 ImagesAdapter imagesAdapter = new ImagesAdapter(itemHolder.mProduct.getPhotos(), R.layout.product_image_list_item);
@@ -231,7 +267,6 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.addressStreetLabel) TextView mStreet;
         @BindView(R.id.inProcessingDetailsParcelIdLabel) TextView mParcelId;
         @BindView(R.id.inProcessingDetailsGoodsPriceLabel) TextView mGoodsPrice;
-        @BindView(R.id.inProcessingDetailsCustomsClearanceLabel) TextView mCustomsClearance;
         @BindView(R.id.inProcessingDetailsShippingPriceLabel) TextView mShippingPrice;
         @BindView(R.id.inProcessingDetailsTotalPriceLabel) TextView mTotalPrice;
         @BindView(R.id.inProcessingDetailsShippingByTracking) TextView mTrackingNumber;
@@ -240,12 +275,31 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.inProcessingDetailsShippingByLabel) TextView mShippingBy;
         @BindView(R.id.inProcessingDetailsShippingPriceTitle)
         TextView mShippingPriceTitle;
+        @BindView(R.id.inProcessingDetailsInsurancePriceLabel)
+        TextView mInsurancePrice;
+        @BindView(R.id.inProcessingDetailsPackagePriceLabel)
+        TextView mPackagePrice;
+        @BindView(R.id.inProcessingDetailsDeclaredPriceLabel)
+        TextView mDeclaredPrice;
 
         @BindView(R.id.pusDetailsStatusProgress)
         ParcelStatusBarView mStatusBarView;
 
         @BindView(R.id.addressEditButton) ImageButton mEditButton;
         @BindView(R.id.addressAddToFavoritesButton) ImageButton mAddToFavorite;
+
+        @BindView(R.id.pusDetailsProductsPriceLayout)
+        RelativeLayout mProductsPriceLayout;
+        @BindView(R.id.pusDetailsShippingPriceLayout)
+        RelativeLayout mShippingPriceLayout;
+        @BindView(R.id.pusDetailsInsurancePriceLayout)
+        RelativeLayout mInsurancePriceLayout;
+        @BindView(R.id.pusDetailsPackagePriceLayout)
+        RelativeLayout mPackagePriceLayout;
+        @BindView(R.id.pusDetailsDeclaredPriceLayout)
+        RelativeLayout mDeclaredPriceLayout;
+        @BindView(R.id.pusDetailsTotalPriceLayout)
+        RelativeLayout mTotalPriceLayout;
 
         @BindView(R.id.takeToDeliveryDetailsHeaderLayout) LinearLayout mToDeliveryDetails;
         @BindView(R.id.warningItemLayout)

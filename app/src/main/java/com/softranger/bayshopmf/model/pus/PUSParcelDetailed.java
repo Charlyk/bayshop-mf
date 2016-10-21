@@ -40,10 +40,10 @@ public class PUSParcelDetailed extends PUSParcel {
     private Date mHeldByDamageTime;
     @JsonProperty("customsCause")
     private String mCustomsCause;
-    @JsonProperty("totalPrice")
-    private String mTotalPrice;
-    @JsonProperty("deliveryPrice")
-    private String mDeliveryPrice;
+    @JsonProperty("price_total")
+    private double mTotalPrice;
+    @JsonProperty("price_delivery")
+    private double mDeliveryPrice;
     @JsonProperty("status")
     private String mStringStatus;
     @JsonProperty("shipping")
@@ -64,8 +64,21 @@ public class PUSParcelDetailed extends PUSParcel {
     private Coordinates mCoordinates;
     @JsonProperty("signature")
     private String mSignatureUrl;
-    @JsonProperty("volumeWeight")
+    @JsonProperty("volume_weight")
     private double mVolumeWeight;
+    @JsonProperty("service_comment")
+    private String mComment;
+    @JsonProperty("price_insurance")
+    private double mInsurancePrice;
+    @JsonProperty("price_declarations")
+    private double mDeclarationPrice;
+    @JsonProperty("price_boxes")
+    private double mBoxesPrice;
+    @JsonProperty("price_repacking")
+    private double mRepackingPrice;
+    @JsonProperty("price_additional_materials")
+    private double mAdditionalMaterialsPrice;
+
 
     public PUSParcelDetailed() {
 
@@ -93,8 +106,8 @@ public class PUSParcelDetailed extends PUSParcel {
         mHeldByProhibitionTime = (Date) in.readSerializable();
         mHeldByDamageTime = (Date) in.readSerializable();
         mCustomsCause = in.readString();
-        mTotalPrice = in.readString();
-        mDeliveryPrice = in.readString();
+        mTotalPrice = in.readDouble();
+        mDeliveryPrice = in.readDouble();
         mStringStatus = in.readString();
         mShippingMethod = in.readParcelable(ShippingMethod.class.getClassLoader());
         mAddress = in.readParcelable(Address.class.getClassLoader());
@@ -106,6 +119,12 @@ public class PUSParcelDetailed extends PUSParcel {
         mCoordinates = in.readParcelable(Coordinates.class.getClassLoader());
         mSignatureUrl = in.readString();
         mVolumeWeight = in.readDouble();
+        mComment = in.readString();
+        mInsurancePrice = in.readDouble();
+        mDeclarationPrice = in.readDouble();
+        mBoxesPrice = in.readDouble();
+        mRepackingPrice = in.readDouble();
+        mAdditionalMaterialsPrice = in.readDouble();
     }
 
     public static final Creator<PUSParcelDetailed> CREATOR = new Creator<PUSParcelDetailed>() {
@@ -160,11 +179,11 @@ public class PUSParcelDetailed extends PUSParcel {
         return mCustomsCause;
     }
 
-    public String getTotalPrice() {
+    public double getTotalPrice() {
         return mTotalPrice;
     }
 
-    public String getDeliveryPrice() {
+    public double getDeliveryPrice() {
         return mDeliveryPrice;
     }
 
@@ -218,6 +237,35 @@ public class PUSParcelDetailed extends PUSParcel {
         return mVolumeWeight;
     }
 
+    @JsonSetter("service_rating")
+    public void setRating(int rating) {
+        mRating = rating;
+    }
+
+    public String getComment() {
+        return mComment;
+    }
+
+    public double getInsurancePrice() {
+        return mInsurancePrice;
+    }
+
+    public double getDeclarationPrice() {
+        return mDeclarationPrice;
+    }
+
+    public double getBoxesPrice() {
+        return mBoxesPrice;
+    }
+
+    public double getRepackingPrice() {
+        return mRepackingPrice;
+    }
+
+    public double getAdditionalMaterialsPrice() {
+        return mAdditionalMaterialsPrice;
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
@@ -231,8 +279,8 @@ public class PUSParcelDetailed extends PUSParcel {
         parcel.writeSerializable(mHeldByProhibitionTime);
         parcel.writeSerializable(mHeldByDamageTime);
         parcel.writeString(mCustomsCause);
-        parcel.writeString(mTotalPrice);
-        parcel.writeString(mDeliveryPrice);
+        parcel.writeDouble(mTotalPrice);
+        parcel.writeDouble(mDeliveryPrice);
         parcel.writeString(mStringStatus);
         parcel.writeParcelable(mShippingMethod, i);
         parcel.writeParcelable(mAddress, i);
@@ -244,5 +292,11 @@ public class PUSParcelDetailed extends PUSParcel {
         parcel.writeParcelable(mCoordinates, i);
         parcel.writeString(mSignatureUrl);
         parcel.writeDouble(mVolumeWeight);
+        parcel.writeString(mComment);
+        parcel.writeDouble(mInsurancePrice);
+        parcel.writeDouble(mDeclarationPrice);
+        parcel.writeDouble(mBoxesPrice);
+        parcel.writeDouble(mRepackingPrice);
+        parcel.writeDouble(mAdditionalMaterialsPrice);
     }
 }

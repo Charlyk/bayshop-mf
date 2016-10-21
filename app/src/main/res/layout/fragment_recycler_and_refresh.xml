@@ -22,7 +22,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragmentRecyclerView"
             android:clipToPadding="false"
-            android:paddingBottom="50dp"
+            android:paddingBottom="42.5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </uk.co.imallan.jellyrefresh.JellyRefreshLayout>

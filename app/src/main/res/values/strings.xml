@@ -397,4 +397,6 @@
     <string name="autopacking_descriptio">Enable autopackagind to save your selection for future use so you can pass all steps automaticaly.</string>
     <string name="enable">Enable</string>
     <string name="no_thanks">No, thanks</string>
+    <string name="additional_package_price">Additinal package price:</string>
+    <string name="declared_price">Declared price:</string>
 </resources>

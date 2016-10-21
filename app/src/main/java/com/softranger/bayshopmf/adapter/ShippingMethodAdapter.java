@@ -77,8 +77,10 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (mShowPrice) {
                 String price = String.valueOf(mCurrency + itemHolder.mShippingMethodObj.getCalculatedPrice());
                 itemHolder.mMethodPrice.setText(price);
+
             }
             itemHolder.mMethodPrice.setVisibility(mShowPrice ? View.VISIBLE : View.GONE);
+            itemHolder.mDetailsButton.setVisibility(mShowPrice ? View.VISIBLE : View.GONE);
 
             String html = itemHolder.mShippingMethodObj.getDescription();
             html = html.replaceAll("<(.*?)\\>", " ");//Removes all items in brackets

@@ -27,7 +27,7 @@ public class PUSParcel implements Parcelable {
     @JsonProperty("currency") private String mCurrency;
     @JsonProperty("generalDescription") private String mGeneralDescription;
     @JsonProperty("rating")
-    private int mRating;
+    protected int mRating;
     @JsonProperty("courierContacts")
     private CourierContacts mCourierContacts;
 

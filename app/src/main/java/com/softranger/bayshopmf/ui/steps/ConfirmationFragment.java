@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -70,6 +71,9 @@ public class ConfirmationFragment extends ParentFragment {
     @BindView(R.id.confirmTotalPriceLabel) TextView mTotalPrice;
     @BindView(R.id.insurancePriceLabel) TextView mInsurancePriceLabel;
 
+    @BindView(R.id.confirmFinishAndSendBtn)
+    Button mConfirmBtn;
+
     public ConfirmationFragment() {
         // require emtpy constructor
     }
@@ -85,8 +89,6 @@ public class ConfirmationFragment extends ParentFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    // TODO: 10/21/16 deactivate confirm button till accept terms checkbox is no checked
 
     @Nullable
     @Override
@@ -119,6 +121,10 @@ public class ConfirmationFragment extends ParentFragment {
         if (Application.isAutopackaging() && Application.hasInsurance()) {
             selectInsurance();
         }
+
+        mConfirmBtn.setEnabled(mTermsAndConditions.isChecked());
+        mConfirmBtn.setClickable(mTermsAndConditions.isChecked());
+
         return view;
     }
 
@@ -206,6 +212,13 @@ public class ConfirmationFragment extends ParentFragment {
     @OnClick(R.id.confirmAgreeTermsDetails)
     void showTermsAndConditions() {
 
+    }
+
+    @OnClick(R.id.confirmAgreeTermsButton)
+    void toggleTermsAndConditions() {
+        mTermsAndConditions.setChecked(!mTermsAndConditions.isChecked());
+        mConfirmBtn.setEnabled(mTermsAndConditions.isChecked());
+        mConfirmBtn.setClickable(mTermsAndConditions.isChecked());
     }
 
     @OnClick(R.id.confirmFinishAndSendBtn)
