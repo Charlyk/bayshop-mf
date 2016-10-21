@@ -48,30 +48,13 @@
             tools:text="PUS2131432133"/>
 
         <TextView
-            android:id="@+id/receivedItemDescriptionLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/receivedItemUidLabel"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_alignLeft="@id/receivedItemUidLabel"
-            android:layout_alignStart="@id/receivedItemUidLabel"
-            android:layout_toLeftOf="@id/receivedParcelRatigBar"
-            android:layout_toStartOf="@id/receivedParcelRatigBar"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="@color/textColor"
-            android:textSize="16sp"
-            tools:text="iPhone 5s"/>
-
-        <TextView
             android:id="@+id/textView45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7.5dp"
-            android:layout_alignLeft="@+id/receivedItemDescriptionLabel"
-            android:layout_alignStart="@+id/receivedItemDescriptionLabel"
-            android:layout_below="@+id/receivedItemDescriptionLabel"
+            android:layout_alignLeft="@+id/receivedItemUidLabel"
+            android:layout_alignStart="@+id/receivedItemUidLabel"
+            android:layout_below="@+id/receivedItemUidLabel"
             android:text="@string/date"
             android:textSize="13sp"/>
 

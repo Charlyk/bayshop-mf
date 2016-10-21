@@ -274,10 +274,15 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
                 information.setOnClickListener((view) -> {
                     onGeolocationClick();
                 });
+
                 Button leaveReview = ButterKnife.findById(mButtonsHolder, R.id.leaveReviewButton);
                 leaveReview.setOnClickListener((view) -> {
                     onLeaveFeedbackClick();
                 });
+
+                if (mPUSParcelDetailed.getComment() != null || mPUSParcelDetailed.getRating() > 0) {
+                    leaveReview.setText(getString(R.string.edit_feedback));
+                }
                 break;
             case held_by_user:
                 LinearLayout send = ButterKnife.findById(mButtonsHolder, R.id.heldByUserBtnLayout);

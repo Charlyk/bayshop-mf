@@ -115,6 +115,12 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             mDescriptionLabel.setText(mParcelDetailed.getGeneralDescription());
         }
 
+        if (mParcelDetailed != null) {
+            mRatingBar.setRating(mParcelDetailed.getRating());
+            mRatingLabel.setText(getString(mRatingStrings.get((float) mParcelDetailed.getRating())));
+            mCommentInput.setText(mParcelDetailed.getComment());
+        }
+
         return view;
     }
 

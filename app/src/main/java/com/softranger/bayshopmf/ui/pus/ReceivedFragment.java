@@ -140,21 +140,6 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     }
 
     @Override
-    public void onCombineClick() {
-
-    }
-
-    @Override
-    public void onCheckOrderClick() {
-
-    }
-
-    @Override
-    public void onAdditionalPhotosClick() {
-
-    }
-
-    @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
         mCall = Application.apiInterface().getParcelsByStatus(Constants.ParcelStatus.RECEIVED);
         mCall.enqueue(mResponseCallback);
