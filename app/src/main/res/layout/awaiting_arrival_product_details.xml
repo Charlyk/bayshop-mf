@@ -18,38 +18,39 @@
             android:id="@+id/awaitingDetailsAdditionalPhotosBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:gravity="center_vertical"
-            android:paddingLeft="7dp"
-            android:paddingStart="7dp"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:drawablePadding="5dp"
             android:background="?selectableItemBackgroundBorderless"
             android:drawableLeft="@mipmap/ic_additional_photo_55dp"
             android:drawableStart="@mipmap/ic_additional_photo_55dp"
             android:text="@string/order_photos"
             android:textColor="@android:color/black"
-            android:textSize="16sp"/>
+            android:textSize="13sp"/>
 
         <TextView
             android:id="@+id/awaitingDetailsCheckProductBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:layout_weight="1"
-            android:drawablePadding="4dp"
+            android:drawablePadding="5dp"
             android:layout_gravity="center"
-            android:paddingRight="16dp"
-            android:paddingEnd="16dp"
+            android:paddingRight="5dp"
+            android:paddingEnd="5dp"
             android:gravity="center_vertical"
             android:background="?selectableItemBackgroundBorderless"
             android:drawableLeft="@mipmap/ic_check_products_55dp"
             android:drawableStart="@mipmap/ic_check_products_55dp"
             android:text="@string/order_checking"
             android:textColor="@android:color/black"
-            android:textSize="16sp"/>
+            android:textSize="13sp"/>
     </LinearLayout>
 
     <ImageView
@@ -72,8 +73,8 @@
         android:background="@android:color/white"
         android:paddingRight="16dp"
         android:paddingLeft="16dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -101,7 +102,7 @@
             style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignBottom="@id/awaitingDetailsProductName"
+            android:layout_alignBottom="@id/awaitingDetailsItemId"
             android:layout_alignTop="@id/awaitingDetailsItemId"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
@@ -110,8 +111,9 @@
         <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
             android:id="@+id/awaitingArrivalStatusBar"
             android:layout_width="match_parent"
+            android:layout_marginTop="7.5dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/awaitingDetailsDeleteButton"/>
+            android:layout_below="@id/awaitingDetailsProductName"/>
     </RelativeLayout>
 
     <View
@@ -123,7 +125,7 @@
         android:id="@+id/awaitingDetailsTrackingTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
+        android:paddingTop="16dp"
         android:background="@android:color/white"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -144,8 +146,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:background="#ededed"/>
 
     <LinearLayout

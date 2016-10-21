@@ -77,7 +77,6 @@
         android:paddingRight="16dp"
         android:layout_marginBottom="16dp"
         android:maxLines="3"
-        android:visibility="gone"
         android:ellipsize="end"
         android:text="@string/lorem_ipsum"/>
 

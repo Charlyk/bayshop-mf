@@ -64,7 +64,6 @@
         android:layout_below="@id/noInsuranceButtonLayout"
         android:ellipsize="end"
         android:maxLines="3"
-        android:visibility="gone"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_marginBottom="16dp"

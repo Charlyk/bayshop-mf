@@ -18,7 +18,7 @@
             android:layout_margin="16dp"
             android:text="@string/user_settings"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
         <!--user data-->
         <TextView
@@ -31,7 +31,7 @@
             android:paddingRight="16dp"
             android:text="@string/user_data"
             android:textColor="@color/textColor"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
 
         <!--change password-->
         <TextView
@@ -44,7 +44,7 @@
             android:paddingRight="16dp"
             android:text="@string/change_password"
             android:textColor="@color/textColor"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
 
         <!--addresses-->
         <TextView
@@ -57,7 +57,7 @@
             android:paddingRight="16dp"
             android:text="@string/addresses"
             android:textColor="@color/textColor"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
 
         <!--autopackaging title-->
         <RelativeLayout
@@ -74,7 +74,7 @@
                 android:layout_centerVertical="true"
                 android:text="@string/autopacking"
                 android:textColor="@color/colorAccent"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/settingsAutopackagingSwitch"
@@ -116,7 +116,7 @@
                     android:background="?selectableItemBackground"
                     android:text="@string/address"
                     android:textColor="@color/textColor"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/settingsAutopackagingAddressSubtitle"
@@ -154,7 +154,7 @@
                     android:background="?selectableItemBackground"
                     android:text="@string/shipping_by"
                     android:textColor="@color/textColor"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/settingsAutopackagingShippingSubtitle"
@@ -192,7 +192,7 @@
                     android:background="?selectableItemBackground"
                     android:text="@string/insurance"
                     android:textColor="@color/textColor"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <CheckBox
                     android:id="@+id/settingsAutopackagingInsuranceCheckBox"
@@ -212,7 +212,7 @@
             android:layout_margin="16dp"
             android:text="@string/notifications"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
         <!--sms-->
         <RelativeLayout
@@ -235,7 +235,7 @@
                 android:background="?selectableItemBackground"
                 android:text="@string/sms"
                 android:textColor="@color/textColor"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
 
             <CheckBox
                 android:id="@+id/settingsNotificationsSmsCheckBox"
@@ -268,7 +268,7 @@
                 android:background="?selectableItemBackground"
                 android:text="@string/notifications"
                 android:textColor="@color/textColor"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
 
             <CheckBox
                 android:id="@+id/settingsNotificationsNotifyCheckBox"
@@ -301,7 +301,7 @@
                 android:background="?selectableItemBackground"
                 android:text="@string/emails"
                 android:textColor="@color/textColor"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
 
             <CheckBox
                 android:id="@+id/settingsNotificationsEmailsCheckBox"
@@ -324,6 +324,6 @@
             android:paddingRight="16dp"
             android:text="@string/log_out"
             android:textColor="@color/textColor"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
     </LinearLayout>
 </ScrollView>

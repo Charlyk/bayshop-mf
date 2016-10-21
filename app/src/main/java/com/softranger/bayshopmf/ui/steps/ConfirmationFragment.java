@@ -86,6 +86,8 @@ public class ConfirmationFragment extends ParentFragment {
         return fragment;
     }
 
+    // TODO: 10/21/16 deactivate confirm button till accept terms checkbox is no checked
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -15,6 +15,7 @@
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_alignTop="@+id/addressItemNameLabel"
         android:layout_alignBottom="@+id/addressItemNameLabel"
         android:background="?selectableItemBackgroundBorderless"
@@ -28,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/addressItemNameLabel"
+        android:layout_marginTop="10dp"
         android:layout_alignBottom="@+id/addressItemNameLabel"
         android:layout_toLeftOf="@id/addressEditButton"
         android:layout_toStartOf="@id/addressEditButton"
@@ -54,7 +56,7 @@
         android:paddingBottom="5dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:paddingTop="20dp"
+        android:paddingTop="13dp"
         android:layout_toLeftOf="@id/addressAddToFavoritesButton"
         android:layout_toStartOf="@id/addressAddToFavoritesButton"
         android:drawableLeft="@mipmap/ic_shipping_address"
@@ -98,6 +100,7 @@
         android:textSize="16sp"
         android:layout_below="@id/addressStreetTitle"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginStart="16dp"
         android:text="@string/city"/>
 
@@ -108,6 +111,7 @@
         android:layout_below="@id/addressStreetLabel"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
         android:textSize="16sp"
         android:layout_toEndOf="@id/addressCityTitle"
         android:layout_toRightOf="@id/addressCityTitle"
@@ -123,6 +127,7 @@
         android:layout_below="@id/addressCityTitle"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:text="@string/postal_code"/>
 
     <TextView
@@ -132,6 +137,7 @@
         android:layout_below="@id/addressCityLabel"
         android:layout_marginLeft="5dp"
         android:textSize="16sp"
+        android:layout_marginTop="4dp"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@id/addressPostalCodeTitle"
         android:layout_toRightOf="@id/addressPostalCodeTitle"
@@ -144,6 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:layout_marginTop="4dp"
         android:layout_below="@id/addressPostalCodeTitle"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
@@ -156,6 +163,7 @@
         android:layout_below="@id/addressPostalCodeLabel"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
         android:textSize="16sp"
         android:layout_toEndOf="@id/addressCountryTitle"
         android:layout_toRightOf="@id/addressCountryTitle"
@@ -168,6 +176,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:layout_marginTop="4dp"
         android:layout_below="@id/addressCountryTitle"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
@@ -181,6 +190,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
         android:textSize="16sp"
+        android:layout_marginTop="4dp"
         android:layout_toEndOf="@id/addressPhoneNumberTitle"
         android:layout_toRightOf="@id/addressPhoneNumberTitle"
         android:textColor="@color/textColor"
@@ -189,8 +199,8 @@
     <View
         android:id="@+id/addressItemShadowSeparator"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@id/addressPhoneNumberLabel"
         android:background="@drawable/drop_shadow"/>
 
@@ -199,7 +209,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#ededed"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:visibility="gone"
         android:layout_below="@id/addressPhoneNumberLabel"/>
 </RelativeLayout>

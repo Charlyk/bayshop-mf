@@ -27,7 +27,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private ArrayList<Shipper> mShippingMethods;
     private OnShippingClickListener mOnShippingClickListener;
     private String mCurrency;
-    private boolean mShowPrice;
+    private boolean mShowPrice = true;
 
     public ShippingMethodAdapter(ArrayList<Shipper> shippingMethods, String currency) {
         mShippingMethods = shippingMethods;

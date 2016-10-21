@@ -25,14 +25,17 @@
         android:id="@+id/shippingMethodNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/shippingMethodDetailsBtn"
+        android:layout_toStartOf="@+id/shippingMethodDetailsBtn"
         android:textSize="18sp"
         android:textColor="@color/colorAccent"
         tools:text="BayShop Air Post"
+        android:layout_marginBottom="7.5dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:singleLine="true"
         android:ellipsize="end"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"/>
 
@@ -82,11 +85,10 @@
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/shippingMethodPriceLabel"
+        android:layout_toStartOf="@id/shippingMethodPriceLabel"
         android:clickable="true"
-        android:layout_toRightOf="@+id/shippingMethodNameLabel"
-        android:layout_toEndOf="@+id/shippingMethodNameLabel"
-        android:layout_alignBottom="@+id/shippingMethodNameLabel"
-        android:paddingTop="16dp"
+        android:paddingTop="6dp"
         android:src="@mipmap/ic_detail_24dp"/>
 
     <View
@@ -94,5 +96,5 @@
         android:layout_height="2dp"
         android:background="@drawable/drop_shadow"
         android:layout_below="@id/shippingMethodVolumeLabel"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="16dp"/>
 </RelativeLayout>

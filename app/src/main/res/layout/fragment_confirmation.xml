@@ -22,7 +22,6 @@
             android:id="@+id/confirmationParcelDetailsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:orientation="vertical">
 
             <!-- Additional services -->
@@ -64,8 +63,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:textColor="@android:color/black"
-                        android:textSize="17sp"/>
+                        android:textColor="@android:color/black"/>
 
                     <ImageView
                         android:id="@+id/confirmAdditionalPackageDetails"
@@ -118,8 +116,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:textColor="@android:color/black"
-                        android:textSize="17sp"/>
+                        android:textColor="@android:color/black"/>
 
                     <ImageView
                         android:id="@+id/confirmLocalDeliveryDetails"
@@ -233,7 +230,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="4dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp">
@@ -246,7 +243,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:textColor="@android:color/black"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         tools:text="$10"/>
 
                     <TextView
@@ -259,14 +256,14 @@
                         android:layout_toLeftOf="@id/confirmDeliveryPriceLabel"
                         android:layout_toStartOf="@id/confirmDeliveryPriceLabel"
                         android:text="@string/shipping_price"
-                        android:textSize="17sp"/>
+                        android:textSize="16sp"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/confirmInsurancePriceLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="4dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp">
 
@@ -278,7 +275,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:textColor="@android:color/black"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         tools:text="$10"/>
 
                     <TextView
@@ -291,14 +288,14 @@
                         android:layout_toLeftOf="@id/confirmInsurancePriceLabel"
                         android:layout_toStartOf="@id/confirmInsurancePriceLabel"
                         android:text="@string/insurance_price"
-                        android:textSize="17sp"/>
+                        android:textSize="16sp"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/confirmDeclarationPriceLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="4dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp">
 
@@ -310,7 +307,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:textColor="@android:color/black"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         tools:text="$3"/>
 
                     <TextView
@@ -323,7 +320,7 @@
                         android:layout_toLeftOf="@id/confirmDeclarationPriceLabel"
                         android:layout_toStartOf="@id/confirmDeclarationPriceLabel"
                         android:text="@string/declaration"
-                        android:textSize="17sp"/>
+                        android:textSize="16sp"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -341,7 +338,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:textColor="@color/colorGreenAction"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         tools:text="$3"/>
 
                     <TextView
@@ -354,7 +351,7 @@
                         android:layout_toLeftOf="@id/confirmTotalPriceLabel"
                         android:layout_toStartOf="@id/confirmTotalPriceLabel"
                         android:text="@string/total_shipping_price"
-                        android:textSize="17sp"/>
+                        android:textSize="16sp"/>
                 </RelativeLayout>
 
                 <View

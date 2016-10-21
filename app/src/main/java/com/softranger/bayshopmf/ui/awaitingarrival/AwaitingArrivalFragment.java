@@ -67,9 +67,12 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         put(4, ParcelStatusBarView.BarColor.green);
     }};
 
-    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.addAwaitingFloatingButton) FloatingActionButton mActionButton;
-    @BindView(R.id.jellyPullToRefresh) JellyRefreshLayout mRefreshLayout;
+    @BindView(R.id.fragmentRecyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.addAwaitingFloatingButton)
+    FloatingActionButton mActionButton;
+    @BindView(R.id.jellyPullToRefresh)
+    JellyRefreshLayout mRefreshLayout;
     @BindView(R.id.fragmentFrameLayout)
     FrameLayout mFrameLayout;
 
@@ -172,7 +175,8 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
                 togglePlaceholder(true);
             }
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
             Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, data != null ? data.size() : 0);
             mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
         }
@@ -181,13 +185,15 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<ArrayList<AwaitingArrival>>> call, Throwable t) {
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
             if (t instanceof ConnectException || t instanceof UnknownHostException) {
 //                mActivity.getNoConnectionView();
             } else {
@@ -223,14 +229,17 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     private void deleteItem(final AwaitingArrival product, final int position) {
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
                         + product.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
-                getString(R.string.yes), ((view) ->  {mActivity.toggleLoadingProgress(true);
+                getString(R.string.yes), ((view) -> {
+                    mActivity.toggleLoadingProgress(true);
                     DeleteAsyncTask deleteAsyncTask = new DeleteAsyncTask(position, mAwaitingArrivals, mActivity, mAdapter);
                     deleteAsyncTask.setOnDeleteListener(this);
                     deleteAsyncTask.execute(product);
                     // close the dialog
                     mAlertDialog.dismiss();
 
-                }), getString(R.string.no), ((view) -> {if (mAlertDialog != null) mAlertDialog.dismiss();}), 0);
+                }), getString(R.string.no), ((view) -> {
+                    if (mAlertDialog != null) mAlertDialog.dismiss();
+                }), 0);
         if (mAlertDialog != null) mAlertDialog.show();
     }
 
