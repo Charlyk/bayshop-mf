@@ -346,6 +346,9 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
                 case R.id.addressItemLayout:
                     mOnItemClickListener.onSelectAddressClick(mProcessingParcel, getAdapterPosition());
                     break;
+                case R.id.shippingByLayoutButton:
+                    mOnItemClickListener.onStartTrackingClick(mProcessingParcel, getAdapterPosition());
+                    break;
             }
         }
 
@@ -396,5 +399,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public interface OnItemClickListener {
         void onSelectAddressClick(PUSParcelDetailed item, int position);
+
+        void onStartTrackingClick(PUSParcelDetailed parcelDetailed, int position);
     }
 }

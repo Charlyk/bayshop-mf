@@ -91,7 +91,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         mStatusBarHolder.measure(MeasureSpec.EXACTLY, MeasureSpec.UNSPECIFIED);
         mTotalWidth = mStatusBarHolder.getWidth();
 
-        mOneStatusWidth = mTotalWidth / mStatusesCount;
+        mOneStatusWidth = mTotalWidth / (mStatusesCount - 1);
 
         mStatusIndicator = rootView.findViewById(R.id.statusBarStatusIndicator);
         mStatusNameLabel = (TextView) rootView.findViewById(R.id.statusViewNameLabel);
@@ -103,7 +103,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         // get holder width
         mTotalWidth = mStatusBarHolder.getWidth();
         // compute the with for one status
-        mOneStatusWidth = mTotalWidth / mStatusesCount;
+        mOneStatusWidth = mTotalWidth / (mStatusesCount - 1);
         // get parent left and right sides position
         Rect parentRect = new Rect();
         mStatusBarHolder.getGlobalVisibleRect(parentRect);
@@ -166,14 +166,14 @@ public class ParcelStatusBarView extends RelativeLayout {
         // get holder width
         mTotalWidth = mStatusBarHolder.getWidth();
         // compute the with for one status
-        mOneStatusWidth = mTotalWidth / mStatusesCount;
+        mOneStatusWidth = mTotalWidth / (mStatusesCount - 1);
     }
 
     public void setProgress(int progress, String progressName) {
         // check if given progress is not greater then max progress
         // if it is greater just set it equal to max progress
         if (!mIsReady) return;
-        if (progress > mStatusesCount) progress = mStatusesCount;
+//        if (progress > mStatusesCount) progress = mStatusesCount;
         // set current progress for get method
         mCurrentProgress = progress;
 

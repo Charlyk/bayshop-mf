@@ -171,6 +171,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
         // create tabs intent for products url
         CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
         tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorAccent));
+        tabsBuilder.setSecondaryToolbarColor(getResources().getColor(R.color.colorPrimary));
         mTabsIntent = tabsBuilder.build();
 
         if (mIsInStock && hasDeclaration) {

@@ -2,7 +2,7 @@
 <LinearLayout
     android:id="@+id/trackingNumberLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="65dp"
     android:layout_below="@id/addAwaitingToolbar"
     android:orientation="vertical"
     android:layout_marginBottom="7.5dp"
@@ -15,18 +15,17 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="16dp"
-        android:paddingBottom="7dp"
         android:text="@string/tracking_number"
         android:textSize="12sp"/>
 
     <EditText
         android:id="@+id/addAwaitingTrackingNumInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@android:color/white"
-        android:paddingBottom="16dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:paddingBottom="16dp"
         android:textColorHint="@color/colorDivider"
         android:hint="@string/tracking_example"
         android:inputType="textUri"

@@ -124,7 +124,9 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
 
         CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
-        tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorPrimary));
+        tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorAccent));
+        tabsBuilder.setSecondaryToolbarColor(getResources().getColor(R.color.colorPrimary));
+        tabsBuilder.setShowTitle(true);
         mTabsIntent = tabsBuilder.build();
         return view;
     }
@@ -446,6 +448,13 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
     @Override
     public void onSelectAddressClick(PUSParcelDetailed item, int position) {
         mActivity.addFragment(AddressesListFragment.newInstance(true), true);
+    }
+
+    @Override
+    public void onStartTrackingClick(PUSParcelDetailed parcelDetailed, int position) {
+        if (mPUSParcelDetailed.getTrackingUrl() != null) {
+            mTabsIntent.launchUrl(mActivity, Uri.parse(mPUSParcelDetailed.getTrackingUrl()));
+        }
     }
 
     //----------------------- TAKEN TO DELIVERY -----------------------//

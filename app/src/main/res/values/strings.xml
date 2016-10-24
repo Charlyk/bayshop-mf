@@ -400,4 +400,5 @@
     <string name="additional_package_price">Additinal package price:</string>
     <string name="declared_price">Declared price:</string>
     <string name="edit_feedback">Change feedback</string>
+    <string name="_10">$10</string>
 </resources>

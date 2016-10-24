@@ -58,6 +58,7 @@
                     android:paddingRight="16dp">
 
                     <CheckBox
+                        android:clickable="false"
                         android:id="@+id/confirmAdditionalPackagesCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -100,6 +101,7 @@
                     android:layout_height="0.5dp"
                     android:background="#ededed"/>
 
+                <!--order local delivery-->
                 <RelativeLayout
                     android:id="@+id/confirmLocalDeliveryButton"
                     android:layout_width="match_parent"
@@ -111,6 +113,7 @@
                     android:paddingRight="16dp">
 
                     <CheckBox
+                        android:clickable="false"
                         android:id="@+id/confirmLocalDeliveryCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -153,6 +156,8 @@
                     android:layout_height="0.5dp"
                     android:background="#ededed"/>
 
+                <!--send on user alert-->
+
                 <RelativeLayout
                     android:id="@+id/confirmSentOnUserAlertButton"
                     android:layout_width="match_parent"
@@ -164,6 +169,7 @@
                     android:paddingRight="16dp">
 
                     <CheckBox
+                        android:clickable="false"
                         android:id="@+id/confirmSentOnUserAlert"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -260,6 +266,7 @@
                         android:textSize="16sp"/>
                 </RelativeLayout>
 
+                <!--insurance price-->
                 <RelativeLayout
                     android:id="@+id/confirmInsurancePriceLayout"
                     android:layout_width="match_parent"
@@ -292,6 +299,7 @@
                         android:textSize="16sp"/>
                 </RelativeLayout>
 
+                <!--declaration price-->
                 <RelativeLayout
                     android:id="@+id/confirmDeclarationPriceLayout"
                     android:layout_width="match_parent"
@@ -321,6 +329,40 @@
                         android:layout_toLeftOf="@id/confirmDeclarationPriceLabel"
                         android:layout_toStartOf="@id/confirmDeclarationPriceLabel"
                         android:text="@string/declaration"
+                        android:textSize="16sp"/>
+                </RelativeLayout>
+
+                <!--additional package price-->
+                <RelativeLayout
+                    android:id="@+id/confirmAdditionalPackagePriceLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="16dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="16dp">
+
+                    <TextView
+                        android:id="@+id/confirmAdditionalPackagePriceLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:text="@string/_10"/>
+
+                    <TextView
+                        android:id="@+id/confirmAdditionalPackagePriceTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/confirmAdditionalPackagePriceLabel"
+                        android:layout_toStartOf="@id/confirmAdditionalPackagePriceLabel"
+                        android:text="@string/additional_package"
                         android:textSize="16sp"/>
                 </RelativeLayout>
 
@@ -379,6 +421,7 @@
                     android:paddingRight="16dp">
 
                     <CheckBox
+                        android:clickable="false"
                         android:id="@+id/confirmAgreeTermsCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

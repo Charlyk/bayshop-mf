@@ -64,6 +64,8 @@ public class ConfirmationFragment extends ParentFragment {
     @BindView(R.id.confirmSentOnUserAlert) CheckBox mSendOnAlert;
     @BindView(R.id.confirmAgreeTermsCheckBox) CheckBox mTermsAndConditions;
     @BindView(R.id.confirmInsurancePriceLayout) RelativeLayout mInsurancePriceLayout;
+    @BindView(R.id.confirmAdditionalPackagePriceLayout)
+    RelativeLayout mAdditionalPackLayout;
 
     @BindView(R.id.confirmDeliveryPriceLabel) TextView mDeliveryPrice;
     @BindView(R.id.confirmInsurancePriceLabel) TextView mInsurancePrice;
@@ -167,6 +169,15 @@ public class ConfirmationFragment extends ParentFragment {
     @OnClick(R.id.confirmAdditionalPackageButton)
     void addAdditionalPackagingMaterials() {
         mUseAdditionalPackage.setChecked(!mUseAdditionalPackage.isChecked());
+        mAdditionalPackLayout.setVisibility(mUseAdditionalPackage.isChecked() ? View.VISIBLE : View.GONE);
+
+        if (mUseAdditionalPackage.isChecked()) {
+            mTotalPriceValue += 10f;
+        } else {
+            mTotalPriceValue -= 10f;
+        }
+
+        mTotalPrice.setText(mCreationDetails.getCurrencySign() + mTotalPriceValue);
     }
 
     /**
