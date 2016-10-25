@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:background="@android:color/white">
 
     <ScrollView
@@ -20,15 +21,15 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/userDataFirstNameInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:paddingTop="5dp"
+                android:layout_height="65dp"
+                android:paddingTop="15dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/userDataFirstNameInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:textSize="16sp"
                     android:background="@android:color/white"
                     android:hint="@string/first_name"
@@ -45,8 +46,8 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/userDataLastNameInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:paddingTop="5dp"
+                android:layout_height="65dp"
+                android:paddingTop="15dp"
                 android:layout_below="@id/fNameDivider"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
@@ -54,8 +55,9 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/userDataLastNameInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:textSize="16sp"
+                    tools:text="Some text"
                     android:background="@android:color/white"
                     android:hint="@string/last_name"
                     android:inputType="textPersonName"/>
@@ -71,10 +73,11 @@
             <LinearLayout
                 android:id="@+id/userDataPhoneCodeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="65dp"
                 android:layout_below="@id/lNameDivider"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
+                android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingEnd="16dp"
                 android:paddingLeft="16dp"
@@ -96,7 +99,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
                     android:hint="@string/select_phone_code"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -118,8 +120,8 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/userDataPhoneNumberInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:paddingTop="5dp"
+                android:layout_height="65dp"
+                android:paddingTop="15dp"
                 android:layout_below="@id/userDataPhoneCodeDivider"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
@@ -127,7 +129,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/userDataPhoneNumberInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:textSize="16sp"
                     android:background="@android:color/white"
                     android:hint="@string/phone_number"
@@ -144,10 +146,11 @@
             <LinearLayout
                 android:id="@+id/userDataCountryLayout"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="65dp"
                 android:layout_below="@id/userDataPhoneNumberDivider"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
+                android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingEnd="16dp"
                 android:paddingLeft="16dp"
@@ -169,7 +172,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
                     android:hint="@string/moldova"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -191,10 +193,11 @@
             <LinearLayout
                 android:id="@+id/userDataLanguageLayout"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="65dp"
                 android:layout_below="@id/userDataCountryDivider"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
+                android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingEnd="16dp"
                 android:paddingLeft="16dp"
@@ -216,7 +219,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
                     android:hint="@string/english"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -238,7 +240,7 @@
             <View
                 android:id="@+id/inputFocusIndicator"
                 android:layout_width="5dp"
-                android:layout_height="55dp"
+                android:layout_height="65dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:background="@color/colorAccent"/>

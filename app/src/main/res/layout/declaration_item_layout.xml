@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_marginBottom="7.5dp">
 
@@ -11,9 +13,6 @@
         android:id="@+id/editDeclarationUrlInputLayout"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="12dp"
-        android:background="@android:color/white"
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
@@ -24,6 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:paddingTop="16dp"
             android:text="@string/url_to_the_product"
             android:textSize="13sp"/>
 
@@ -51,6 +51,7 @@
             android:id="@+id/productUrlInput"
             android:layout_width="match_parent"
             android:layout_height="24dp"
+            android:paddingBottom="6dp"
             android:layout_below="@id/textView4"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
@@ -71,6 +72,7 @@
             android:layout_alignEnd="@id/productUrlInput"
             android:layout_alignTop="@id/productUrlInput"
             android:layout_alignBottom="@id/productUrlInput"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/text_field_end"/>
     </RelativeLayout>
 
@@ -86,20 +88,18 @@
         android:id="@+id/editDeclarationNameInputLayout"
         android:layout_below="@id/editDeclarationUrlSeparator"
         android:layout_width="match_parent"
-        android:paddingTop="16dp"
-        android:paddingBottom="12dp"
-        android:background="@android:color/white"
         android:layout_height="65dp">
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="16dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:text="@string/product_name"
             android:textSize="13sp"/>
 
@@ -107,12 +107,14 @@
             android:id="@+id/productNameInput"
             android:layout_width="match_parent"
             android:layout_height="24dp"
+            android:paddingBottom="6dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@id/textView3"
+            tools:text="Sfsdf"
             android:textColorHint="@color/colorDivider"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:background="@android:color/white"
             android:hint="@string/example_product"
             android:inputType="text"
@@ -133,25 +135,23 @@
         android:id="@+id/editDeclarationUnitsLayout"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:paddingTop="16dp"
-        android:background="@android:color/white"
         android:layout_below="@id/editDeclarationNameSeparator"
-        android:paddingBottom="12dp"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
                 android:text="@string/units_quantity"
                 android:textSize="13sp"/>
 
@@ -159,10 +159,13 @@
                 android:id="@+id/productQuantityInput"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
+                android:paddingBottom="6dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:background="@android:color/white"
                 android:textColorHint="@color/colorDivider"
                 android:hint="@string/_0"
-                android:text="32"
+                tools:text="32"
                 android:inputType="number"
                 android:nextFocusDown="@+id/productPriceInput"
                 android:textSize="16sp"/>
@@ -171,15 +174,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
                 android:text="@string/total_price"
                 android:textSize="13sp"/>
 
@@ -187,6 +191,9 @@
                 android:id="@+id/productPriceInput"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
+                android:paddingBottom="6dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:background="@android:color/white"
                 android:textColorHint="@color/colorDivider"
                 android:hint="@string/_0_0"

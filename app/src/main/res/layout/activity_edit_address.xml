@@ -2,6 +2,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:animateLayoutChanges="true"
                 android:background="@android:color/white"
                 android:clickable="true">
@@ -41,14 +42,13 @@
                 android:id="@+id/editAddressFirstNameInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:gravity="center_vertical"
-                android:layout_alignParentTop="true"
-                android:background="@android:color/white">
+                android:paddingTop="15dp"
+                android:layout_alignParentTop="true">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressFirstNameInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@android:color/white"
@@ -69,14 +69,14 @@
                 android:id="@+id/editAddressLastNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:gravity="center_vertical"
+                android:paddingTop="15dp"
                 android:layout_below="@id/editAddressFirstNameDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressLastNameInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@android:color/white"
@@ -97,14 +97,14 @@
                 android:id="@+id/editAddressStreetLayout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:gravity="center_vertical"
+                android:paddingTop="15dp"
                 android:layout_below="@id/editAddressLastNameDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressStreetInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:textSize="16sp"
@@ -125,14 +125,14 @@
                 android:id="@+id/editAddressEmailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:gravity="center_vertical"
+                android:paddingTop="15dp"
                 android:layout_below="@id/editAddressStreetDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressEmailInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:textSize="16sp"
@@ -178,7 +178,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
                     android:textSize="16sp"
                     android:hint="@string/select_phone_code"
                     android:textColor="@android:color/black"/>
@@ -195,7 +194,7 @@
                 android:id="@+id/editAddressPhoneNumberLayout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:gravity="center_vertical"
+                android:paddingTop="15dp"
                 android:layout_below="@id/editAddressPhoneCodeDivider"
                 android:background="@android:color/white">
 
@@ -223,16 +222,17 @@
                 android:id="@+id/editAddressCityLayout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:gravity="center_vertical"
+                android:paddingTop="15dp"
                 android:layout_below="@id/editAddressPhoneNumberDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressCityInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
+                    tools:text="Some text"
                     android:textSize="16sp"
                     android:background="@android:color/white"
                     android:hint="@string/city"
@@ -251,7 +251,7 @@
                 android:id="@+id/countryLayout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:gravity="center_vertical"
+                android:paddingTop="15dp"
                 android:layout_below="@id/editAddressCityDivider"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
@@ -276,7 +276,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="5dp"
                     android:textSize="16sp"
-                    android:layout_marginTop="5dp"
                     android:hint="@string/select_country"
                     android:textColor="@android:color/black"/>
             </LinearLayout>
@@ -292,14 +291,14 @@
                 android:id="@+id/editAddressPostalCodeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:gravity="center_vertical"
+                android:paddingTop="15dp"
                 android:layout_below="@id/editAddressCountryDivider"
                 android:background="@android:color/white">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/addAddressPostalCodeInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:textSize="16sp"

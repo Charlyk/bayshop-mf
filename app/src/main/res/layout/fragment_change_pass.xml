@@ -10,15 +10,15 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/changePassCurrentInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:paddingTop="5dp"
+        android:layout_height="65dp"
+        android:paddingTop="15dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/changePassCurrentInput"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="24dp"
             android:textColor="@color/textColor"
             android:inputType="textPassword"
             android:textSize="16sp"
@@ -37,15 +37,15 @@
         android:layout_below="@id/currentPassDivider"
         android:id="@+id/changePassNewInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:paddingTop="5dp"
+        android:layout_height="65dp"
+        android:paddingTop="15dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/changePassNewInput"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="24dp"
             android:textColor="@color/textColor"
             android:inputType="textPassword"
             android:background="@android:color/white"
@@ -64,15 +64,15 @@
         android:id="@+id/changePassConfirmInputLayout"
         android:layout_below="@id/newPassDivider"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:paddingTop="5dp"
+        android:layout_height="65dp"
+        android:paddingTop="15dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/changePassConfirmInput"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="24dp"
             android:textColor="@color/textColor"
             android:inputType="textPassword"
             android:background="@android:color/white"
@@ -91,7 +91,7 @@
     <View
         android:id="@+id/changePassFocusIndicator"
         android:layout_width="5dp"
-        android:layout_height="55dp"
+        android:layout_height="65dp"
         android:visibility="gone"
         android:background="@color/colorAccent"/>
 

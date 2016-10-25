@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
@@ -63,8 +62,6 @@ public class RegisterFragment extends ParentFragment {
     TextInputLayout mConfirmPassLayout;
     @BindView(R.id.registerFocusIndicator)
     View mFocusIndicator;
-    @BindView(R.id.registerSubscribeCheckBox)
-    CheckBox mSubscribe;
 
     @BindView(R.id.registerProgressBar) ProgressBar mProgressBar;
     @BindView(R.id.registerConfirmButton) Button mConfirmButton;

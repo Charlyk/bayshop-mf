@@ -15,28 +15,33 @@
         <RelativeLayout
             android:id="@+id/warehouseAddressFullName"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="65dp"
             android:clickable="true"
-            android:background="?selectableItemBackground"
-            android:layout_margin="16dp">
+            android:background="?selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addressesFullNameTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:text="@string/full_name"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/addressesFullNameLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     tools:text="Bay Shop"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -92,28 +97,33 @@
         <RelativeLayout
             android:id="@+id/warehouseAddressAddressLineTwo"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="65dp"
             android:clickable="true"
-            android:background="?selectableItemBackground"
-            android:layout_margin="16dp">
+            android:background="?selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addressesLineTwoTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:text="@string/address_line_2"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/addressesLineTwoLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     tools:text="Ste #LM19706"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -128,28 +138,33 @@
         <RelativeLayout
             android:id="@+id/warehouseAddressCity"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="65dp"
             android:clickable="true"
-            android:background="?selectableItemBackground"
-            android:layout_margin="16dp">
+            android:background="?selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addressesCityTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:text="@string/city"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/addressesCityLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     tools:text="Claymont"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -164,28 +179,33 @@
         <RelativeLayout
             android:id="@+id/warehouseAddressState"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="65dp"
             android:clickable="true"
-            android:background="?selectableItemBackground"
-            android:layout_margin="16dp">
+            android:background="?selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addressesStateTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:text="@string/state"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/addressesStateLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     tools:text="DE (Delaware)"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -200,28 +220,33 @@
         <RelativeLayout
             android:id="@+id/warehouseAddressPostalCode"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="65dp"
             android:clickable="true"
-            android:background="?selectableItemBackground"
-            android:layout_margin="16dp">
+            android:background="?selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addressesPostalCodeTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:text="@string/postal_code"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/addressesPostalCodeLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     tools:text="19703"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -236,28 +261,33 @@
         <RelativeLayout
             android:id="@+id/warehouseAddressCountry"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="65dp"
             android:clickable="true"
-            android:background="?selectableItemBackground"
-            android:layout_margin="16dp">
+            android:background="?selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addressesCountryTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:text="@string/country"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/addressesCountryLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     tools:text="Bay Shop"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>
@@ -272,28 +302,33 @@
         <RelativeLayout
             android:id="@+id/warehouseAddressPhoneNumber"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="65dp"
             android:clickable="true"
-            android:background="?selectableItemBackground"
-            android:layout_margin="16dp">
+            android:background="?selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addressesPhoneNumberTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:text="@string/phone_number"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/addressesPhoneNumberLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     tools:text="Bay Shop"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>

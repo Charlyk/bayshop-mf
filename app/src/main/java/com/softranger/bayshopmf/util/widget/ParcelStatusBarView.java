@@ -107,6 +107,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         // get parent left and right sides position
         Rect parentRect = new Rect();
         mStatusBarHolder.getGlobalVisibleRect(parentRect);
+
         parentLeft = parentRect.left - getPixelsFromDp(10);
         parentRight = parentRect.right - getPixelsFromDp(10);
         // tell to listeners that we are ready for animations
@@ -173,7 +174,9 @@ public class ParcelStatusBarView extends RelativeLayout {
         // check if given progress is not greater then max progress
         // if it is greater just set it equal to max progress
         if (!mIsReady) return;
-//        if (progress > mStatusesCount) progress = mStatusesCount;
+        if (progress > mStatusesCount) progress = mStatusesCount;
+        // set stetus title
+        mStatusNameLabel.setText(progressName);
         // set current progress for get method
         mCurrentProgress = progress;
 
@@ -202,7 +205,9 @@ public class ParcelStatusBarView extends RelativeLayout {
         // get indicator current width
         float fromWidth = mStatusIndicator.getLayoutParams().width;
         // if we have already max width just stop here
-        if (fromWidth == mToWidth) return;
+        if ((fromWidth + mToWidth) >= mTotalWidth) {
+            mToWidth = mTotalWidth;
+        }
         // create a value animator to animate the indicator progress
         mIndicatorAnimation = ValueAnimator.ofFloat(0, mToWidth);
         mIndicatorAnimation.addUpdateListener(mIndicatorAnimatorListener);
@@ -228,9 +233,6 @@ public class ParcelStatusBarView extends RelativeLayout {
         set.play(mIndicatorAnimation);
         set.playTogether(mTextAnimation, alphaAnimator);
         set.start();
-
-        // set stetus title
-        mStatusNameLabel.setText(progressName);
     }
 
     /**
