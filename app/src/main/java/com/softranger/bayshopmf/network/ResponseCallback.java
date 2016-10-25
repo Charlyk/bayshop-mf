@@ -1,10 +1,15 @@
 package com.softranger.bayshopmf.network;
 
+import android.content.Intent;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,6 +23,7 @@ import retrofit2.Response;
 
 public abstract class ResponseCallback<T> implements Callback<ServerResponse<T>> {
 
+    public static final String ACTION_NO_CONNECTION = "com.softranger.bayshopmf.network.NO_INTERNET_CONNECTION";
     public abstract void onSuccess(T data);
     public abstract void onFailure(ServerResponse errorData);
     public abstract void onError(Call<ServerResponse<T>> call, Throwable t);
@@ -44,7 +50,11 @@ public abstract class ResponseCallback<T> implements Callback<ServerResponse<T>>
 
     @Override
     public void onFailure(Call<ServerResponse<T>> call, Throwable t) {
-        onError(call, t);
+        if (t instanceof ConnectException || t instanceof UnknownHostException) {
+            Application.getInstance().sendBroadcast(new Intent(ACTION_NO_CONNECTION));
+        } else {
+            onError(call, t);
+        }
     }
 
     public void onServerResponse(ServerResponse<T> serverResponse) {

@@ -213,6 +213,10 @@ public class SettingsFragment extends ParentFragment {
                         mShippingSubtitle.setText(shipper.getTitle());
                     }
                     break;
+                case Application.ACTION_RETRY:
+                    mActivity.removeNoConnectionView();
+                    saveNotificationsSettings();
+                    break;
             }
         }
     };

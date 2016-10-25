@@ -1,10 +1,9 @@
 package com.softranger.bayshopmf.ui.contact;
 
-import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
-import android.support.v4.view.MenuItemCompat;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -32,7 +31,7 @@ public class SearchMailActivity extends ParentActivity implements MenuItemCompat
     private SearchView mSearchView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_mail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

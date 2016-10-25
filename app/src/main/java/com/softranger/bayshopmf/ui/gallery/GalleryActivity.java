@@ -1,9 +1,8 @@
 package com.softranger.bayshopmf.ui.gallery;
 
-import android.app.Fragment;
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.softranger.bayshopmf.R;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public class GalleryActivity extends ParentActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
         Intent intent = getIntent();

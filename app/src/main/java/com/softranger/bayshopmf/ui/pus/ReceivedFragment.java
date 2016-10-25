@@ -67,6 +67,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         mUnbinder = ButterKnife.bind(this, view);
 
         IntentFilter intentFilter = new IntentFilter(ACTION_UPDATE);
+        intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mPUSParcels = new ArrayList<>();
@@ -111,7 +112,14 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            onRefresh(mRefreshLayout);
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                default:
+                    onRefresh(mRefreshLayout);
+                    break;
+            }
         }
     };
 

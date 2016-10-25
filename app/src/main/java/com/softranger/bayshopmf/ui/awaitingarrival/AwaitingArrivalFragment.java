@@ -31,8 +31,6 @@ import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
-import java.net.ConnectException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -95,6 +93,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         mActivity = (MainActivity) getActivity();
         IntentFilter intentFilter = new IntentFilter(ACTION_LIST_CHANGED);
         intentFilter.addAction(ACTION_SHOW_BTN);
+        intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         mUnbinder = ButterKnife.bind(this, view);
 
@@ -194,11 +193,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
             mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);
-            if (t instanceof ConnectException || t instanceof UnknownHostException) {
-//                mActivity.getNoConnectionView();
-            } else {
-                Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -211,6 +206,10 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
                     break;
                 case ACTION_SHOW_BTN:
                     mActionButton.setVisibility(View.VISIBLE);
+                    break;
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    onRefresh(mRefreshLayout);
                     break;
             }
         }
@@ -245,6 +244,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        mActivity.removeNoConnectionView();
         mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems();
         mWaitingListCall.enqueue(mResponseCallback);
     }

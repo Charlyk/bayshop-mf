@@ -3,6 +3,10 @@ package com.softranger.bayshopmf.ui.settings;
 
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -77,6 +81,9 @@ public class ChangePassFragment extends ParentFragment {
         View view = inflater.inflate(R.layout.fragment_change_pass, container, false);
         mActivity = (SettingsActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
+
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         return view;
     }
 
@@ -134,6 +141,19 @@ public class ChangePassFragment extends ParentFragment {
         toggleLoading(true);
     }
 
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    saveNewPassword();
+                    break;
+            }
+        }
+    };
+
     private ResponseCallback mResponseCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
@@ -180,5 +200,6 @@ public class ChangePassFragment extends ParentFragment {
         if (mCall != null) mCall.cancel();
         mActivity.hideKeyboard();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 }

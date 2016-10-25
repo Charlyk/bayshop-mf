@@ -1,11 +1,13 @@
 package com.softranger.bayshopmf.util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.util.TypedValue;
-import android.view.WindowManager;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -43,11 +45,8 @@ public class Application extends android.app.Application {
     public static SharedPreferences autoPackPrefs;
     public static SharedPreferences notifyPrefs;
 
-    private WindowManager mWindowManager;
-
     public static String currentToken;
     public static User user;
-    private static SimpleDateFormat serverFormat;
     private static SimpleDateFormat friendlyFormat;
     public static HashMap<String, Integer> counters;
 
@@ -97,12 +96,10 @@ public class Application extends android.app.Application {
         // build the client and set mapper and client to retrofit
         OkHttpClient client = httpClient.build();
         retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.Api.URL)
+                .baseUrl(Constants.Api.TEMP_URL)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .client(client)
                 .build();
-
-        serverFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
     }
 
@@ -249,5 +246,12 @@ public class Application extends android.app.Application {
         }
 
         return formattedDate;
+    }
+
+    public static boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) Application.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

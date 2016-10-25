@@ -3,7 +3,10 @@ package com.softranger.bayshopmf.ui.auth;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -47,10 +50,13 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
     private Call<ServerResponse<ParcelsCount>> mCountersCall;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         instance = this;
+
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        registerReceiver(mBroadcastReceiver, intentFilter);
 
         mLoginFragment = LoginFragment.newInstance();
         replaceFragment(mLoginFragment);
@@ -303,6 +309,17 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    removeNoConnectionView();
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onBackStackChanged() {

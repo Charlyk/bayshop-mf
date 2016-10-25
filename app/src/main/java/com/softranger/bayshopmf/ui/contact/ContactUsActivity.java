@@ -30,7 +30,7 @@ public class ContactUsActivity extends ParentActivity implements MailAdapter.OnM
     private static boolean isEditMode;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -3,6 +3,10 @@ package com.softranger.bayshopmf.ui.pus;
 
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
@@ -16,6 +20,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.network.BayShopApiInterface;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
@@ -23,6 +28,8 @@ import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,6 +91,9 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
         View view = inflater.inflate(R.layout.fragment_return_address, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (ParentActivity) getActivity();
+
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mPUSParcelDetailed = getArguments().getParcelable(DETAILED_PARCEL);
 
@@ -149,6 +159,19 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
         mResponseCall.enqueue(this);
     }
 
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    confirmReturningToSeller();
+                    break;
+            }
+        }
+    };
+
     private String getTextFrom(TextInputEditText inputEditText) {
         return String.valueOf(inputEditText.getText());
     }
@@ -164,7 +187,7 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
         if (mFocusIndicator.getVisibility() != View.VISIBLE) {
             mFocusIndicator.setVisibility(View.VISIBLE);
         }
-
+        if (!hasFocus) return;
         switch (view.getId()) {
             case R.id.returnFirstNameInput:
                 ObjectAnimator.ofFloat(mFocusIndicator, "y", mFirstNameLayout.getY()).setDuration(300).start();
@@ -215,6 +238,7 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
         super.onDestroyView();
         if (mResponseCall != null) mResponseCall.cancel();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -240,6 +264,11 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
 
     @Override
     public void onFailure(Call<ServerResponse> call, Throwable t) {
+        if (t instanceof ConnectException || t instanceof UnknownHostException) {
+            Application.getInstance().sendBroadcast(new Intent(ResponseCallback.ACTION_NO_CONNECTION));
+        } else {
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
         mActivity.toggleLoadingProgress(false);
     }
 }

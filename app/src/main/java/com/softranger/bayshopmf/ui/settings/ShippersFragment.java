@@ -1,7 +1,10 @@
 package com.softranger.bayshopmf.ui.settings;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -60,11 +63,33 @@ public class ShippersFragment extends ParentFragment implements ShippingMethodAd
         View view = inflater.inflate(R.layout.fragment_shippers, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (SettingsActivity) getActivity();
+
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mActivity.toggleLoadingProgress(true);
+        refreshFragment();
+        return view;
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    refreshFragment();
+                    break;
+            }
+        }
+    };
+
+    @Override
+    public void refreshFragment() {
         mCall = Application.apiInterface().getMemberShippers();
         mCall.enqueue(mResponseCallback);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        return view;
     }
 
     private ResponseCallback<ArrayList<Shipper>> mResponseCallback = new ResponseCallback<ArrayList<Shipper>>() {
@@ -106,6 +131,7 @@ public class ShippersFragment extends ParentFragment implements ShippingMethodAd
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override

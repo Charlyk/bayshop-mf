@@ -106,7 +106,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -174,7 +174,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
         }
 
-        Log.e("Token", FirebaseInstanceId.getInstance().getToken());
+        Log.e("Token", String.valueOf(FirebaseInstanceId.getInstance().getToken()));
     }
 
     @Override

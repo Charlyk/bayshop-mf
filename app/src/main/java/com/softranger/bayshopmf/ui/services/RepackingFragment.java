@@ -1,7 +1,10 @@
 package com.softranger.bayshopmf.ui.services;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -74,6 +77,10 @@ public class RepackingFragment extends ParentFragment {
         View view = inflater.inflate(R.layout.fragment_additional_services, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (ParentActivity) getActivity();
+
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
         mId = getArguments().getString(PARCEL);
         mIsInProgress = getArguments().getBoolean(PROGRESS);
 
@@ -102,6 +109,19 @@ public class RepackingFragment extends ParentFragment {
     void showRepackingDetails() {
 
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    makeRepackingRequest();
+                    break;
+            }
+        }
+    };
 
     private ResponseCallback mResponseCallback = new ResponseCallback() {
         @Override
@@ -140,6 +160,8 @@ public class RepackingFragment extends ParentFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 }

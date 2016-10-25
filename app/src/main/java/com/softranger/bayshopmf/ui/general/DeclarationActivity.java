@@ -111,7 +111,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     TextView mToolbarTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_awaiting);
         // bind all views

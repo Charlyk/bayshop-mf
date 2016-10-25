@@ -30,8 +30,6 @@ import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
-import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -67,7 +65,6 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
     @BindView(R.id.receivedSignatureMapView) MapView mMapView;
     @BindView(R.id.clientSignatureDownloadProgress) ProgressBar mDownloadProgress;
 
-    private static SimpleDateFormat serverFormat;
     private static SimpleDateFormat friendlyFormat;
 
     private static double latitude;
@@ -226,11 +223,6 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
-    }
-
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-
     }
 
     @Override

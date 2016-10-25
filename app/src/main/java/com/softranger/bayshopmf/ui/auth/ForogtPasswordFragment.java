@@ -1,6 +1,10 @@
 package com.softranger.bayshopmf.ui.auth;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -51,6 +55,9 @@ public class ForogtPasswordFragment extends ParentFragment {
         View view = inflater.inflate(R.layout.fragment_forogt_password, container, false);
         mActivity = (LoginActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
+
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         return view;
     }
 
@@ -70,6 +77,19 @@ public class ForogtPasswordFragment extends ParentFragment {
         mCall = Application.apiInterface().requestPasswordRestoring(email);
         mCall.enqueue(mResponseCallback);
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    restoreUserPassword();
+                    break;
+            }
+        }
+    };
 
     private ResponseCallback mResponseCallback = new ResponseCallback() {
         @Override
@@ -114,5 +134,6 @@ public class ForogtPasswordFragment extends ParentFragment {
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 }

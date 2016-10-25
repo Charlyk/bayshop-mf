@@ -2,7 +2,10 @@ package com.softranger.bayshopmf.ui.pus;
 
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,8 +32,6 @@ import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,6 +106,9 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         mActivity = (ParentActivity) getActivity();
         mRatingBar.setOnRatingBarChangeListener(this);
 
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
 
         mParcelDetailed = getArguments().getParcelable(DETAILED_PARCEL);
@@ -129,6 +133,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -147,11 +152,6 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             dialogFragment.setOnDoneListener(this);
             dialogFragment.show(mActivity.getFragmentManager(), "Loading dialog fragment");
         }
-    }
-
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-
     }
 
     @Override
@@ -233,12 +233,24 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         mCall.enqueue(mResponseCallback);
     }
 
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    sendFeedback();
+                    break;
+            }
+        }
+    };
+
     private ResponseCallback mResponseCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
-            // TODO: 10/18/16 change icon
             mActivity.showResultActivity(getString(R.string.feedback_added),
-                    R.mipmap.ic_confirm_35dp, getString(R.string.feedback_comment));
+                    R.mipmap.ic_expediated_comment_250dp, getString(R.string.feedback_comment));
             Intent update = new Intent(ReceivedFragment.ACTION_UPDATE);
             mActivity.sendBroadcast(update);
             mActivity.onBackPressed();

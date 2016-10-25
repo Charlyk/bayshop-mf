@@ -3,7 +3,10 @@ package com.softranger.bayshopmf.ui.auth;
 
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -85,6 +88,9 @@ public class RegisterFragment extends ParentFragment {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         mActivity = (LoginActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
+
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
         return view;
     }
 
@@ -130,6 +136,19 @@ public class RegisterFragment extends ParentFragment {
         mRegisterCall = Application.apiInterface().createNewAccount(email, fName, lName, password);
         mRegisterCall.enqueue(mRegisterCallback);
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    registerUserToApplication();
+                    break;
+            }
+        }
+    };
 
     private ResponseCallback mRegisterCallback = new ResponseCallback() {
         @Override
@@ -232,5 +251,6 @@ public class RegisterFragment extends ParentFragment {
         super.onDestroyView();
         if (mRegisterCall != null) mRegisterCall.cancel();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 }

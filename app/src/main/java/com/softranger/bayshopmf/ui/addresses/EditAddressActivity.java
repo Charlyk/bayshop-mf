@@ -1,11 +1,13 @@
 package com.softranger.bayshopmf.ui.addresses;
 
 import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -21,6 +23,8 @@ import com.softranger.bayshopmf.model.address.CountryCode;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +32,7 @@ import butterknife.OnClick;
 import butterknife.OnFocusChange;
 import retrofit2.Call;
 
-public class EditAddressActivity extends AppCompatActivity implements CodesDialogFragment.OnCodeSelectedListener,
+public class EditAddressActivity extends ParentActivity implements CodesDialogFragment.OnCodeSelectedListener,
         CountriesDialogFragment.OnCountrySelectListener {
 
     public static final String ADDRESS_ID_EXTRA = "ADDRESS ID";
@@ -67,10 +71,13 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
     private boolean mIsSaveClicked;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_address);
         ButterKnife.bind(this);
+
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        registerReceiver(mBroadcastReceiver, intentFilter);
 
         mToolbar.setNavigationOnClickListener((view) -> {
             onBackPressed();
@@ -215,6 +222,19 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
         mResponseCall.enqueue(mResponseCallback);
     }
 
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    toggleLoading(true);
+                    removeNoConnectionView();
+                    saveAddressToServer();
+                    break;
+            }
+        }
+    };
+
     @OnClick(R.id.phoneCodeLayout)
     void showSelectPhoneCodeDialog() {
         CodesDialogFragment dialogFragment = CodesDialogFragment.newInstance(mAddress.getCountryCodes());
@@ -274,5 +294,36 @@ public class EditAddressActivity extends AppCompatActivity implements CodesDialo
                     ObjectAnimator.ofFloat(mFocusIndicator, "y", mPostalCodeLayout.getY()).setDuration(300).start();
                 break;
         }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+
+    }
+
+    @Override
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
+
+    }
+
+    @Override
+    public void toggleLoadingProgress(boolean show) {
+
+    }
+
+    @Override
+    public void replaceFragment(ParentFragment fragment) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

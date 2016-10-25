@@ -2,7 +2,10 @@ package com.softranger.bayshopmf.ui.services;
 
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -79,6 +82,9 @@ public class CheckProductFragment extends ParentFragment {
         mActivity = (MainActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
 
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
         // set service default views
         mServiceImage.setImageResource(R.mipmap.ic_check_product_250dp);
         mDescriptionaLabel.setText(getString(R.string.check_product_description));
@@ -114,6 +120,19 @@ public class CheckProductFragment extends ParentFragment {
             mCall.enqueue(mResponseCallback);
         }
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    sendCheckRequest();
+                    break;
+            }
+        }
+    };
 
     private ResponseCallback mResponseCallback = new ResponseCallback() {
         @Override
@@ -165,5 +184,6 @@ public class CheckProductFragment extends ParentFragment {
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
         mActivity.hideKeyboard();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 }

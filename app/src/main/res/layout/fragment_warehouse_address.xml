@@ -51,28 +51,33 @@
         <RelativeLayout
             android:id="@+id/warehouseAddressAddressLineOne"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="65dp"
             android:clickable="true"
-            android:background="?selectableItemBackground"
-            android:layout_margin="16dp">
+            android:background="?selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/addressesLineOneTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:text="@string/address_line_1"
                     android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/addressesLineOneLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     tools:text="950 Ridge RD, UNIT B-11"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"/>

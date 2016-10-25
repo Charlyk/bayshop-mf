@@ -2,10 +2,12 @@ package com.softranger.bayshopmf.util;
 
 import android.animation.ObjectAnimator;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -13,8 +15,10 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.general.ResultActivity;
 
@@ -41,6 +46,9 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
 
     public static SelectedFragment selectedFragment;
 
+    protected View mNoConnectionView;
+    protected boolean mNoConnectionVisible;
+
     public abstract void setToolbarTitle(String title);
 
     public abstract void addFragment(ParentFragment fragment, boolean showAnimation);
@@ -50,9 +58,12 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
     public abstract void replaceFragment(ParentFragment fragment);
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        getFragmentManager().addOnBackStackChangedListener(this);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mNoConnectionView = inflater.inflate(R.layout.no_connection, null, false);
+        IntentFilter intentFilter = new IntentFilter(ResponseCallback.ACTION_NO_CONNECTION);
+        registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
     /**
@@ -132,12 +143,9 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         // check and set buttons either text and listener or visibility to GONE
         if (positiveButtonText != null) {
             positiveButton.setText(positiveButtonText);
-            positiveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onEditDialogClickListener != null) {
-                        onEditDialogClickListener.onPositiveClick(String.valueOf(dialogMessage.getText()));
-                    }
+            positiveButton.setOnClickListener(v -> {
+                if (onEditDialogClickListener != null) {
+                    onEditDialogClickListener.onPositiveClick(String.valueOf(dialogMessage.getText()));
                 }
             });
         } else {
@@ -146,12 +154,9 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
 
         if (negativeButtonText != null) {
             negativeButton.setText(negativeButtonText);
-            negativeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onEditDialogClickListener != null) {
-                        onEditDialogClickListener.onNegativeClick();
-                    }
+            negativeButton.setOnClickListener(v -> {
+                if (onEditDialogClickListener != null) {
+                    onEditDialogClickListener.onNegativeClick();
                 }
             });
         } else {
@@ -252,33 +257,53 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
 
     }
 
-//    public void getNoConnectionView() {
-//        if(Build.VERSION.SDK_INT >= 23) {
-//            /** check if we already  have permission to draw over other apps */
-//            if (!Settings.canDrawOverlays(this)) {
-//                /** if not construct intent to request permission */
-//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-//                        Uri.parse("package:" + getPackageName()));
-//                /** request permission via start activity for result */
-//                startActivityForResult(intent, CHECK_OVERLAY_PERMISSION_REQUEST_CODE);
-//            }
-//        }
-//
-//        if(Build.VERSION.SDK_INT >=23 && Settings.canDrawOverlays(this)) {
-//            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-//            WindowManager.LayoutParams windowParams = new WindowManager.LayoutParams(
-//                    WindowManager.LayoutParams.WRAP_CONTENT,
-//                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-//                    PixelFormat.TRANSLUCENT
-//            );
-//            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//            View view = inflater.inflate(R.layout.no_connection, null);
-//            Button tryAgain = (Button) view.findViewById(R.id.noInternetTryAgainBtn);
-//            tryAgain.setOnClickListener((v) -> {
-//                windowManager.removeView(view);
-//                Application.getInstance().sendBroadcast(new Intent(ACTION_RETRY));
-//            });
-//            windowManager.addView(view, windowParams);
-//        }
-//    }
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ResponseCallback.ACTION_NO_CONNECTION:
+                    showNoConnectionView();
+                    break;
+            }
+        }
+    };
+
+    public void showNoConnectionView() {
+        WindowManager.LayoutParams wlp = new WindowManager.LayoutParams();
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        wlp.width = WindowManager.LayoutParams.FILL_PARENT;
+        wlp.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+        wlp.format = PixelFormat.RGBA_8888;
+
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+
+        Button tryAgain = (Button) mNoConnectionView.findViewById(R.id.noInternetTryAgainBtn);
+        tryAgain.setOnClickListener(view -> {
+            sendBroadcast(new Intent(Application.ACTION_RETRY));
+        });
+
+        if (!mNoConnectionVisible) {
+            wm.addView(mNoConnectionView, wlp);
+            mNoConnectionVisible = true;
+        }
+    }
+
+    public void removeNoConnectionView() {
+        if (mNoConnectionView != null && mNoConnectionVisible) {
+            WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+            wm.removeView(mNoConnectionView);
+            mNoConnectionVisible = false;
+        }
+    }
+
+    public boolean isNoConnectionVisible() {
+        return mNoConnectionVisible;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+    }
 }

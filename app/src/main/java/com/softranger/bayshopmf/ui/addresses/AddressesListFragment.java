@@ -75,7 +75,8 @@ public class AddressesListFragment extends ParentFragment implements AddressList
 
     public boolean mIsGetRequest;
     public boolean mSendBack;
-
+    private boolean mIsDeleteClicked;
+    private int mDeleteAddressId;
 
     public AddressesListFragment() {
         // Required empty public constructor
@@ -111,6 +112,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
 
         IntentFilter intentFilter = new IntentFilter(EditAddressActivity.ACTION_REFRESH_ADDRESS);
         intentFilter.addAction(ACTION_ADDRESS_SELECT);
+        intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mTitleReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -128,6 +130,12 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         mRecyclerView.setAdapter(mAdapter);
         mFastScroller.setRecyclerView(mRecyclerView);
 
+        refreshFragment();
+        return rootView;
+    }
+
+    @Override
+    public void refreshFragment() {
         if (!mIsGetRequest) {
             if (!Application.isAutopackaging() && !Application.askedAboutAutoPackaging()) {
                 mAlertDialog = mActivity.getDialog(getString(R.string.use_autopacking),
@@ -145,7 +153,6 @@ public class AddressesListFragment extends ParentFragment implements AddressList
             mAddressesCall = Application.apiInterface().getUserAddresses();
             mAddressesCall.enqueue(mAddressesListResponseCallback);
         }
-        return rootView;
     }
 
     private void getAddressesList(ArrayList<InStock> inStocks) {
@@ -247,6 +254,15 @@ public class AddressesListFragment extends ParentFragment implements AddressList
                     break;
                 case ACTION_ADDRESS_SELECT:
                     // TODO: 10/18/16 select address passed through intent
+                    break;
+                case Application.ACTION_RETRY:
+                    if (mIsDeleteClicked) {
+                        deleteAddress(mDeleteAddressId);
+                    } else {
+                        mActivity.toggleLoadingProgress(true);
+                        mActivity.removeNoConnectionView();
+                        refreshFragment();
+                    }
                     break;
             }
         }
@@ -378,11 +394,17 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         mAlertDialog = mActivity.getDialog(getString(R.string.delete_address), message, R.mipmap.ic_delete_address_24dp, getString(R.string.confirm),
                 v -> {
                     mAdapter.removeItem(position);
-                    mDeleteCall = Application.apiInterface().deleteUserAddress(String.valueOf(address.getId()));
-                    mDeleteCall.enqueue(mDeleteCallback);
+                    mDeleteAddressId = address.getId();
+                    mIsDeleteClicked = true;
+                    deleteAddress(mDeleteAddressId);
                     mAlertDialog.dismiss();
                 }, getString(R.string.cancel), v -> mAlertDialog.dismiss(), 0);
         mAlertDialog.show();
+    }
+
+    private void deleteAddress(int deleteAddressId) {
+        mDeleteCall = Application.apiInterface().deleteUserAddress(String.valueOf(deleteAddressId));
+        mDeleteCall.enqueue(mDeleteCallback);
     }
 
     @Override
@@ -450,16 +472,19 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         @Override
         public void onSuccess(Object data) {
             Toast.makeText(mActivity, data.toString(), Toast.LENGTH_SHORT).show();
+            mIsDeleteClicked = false;
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            mIsDeleteClicked = false;
         }
 
         @Override
         public void onError(Call call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            mIsDeleteClicked = false;
         }
     };
 

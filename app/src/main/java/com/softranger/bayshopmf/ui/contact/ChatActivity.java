@@ -1,6 +1,5 @@
 package com.softranger.bayshopmf.ui.contact;
 
-import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -42,7 +41,7 @@ public class ChatActivity extends ParentActivity implements TextWatcher, ChatAda
     private RecyclerView mRecyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 

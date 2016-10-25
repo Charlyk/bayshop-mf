@@ -69,6 +69,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         mActivity = (MainActivity) getActivity();
 
         IntentFilter intentFilter = new IntentFilter(ACTION_UPDATE);
+        intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
@@ -80,9 +81,8 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
 
         mRefreshLayout.setPullToRefreshListener(this);
 
-        mCall = Application.apiInterface().getAllParcelsFromServer();
         mActivity.toggleLoadingProgress(true);
-        mCall.enqueue(mResponseCallback);
+        onRefresh(mRefreshLayout);
         return view;
     }
 
@@ -118,7 +118,14 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            onRefresh(mRefreshLayout);
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                default:
+                    onRefresh(mRefreshLayout);
+                    break;
+            }
         }
     };
 

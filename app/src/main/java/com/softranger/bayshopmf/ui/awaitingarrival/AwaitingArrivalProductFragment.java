@@ -98,6 +98,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
         intentFilter.addAction(AwaitingArrivalFragment.ACTION_LIST_CHANGED);
+        intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
         mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
@@ -134,13 +135,23 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
+                case Application.ACTION_RETRY:
+                    mActivity.removeNoConnectionView();
+                    mActivity.toggleLoadingProgress(true);
+                    refreshFragment();
+                    break;
                 case AwaitingArrivalFragment.ACTION_LIST_CHANGED:
-                    mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
-                    mCall.enqueue(mResponseCallback);
+                    refreshFragment();
                     break;
             }
         }
     };
+
+    @Override
+    public void refreshFragment() {
+        mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
+        mCall.enqueue(mResponseCallback);
+    }
 
     private ResponseCallback<AwaitingArrivalDetails> mResponseCallback = new ResponseCallback<AwaitingArrivalDetails>() {
         @Override

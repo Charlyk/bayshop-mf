@@ -1,8 +1,10 @@
 package com.softranger.bayshopmf.ui.auth;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
@@ -12,25 +14,31 @@ import com.softranger.bayshopmf.model.user.User;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.ParentActivity;
+import com.softranger.bayshopmf.util.ParentFragment;
 
 import retrofit2.Call;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends ParentActivity {
 
     private Intent mIntent;
+    private LoadingStep mLoadingStep;
 
     private Call<ServerResponse<User>> mPersonalDataCall;
     private Call<ServerResponse<ParcelsCount>> mCountersCall;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         if (Application.getInstance().isLoggedIn()) {
+
+            IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+            registerReceiver(mBroadcastReceiver, intentFilter);
+
             mIntent = new Intent(this, MainActivity.class);
 
-            mPersonalDataCall = Application.apiInterface().getUserPersonalData();
-            mPersonalDataCall.enqueue(mPersonalDataCallback);
+            getPersonalData();
         } else {
             startLoginActivity();
         }
@@ -42,6 +50,22 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    removeNoConnectionView();
+                    if (mLoadingStep == LoadingStep.personal_data) {
+                        getPersonalData();
+                    } else {
+                        getCounters();
+                    }
+                    break;
+            }
+        }
+    };
+
     /**
      * Callback for personal data request
      */
@@ -49,8 +73,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void onSuccess(User data) {
             Application.user = data;
-            mCountersCall = Application.apiInterface().getParcelsCounters();
-            mCountersCall.enqueue(mCountersCallback);
+            getCounters();
         }
 
         @Override
@@ -66,6 +89,18 @@ public class SplashActivity extends AppCompatActivity {
             startLoginActivity();
         }
     };
+
+    private void getPersonalData() {
+        mPersonalDataCall = Application.apiInterface().getUserPersonalData();
+        mLoadingStep = LoadingStep.personal_data;
+        mPersonalDataCall.enqueue(mPersonalDataCallback);
+    }
+
+    private void getCounters() {
+        mCountersCall = Application.apiInterface().getParcelsCounters();
+        mLoadingStep = LoadingStep.counters;
+        mCountersCall.enqueue(mCountersCallback);
+    }
 
     /**
      * Callback for parcel count request
@@ -103,5 +138,35 @@ public class SplashActivity extends AppCompatActivity {
         super.onDestroy();
         if (mCountersCall != null) mCountersCall.cancel();
         if (mPersonalDataCall != null) mPersonalDataCall.cancel();
+        unregisterReceiver(mBroadcastReceiver);
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
+    }
+
+    enum LoadingStep {
+        personal_data, counters
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+
+    }
+
+    @Override
+    public void addFragment(ParentFragment fragment, boolean showAnimation) {
+
+    }
+
+    @Override
+    public void toggleLoadingProgress(boolean show) {
+
+    }
+
+    @Override
+    public void replaceFragment(ParentFragment fragment) {
+
     }
 }

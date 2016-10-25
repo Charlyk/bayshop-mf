@@ -3,6 +3,10 @@ package com.softranger.bayshopmf.ui.settings;
 
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -96,7 +100,7 @@ public class UserDataFragment extends ParentFragment {
 
     private CodesSpinnerAdapter mSpinnerAdapter;
 
-    private static boolean isSaveClicked;
+    private boolean isSaveClicked;
 
     private static int currentLanguageId;
     private static int currentCountryId;
@@ -118,6 +122,9 @@ public class UserDataFragment extends ParentFragment {
         mUnbinder = ButterKnife.bind(this, view);
         mActivity = (SettingsActivity) getActivity();
 
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
         mScrollView.setVisibility(View.GONE);
         mSaveButton.setVisibility(View.GONE);
 
@@ -136,6 +143,29 @@ public class UserDataFragment extends ParentFragment {
         setDataOnPosition();
         return view;
     }
+
+    @Override
+    public void refreshFragment() {
+        if (isSaveClicked) {
+            saveUserData();
+        } else {
+            mDataCall = Application.apiInterface().getUserPersonalData();
+            mDataCall.enqueue(mResponseCallback);
+        }
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    refreshFragment();
+                    break;
+            }
+        }
+    };
 
     @OnClick(R.id.userDataPhoneCodeLayout)
     void selectPhoneCode() {
@@ -176,12 +206,14 @@ public class UserDataFragment extends ParentFragment {
             Toast.makeText(mActivity, getString(R.string.saved_succesfuly), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
             mActivity.onBackPressed();
+            isSaveClicked = false;
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
+            isSaveClicked = false;
         }
 
         @Override
@@ -189,6 +221,7 @@ public class UserDataFragment extends ParentFragment {
             t.printStackTrace();
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
+            isSaveClicked = false;
         }
     };
 
@@ -293,6 +326,7 @@ public class UserDataFragment extends ParentFragment {
         if (mDataCall != null) mDataCall.cancel();
         mActivity.hideKeyboard();
         mUnbinder.unbind();
+        mActivity.unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override

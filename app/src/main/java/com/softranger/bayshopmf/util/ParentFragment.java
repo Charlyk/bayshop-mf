@@ -8,7 +8,6 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.ui.general.MainActivity;
 
 import org.json.JSONObject;
 
@@ -96,6 +95,10 @@ public abstract class ParentFragment extends Fragment {
     }
 
     public void onHandleMessageEnd() {
+
+    }
+
+    public void refreshFragment() {
 
     }
 

@@ -114,6 +114,7 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
         intentFilter.addAction(InStockFragment.ACTION_UPDATE_LIST);
         intentFilter.addAction(RepackingFragment.TOGGLE_REPACKING);
+        intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
         // set up recycler view
@@ -159,11 +160,13 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
                 case InStockFragment.ACTION_UPDATE_LIST:
                     // send request to server for item details
-                    mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
                     mActivity.hideKeyboard();
-                    mCall.enqueue(mResponseCallback);
+                    refreshFragment();
                     break;
                 case RepackingFragment.TOGGLE_REPACKING:
                     mInStockDetailed.setRepackingRequested(intent.getExtras().getInt("enable"));
@@ -175,6 +178,12 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
             }
         }
     };
+
+    @Override
+    public void refreshFragment() {
+        mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
+        mCall.enqueue(mResponseCallback);
+    }
 
     private ResponseCallback<InStockDetailed> mResponseCallback = new ResponseCallback<InStockDetailed>() {
         @Override

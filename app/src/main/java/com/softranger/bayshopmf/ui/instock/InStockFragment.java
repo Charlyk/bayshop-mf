@@ -102,6 +102,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         intentFilter.addAction(ACTION_CREATE_PARCEL);
         intentFilter.addAction(ACTION_HIDE_TOTALS);
         intentFilter.addAction(ConfirmationFragment.ACTION_BUILD_FINISHED);
+        intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -112,9 +113,8 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
         mRecyclerView.setAdapter(mAdapter);
 
-        mCall = Application.apiInterface().getInStockItems();
         mActivity.toggleLoadingProgress(true);
-        mCall.enqueue(mResponseCallback);
+        onRefresh(mRefreshLayout);
         return view;
     }
 
@@ -160,19 +160,24 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ACTION_CREATE_PARCEL)) {
-                mTotalsView.toggleOnClick();
-            } else if (intent.getAction().equals(ACTION_HIDE_TOTALS)) {
-                toggleTotalsVisibility(false);
-                selectedItems.clear();
-                for (InStock inStock : mInStocks) {
-                    inStock.setSelected(false);
-                }
-                mAdapter.notifyDataSetChanged();
-            } else {
-                // also using action ConfirmationFragment.ACTION_BUILD_FINISHED
-                mCall = Application.apiInterface().getInStockItems();
-                mCall.enqueue(mResponseCallback);
+            switch (intent.getAction()) {
+                case ACTION_CREATE_PARCEL:
+                    mTotalsView.toggleOnClick();
+                    break;
+                case ACTION_HIDE_TOTALS:
+                    toggleTotalsVisibility(false);
+                    selectedItems.clear();
+                    for (InStock inStock : mInStocks) {
+                        inStock.setSelected(false);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    break;
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                default:
+                    onRefresh(mRefreshLayout);
+                    break;
             }
         }
     };

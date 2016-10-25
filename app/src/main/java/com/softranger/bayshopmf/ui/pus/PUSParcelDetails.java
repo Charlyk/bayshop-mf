@@ -114,14 +114,13 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         mPackage = getArguments().getParcelable(PRODUCT_ARG);
 
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
+        intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
 
-        mCall = Application.apiInterface().getPUSParcelDetails(mPackage.getId());
         mActivity.toggleLoadingProgress(true);
-        mCall.enqueue(mDetailsResponseCallback);
-
+        refreshFragment();
 
         CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
         tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorAccent));
@@ -134,9 +133,24 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mAdapter.notifyItemChanged(0);
+            switch (intent.getAction()) {
+                case Application.ACTION_RETRY:
+                    mActivity.toggleLoadingProgress(true);
+                    mActivity.removeNoConnectionView();
+                    refreshFragment();
+                    break;
+                default:
+                    mAdapter.notifyItemChanged(0);
+                    break;
+            }
         }
     };
+
+    @Override
+    public void refreshFragment() {
+        mCall = Application.apiInterface().getPUSParcelDetails(mPackage.getId());
+        mCall.enqueue(mDetailsResponseCallback);
+    }
 
     @Override
     public void onImageClick(ArrayList<Photo> images, int position) {
