@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -130,6 +131,7 @@ public class ParcelStatusBarView extends RelativeLayout {
 
     /**
      * Convert dp to pixels
+     *
      * @param dp to convert
      * @return value of passed dp in pixels
      */
@@ -154,6 +156,7 @@ public class ParcelStatusBarView extends RelativeLayout {
 
     /**
      * Change maximum statuses number (default is 9, so status bar will be divided in 9 parts)
+     *
      * @param statusesCount new max statuses count
      */
     public void setStatusesCount(int statusesCount) {
@@ -249,6 +252,7 @@ public class ParcelStatusBarView extends RelativeLayout {
 
     /**
      * Get the current progress
+     *
      * @return how many positions of the indicator were changed
      */
     public int getCurrentProgress() {
@@ -257,8 +261,9 @@ public class ParcelStatusBarView extends RelativeLayout {
 
     /**
      * Chenge a color for any status in the lost or add a new status
+     *
      * @param position of the status in the list
-     * @param color for that position as {@link BarColor}
+     * @param color    for that position as {@link BarColor}
      */
     public void setColor(int position, BarColor color) {
         mColors.put(position, color);
@@ -266,6 +271,7 @@ public class ParcelStatusBarView extends RelativeLayout {
 
     /**
      * Change the animation interpolator
+     *
      * @param interpolator new interpolator for animations
      */
     public void setInterpolator(Interpolator interpolator) {
@@ -298,8 +304,11 @@ public class ParcelStatusBarView extends RelativeLayout {
             mStatusNameLabel.getGlobalVisibleRect(rect);
             // if text right or left side is not greater the parent right or left side,
             // update text position
-            if (rect.left > parentLeft && rect.right <= parentRight) {
+            Log.d("ParcelStatusBarView: ", "RectL: " + rect.left + " RectR: " + rect.right + " PL: " + parentLeft + " PR:" + parentRight);
+            if (rect.left > parentLeft && (rect.right + (animatedValue - (rect.width() / 2))) <= parentRight) {
+                Log.d("ParcelStatusBarView", "AnimatedValue: " + String.valueOf(animatedValue));
                 mStatusNameLabel.setX(animatedValue - (rect.width() / 2));
+                Log.d("ParcelStatusBarView: ", "X: " + String.valueOf(animatedValue - (rect.width() / 2)));
             }
         }
     };

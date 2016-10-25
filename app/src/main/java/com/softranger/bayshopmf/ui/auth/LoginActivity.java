@@ -279,6 +279,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         if (mSocialLoginCall != null) mSocialLoginCall.cancel();
         if (mCountersCall != null) mCountersCall.cancel();
         if (mDataCall != null) mDataCall.cancel();
+        unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override

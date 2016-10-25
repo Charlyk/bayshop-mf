@@ -35,6 +35,8 @@ public class User implements Parcelable {
     @JsonProperty("languages")
     private HashMap<Integer, String> mLanguagesMap;
     @JsonProperty("phoneFormats") private ArrayList<CountryCode> mCountryCodes;
+    @JsonProperty("balance")
+    private HashMap<String, Double> mBalanceMap;
 
     private User() {
 
@@ -175,6 +177,10 @@ public class User implements Parcelable {
 
     public String getId() {
         return mId;
+    }
+
+    public HashMap<String, Double> getBalanceMap() {
+        return mBalanceMap;
     }
 
     @Override

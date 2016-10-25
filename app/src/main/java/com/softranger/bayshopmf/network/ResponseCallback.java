@@ -43,6 +43,7 @@ public abstract class ResponseCallback<T> implements Callback<ServerResponse<T>>
                 ServerResponse errorResponse = new ObjectMapper().readValue(response.errorBody().string(), ServerResponse.class);
                 onFailure(errorResponse);
             } catch (IOException e) {
+                onError(call, e);
                 e.printStackTrace();
             }
         }

@@ -27,7 +27,7 @@
     <string name="additional_photo">Дополнительное фото</string>
     <string name="photos_in_progress">Фотографии в процессе</string>
     <string name="tracking">Отслеживание посылки</string>
-    <string name="weight">"Вес: "</string>
+    <string name="weight">"Вес и Объем: "</string>
     <string name="date">Дата</string>
     <string name="price">Цена:</string>
     <string name="check_product_cost">Стоимость услуги: $8</string>

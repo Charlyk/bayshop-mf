@@ -31,13 +31,10 @@ public class SplashActivity extends ParentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
+        registerReceiver(mBroadcastReceiver, intentFilter);
         if (Application.getInstance().isLoggedIn()) {
-
-            IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
-            registerReceiver(mBroadcastReceiver, intentFilter);
-
             mIntent = new Intent(this, MainActivity.class);
-
             getPersonalData();
         } else {
             startLoginActivity();

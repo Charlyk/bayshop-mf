@@ -19,22 +19,14 @@
         android:id="@+id/logo_imageViewCircle"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:transitionName="@string/transition_image_view"
-        android:src="@drawable/logo_circle"/>
-
-    <ImageView
-        android:id="@+id/logo_imageViewLetters"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:transitionName="lettersTransitionName"
-        android:src="@drawable/logo_letters"/>
+        android:src="@mipmap/ic_log_125dp"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/mail_forwarding"
-        android:textSize="20sp"/>
+        android:textSize="18sp"/>
 
     <ProgressBar
         android:layout_marginTop="20dp"

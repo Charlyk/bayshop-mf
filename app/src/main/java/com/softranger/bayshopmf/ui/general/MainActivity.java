@@ -139,8 +139,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         View navHeaderView = mNavigationView.getHeaderView(0);
         TextView userNameLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserNameLabel);
         TextView userIdLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserIdLabel);
+        TextView userBalanceLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserBalanceLabel);
         if (Application.user != null) {
             String fullName = Application.user.getFirstName() + " " + Application.user.getLastName();
+            userBalanceLabel.setText(Constants.USD_SYMBOL + Application.user.getBalanceMap().get(Constants.USD));
             userNameLabel.setText(fullName);
             userIdLabel.setText(Application.getInstance().getUserId().toUpperCase());
         }

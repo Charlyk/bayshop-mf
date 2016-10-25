@@ -42,14 +42,10 @@ public class ChangePassFragment extends ParentFragment {
     TextInputEditText mCurrentPassInput;
     @BindView(R.id.changePassNewInput)
     TextInputEditText mNewPassInput;
-    @BindView(R.id.changePassConfirmInput)
-    TextInputEditText mConfirmPassInput;
     @BindView(R.id.changePassCurrentInputLayout)
     TextInputLayout mCurrentLayout;
     @BindView(R.id.changePassNewInputLayout)
     TextInputLayout mNewLayout;
-    @BindView(R.id.changePassConfirmInputLayout)
-    TextInputLayout mConfirmLayout;
     @BindView(R.id.changePassFocusIndicator)
     View mFocusIndicator;
     @BindView(R.id.changePassProgressBar)
@@ -87,7 +83,7 @@ public class ChangePassFragment extends ParentFragment {
         return view;
     }
 
-    @OnFocusChange({R.id.changePassCurrentInput, R.id.changePassNewInput, R.id.changePassConfirmInput})
+    @OnFocusChange({R.id.changePassCurrentInput, R.id.changePassNewInput})
     void onInputFocusChanged(View view, boolean hasFocus) {
         if (!hasFocus) return;
         if (mFocusIndicator.getVisibility() != View.VISIBLE)
@@ -98,9 +94,6 @@ public class ChangePassFragment extends ParentFragment {
                 break;
             case R.id.changePassNewInput:
                 ObjectAnimator.ofFloat(mFocusIndicator, "y", mNewLayout.getY()).setDuration(300).start();
-                break;
-            case R.id.changePassConfirmInput:
-                ObjectAnimator.ofFloat(mFocusIndicator, "y", mConfirmLayout.getY()).setDuration(300).start();
                 break;
         }
     }
@@ -119,7 +112,6 @@ public class ChangePassFragment extends ParentFragment {
     void saveNewPassword() {
         String currentPass = String.valueOf(mCurrentPassInput.getText());
         String newPass = String.valueOf(mNewPassInput.getText());
-        String confirmPass = String.valueOf(mConfirmPassInput.getText());
 
         if (currentPass.length() < 6) {
             mCurrentPassInput.setError(getString(R.string.enter_valid_password));
@@ -131,12 +123,7 @@ public class ChangePassFragment extends ParentFragment {
             return;
         }
 
-        if (!confirmPass.equals(newPass)) {
-            mConfirmPassInput.setError(getString(R.string.passwords_does_not_match));
-            return;
-        }
-
-        mCall = Application.apiInterface().changeUserPassword(currentPass, confirmPass);
+        mCall = Application.apiInterface().changeUserPassword(currentPass, newPass);
         mCall.enqueue(mResponseCallback);
         toggleLoading(true);
     }
@@ -161,7 +148,6 @@ public class ChangePassFragment extends ParentFragment {
                     getString(R.string.password_has_bee_changed));
             mNewPassInput.setText("");
             mCurrentPassInput.setText("");
-            mConfirmPassInput.setText("");
             toggleLoading(false);
         }
 

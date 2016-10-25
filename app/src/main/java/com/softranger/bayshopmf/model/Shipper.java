@@ -44,7 +44,8 @@ public class Shipper implements Parcelable {
     @JsonProperty("time") private String mTime;
     @JsonProperty("realWeight") private int mRealWeight;
     @JsonProperty("disabled") private boolean mIsDisabled;
-    @JsonProperty("volumeWeight") private int mVolumeWeight;
+    @JsonProperty("volumeWeight")
+    private double mVolumeWeight;
     @JsonProperty("shipperMeasureId") private String mShipperMeasureId;
     @JsonProperty("calculatedPrice") private double mCalculatedPrice;
 
@@ -82,7 +83,7 @@ public class Shipper implements Parcelable {
         mTime = in.readString();
         mRealWeight = in.readInt();
         mIsDisabled = in.readByte() != 0;
-        mVolumeWeight = in.readInt();
+        mVolumeWeight = in.readDouble();
         mShipperMeasureId = in.readString();
         mCalculatedPrice = in.readDouble();
     }
@@ -221,7 +222,7 @@ public class Shipper implements Parcelable {
         return mIsDisabled;
     }
 
-    public int getVolumeWeight() {
+    public double getVolumeWeight() {
         return mVolumeWeight;
     }
 
@@ -269,7 +270,7 @@ public class Shipper implements Parcelable {
         dest.writeString(mTime);
         dest.writeInt(mRealWeight);
         dest.writeByte((byte) (mIsDisabled ? 1 : 0));
-        dest.writeInt(mVolumeWeight);
+        dest.writeDouble(mVolumeWeight);
         dest.writeString(mShipperMeasureId);
         dest.writeDouble(mCalculatedPrice);
     }

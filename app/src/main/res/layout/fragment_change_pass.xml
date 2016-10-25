@@ -60,34 +60,6 @@
         android:layout_height="0.5dp"
         android:background="#ededed"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/changePassConfirmInputLayout"
-        android:layout_below="@id/newPassDivider"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:paddingTop="15dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/changePassConfirmInput"
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:textColor="@color/textColor"
-            android:inputType="textPassword"
-            android:background="@android:color/white"
-            android:textSize="16sp"
-            android:hint="@string/confirm_password"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <View
-        android:id="@+id/confirmPassDivider"
-        android:layout_below="@id/changePassConfirmInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="10dp"
-        android:background="#ededed"/>
-
     <View
         android:id="@+id/changePassFocusIndicator"
         android:layout_width="5dp"

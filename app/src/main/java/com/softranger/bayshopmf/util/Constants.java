@@ -9,15 +9,18 @@ public class Constants {
     public static final String GB = "gb";
     public static final String DE = "de";
 
+    public static final String USD_SYMBOL = "$";
+    public static final String EUR_SYMBOL = "€";
+    public static final String GBP_SYMBOL = "£";
+
     public static final String USA = "usa";
     public static final String UK = "uk";
     public static final String PARCELS = "PARCELS";
 
-    public static Character[] ALPHABET = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-
     public static final int IN_PROGRESS = 1, FINISHED = 2, NOT_REQUESTED = 0;
 
     public static final String ACTION_CHANGE_ADDRESS = "change delivery address";
+    public static final String USD = "usd";
 
     public static class ApiResponse {
         public static final int RESPONSE_OK = 1;

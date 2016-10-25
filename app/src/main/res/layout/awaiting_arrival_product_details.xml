@@ -71,8 +71,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
         android:gravity="center_vertical"
@@ -80,8 +78,10 @@
 
         <TextView
             android:id="@+id/awaitingDetailsItemId"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
             tools:text="MF3121241412"/>
@@ -92,6 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
             android:layout_below="@id/awaitingDetailsItemId"
             android:textColor="@android:color/black"
             android:textSize="16sp"
@@ -113,6 +115,8 @@
             android:layout_width="match_parent"
             android:layout_marginTop="7.5dp"
             android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
             android:layout_below="@id/awaitingDetailsProductName"/>
     </RelativeLayout>
 

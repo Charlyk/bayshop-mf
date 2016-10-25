@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_log_in_125dp"
+        android:src="@mipmap/ic_log_125dp"
         android:layout_marginBottom="20dp"/>
 
     <LinearLayout
@@ -24,8 +24,8 @@
             style="@style/Base.Widget.AppCompat.ActionButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp"
             android:layout_weight="1"
             android:background="@drawable/fb_btn_bg"
             android:drawableLeft="@mipmap/ic_login_fb"
@@ -41,6 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
             android:background="@drawable/google_btn_bg"
             android:drawableLeft="@mipmap/ic_google_30dp"
             android:drawableStart="@mipmap/ic_google_30dp"
@@ -55,7 +57,7 @@
     <EditText
         android:id="@+id/loginEmailInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_gravity="center_horizontal"
         android:ems="10"
         android:gravity="center"
@@ -66,7 +68,7 @@
     <EditText
         android:id="@+id/loginPasswordInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_gravity="center_horizontal"
         android:ems="10"
         android:textSize="16sp"

@@ -89,6 +89,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
     private ResponseCallback<PUSStatuses> mResponseCallback = new ResponseCallback<PUSStatuses>() {
         @Override
         public void onSuccess(PUSStatuses data) {
+            mPUSParcels.clear();
             mPUSParcels.addAll(data.getAllParcels());
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setItemViewCacheSize(mPUSParcels.size());

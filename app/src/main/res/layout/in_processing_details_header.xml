@@ -39,193 +39,6 @@
         android:layout_height="0.5dp"
         android:background="#ededed"/>
 
-    <include
-        layout="@layout/address_list_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"/>
-
-    <RelativeLayout
-        android:id="@+id/pusDetailsProductsPriceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <TextView
-            android:id="@+id/inProcessingDetailsGoodsPriceTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/goods_price"/>
-
-        <TextView
-            android:id="@+id/inProcessingDetailsGoodsPriceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="end"
-            android:textColor="@color/textColor"
-            tools:text="$ 200"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/pusDetailsShippingPriceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:layout_marginBottom="4dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp">
-
-        <TextView
-            android:id="@+id/inProcessingDetailsShippingPriceTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/shipping_price"/>
-
-        <TextView
-            android:id="@+id/inProcessingDetailsShippingPriceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/textColor"
-            tools:text="$ 25.00"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/pusDetailsInsurancePriceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:layout_marginBottom="4dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp">
-
-        <TextView
-            android:id="@+id/inProcessingDetailsInsurancePriceTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/insurance_price"/>
-
-        <TextView
-            android:id="@+id/inProcessingDetailsInsurancePriceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/textColor"
-            tools:text="$ 25.00"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/pusDetailsPackagePriceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:layout_marginBottom="4dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp">
-
-        <TextView
-            android:id="@+id/inProcessingDetailsPackagePriceTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/additional_package_price"/>
-
-        <TextView
-            android:id="@+id/inProcessingDetailsPackagePriceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/textColor"
-            tools:text="$ 25.00"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/pusDetailsDeclaredPriceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:layout_marginBottom="4dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <TextView
-            android:id="@+id/inProcessingDetailsDeclaredPriceTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/declared_price"/>
-
-        <TextView
-            android:id="@+id/inProcessingDetailsDeclaredPriceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="end"
-            android:textColor="@color/textColor"
-            tools:text="$ 2.5"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/pusDetailsTotalPriceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <TextView
-            android:id="@+id/inProcessingDetailsTotalPriceTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/total_price"/>
-
-        <TextView
-            android:id="@+id/inProcessingDetailsTotalPriceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/textColor"
-            tools:text="$ 280"/>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#ededed"/>
-
     <LinearLayout
         android:id="@+id/shippingByLayoutButton"
         android:layout_width="match_parent"
@@ -272,6 +85,205 @@
             </TableRow>
         </TableLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ededed"/>
+
+    <include
+        layout="@layout/address_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"/>
+
+    <RelativeLayout
+        android:id="@+id/pusDetailsProductsPriceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/inProcessingDetailsGoodsPriceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:text="@string/goods_price"/>
+
+        <TextView
+            android:id="@+id/inProcessingDetailsGoodsPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:layout_gravity="end"
+            android:textColor="@color/textColor"
+            tools:text="$ 200"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pusDetailsShippingPriceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/inProcessingDetailsShippingPriceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:text="@string/shipping_price"/>
+
+        <TextView
+            android:id="@+id/inProcessingDetailsShippingPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/textColor"
+            tools:text="$ 25.00"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pusDetailsInsurancePriceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/inProcessingDetailsInsurancePriceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:text="@string/insurance_price"/>
+
+        <TextView
+            android:id="@+id/inProcessingDetailsInsurancePriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            tools:text="$ 25.00"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pusDetailsPackagePriceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/inProcessingDetailsPackagePriceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:text="@string/additional_package_price"/>
+
+        <TextView
+            android:id="@+id/inProcessingDetailsPackagePriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            tools:text="$ 25.00"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pusDetailsDeclaredPriceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/inProcessingDetailsDeclaredPriceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:text="@string/declared_price"/>
+
+        <TextView
+            android:id="@+id/inProcessingDetailsDeclaredPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:layout_gravity="end"
+            android:textColor="@color/textColor"
+            tools:text="$ 2.5"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pusDetailsTotalPriceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/inProcessingDetailsTotalPriceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:text="@string/total_price"/>
+
+        <TextView
+            android:id="@+id/inProcessingDetailsTotalPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/textColor"
+            android:textSize="16sp"
+            tools:text="$ 280"/>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
