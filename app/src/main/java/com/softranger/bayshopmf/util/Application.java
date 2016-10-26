@@ -143,6 +143,22 @@ public class Application extends android.app.Application {
         return autoPackPrefs.getBoolean("asked", false);
     }
 
+    public void setPushToken(String pushToken) {
+        preferences.edit().putString("push", pushToken).apply();
+    }
+
+    public String getPushToken() {
+        return preferences.getString("push", "");
+    }
+
+    public void setPushTokenSent(boolean sent) {
+        preferences.edit().putBoolean("pushSent", sent).apply();
+    }
+
+    public boolean isPushSent() {
+        return preferences.getBoolean("pushSent", false);
+    }
+
     /**
      * Save authentication token for current user
      *

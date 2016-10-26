@@ -8,9 +8,12 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
@@ -43,11 +46,14 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
     private ArrayList<PUSParcel> mPUSParcels;
     private PUSParcelsAdapter mAdapter;
     private Call<ServerResponse<PUSStatuses>> mCall;
+    private ImageView mNoItemsImage;
 
     @BindView(R.id.fragmentRecyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.jellyPullToRefresh)
     JellyRefreshLayout mRefreshLayout;
+    @BindView(R.id.fragmentFrameLayout)
+    FrameLayout mRootLayout;
 
     public PUSParcelsFragment() {
         // Required empty public constructor
@@ -72,6 +78,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mPUSParcels = new ArrayList<>();
@@ -86,6 +93,19 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
         return view;
     }
 
+    private void toggleNoItemVisibility(boolean show) {
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER;
+        if (show && mNoItemsImage == null) {
+            mNoItemsImage = new ImageView(mActivity);
+            mNoItemsImage.setImageResource(R.mipmap.ic_nothing_225dp);
+            mRootLayout.addView(mNoItemsImage, layoutParams);
+        } else {
+            mRootLayout.removeView(mNoItemsImage);
+            mNoItemsImage = null;
+        }
+    }
+
     private ResponseCallback<PUSStatuses> mResponseCallback = new ResponseCallback<PUSStatuses>() {
         @Override
         public void onSuccess(PUSStatuses data) {
@@ -94,6 +114,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setItemViewCacheSize(mPUSParcels.size());
             mActivity.toggleLoadingProgress(false);
+            toggleNoItemVisibility(mPUSParcels.size() <= 0);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);
             mActivity.updateParcelCounters(Constants.PARCELS);

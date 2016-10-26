@@ -8,9 +8,12 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
@@ -42,10 +45,13 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     private ArrayList<PUSParcel> mPUSParcels;
     private ItemAdapter mAdapter;
     private Call<ServerResponse<ArrayList<PUSParcel>>> mCall;
+    private ImageView mNoItemsImage;
 
     @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.jellyPullToRefresh)
     JellyRefreshLayout mRefreshLayout;
+    @BindView(R.id.fragmentFrameLayout)
+    FrameLayout mRootLayout;
 
     public ReceivedFragment() {
         // Required empty public constructor
@@ -84,12 +90,26 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         return view;
     }
 
+    private void toggleNoItemVisibility(boolean show) {
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER;
+        if (show && mNoItemsImage == null) {
+            mNoItemsImage = new ImageView(mActivity);
+            mNoItemsImage.setImageResource(R.mipmap.ic_nothing_225dp);
+            mRootLayout.addView(mNoItemsImage, layoutParams);
+        } else {
+            mRootLayout.removeView(mNoItemsImage);
+            mNoItemsImage = null;
+        }
+    }
+
     private ResponseCallback<ArrayList<PUSParcel>> mResponseCallback = new ResponseCallback<ArrayList<PUSParcel>>() {
         @Override
         public void onSuccess(ArrayList<PUSParcel> data) {
             mPUSParcels = data;
             mAdapter.refreshList(mPUSParcels);
             mActivity.toggleLoadingProgress(false);
+            toggleNoItemVisibility(mPUSParcels.size() <= 0);
             mRefreshLayout.setRefreshing(false);
             mActivity.updateParcelCounters(Constants.ParcelStatus.RECEIVED);
         }

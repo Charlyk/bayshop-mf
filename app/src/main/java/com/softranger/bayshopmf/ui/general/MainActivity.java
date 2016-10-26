@@ -40,6 +40,8 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.softranger.bayshopmf.R;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment;
@@ -61,6 +63,7 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
 
 public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener,
         FloatingActionsMenu.OnFloatingActionsMenuUpdateListener {
@@ -176,8 +179,34 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
         }
 
-        Log.e("Token", String.valueOf(FirebaseInstanceId.getInstance().getToken()));
+        String pushToken = FirebaseInstanceId.getInstance().getToken();
+        if (pushToken == null) return;
+        if (!Application.getInstance().isPushSent() || !pushToken.equals(Application.getInstance().getPushToken())) {
+            Application.apiInterface().sendPushToken(pushToken, Application.getInstance().getPushToken())
+                    .enqueue(mPushTokenCallback);
+            Application.getInstance().setPushToken(pushToken);
+        }
     }
+
+    private ResponseCallback mPushTokenCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            Log.d("Push", "Token was sent to server");
+            Application.getInstance().setPushTokenSent(true);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Log.e("Push", errorData.getMessage());
+            Application.getInstance().setPushTokenSent(false);
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            Log.e("Push", t.getMessage());
+            Application.getInstance().setPushTokenSent(false);
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

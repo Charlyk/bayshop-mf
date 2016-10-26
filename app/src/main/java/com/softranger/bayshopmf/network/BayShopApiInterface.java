@@ -21,13 +21,16 @@ import com.softranger.bayshopmf.model.user.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -109,10 +112,15 @@ public interface BayShopApiInterface {
     Call<ServerResponse> sendHeldByUserParcel(@Path("parcelId") String parcelId,
                                               @Field("sentOnUserAlert") int send);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("parcels/view/{parcelId}")
-    Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Field("comment") String comment,
-                                       @Field("rating") String rating);
+    Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Part("comment") String comment,
+                                       @Part("rating") int rating, @Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("parcels/view/{parcelId}")
+    Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Part("comment") String comment,
+                                       @Part("rating") int rating);
 
     @FormUrlEncoded
     @POST("parcels/view/{parcelId}")
@@ -145,12 +153,12 @@ public interface BayShopApiInterface {
 
     @FormUrlEncoded
     @PUT("parcel-create")
-    Call<ServerResponse<Integer>> createNewPusParcel(@Field("boxes") String boxesArray,
-                                                     @Field("addressId") String addressId,
-                                                     @Field("shipperId") String shipperId,
-                                                     @Field("insurance") boolean insurance,
-                                                     @Field("sentOnUserAlert") boolean sendOnAlert,
-                                                     @Field("useAdditionalMaterials") boolean additionalMaterials);
+    Call<ServerResponse<String>> createNewPusParcel(@Field("boxes") String boxesArray,
+                                                    @Field("addressId") String addressId,
+                                                    @Field("shipperId") String shipperId,
+                                                    @Field("insurance") boolean insurance,
+                                                    @Field("sentOnUserAlert") boolean sendOnAlert,
+                                                    @Field("useAdditionalMaterials") boolean additionalMaterials);
 
     // replace "us" to needed storage, for now we have just "us"
     @GET("parcels/us/{status}")
@@ -226,4 +234,8 @@ public interface BayShopApiInterface {
     Call<ServerResponse<HashMap<String, Integer>>> changeUserNotificationsSettings(@Field("obtainSms") int sms,
                                                                                    @Field("obtainGcm") int push,
                                                                                    @Field("obtainMails") int emails);
+
+    @FormUrlEncoded
+    @POST("member/gcm-token")
+    Call<ServerResponse> sendPushToken(@Field("token_current") String currentToken, @Field("token_old") String lastToken);
 }

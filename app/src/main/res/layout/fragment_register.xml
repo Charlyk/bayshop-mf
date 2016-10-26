@@ -21,7 +21,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/ic_log_in_125dp"/>
+            android:src="@mipmap/ic_log_125dp"/>
 
         <View
             android:id="@+id/registerLogoSeparator"

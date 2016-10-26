@@ -51,7 +51,7 @@ public class Constants {
     public static class Api {
         public static final String TEMP_URL = "http://bay-test.tk/api/";
         public static final String URL = "http://md.bay-dev.tk/api/";
-        public static final String BASE_URL = "http://md.bay-dev.tk";
+        public static final String BASE_URL = "http://md.bay-test.tk";
         private static final String AUTH = "auth/";
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";

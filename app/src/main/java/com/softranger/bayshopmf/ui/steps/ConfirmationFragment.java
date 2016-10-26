@@ -52,7 +52,7 @@ public class ConfirmationFragment extends ParentFragment {
     private String mSelectedShipperId;
     private int mInsurancePriceValue;
     private double mTotalPriceValue;
-    private Call<ServerResponse<Integer>> mResponseCall;
+    private Call<ServerResponse<String>> mResponseCall;
 
     @BindView(R.id.insuranceRadioButton) RadioButton mInsuranceSelector;
     @BindView(R.id.noInsuranceRadioButton) RadioButton mNoIsuranceSelector;
@@ -250,9 +250,9 @@ public class ConfirmationFragment extends ParentFragment {
         mResponseCall.enqueue(mResponseCallback);
     }
 
-    private ResponseCallback<Integer> mResponseCallback = new ResponseCallback<Integer>() {
+    private ResponseCallback<String> mResponseCallback = new ResponseCallback<String>() {
         @Override
-        public void onSuccess(Integer data) {
+        public void onSuccess(String data) {
             Intent update = new Intent(ACTION_BUILD_FINISHED);
             mActivity.sendBroadcast(update);
 
@@ -268,7 +268,7 @@ public class ConfirmationFragment extends ParentFragment {
         }
 
         @Override
-        public void onError(Call<ServerResponse<Integer>> call, Throwable t) {
+        public void onError(Call<ServerResponse<String>> call, Throwable t) {
             t.printStackTrace();
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);

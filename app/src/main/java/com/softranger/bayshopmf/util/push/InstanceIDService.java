@@ -4,6 +4,11 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.network.ResponseCallback;
+import com.softranger.bayshopmf.util.Application;
+
+import retrofit2.Call;
 
 /**
  * Created by Eduard Albu on 10/19/16, 10, 2016
@@ -24,7 +29,6 @@ public class InstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.e(TAG, "Refreshed token: " + refreshedToken);
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
@@ -41,6 +45,29 @@ public class InstanceIDService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+        if (Application.getInstance().isLoggedIn()) {
+            Application.apiInterface().sendPushToken(token, Application.getInstance().getPushToken()).enqueue(mResponseCallback);
+            Application.getInstance().setPushToken(token);
+        }
     }
+
+    private ResponseCallback mResponseCallback = new ResponseCallback() {
+        @Override
+        public void onSuccess(Object data) {
+            Log.d("Push", "Token was sent to server");
+            Application.getInstance().setPushTokenSent(true);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Log.e("Push", errorData.getMessage());
+            Application.getInstance().setPushTokenSent(false);
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            Log.e("Push", t.getMessage());
+            Application.getInstance().setPushTokenSent(false);
+        }
+    };
 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -67,6 +68,8 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
     @BindView(R.id.jellyPullToRefresh)
     JellyRefreshLayout mRefreshLayout;
 
+    private ImageView mNoItemImage;
+
     private TotalsView mTotalsView;
     public static float totalsY;
 
@@ -95,6 +98,8 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
         mTotalsView = new TotalsView(mActivity);
         mTotalsView.setOnCreateParcelClickListener(this);
+        ImageView imageView = new ImageView(mActivity);
+        imageView.setImageResource(R.mipmap.ic_nothing_225dp);
 
         // register broadcast receiver to get notified when an item is changed
         IntentFilter intentFilter = new IntentFilter(ACTION_UPDATE_LIST);
@@ -104,6 +109,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         intentFilter.addAction(ConfirmationFragment.ACTION_BUILD_FINISHED);
         intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
+
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
 
@@ -118,6 +124,21 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         return view;
     }
 
+    private void toggleNoItemsVisibility(boolean show) {
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER;
+        layoutParams.topMargin = 30;
+        if (show && mNoItemImage == null) {
+            mNoItemImage = new ImageView(mActivity);
+            mNoItemImage.setLayoutParams(layoutParams);
+            mNoItemImage.setImageResource(R.mipmap.ic_nothing_225dp);
+            mRootLayout.addView(mNoItemImage, 0);
+        } else if (!show) {
+            mRootLayout.removeView(mNoItemImage);
+            mNoItemImage = null;
+        }
+    }
+
     /**
      * Response callbacks
      */
@@ -130,10 +151,12 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
             mInStocks.addAll(data.getInStocks());
             mAdapter.notifyDataSetChanged();
             mRecyclerView.setItemViewCacheSize(mInStocks.size());
+            toggleNoItemsVisibility(mInStocks.size() <= 0);
             toggleTotalsVisibility(false);
             mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);
+            Application.counters.put(Constants.ParcelStatus.IN_STOCK, mInStocks.size());
             mActivity.updateParcelCounters(Constants.ParcelStatus.IN_STOCK);
         }
 

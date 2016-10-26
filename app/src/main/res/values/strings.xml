@@ -347,7 +347,7 @@
     <string name="select_country">Select country</string>
     <string name="no_insurance">No insurance $0</string>
     <string name="parcel_created">Parcel created</string>
-    <string name="your_parcel_added">Your parcel was added successfuly with ID\u0020</string>
+    <string name="your_parcel_added">Your parcel was added successfully with ID\u0020</string>
     <string name="held_by_user">Held by user</string>
     <string name="payment_details">Payment details</string>
     <string name="reset">Reset</string>

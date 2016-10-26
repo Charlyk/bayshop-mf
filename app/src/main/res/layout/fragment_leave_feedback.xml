@@ -109,11 +109,19 @@
                 android:gravity="start"
                 android:textSize="16sp"
                 android:hint="@string/enter_your_comment"
-                android:minHeight="150dp"
+                android:minHeight="100dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="16dp"
                 android:layout_marginBottom="5dp"/>
+
+            <ImageView
+                android:id="@+id/leaveFeedbackCommentImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7.5dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"/>
 
             <View
                 android:layout_width="match_parent"

@@ -9,17 +9,21 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +36,14 @@ import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +53,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 
 /**
@@ -61,6 +73,10 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     private Unbinder mUnbinder;
     private Call<ServerResponse> mCall;
     private PUSParcelDetailed mParcelDetailed;
+    private AlertDialog mUploadDialog;
+    private File mUserPhoto;
+
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
     private static SimpleDateFormat friendlyFormat;
 
@@ -76,6 +92,8 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     TextView mRatingLabel;
     @BindView(R.id.leaveFeedbackCommentLabel)
     EditText mCommentInput;
+    @BindView(R.id.leaveFeedbackCommentImage)
+    ImageView mImageView;
 
     private HashMap<Float, Integer> mRatingStrings = new HashMap<Float, Integer>() {{
         put(1f, R.string.hated_it);
@@ -123,6 +141,9 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             mRatingBar.setRating(mParcelDetailed.getRating());
             mRatingLabel.setText(getString(mRatingStrings.get((float) mParcelDetailed.getRating())));
             mCommentInput.setText(mParcelDetailed.getComment());
+            if (mParcelDetailed.getPhotoUrl() != null) {
+                Picasso.with(mActivity).load(Uri.parse(mParcelDetailed.getPhotoUrl())).into(mImageView);
+            }
         }
 
         return view;
@@ -141,16 +162,30 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == MainActivity.RESULT_OK) {
             if (requestCode == UPLOAD_RESULT_CODE) {
-                Uri path = data.getData();
-                File selectedFile = new File(path.getPath());
-                Log.d(this.getClass().getSimpleName(), selectedFile.getAbsolutePath());
-            } else if (requestCode == TAKE_PICTURE_CODE) {
+                mUserPhoto = new File(mActivity.getCacheDir().getPath(), "product_photo.jpg");
+                try {
+                    // get image from intent
+                    InputStream inputStream = mActivity.getContentResolver().openInputStream(data.getData());
+                    byte[] buffer = new byte[inputStream.available()];
+                    inputStream.read(buffer);
+                    inputStream.close();
 
-                Log.d(this.getClass().getSimpleName(), "Take picture done");
+                    OutputStream outputStream = new FileOutputStream(mUserPhoto);
+                    outputStream.write(buffer);
+                    outputStream.flush();
+                    outputStream.close();
+
+                    decreaseFileSize(mUserPhoto);
+                    // set it in preview
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == TAKE_PICTURE_CODE) {
+                decreaseFileSize(mUserPhoto);
             }
-            LoadingDialogFragment dialogFragment = LoadingDialogFragment.newInstance(requestCode);
-            dialogFragment.setOnDoneListener(this);
-            dialogFragment.show(mActivity.getFragmentManager(), "Loading dialog fragment");
+            int width = Application.getPixelsFromDp(160);
+            int height = Application.getPixelsFromDp(120);
+            Picasso.with(mActivity).load(mUserPhoto).resize(width, height).into(mImageView);
         }
     }
 
@@ -166,7 +201,22 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
 
     @OnClick(R.id.leaveFeedbackUploadImageBtn)
     void uploadImageFile() {
+        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.upload_image_dialog, null, false);
+        view.findViewById(R.id.uploadDialogTakePhoto).setOnClickListener(v -> {
+            takePhoto();
+            mUploadDialog.dismiss();
+        });
 
+        view.findViewById(R.id.uploadDialogUploadPhoto).setOnClickListener(v -> {
+            uploadImage();
+            mUploadDialog.dismiss();
+        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
+                .setView(view);
+        mUploadDialog = builder.create();
+        mUploadDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mUploadDialog.show();
     }
 
     void uploadImage() {
@@ -190,16 +240,15 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(mActivity.getPackageManager()) != null) {
             // Create the File where the photo should go
-            File photoFile = null;
             try {
-                photoFile = createImageFile();
+                mUserPhoto = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 ex.printStackTrace();
             }
             // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri outputFileUri = Uri.fromFile(photoFile);
+            if (mUserPhoto != null) {
+                Uri outputFileUri = Uri.fromFile(mUserPhoto);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(takePictureIntent, TAKE_PICTURE_CODE);
             }
@@ -211,24 +260,29 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = mActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+
+        return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-        Bitmap mphoto = BitmapFactory.decodeFile(image.getAbsolutePath());
-        Log.d(this.getClass().getSimpleName(), "Take picture done");
-        return image;
     }
 
     @OnClick(R.id.leaveFeedbackSendCommentBtn)
     void sendFeedback() {
         String comment = String.valueOf(mCommentInput.getText());
-        float rating = mRatingBar.getRating();
+        int rating = (int) mRatingBar.getRating();
 
-        mCall = Application.apiInterface().leaveFeedback(
-                mParcelDetailed.getId(), comment, String.valueOf(rating));
+        if (mUserPhoto != null) {
+            MultipartBody.Part part = MultipartBody.Part.createFormData("service_photo", mUserPhoto.getName(),
+                    RequestBody.create(MEDIA_TYPE_PNG, mUserPhoto));
+            mCall = Application.apiInterface().leaveFeedback(
+                    mParcelDetailed.getId(), comment, rating, part);
+        } else {
+            mCall = Application.apiInterface().leaveFeedback(
+                    mParcelDetailed.getId(), comment, rating);
+        }
+
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
     }
@@ -245,6 +299,27 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             }
         }
     };
+
+    private void decreaseFileSize(File src) {
+        try {
+            Bitmap resized = decreaseBitmapSize(BitmapFactory.decodeFile(src.getAbsolutePath()));
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] compressedImage = stream.toByteArray();
+            OutputStream outputStream = new FileOutputStream(src);
+            outputStream.write(compressedImage);
+            outputStream.flush();
+            outputStream.close();
+            stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap decreaseBitmapSize(Bitmap src) {
+        int size = 700;
+        return ThumbnailUtils.extractThumbnail(src, size, size, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+    }
 
     private ResponseCallback mResponseCallback = new ResponseCallback() {
         @Override

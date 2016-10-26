@@ -9,6 +9,7 @@ import com.softranger.bayshopmf.model.product.ShippingMethod;
 import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.model.address.Coordinates;
 import com.softranger.bayshopmf.model.box.Box;
+import com.softranger.bayshopmf.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,6 +79,8 @@ public class PUSParcelDetailed extends PUSParcel {
     private double mRepackingPrice;
     @JsonProperty("price_additional_materials")
     private double mAdditionalMaterialsPrice;
+    @JsonProperty("service_photo")
+    private String mPhotoUrl;
 
 
     public PUSParcelDetailed() {
@@ -125,6 +128,7 @@ public class PUSParcelDetailed extends PUSParcel {
         mBoxesPrice = in.readDouble();
         mRepackingPrice = in.readDouble();
         mAdditionalMaterialsPrice = in.readDouble();
+        mPhotoUrl = in.readString();
     }
 
     public static final Creator<PUSParcelDetailed> CREATOR = new Creator<PUSParcelDetailed>() {
@@ -266,6 +270,11 @@ public class PUSParcelDetailed extends PUSParcel {
         return mAdditionalMaterialsPrice;
     }
 
+    public String getPhotoUrl() {
+        if (mPhotoUrl == null) return null;
+        return Constants.Api.BASE_URL + mPhotoUrl;
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
@@ -298,5 +307,6 @@ public class PUSParcelDetailed extends PUSParcel {
         parcel.writeDouble(mBoxesPrice);
         parcel.writeDouble(mRepackingPrice);
         parcel.writeDouble(mAdditionalMaterialsPrice);
+        parcel.writeString(mPhotoUrl);
     }
 }
