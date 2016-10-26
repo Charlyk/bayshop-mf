@@ -7,6 +7,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -49,6 +50,7 @@ import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.instock.InStockFragment;
 import com.softranger.bayshopmf.ui.payment.PaymentActivity;
+import com.softranger.bayshopmf.ui.pus.LeaveFeedbackFragment;
 import com.softranger.bayshopmf.ui.pus.PUSParcelsFragment;
 import com.softranger.bayshopmf.ui.pus.ReceivedFragment;
 import com.softranger.bayshopmf.ui.settings.SettingsActivity;
@@ -102,6 +104,12 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                     if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
                         Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
                     }
+                }
+                break;
+            case LeaveFeedbackFragment.CAMERA_PERMISSION_CODE:
+                Fragment fragment = getFragmentManager().findFragmentByTag("LeaveFeedbackFragment");
+                if (fragment != null) if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 }
                 break;
         }

@@ -47,7 +47,8 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     private Call<ServerResponse<ArrayList<PUSParcel>>> mCall;
     private ImageView mNoItemsImage;
 
-    @BindView(R.id.fragmentRecyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.fragmentRecyclerView)
+    RecyclerView mRecyclerView;
     @BindView(R.id.jellyPullToRefresh)
     JellyRefreshLayout mRefreshLayout;
     @BindView(R.id.fragmentFrameLayout)
@@ -110,7 +111,8 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
             mAdapter.refreshList(mPUSParcels);
             mActivity.toggleLoadingProgress(false);
             toggleNoItemVisibility(mPUSParcels.size() <= 0);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
             mActivity.updateParcelCounters(Constants.ParcelStatus.RECEIVED);
         }
 
@@ -118,14 +120,16 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onError(Call<ServerResponse<ArrayList<PUSParcel>>> call, Throwable t) {
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
-            mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
     };
 

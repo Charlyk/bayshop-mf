@@ -200,7 +200,9 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
     @Override
     public String getFragmentTitle() {
-        return getString(mPackage.getParcelStatus().statusName());
+        if (mPackage != null && mPackage.getParcelStatus() != null)
+            return getString(mPackage.getParcelStatus().statusName());
+        else return getString(R.string.parcels);
     }
 
     @Override
@@ -330,6 +332,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
     /**
      * Crete a *.jpg file from taken picture
+     *
      * @throws IOException if file was not created
      */
     private File createImageFile() throws IOException {
@@ -419,7 +422,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
                 PackageManager.PERMISSION_GRANTED) {
             dispatchTakePictureIntent();
         } else {
-            String[] permissions = new String[] {Manifest.permission.CAMERA};
+            String[] permissions = new String[]{Manifest.permission.CAMERA};
             ActivityCompat.requestPermissions(mActivity, permissions, CAMERA_PERMISSION_CODE);
         }
     }
