@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -67,7 +69,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     private static final String DETAILED_PARCEL = "detailed parcel arg";
     private static final int UPLOAD_RESULT_CODE = 12;
     private static final int TAKE_PICTURE_CODE = 13;
-    private static final int CAMERA_PERMISSION_CODE = 14;
+    public static final int CAMERA_PERMISSION_CODE = 14;
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
@@ -201,6 +203,25 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
 
     @OnClick(R.id.leaveFeedbackUploadImageBtn)
     void uploadImageFile() {
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED) {
+            showPhotoDialog();
+        } else {
+            ArrayList<String> perms = new ArrayList<>();
+            perms.add(Manifest.permission.CAMERA);
+            perms.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                perms.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+
+            String[] permissions = perms.toArray(new String[perms.size()]);
+
+            ActivityCompat.requestPermissions(mActivity, permissions, CAMERA_PERMISSION_CODE);
+        }
+    }
+
+    private void showPhotoDialog() {
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.upload_image_dialog, null, false);
         view.findViewById(R.id.uploadDialogTakePhoto).setOnClickListener(v -> {
@@ -212,11 +233,27 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             uploadImage();
             mUploadDialog.dismiss();
         });
+
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                 .setView(view);
         mUploadDialog = builder.create();
         mUploadDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mUploadDialog.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN
+                        && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                showPhotoDialog();
+            }
+        }
     }
 
     void uploadImage() {
@@ -230,7 +267,15 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
                 PackageManager.PERMISSION_GRANTED) {
             dispatchTakePictureIntent();
         } else {
-            String[] permissions = new String[]{Manifest.permission.CAMERA};
+            ArrayList<String> perms = new ArrayList<>();
+            perms.add(Manifest.permission.CAMERA);
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                perms.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+
+            String[] permissions = perms.toArray(new String[perms.size()]);
+
             ActivityCompat.requestPermissions(mActivity, permissions, CAMERA_PERMISSION_CODE);
         }
     }
@@ -248,7 +293,8 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             }
             // Continue only if the File was successfully created
             if (mUserPhoto != null) {
-                Uri outputFileUri = Uri.fromFile(mUserPhoto);
+                Uri outputFileUri = FileProvider.getUriForFile(mActivity,
+                        mActivity.getApplicationContext().getPackageName() + ".fileprovider", mUserPhoto);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(takePictureIntent, TAKE_PICTURE_CODE);
             }

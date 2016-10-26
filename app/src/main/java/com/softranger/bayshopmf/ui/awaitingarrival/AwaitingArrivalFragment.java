@@ -169,7 +169,9 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
                 togglePlaceholder(false);
                 // add items to adapter
                 mAdapter.refreshList(data);
-                mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
+                if (mRecyclerView != null) {
+                    mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
+                }
             } else {
                 togglePlaceholder(true);
             }
