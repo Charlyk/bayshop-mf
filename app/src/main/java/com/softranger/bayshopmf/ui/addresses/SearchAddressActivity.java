@@ -45,6 +45,10 @@ public class SearchAddressActivity extends AppCompatActivity implements AddressL
 
         if (intent != null && intent.hasExtra(ADDRESSES)) {
             mAddresses = intent.getExtras().getParcelableArrayList(ADDRESSES);
+            if (mAddresses == null || mAddresses.size() <= 0) {
+                finish();
+                return;
+            }
             mSearchResults = new ArrayList<>();
             mAdapter = new AddressListAdapter(mAddresses);
             mAdapter.setOnAddressClickListener(this);

@@ -27,6 +27,7 @@ import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
@@ -61,20 +62,20 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     @BindView(R.id.awaitingArrivalStatusBar)
     ParcelStatusBarView mStatusBarView;
 
-    private MainActivity mActivity;
+    private ParentActivity mActivity;
     private Unbinder mUnbinder;
     private Call<ServerResponse<AwaitingArrivalDetails>> mCall;
     private AwaitingArrivalDetails mArrivalDetails;
-    private AwaitingArrival mAwaitingArrival;
+    private String mAwaitingArrivalId;
     private AlertDialog mAlertDialog;
 
     public AwaitingArrivalProductFragment() {
         // Required empty public constructor
     }
 
-    public static AwaitingArrivalProductFragment newInstance(AwaitingArrival awaitingArrival) {
+    public static AwaitingArrivalProductFragment newInstance(String awaitingArrivalId) {
         Bundle args = new Bundle();
-        args.putParcelable(PRODUCT_ARG, awaitingArrival);
+        args.putString(PRODUCT_ARG, awaitingArrivalId);
         AwaitingArrivalProductFragment fragment = new AwaitingArrivalProductFragment();
         fragment.setArguments(args);
         return fragment;
@@ -84,7 +85,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
-        mActivity = (MainActivity) getActivity();
+        mActivity = (ParentActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, rootView);
 
         mStatusBarView.setNewColorsMap(AwaitingArrivalFragment.COLOR_MAP);
@@ -101,11 +102,11 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
-        mAwaitingArrival = getArguments().getParcelable(PRODUCT_ARG);
+        mAwaitingArrivalId = getArguments().getString(PRODUCT_ARG);
 
         mNoPhotosHolder.setVisibility(View.VISIBLE);
 
-        mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
+        mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrivalId);
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
         return rootView;
@@ -149,7 +150,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
 
     @Override
     public void refreshFragment() {
-        mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrival.getId());
+        mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrivalId);
         mCall.enqueue(mResponseCallback);
     }
 
@@ -238,18 +239,15 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                         public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                             if (response.body() != null) {
                                 if (response.body().getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
-                                    Intent intent = new Intent(AwaitingArrivalFragment.ACTION_LIST_CHANGED);
-                                    mActivity.sendBroadcast(intent);
-                                    mActivity.onBackPressed();
-
                                     // get parcels count
                                     int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
                                     // decrease it by one
                                     count -= 1;
                                     // put it back
                                     Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
-                                    // update counters from menu
-                                    mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                                    Intent intent = new Intent(AwaitingArrivalFragment.ACTION_LIST_CHANGED);
+                                    mActivity.sendBroadcast(intent);
+                                    mActivity.onBackPressed();
                                 } else {
                                     Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                 }

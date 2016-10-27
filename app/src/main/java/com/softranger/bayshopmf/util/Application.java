@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import io.intercom.android.sdk.Intercom;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -66,6 +67,7 @@ public class Application extends android.app.Application {
         notifyPrefs = getSharedPreferences(NOTIFICATIONS_PREFS, MODE_PRIVATE);
 
         currentToken = preferences.getString(AUTH_TOKEN, "no token");
+
         // initialize counters hashmap
         counters = new HashMap<>();
         // initialize facebook sdk and app events logger
@@ -101,6 +103,7 @@ public class Application extends android.app.Application {
                 .client(client)
                 .build();
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        Intercom.initialize(this, "android_sdk-6b48cda3bbb2cbdbc7ffeecb2de195c5fd9d616b", "xnfi20lx");
     }
 
     /**
@@ -157,6 +160,14 @@ public class Application extends android.app.Application {
 
     public boolean isPushSent() {
         return preferences.getBoolean("pushSent", false);
+    }
+
+    public void saveIntercomToken(String token) {
+        preferences.edit().putString("intercom", token).apply();
+    }
+
+    public String getIntercomToken() {
+        return preferences.getString("intercom", "");
     }
 
     /**

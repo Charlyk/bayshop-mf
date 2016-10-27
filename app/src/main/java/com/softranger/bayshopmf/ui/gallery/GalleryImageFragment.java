@@ -14,9 +14,12 @@ import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.product.Photo;
-import com.softranger.bayshopmf.util.Constants;
 
 import java.net.URL;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,9 +29,12 @@ public class GalleryImageFragment extends Fragment {
 
     private static final String PHOTOS_ARG = "photos argument";
 
-    private ProgressBar mProgressBar;
-    private SubsamplingScaleImageView mImageView;
+    @BindView(R.id.galleryImageProgress)
+    ProgressBar mProgressBar;
+    @BindView(R.id.galleryImageLabel)
+    SubsamplingScaleImageView mImageView;
     private GalleryActivity mGalleryActivity;
+    private Unbinder mUnbinder;
 
     public GalleryImageFragment() {
         // Required empty public constructor
@@ -48,8 +54,7 @@ public class GalleryImageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_galery_image, container, false);
         mGalleryActivity = (GalleryActivity) getActivity();
-        mProgressBar = (ProgressBar) view.findViewById(R.id.galleryImageProgress);
-        mImageView = (SubsamplingScaleImageView) view.findViewById(R.id.galleryImageLabel);
+        mUnbinder = ButterKnife.bind(this, view);
         Photo photo = getArguments().getParcelable(PHOTOS_ARG);
         if (photo != null) {
             new DownloadThread(photo).start();
@@ -59,14 +64,11 @@ public class GalleryImageFragment extends Fragment {
     }
 
     private void toggleLoading() {
-        mGalleryActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mProgressBar.getVisibility() == View.VISIBLE) {
-                    mProgressBar.setVisibility(View.GONE);
-                } else {
-                    mProgressBar.setVisibility(View.VISIBLE);
-                }
+        mGalleryActivity.runOnUiThread(() -> {
+            if (mProgressBar.getVisibility() == View.VISIBLE) {
+                mProgressBar.setVisibility(View.GONE);
+            } else {
+                mProgressBar.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -83,14 +85,9 @@ public class GalleryImageFragment extends Fragment {
         public void run() {
             Looper.prepare();
             try {
-                URL biImageUlr = new URL(Constants.Api.BASE_URL + mPhoto.getBigImage());
+                URL biImageUlr = new URL(mPhoto.getBigImage());
                 mPhoto.setBigBitmap(BitmapFactory.decodeStream(biImageUlr.openStream()));
-                mGalleryActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mImageView.setImage(ImageSource.bitmap(mPhoto.getBigBitmap()));
-                    }
-                });
+                mGalleryActivity.runOnUiThread(() -> mImageView.setImage(ImageSource.bitmap(mPhoto.getBigBitmap())));
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -98,5 +95,11 @@ public class GalleryImageFragment extends Fragment {
             }
             Looper.loop();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }

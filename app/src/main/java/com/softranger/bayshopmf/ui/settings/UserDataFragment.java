@@ -8,9 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.telephony.PhoneNumberFormattingTextWatcher;
@@ -31,7 +28,6 @@ import com.softranger.bayshopmf.model.address.CountryCode;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.user.Language;
 import com.softranger.bayshopmf.model.user.User;
-import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
@@ -97,8 +93,6 @@ public class UserDataFragment extends ParentFragment {
     Button mSaveButton;
     @BindView(R.id.userDataScrollView)
     ScrollView mScrollView;
-
-    private CodesSpinnerAdapter mSpinnerAdapter;
 
     private boolean isSaveClicked;
 
@@ -296,17 +290,16 @@ public class UserDataFragment extends ParentFragment {
             }
         });
 
-        mSpinnerAdapter = new CodesSpinnerAdapter(mActivity, R.layout.phone_code_item, mCountryCodes);
-        mSpinnerAdapter.setOnCountryClickListener((countryCode, position) -> {
+        CodesSpinnerAdapter spinnerAdapter = new CodesSpinnerAdapter(mActivity, R.layout.phone_code_item, mCountryCodes);
+        spinnerAdapter.setOnCountryClickListener((countryCode, position) -> {
             mPhoneCodeLabel.setText(countryCode.getCode());
             Application.user.setPhoneCode(countryCode.getCode());
         });
 
         mCountrySpinner.setAdapter(countriesAdapter);
         mLanguageSpinner.setAdapter(languagesAdapter);
-        mPhoneCodeSpinner.setAdapter(mSpinnerAdapter);
+        mPhoneCodeSpinner.setAdapter(spinnerAdapter);
 
-        new ImageDownloadThread<>(mCountryCodes, mDownloadHandler, mActivity).start();
         setDataOnPosition();
     }
 
@@ -338,15 +331,6 @@ public class UserDataFragment extends ParentFragment {
     public MainActivity.SelectedFragment getSelectedFragment() {
         return ParentActivity.SelectedFragment.user_data;
     }
-
-    private Handler mDownloadHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == ImageDownloadThread.FINISHED) {
-                mSpinnerAdapter.notifyDataSetChanged();
-            }
-        }
-    };
 
     @OnFocusChange({R.id.userDataFirstNameInput, R.id.userDataLastNameInput, R.id.userDataPhoneNumberInput})
     void onInputFocusChanged(View v, boolean hasFocus) {

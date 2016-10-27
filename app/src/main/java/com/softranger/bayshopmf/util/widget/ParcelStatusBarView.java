@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -304,11 +303,8 @@ public class ParcelStatusBarView extends RelativeLayout {
             mStatusNameLabel.getGlobalVisibleRect(rect);
             // if text right or left side is not greater the parent right or left side,
             // update text position
-            Log.d("ParcelStatusBarView: ", "RectL: " + rect.left + " RectR: " + rect.right + " PL: " + parentLeft + " PR:" + parentRight);
             if (rect.left > parentLeft && (rect.right + (animatedValue - (rect.width() / 2))) <= parentRight) {
-                Log.d("ParcelStatusBarView", "AnimatedValue: " + String.valueOf(animatedValue));
                 mStatusNameLabel.setX(animatedValue - (rect.width() / 2));
-                Log.d("ParcelStatusBarView: ", "X: " + String.valueOf(animatedValue - (rect.width() / 2)));
             }
         }
     };

@@ -45,6 +45,7 @@ import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import java.io.File;
@@ -78,9 +79,10 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
     FrameLayout mButtonsHolder;
 
     private Unbinder mUnbinder;
-    private MainActivity mActivity;
-    private PUSParcel mPackage;
+    private ParentActivity mActivity;
+    //    private PUSParcel mPackage;
     private PUSParcelDetailed mPUSParcelDetailed;
+    private String mPusParcelId;
     private AlertDialog mAlertDialog;
     private InProcessingDetailsAdapter mAdapter;
     private CustomTabsIntent mTabsIntent;
@@ -90,28 +92,22 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         // Required empty public constructor
     }
 
-    public static PUSParcelDetails newInstance(@NonNull PUSParcel product) {
+    public static PUSParcelDetails newInstance(@NonNull String pusParcelId) {
         Bundle args = new Bundle();
-        args.putParcelable(PRODUCT_ARG, product);
+        args.putString(PRODUCT_ARG, pusParcelId);
         PUSParcelDetails fragment = new PUSParcelDetails();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mPackage = getArguments().getParcelable(PRODUCT_ARG);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pus_details, container, false);
-        mActivity = (MainActivity) getActivity();
+        mActivity = (ParentActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
 
-        mPackage = getArguments().getParcelable(PRODUCT_ARG);
+        mPusParcelId = getArguments().getString(PRODUCT_ARG);
 
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
         intentFilter.addAction(Application.ACTION_RETRY);
@@ -148,7 +144,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
     @Override
     public void refreshFragment() {
-        mCall = Application.apiInterface().getPUSParcelDetails(mPackage.getId());
+        mCall = Application.apiInterface().getPUSParcelDetails(mPusParcelId);
         mCall.enqueue(mDetailsResponseCallback);
     }
 
@@ -164,7 +160,8 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         @Override
         public void onSuccess(PUSParcelDetailed data) {
             mPUSParcelDetailed = data;
-            mPUSParcelDetailed.setRealWeight(mPackage.getRealWeight());
+
+            mActivity.setToolbarTitle(getString(data.getParcelStatus().statusName()));
 
             View bottom = getBottomView(mPUSParcelDetailed.getParcelStatus());
             if (bottom != null) {
@@ -200,9 +197,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
     @Override
     public String getFragmentTitle() {
-        if (mPackage != null && mPackage.getParcelStatus() != null)
-            return getString(mPackage.getParcelStatus().statusName());
-        else return getString(R.string.parcels);
+        return getString(R.string.parcels);
     }
 
     @Override
@@ -576,7 +571,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
      */
     public void onAllowShippingClick() {
         mActivity.toggleLoadingProgress(true);
-        Application.apiInterface().allowDamagedParcelSending(mPackage.getId(), 1)
+        Application.apiInterface().allowDamagedParcelSending(mPusParcelId, 1)
                 .enqueue(mAllowShippingCallback);
     }
 
@@ -597,7 +592,6 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
             int count = Application.counters.get(Constants.PARCELS);
             count = count - 1;
             Application.counters.put(Constants.PARCELS, count);
-            mActivity.updateParcelCounters(Constants.PARCELS);
             mActivity.sendBroadcast(refresh);
             mActivity.onBackPressed();
             mActivity.toggleLoadingProgress(false);
@@ -625,7 +619,6 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
             int count = Application.counters.get(Constants.PARCELS);
             count = count - 1;
             Application.counters.put(Constants.PARCELS, count);
-            mActivity.updateParcelCounters(Constants.PARCELS);
             mActivity.sendBroadcast(refresh);
             mActivity.onBackPressed();
             mActivity.toggleLoadingProgress(false);
@@ -646,7 +639,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        mCall = Application.apiInterface().getPUSParcelDetails(mPackage.getId());
+        mCall = Application.apiInterface().getPUSParcelDetails(mPusParcelId);
         mCall.enqueue(mDetailsResponseCallback);
     }
 }

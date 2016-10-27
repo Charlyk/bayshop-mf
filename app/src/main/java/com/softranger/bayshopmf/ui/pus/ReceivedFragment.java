@@ -20,6 +20,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ItemAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
+import com.softranger.bayshopmf.model.pus.PUSParcelActivity;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
@@ -168,7 +169,9 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
     @Override
     public void onInProcessingProductClick(PUSParcel processingPackage, int position) {
         processingPackage.setParcelStatus(Constants.ParcelStatus.RECEIVED);
-        mActivity.addFragment(PUSParcelDetails.newInstance(processingPackage), true);
+        Intent showDetails = new Intent(mActivity, PUSParcelActivity.class);
+        showDetails.putExtra("id", processingPackage.getId());
+        mActivity.startActivity(showDetails);
     }
 
     @Override

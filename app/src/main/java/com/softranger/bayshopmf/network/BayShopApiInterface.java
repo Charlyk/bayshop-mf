@@ -1,5 +1,6 @@
 package com.softranger.bayshopmf.network;
 
+import com.softranger.bayshopmf.model.CalculatorResult;
 import com.softranger.bayshopmf.model.CreationDetails;
 import com.softranger.bayshopmf.model.InStockList;
 import com.softranger.bayshopmf.model.Shipper;
@@ -238,4 +239,13 @@ public interface BayShopApiInterface {
     @FormUrlEncoded
     @POST("member/gcm-token")
     Call<ServerResponse> sendPushToken(@Field("token_current") String currentToken, @Field("token_old") String lastToken);
+
+    @FormUrlEncoded
+    @POST("calculator")
+    Call<ServerResponse<CalculatorResult>> computeShippingCost(@Field("storage_id") String storageId,
+                                                               @Field("country_id") String countryId,
+                                                               @Field("weight") double weight,
+                                                               @Field("volume[x]") double volumeX,
+                                                               @Field("volume[y]") double volumeY,
+                                                               @Field("volume[z]") double volumeZ);
 }

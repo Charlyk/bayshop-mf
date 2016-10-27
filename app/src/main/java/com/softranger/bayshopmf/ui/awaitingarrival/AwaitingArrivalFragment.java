@@ -205,6 +205,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
             switch (intent.getAction()) {
                 case ACTION_LIST_CHANGED:
                     onRefresh(mRefreshLayout);
+                    mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
                     break;
                 case ACTION_SHOW_BTN:
                     mActionButton.setVisibility(View.VISIBLE);
@@ -219,7 +220,9 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
     @Override
     public void onAwaitingClick(AwaitingArrival awaitingArrival, int position) {
-        mActivity.addFragment(AwaitingArrivalProductFragment.newInstance(awaitingArrival), true);
+        Intent showDetails = new Intent(mActivity, AwaitingArrivalActivity.class);
+        showDetails.putExtra("id", awaitingArrival.getId());
+        mActivity.startActivity(showDetails);
     }
 
     @Override

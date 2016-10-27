@@ -1,14 +1,9 @@
 package com.softranger.bayshopmf.ui.calculator;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,23 +11,23 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.CalculatorAdapter;
+import com.softranger.bayshopmf.model.CalculatorResult;
 import com.softranger.bayshopmf.model.address.Country;
+import com.softranger.bayshopmf.model.app.ServerResponse;
+import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.addresses.CountriesDialogFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Response;
+import butterknife.OnTextChanged;
+import retrofit2.Call;
 
-public class ShippingCalculatorActivity extends ParentActivity implements TextWatcher,
+public class ShippingCalculatorActivity extends ParentActivity implements
         View.OnClickListener, CountriesDialogFragment.OnCountrySelectListener {
 
     @BindView(R.id.calculatorWeightInput)
@@ -48,6 +43,14 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
     private CalculatorAdapter mAdapter;
     private static String selectedStorage;
 
+    private double mWeight;
+    private double X;
+    private double Y;
+    private double Z;
+
+    private String mCountryId;
+    private Call<ServerResponse<CalculatorResult>> mCall;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,35 +64,15 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
 
         selectedStorage = Constants.US;
 
-        mWeightInput.addTextChangedListener(this);
-        mXInput.addTextChangedListener(this);
-        mYInput.addTextChangedListener(this);
-        mZInput.addTextChangedListener(this);
-
-        mCountryNameLabel = (TextView) findViewById(R.id.calculatorCountryNameLabel);
+        Country country = Application.user.getCountries().get(0);
+        mCountryId = String.valueOf(country.getId());
+        mCountryNameLabel.setText(country.getName());
 
         mAdapter = new CalculatorAdapter();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.calculatorShippingList);
+        RecyclerView recyclerView = ButterKnife.findById(this, R.id.calculatorShippingList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
 
-    }
-
-    //------------------- Inputs listener -------------------//
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        String weight = String.valueOf(mWeightInput.getText());
-        String x = String.valueOf(mXInput.getText());
-        String y = String.valueOf(mYInput.getText());
-        String z = String.valueOf(mZInput.getText());
-        String countryName = String.valueOf(mCountryNameLabel.getText());
-
-        getShippingPriceFromServer(weight, x, y, z, countryName, selectedStorage);
     }
 
     @OnClick(R.id.countryBtnLayout)
@@ -101,9 +84,49 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
         }
     }
 
-    @Override
-    public void afterTextChanged(Editable s) {
+    @OnTextChanged(value = R.id.calculatorVolumeXInput, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    void volumeXTextChanged(CharSequence cs) {
+        try {
+            X = Double.parseDouble(cs.toString());
+            computeShippingCost();
+        } catch (Exception e) {
+            mXInput.setError(getString(R.string.number_format_error));
+        }
+    }
 
+    @OnTextChanged(value = R.id.calculatorVolumeYInput, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    void volumeYTextChanged(CharSequence cs) {
+        try {
+            Y = Double.parseDouble(cs.toString());
+            computeShippingCost();
+        } catch (Exception e) {
+            mYInput.setError(getString(R.string.number_format_error));
+        }
+    }
+
+    @OnTextChanged(value = R.id.calculatorVolumeZInput, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    void volumeZTextChanged(CharSequence cs) {
+        try {
+            Z = Double.parseDouble(cs.toString());
+            computeShippingCost();
+        } catch (Exception e) {
+            mZInput.setError(getString(R.string.number_format_error));
+        }
+    }
+
+    @OnTextChanged(value = R.id.calculatorWeightInput, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    void weightTextChanged(CharSequence cs) {
+        try {
+            mWeight = Double.parseDouble(cs.toString());
+            computeShippingCost();
+        } catch (Exception e) {
+            mWeightInput.setError(getString(R.string.number_format_error));
+        }
+    }
+
+    private void computeShippingCost() {
+        mCall = Application.apiInterface().computeShippingCost(selectedStorage, mCountryId, mWeight, X, Y, Z);
+        mCall.enqueue(mResponseCallback);
     }
 
     //------------------- Click listener -------------------//
@@ -111,56 +134,6 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
     public void onClick(View v) {
 
     }
-
-    public void getShippingPriceFromServer(String weight, String x, String y, String z, String countryName, String storage) {
-
-    }
-
-    protected Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.ApiResponse.RESPONSE_OK: {
-                    try {
-                        JSONObject response = new JSONObject((String) msg.obj);
-                        String message = response.optString("message", getString(R.string.unknown_error));
-                        boolean error = !message.equalsIgnoreCase("ok");
-                        if (!error) {
-
-                        } else {
-                            Toast.makeText(ShippingCalculatorActivity.this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(ShippingCalculatorActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_FAILED: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        Response response = (Response) msg.obj;
-                        message = response.message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (Exception) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(ShippingCalculatorActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case Constants.ApiResponse.RESPONSE_ERROR: {
-                    String message = getString(R.string.unknown_error);
-                    if (msg.obj instanceof Response) {
-                        message = ((Response) msg.obj).message();
-                    } else if (msg.obj instanceof Exception) {
-                        Exception exception = (IOException) msg.obj;
-                        message = exception.getMessage();
-                    }
-                    Toast.makeText(ShippingCalculatorActivity.this, message, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-        }
-    };
 
     @Override
     public void setToolbarTitle(String title) {
@@ -190,5 +163,31 @@ public class ShippingCalculatorActivity extends ParentActivity implements TextWa
     @Override
     public void onCountrySelected(Country country) {
         mCountryNameLabel.setText(country.getName());
+        mCountryId = String.valueOf(country.getId());
+        computeShippingCost();
+    }
+
+    private ResponseCallback<CalculatorResult> mResponseCallback = new ResponseCallback<CalculatorResult>() {
+        @Override
+        public void onSuccess(CalculatorResult data) {
+            mAdapter.refreshList(data.getShippersl());
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            Toast.makeText(ShippingCalculatorActivity.this, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<CalculatorResult>> call, Throwable t) {
+            Toast.makeText(ShippingCalculatorActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCall != null) mCall.cancel();
     }
 }

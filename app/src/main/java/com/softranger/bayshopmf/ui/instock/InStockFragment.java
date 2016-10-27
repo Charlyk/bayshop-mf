@@ -214,7 +214,9 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     @Override
     public void onItemClick(InStock inStock, int position) {
-        mActivity.addFragment(DetailsFragment.newInstance(inStock), false);
+        Intent showDetails = new Intent(mActivity, InStockActivity.class);
+        showDetails.putExtra("id", inStock.getId());
+        mActivity.startActivity(showDetails);
     }
 
     @Override
@@ -314,7 +316,9 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
     @Override
     public void onNoDeclarationClick(InStock inStock, int position) {
-        mActivity.addFragment(DetailsFragment.newInstance(inStock), true);
+        Intent showDetails = new Intent(mActivity, InStockActivity.class);
+        showDetails.putExtra("id", inStock.getId());
+        mActivity.startActivity(showDetails);
         Toast.makeText(mActivity, getString(R.string.fill_in_the_declaration), Toast.LENGTH_SHORT).show();
     }
 

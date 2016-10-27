@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.ColorRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,19 +21,18 @@ import android.widget.Toast;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
-import com.softranger.bayshopmf.model.box.InStock;
 import com.softranger.bayshopmf.model.box.InStockDetailed;
 import com.softranger.bayshopmf.model.product.Photo;
-import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.network.ResponseCallback;
-import com.softranger.bayshopmf.ui.general.DeclarationActivity;
 import com.softranger.bayshopmf.ui.gallery.GalleryActivity;
+import com.softranger.bayshopmf.ui.general.DeclarationActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.services.AdditionalPhotoFragment;
 import com.softranger.bayshopmf.ui.services.CheckProductFragment;
 import com.softranger.bayshopmf.ui.services.RepackingFragment;
 import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import java.text.SimpleDateFormat;
@@ -57,7 +53,7 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
 
     private static final String ITEM_ARG = "ITEM ARGUMENT";
     public static final int DECLARATION_RC = 1528;
-    private MainActivity mActivity;
+    private ParentActivity mActivity;
     private Unbinder mUnbinder;
 
     @BindView(R.id.fill_declarationButton) Button mFillDeclaration;
@@ -81,9 +77,8 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
     @BindView(R.id.inStockDetailsProductName)  TextView description;
 
     private InStockDetailed mInStockDetailed;
-    private InStock mInStockItem;
     private ImagesAdapter mImagesAdapter;
-
+    private String mParcelId;
 
     private Call<ServerResponse<InStockDetailed>> mCall;
 
@@ -91,9 +86,9 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         // Required empty public constructor
     }
 
-    public static DetailsFragment newInstance(InStock inStock) {
+    public static DetailsFragment newInstance(String inStockid) {
         Bundle args = new Bundle();
-        args.putParcelable(ITEM_ARG, inStock);
+        args.putString(ITEM_ARG, inStockid);
         DetailsFragment fragment = new DetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -103,7 +98,7 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_in_stock_details, container, false);
-        mActivity = (MainActivity) getActivity(); // used as context to create views programmatically
+        mActivity = (ParentActivity) getActivity(); // used as context to create views programmatically
         mUnbinder = ButterKnife.bind(this, rootView);
         // hide entire layout while we are loading data
         mHolderLayout.setVisibility(View.GONE);
@@ -125,12 +120,12 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         mRecyclerView.setAdapter(mImagesAdapter);
 
         // get in stock item from arguments
-        mInStockItem = getArguments().getParcelable(ITEM_ARG);
+        mParcelId = getArguments().getString(ITEM_ARG);
 
         mFillDeclaration.setVisibility(View.GONE);
 
         // send request to server for item details
-        mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
+        mCall = Application.apiInterface().getInStockItemDetails(mParcelId);
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
         return rootView;
@@ -181,7 +176,7 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
 
     @Override
     public void refreshFragment() {
-        mCall = Application.apiInterface().getInStockItemDetails(mInStockItem.getId());
+        mCall = Application.apiInterface().getInStockItemDetails(mParcelId);
         mCall.enqueue(mResponseCallback);
     }
 
@@ -194,7 +189,6 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
                 mNoPhotoLayout.setVisibility(View.VISIBLE);
             } else {
                 mImagesAdapter.refreshList(mInStockDetailed.getPhotos());
-                new ImageDownloadThread<>(mInStockDetailed.getPhotos(), mImageDownloadHandler, mActivity).start();
             }
             showDetails(mInStockDetailed);
             mHolderLayout.setVisibility(View.VISIBLE);
@@ -292,20 +286,9 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         }
     }
 
-    private Handler mImageDownloadHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(final Message msg) {
-            mActivity.runOnUiThread(() -> {
-                if (msg.what == ImageDownloadThread.FINISHED) {
-                    mImagesAdapter.notifyDataSetChanged();
-                }
-            });
-        }
-    };
-
     @Override
     public String getFragmentTitle() {
-        return mInStockItem.getUid() + " " + getString(R.string.details);
+        return getString(R.string.details);
     }
 
     @Override

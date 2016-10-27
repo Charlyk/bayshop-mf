@@ -17,6 +17,8 @@ import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.identity.Registration;
 import retrofit2.Call;
 
 public class SplashActivity extends ParentActivity {
@@ -70,6 +72,8 @@ public class SplashActivity extends ParentActivity {
         @Override
         public void onSuccess(User data) {
             Application.user = data;
+            Intercom.client().registerIdentifiedUser(Registration.create()
+                    .withUserId(Application.getInstance().getUserId()));
             getCounters();
         }
 

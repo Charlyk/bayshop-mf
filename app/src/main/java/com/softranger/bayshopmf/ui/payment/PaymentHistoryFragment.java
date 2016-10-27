@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +20,6 @@ import com.softranger.bayshopmf.adapter.HistoryAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.payment.History;
 import com.softranger.bayshopmf.model.payment.PaymentHistories;
-import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.util.Application;
 
@@ -102,9 +98,9 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
             }
             Collections.sort(mAllHistories, (lhs, rhs) -> lhs.getDate().compareTo(rhs.getDate()));
             Collections.reverse(mAllHistories);
-            ImageDownloadThread<History> downloadThread = new ImageDownloadThread<>(mAllHistories, mHandler, mActivity);
-            downloadThread.setImageSize(Application.getPixelsFromDp(30), Application.getPixelsFromDp(30));
-            downloadThread.start();
+            mAdapter.refreshList(mAllHistories);
+            if (mRefreshLayout != null)
+                mRefreshLayout.setRefreshing(false);
         }
 
         @Override
@@ -121,17 +117,6 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);
-        }
-    };
-
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == ImageDownloadThread.FINISHED) {
-                mAdapter.refreshList(mAllHistories);
-                if (mRefreshLayout != null)
-                    mRefreshLayout.setRefreshing(false);
-            }
         }
     };
 

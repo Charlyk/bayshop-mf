@@ -401,4 +401,5 @@
     <string name="declared_price">Declared price:</string>
     <string name="edit_feedback">Change feedback</string>
     <string name="_10">$10</string>
+    <string name="number_format_error">Please use only numbers dots and comas</string>
 </resources>

@@ -48,6 +48,10 @@ public class Shipper implements Parcelable {
     private double mVolumeWeight;
     @JsonProperty("shipperMeasureId") private String mShipperMeasureId;
     @JsonProperty("calculatedPrice") private double mCalculatedPrice;
+    @JsonProperty("price")
+    private double mPrice;
+    @JsonProperty("price_lei")
+    private double mPriceLei;
 
     public Shipper() {
         // empty constructor for jackson
@@ -86,6 +90,8 @@ public class Shipper implements Parcelable {
         mVolumeWeight = in.readDouble();
         mShipperMeasureId = in.readString();
         mCalculatedPrice = in.readDouble();
+        mPrice = in.readDouble();
+        mPriceLei = in.readDouble();
     }
 
     public static final Creator<Shipper> CREATOR = new Creator<Shipper>() {
@@ -234,6 +240,14 @@ public class Shipper implements Parcelable {
         return mCalculatedPrice;
     }
 
+    public double getPrice() {
+        return mPrice;
+    }
+
+    public double getPriceLei() {
+        return mPriceLei;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -273,6 +287,8 @@ public class Shipper implements Parcelable {
         dest.writeDouble(mVolumeWeight);
         dest.writeString(mShipperMeasureId);
         dest.writeDouble(mCalculatedPrice);
+        dest.writeDouble(mPrice);
+        dest.writeDouble(mPriceLei);
     }
 
     @Override

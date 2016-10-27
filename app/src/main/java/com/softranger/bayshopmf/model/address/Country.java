@@ -3,19 +3,29 @@ package com.softranger.bayshopmf.model.address;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.softranger.bayshopmf.util.CountriesDeserializer;
 import com.softranger.bayshopmf.util.SpinnerObj;
 
 /**
  * Created by macbook on 6/17/16.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Country implements Parcelable, SpinnerObj {
     @JsonProperty("id") private int mId;
     @JsonProperty("title") private String mName;
     @JsonProperty("code") private String mCode;
+    @JsonProperty("storageId")
+    private String mStorageId;
+    @JsonProperty("flag")
+    private String mFlagUrl;
+    @JsonProperty("rank")
+    private int mRank;
+    @JsonProperty("remoteId")
+    private String mRemoteId;
+    @JsonProperty("forShipping")
+    private int mForShipping;
 
     private Country() {
 
@@ -25,6 +35,11 @@ public class Country implements Parcelable, SpinnerObj {
         mId = in.readInt();
         mName = in.readString();
         mCode = in.readString();
+        mStorageId = in.readString();
+        mFlagUrl = in.readString();
+        mRank = in.readInt();
+        mRemoteId = in.readString();
+        mForShipping = in.readInt();
     }
 
     public static final Creator<Country> CREATOR = new Creator<Country>() {
@@ -61,16 +76,42 @@ public class Country implements Parcelable, SpinnerObj {
         return mCode;
     }
 
+    public String getStorageId() {
+        return mStorageId;
+    }
+
+    public String getFlagUrl() {
+        return mFlagUrl;
+    }
+
+    public int getRank() {
+        return mRank;
+    }
+
+    public String getRemoteId() {
+        return mRemoteId;
+    }
+
+    public int getForShipping() {
+        return mForShipping;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mId);
-        dest.writeString(mName);
-        dest.writeString(mCode);
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeInt(mId);
+        parcel.writeString(mName);
+        parcel.writeString(mCode);
+        parcel.writeString(mStorageId);
+        parcel.writeString(mFlagUrl);
+        parcel.writeInt(mRank);
+        parcel.writeString(mRemoteId);
+        parcel.writeInt(mForShipping);
     }
 
     public static class Builder {

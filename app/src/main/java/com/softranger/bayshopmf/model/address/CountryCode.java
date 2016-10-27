@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.Imageble;
 
 /**
@@ -128,7 +129,7 @@ public class CountryCode implements Parcelable, Imageble {
 
     @Override
     public String getImageUrl() {
-        return mFlagUrl;
+        return Constants.Api.BASE_URL + mFlagUrl;
     }
 
     public static class Builder {

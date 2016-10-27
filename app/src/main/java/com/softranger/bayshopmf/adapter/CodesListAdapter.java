@@ -1,9 +1,6 @@
 package com.softranger.bayshopmf.adapter;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +10,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.address.CountryCode;
-import com.softranger.bayshopmf.network.ImageDownloadThread;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,14 +44,6 @@ public class CodesListAdapter extends RecyclerView.Adapter<CodesListAdapter.View
         return new ViewHolder(view);
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            int index = mCountryCodes.indexOf(msg.obj);
-            notifyItemChanged(index);
-        }
-    };
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mCountryCode = mCountryCodes.get(position);
@@ -62,13 +51,7 @@ public class CodesListAdapter extends RecyclerView.Adapter<CodesListAdapter.View
         holder.mCodeLabel.setText(holder.mCountryCode.getCode());
         holder.mCountrylabel.setText(holder.mCountryCode.getName());
 
-        if (holder.mCountryCode.getImage() != null) {
-            // set flag image
-            holder.mFlagImage.setImageBitmap(holder.mCountryCode.getImage());
-        } else {
-            // download the image
-            new ImageDownloadThread<>(mHandler, mContext, holder.mCountryCode).start();
-        }
+        Picasso.with(mContext).load(holder.mCountryCode.getImageUrl()).into(holder.mFlagImage);
     }
 
     @Override

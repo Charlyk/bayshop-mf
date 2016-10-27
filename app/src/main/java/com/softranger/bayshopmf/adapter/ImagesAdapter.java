@@ -13,11 +13,14 @@ import android.widget.ProgressBar;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.product.Photo;
-import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.util.Application;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Eduard Albu on 5/13/16, 05, 2016
@@ -36,7 +39,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     public ImagesAdapter(ArrayList<Photo> images, @LayoutRes int layoutId) {
         mImages = images;
         mLayoutId = layoutId;
-        downloadImages();
     }
 
     public ImagesAdapter(@LayoutRes int layoutId) {
@@ -51,19 +53,16 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     public void addImage(Photo photo) {
         mImages.add(photo);
         notifyItemInserted(mImages.indexOf(photo));
-        downloadImages();
     }
 
     public void refreshList(ArrayList<Photo> photos) {
         mImages.clear();
         mImages.addAll(photos);
         notifyDataSetChanged();
-        downloadImages();
     }
     public void addImages(ArrayList<Photo> photos) {
         mImages.addAll(photos);
         notifyDataSetChanged();
-        downloadImages();
     }
 
     @Override
@@ -77,7 +76,18 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Photo photo = mImages.get(position);
-        Picasso.with(Application.getInstance()).load(photo.getSmallImage()).into(holder.mProductImage);
+        Picasso.with(Application.getInstance()).load(photo.getSmallImage())
+                .error(R.drawable.no_image).into(holder.mProductImage, new Callback() {
+            @Override
+            public void onSuccess() {
+                holder.mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError() {
+                holder.mProgressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -86,13 +96,14 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final ImageView mProductImage;
-        final ProgressBar mProgressBar;
+        @BindView(R.id.productImageListItem)
+        ImageView mProductImage;
+        @BindView(R.id.productImageListItemProgress)
+        ProgressBar mProgressBar;
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mProductImage = (ImageView) itemView.findViewById(R.id.productImageListItem);
-            mProgressBar = (ProgressBar) itemView.findViewById(R.id.productImageListItemProgress);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override
@@ -101,10 +112,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
                 mOnImageClickListener.onImageClick(mImages, getAdapterPosition());
             }
         }
-    }
-
-    private void downloadImages() {
-        new ImageDownloadThread<>(mImages, mHandler, Application.getInstance().getApplicationContext()).start();
     }
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {

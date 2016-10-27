@@ -4,13 +4,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.model.product.ShippingMethod;
+import com.softranger.bayshopmf.model.Shipper;
+import com.softranger.bayshopmf.util.Constants;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Eduard Albu on 7/19/16, 07, 2016
@@ -19,7 +23,7 @@ import java.util.ArrayList;
  */
 public class CalculatorAdapter extends RecyclerView.Adapter<CalculatorAdapter.ViewHolder> {
 
-    private ArrayList<ShippingMethod> mShippingMethods;
+    private ArrayList<Shipper> mShippingMethods;
     private OnDetailsClickListener mOnDetailsClickListener;
 
     public CalculatorAdapter() {
@@ -30,7 +34,7 @@ public class CalculatorAdapter extends RecyclerView.Adapter<CalculatorAdapter.Vi
         mOnDetailsClickListener = onDetailsClickListener;
     }
 
-    public void refreshList(ArrayList<ShippingMethod> shippingMethods) {
+    public void refreshList(ArrayList<Shipper> shippingMethods) {
         mShippingMethods.clear();
         mShippingMethods.addAll(shippingMethods);
         notifyDataSetChanged();
@@ -44,7 +48,9 @@ public class CalculatorAdapter extends RecyclerView.Adapter<CalculatorAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        holder.mShipper = mShippingMethods.get(position);
+        holder.mShippingMethodName.setText(holder.mShipper.getTitle());
+        holder.mShippingPrice.setText(Constants.USD_SYMBOL + holder.mShipper.getPrice());
     }
 
     @Override
@@ -52,30 +58,27 @@ public class CalculatorAdapter extends RecyclerView.Adapter<CalculatorAdapter.Vi
         return mShippingMethods.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        final TextView mShippingMethodName;
-        final TextView mShippingPrice;
-        final ImageButton mDetailsBtn;
-        ShippingMethod mShippingMethod;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.calculatorShippingNameLabel)
+        TextView mShippingMethodName;
+        @BindView(R.id.calculatorShippingPriceLabel)
+        TextView mShippingPrice;
+        Shipper mShipper;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mShippingMethodName = (TextView) itemView.findViewById(R.id.calculatorShippingNameLabel);
-            mShippingPrice = (TextView) itemView.findViewById(R.id.calculatorShippingPriceLabel);
-            mDetailsBtn = (ImageButton) itemView.findViewById(R.id.calculatorShippingDetailsBtn);
-            mDetailsBtn.setOnClickListener(this);
+            ButterKnife.bind(this, itemView);
         }
 
-        @Override
+        @OnClick(R.id.calculatorShippingDetailsBtn)
         public void onClick(View v) {
             if (mOnDetailsClickListener != null) {
-                mOnDetailsClickListener.onDetailsClicked(mShippingMethod, getAdapterPosition());
+                mOnDetailsClickListener.onDetailsClicked(mShipper, getAdapterPosition());
             }
         }
     }
 
     public interface OnDetailsClickListener {
-        void onDetailsClicked(ShippingMethod shippingMethod, int position);
+        void onDetailsClicked(Shipper shippingMethod, int position);
     }
 }

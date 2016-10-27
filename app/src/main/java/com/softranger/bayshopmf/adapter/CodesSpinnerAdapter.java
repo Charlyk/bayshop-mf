@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.address.CountryCode;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class CodesSpinnerAdapter extends ArrayAdapter<CountryCode> {
         TextView name = (TextView) row.findViewById(R.id.spinnerCountryLabel);
         name.setText(countryCode.getName());
         ImageView icon = (ImageView)row.findViewById(R.id.spinnerFlagLabel);
-        icon.setImageBitmap(countryCode.getImage());
+        Picasso.with(mContext).load(countryCode.getImageUrl()).into(icon);
         return row;
     }
 

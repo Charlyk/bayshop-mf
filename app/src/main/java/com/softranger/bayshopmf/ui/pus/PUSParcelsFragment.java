@@ -20,6 +20,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.PUSParcelsAdapter;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
+import com.softranger.bayshopmf.model.pus.PUSParcelActivity;
 import com.softranger.bayshopmf.model.pus.PUSStatuses;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -146,6 +147,7 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
                     mActivity.removeNoConnectionView();
                 default:
                     onRefresh(mRefreshLayout);
+                    mActivity.updateParcelCounters(Constants.PARCELS);
                     break;
             }
         }
@@ -163,7 +165,9 @@ public class PUSParcelsFragment extends ParentFragment implements PUSParcelsAdap
 
     @Override
     public void onPusItemClick(PUSParcel pusParcel, int position) {
-        mActivity.addFragment(PUSParcelDetails.newInstance(pusParcel), true);
+        Intent showDetails = new Intent(mActivity, PUSParcelActivity.class);
+        showDetails.putExtra("id", pusParcel.getId());
+        mActivity.startActivity(showDetails);
     }
 
     @Override

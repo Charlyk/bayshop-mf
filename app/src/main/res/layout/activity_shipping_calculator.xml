@@ -279,7 +279,7 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"/>
 
-    <!--methods list-->
+    methods list
     <android.support.v7.widget.RecyclerView
         android:id="@+id/calculatorShippingList"
         android:layout_width="match_parent"

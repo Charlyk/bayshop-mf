@@ -40,10 +40,10 @@
                 android:id="@+id/nav_addresses"
                 android:icon="@mipmap/ic_address_usa_30dp"
                 android:title="@string/addresses"/>
-            <!--<item-->
-            <!--android:id="@+id/nav_shippingCalculator"-->
-            <!--android:icon="@mipmap/ic_shipping_calculator_30dp"-->
-            <!--android:title="@string/shipping_calculator"/>-->
+            <item
+                android:id="@+id/nav_shippingCalculator"
+                android:icon="@mipmap/ic_address_30dp"
+                android:title="@string/shipping_calculator"/>
             <item
                 android:id="@+id/nav_contactUs"
                 android:icon="@mipmap/ic_inner_mail_30dp"

@@ -136,19 +136,23 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <service
-            android:name=".util.push.MessagingService">
+        <service android:name=".util.push.MessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
-        <service
-            android:name=".util.push.InstanceIDService">
+        <service android:name=".util.push.InstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+
+        <activity android:name=".ui.instock.InStockActivity">
+        </activity>
+        <activity android:name=".ui.awaitingarrival.AwaitingArrivalActivity">
+        </activity>
+        <activity android:name=".model.pus.PUSParcelActivity">
+        </activity>
     </application>
 
 </manifest>

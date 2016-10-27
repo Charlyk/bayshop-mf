@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.Imageble;
 
 import java.util.Date;
@@ -118,7 +119,7 @@ public class History implements Parcelable, Imageble {
 
     @Override
     public String getImageUrl() {
-        return mImageUrl;
+        return Constants.Api.BASE_URL + mImageUrl;
     }
 
     public String getCommission() {
