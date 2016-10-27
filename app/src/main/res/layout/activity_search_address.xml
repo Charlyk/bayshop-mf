@@ -12,36 +12,35 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorAccent"
+        app:navigationIcon="@mipmap/ic_close_white_24dp"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:theme="@style/ToolbarColoredBackArrow">
 
-        <TextView
+        <EditText
             android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:theme="@style/SearchEditTextTheme"
             android:ellipsize="end"
-            android:gravity="center"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColorHint="#c5c5c5"
             android:singleLine="true"
+            android:drawableLeft="@mipmap/ic_search_address_30dp"
+            android:drawableStart="@mipmap/ic_search_address_30dp"
             android:textColor="@android:color/white"
-            tools:text="@string/create_parcel"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/createFragmentContainer"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/searchAddressRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"/>
-
-    <ProgressBar
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/createParcelProgressBar"/>
 
     <View
         android:layout_width="match_parent"

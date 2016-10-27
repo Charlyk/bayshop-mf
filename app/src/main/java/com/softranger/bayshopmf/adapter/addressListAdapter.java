@@ -4,8 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,7 +12,6 @@ import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.util.Application;
-import com.softranger.bayshopmf.util.ParentActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +29,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
     private ArrayList<Address> mAddresses;
     private OnAddressClickListener mOnAddressClickListener;
+    private boolean showOptions = true;
 
     public AddressListAdapter(ArrayList<Address> addresses) {
         mAddresses = addresses;
@@ -42,11 +40,19 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         Collections.sort(mAddresses, (lhs, rhs) -> lhs.getClientName().compareTo(rhs.getClientName()));
     }
 
+    public void setShowOptions(boolean showOptions) {
+        this.showOptions = showOptions;
+    }
+
     public void refreshList(ArrayList<Address> addresses) {
         mAddresses.clear();
         mAddresses.addAll(addresses);
         sortListByName();
         notifyDataSetChanged();
+    }
+
+    public ArrayList<Address> getAddresses() {
+        return mAddresses;
     }
 
     public void replaceList(ArrayList<Address> addresses) {
@@ -78,6 +84,11 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         holder.mCountry.setText(holder.mAddressObj.getCountry());
         holder.mPostalCode.setText(holder.mAddressObj.getPostalCode());
         holder.mClientName.setText(holder.mAddressObj.getClientName());
+
+        if (!showOptions) {
+            holder.mEditBtn.setVisibility(View.INVISIBLE);
+            holder.mEditBtn.setClickable(false);
+        }
     }
 
     @Override
@@ -99,6 +110,8 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         @BindView(R.id.addressCountryLabel) TextView mCountry;
         @BindView(R.id.addressPostalCodeLabel) TextView mPostalCode;
         @BindView(R.id.addressAddToFavoritesButton) ImageButton mAddToFavorite;
+        @BindView(R.id.addressEditButton)
+        ImageButton mEditBtn;
         @BindView(R.id.addressItemSpinner)
         Spinner mSpinner;
 

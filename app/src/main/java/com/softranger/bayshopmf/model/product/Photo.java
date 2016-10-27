@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.Imageble;
 
 /**
@@ -13,10 +14,12 @@ import com.softranger.bayshopmf.util.Imageble;
  * email eduard.albu@gmail.com
  */
 public class Photo implements Parcelable, Imageble {
-    @JsonProperty("photoThumbnail") String mSmallImage;
-    @JsonProperty("photo") String mBigImage;
-    Bitmap mSmallBitmap;
-    Bitmap mBigBitmap;
+    @JsonProperty("photoThumbnail")
+    private String mSmallImage;
+    @JsonProperty("photo")
+    private String mBigImage;
+    private Bitmap mSmallBitmap;
+    private Bitmap mBigBitmap;
 
     private Photo() {
         // empty constructor for jackson and builder
@@ -40,7 +43,7 @@ public class Photo implements Parcelable, Imageble {
     };
 
     public String getSmallImage() {
-        return mSmallImage;
+        return Constants.Api.BASE_URL + mSmallImage;
     }
 
     public String getBigImage() {

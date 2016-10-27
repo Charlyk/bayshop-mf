@@ -253,7 +253,8 @@ public class AddressesListFragment extends ParentFragment implements AddressList
                     }
                     break;
                 case ACTION_ADDRESS_SELECT:
-                    // TODO: 10/18/16 select address passed through intent
+                    Address address = intent.getExtras().getParcelable("address");
+                    onSelectAddressClick(address, 0);
                     break;
                 case Application.ACTION_RETRY:
                     if (mIsDeleteClicked) {
@@ -278,10 +279,10 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         mActivity.startActivity(editAddress);
     }
 
-    // TODO: 10/8/16 add search address to application
     @OnClick(R.id.addressSearchFloatingBtn)
     void searchAnAddress() {
         Intent search = new Intent(mActivity, SearchAddressActivity.class);
+        search.putExtra(SearchAddressActivity.ADDRESSES, mAdapter.getAddresses());
         mActivity.startActivity(search);
     }
 

@@ -15,6 +15,7 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.network.ImageDownloadThread;
 import com.softranger.bayshopmf.util.Application;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -76,10 +77,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Photo photo = mImages.get(position);
-        if (photo.getBigBitmap() != null) {
-            holder.mProgressBar.setVisibility(View.GONE);
-        }
-        holder.mProductImage.setImageBitmap(mImages.get(position).getBigBitmap());
+        Picasso.with(Application.getInstance()).load(photo.getSmallImage()).into(holder.mProductImage);
     }
 
     @Override
