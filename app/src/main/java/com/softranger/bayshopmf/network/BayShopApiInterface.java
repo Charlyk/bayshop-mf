@@ -248,4 +248,7 @@ public interface BayShopApiInterface {
                                                                @Field("volume[x]") double volumeX,
                                                                @Field("volume[y]") double volumeY,
                                                                @Field("volume[z]") double volumeZ);
+
+    @DELETE("auth/?")
+    Call<ServerResponse> logOut(@Query("gcm_token") String pushToken);
 }

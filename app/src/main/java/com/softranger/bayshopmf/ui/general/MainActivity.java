@@ -235,6 +235,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                     break;
                 case LOG_OUT_RC:
                     Application.getInstance().setLoginStatus(false);
+                    Application.getInstance().setPushTokenSent(false);
                     Application.user = null;
                     Intent login = new Intent(this, LoginActivity.class);
                     startActivity(login);
