@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -20,6 +21,10 @@ import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.InStockActivity;
 
+import java.util.Map;
+
+import io.intercom.android.sdk.push.IntercomPushClient;
+
 /**
  * Created by Eduard Albu on 10/19/16, 10, 2016
  * for project bayshop-mf
@@ -29,16 +34,22 @@ import com.softranger.bayshopmf.ui.instock.InStockActivity;
 public class MessagingService extends FirebaseMessagingService {
 
     public static final String TAG = "MessagingService";
+    private final IntercomPushClient intercomPushClient = new IntercomPushClient();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        Map message = remoteMessage.getData();
 
-        if (remoteMessage.getData().size() > 0) {
+        Log.e(TAG, "Message received");
+
+        if (intercomPushClient.isIntercomPush(message)) {
+            intercomPushClient.handlePush(getApplication(), message);
+        } else if (remoteMessage.getData().size() > 0) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                NotificationMessage message = mapper.readValue(remoteMessage.getData().get("data"), NotificationMessage.class);
-                sendNotification(message);
+                NotificationMessage notificationMessage = mapper.readValue(remoteMessage.getData().get("data"), NotificationMessage.class);
+                sendNotification(notificationMessage);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -8,6 +8,7 @@ import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.util.Application;
 
+import io.intercom.android.sdk.push.IntercomPushClient;
 import retrofit2.Call;
 
 /**
@@ -19,6 +20,7 @@ import retrofit2.Call;
 public class InstanceIDService extends FirebaseInstanceIdService {
 
     private static final String TAG = "InstanceIDService";
+    private final IntercomPushClient intercomPushClient = new IntercomPushClient();
 
     /**
      * Called if InstanceID token is updated. This may occur if the security of
@@ -29,6 +31,7 @@ public class InstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        intercomPushClient.sendTokenToIntercom(getApplication(), refreshedToken);
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the

@@ -66,6 +66,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.push.IntercomPushClient;
 import retrofit2.Call;
 
 public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -188,6 +189,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
         }
 
+        IntercomPushClient intercomPushClient = new IntercomPushClient();
         String pushToken = FirebaseInstanceId.getInstance().getToken();
         Log.d("Push token", pushToken);
         if (pushToken == null) return;
@@ -195,6 +197,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             Application.apiInterface().sendPushToken(pushToken, Application.getInstance().getPushToken())
                     .enqueue(mPushTokenCallback);
             Application.getInstance().setPushToken(pushToken);
+            intercomPushClient.sendTokenToIntercom(Application.getInstance(), pushToken);
         }
 
         Log.d("Push token", pushToken);

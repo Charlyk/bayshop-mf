@@ -34,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.intercom.android.sdk.Intercom;
 import retrofit2.Call;
 
 /**
@@ -182,6 +183,7 @@ public class SettingsFragment extends ParentFragment {
     void logOut() {
         Application.apiInterface().logOut(Application.getInstance().getPushToken()).enqueue(mLogOutCallback);
         mActivity.toggleLoadingProgress(true);
+        Intercom.client().reset();
     }
 
     private ResponseCallback mLogOutCallback = new ResponseCallback() {
