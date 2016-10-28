@@ -17,6 +17,8 @@ import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
+import java.util.HashMap;
+
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.identity.Registration;
 import retrofit2.Call;
@@ -72,8 +74,13 @@ public class SplashActivity extends ParentActivity {
         @Override
         public void onSuccess(User data) {
             Application.user = data;
+            // register user do intercom
             Intercom.client().registerIdentifiedUser(Registration.create()
-                    .withUserId(Application.getInstance().getUserId()));
+                    .withUserId(Application.getInstance().getUserId().toLowerCase()));
+            // update his name in intercom database
+            HashMap<String, Object> userData = new HashMap<>();
+            userData.put("name", data.getFullName());
+            Intercom.client().updateUser(userData);
             getCounters();
         }
 

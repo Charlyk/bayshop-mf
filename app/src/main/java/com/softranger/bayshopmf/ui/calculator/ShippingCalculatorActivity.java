@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,14 +23,15 @@ import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import retrofit2.Call;
 
-public class ShippingCalculatorActivity extends ParentActivity implements
-        View.OnClickListener, CountriesDialogFragment.OnCountrySelectListener {
+public class ShippingCalculatorActivity extends ParentActivity implements CountriesDialogFragment.OnCountrySelectListener {
 
     @BindView(R.id.calculatorWeightInput)
     EditText mWeightInput;
@@ -38,8 +41,12 @@ public class ShippingCalculatorActivity extends ParentActivity implements
     EditText mYInput;
     @BindView(R.id.calculatorVolumeZInput)
     EditText mZInput;
+    @BindView(R.id.shippingCalculatorResultLayout)
+    RelativeLayout mResultLayout;
     @BindView(R.id.calculatorCountryNameLabel)
     TextView mCountryNameLabel;
+    @BindView(R.id.calculatorResetButton)
+    LinearLayout mResetBtn;
     private CalculatorAdapter mAdapter;
     private static String selectedStorage;
 
@@ -73,6 +80,7 @@ public class ShippingCalculatorActivity extends ParentActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
 
+        toggleResultVisibility(false);
     }
 
     @OnClick(R.id.countryBtnLayout)
@@ -82,6 +90,12 @@ public class ShippingCalculatorActivity extends ParentActivity implements
             dialogFragment.setOnCountrySelectListener(this);
             dialogFragment.show(getSupportFragmentManager(), this.getClass().getSimpleName());
         }
+    }
+
+    private void toggleResultVisibility(boolean show) {
+        mResultLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+        mResetBtn.setEnabled(show);
+        mResetBtn.setClickable(show);
     }
 
     @OnTextChanged(value = R.id.calculatorVolumeXInput, callback = OnTextChanged.Callback.TEXT_CHANGED)
@@ -129,10 +143,15 @@ public class ShippingCalculatorActivity extends ParentActivity implements
         mCall.enqueue(mResponseCallback);
     }
 
-    //------------------- Click listener -------------------//
-    @Override
-    public void onClick(View v) {
-
+    @SuppressWarnings("unused")
+    @OnClick(R.id.calculatorResetButton)
+    void resetInputs() {
+        mWeightInput.setText("");
+        mXInput.setText("");
+        mYInput.setText("");
+        mZInput.setText("");
+        mAdapter.refreshList(new ArrayList<>());
+        toggleResultVisibility(false);
     }
 
     @Override
@@ -170,7 +189,8 @@ public class ShippingCalculatorActivity extends ParentActivity implements
     private ResponseCallback<CalculatorResult> mResponseCallback = new ResponseCallback<CalculatorResult>() {
         @Override
         public void onSuccess(CalculatorResult data) {
-            mAdapter.refreshList(data.getShippersl());
+            toggleResultVisibility(data != null && data.getShippers().size() > 0);
+            mAdapter.refreshList(data.getShippers());
         }
 
         @Override

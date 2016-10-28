@@ -33,6 +33,8 @@ import com.softranger.bayshopmf.util.FacebookAuth.OnLoginDataReadyListener;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
+import java.util.HashMap;
+
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.identity.Registration;
 import retrofit2.Call;
@@ -175,8 +177,15 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
     private ResponseCallback<User> mLoginCallback = new ResponseCallback<User>() {
         @Override
         public void onSuccess(User user) {
+            // register client to intercom
             Intercom.client().registerIdentifiedUser(Registration.create()
-                    .withUserId(user.getUserId()));
+                    .withUserId(user.getUserId().toLowerCase()));
+
+            // update his name in intercom database
+            HashMap<String, Object> userData = new HashMap<>();
+            userData.put("name", user.getFullName());
+            Intercom.client().updateUser(userData);
+
             Application.getInstance().setUserId(user.getUserId());
             Application.getInstance().setLoginStatus(true);
             Application.currentToken = user.getToken();

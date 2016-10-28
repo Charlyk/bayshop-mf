@@ -95,6 +95,10 @@ public class User implements Parcelable {
         mLastName = lastName;
     }
 
+    public String getFullName() {
+        return mFirstName + " " + mLastName;
+    }
+
     public int getCountryId() {
         return mCountryId;
     }

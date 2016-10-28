@@ -103,7 +103,7 @@ public class Application extends android.app.Application {
                 .client(client)
                 .build();
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        Intercom.initialize(this, "android_sdk-6b48cda3bbb2cbdbc7ffeecb2de195c5fd9d616b", "xnfi20lx");
+        Intercom.initialize(this, "android_sdk-7c1e0502c5d35150b1f9ef443859612dadf8aa73", "xht0fqt3");
     }
 
     /**

@@ -42,12 +42,13 @@
                 android:title="@string/addresses"/>
             <item
                 android:id="@+id/nav_shippingCalculator"
-                android:icon="@mipmap/ic_address_30dp"
+                android:icon="@mipmap/ic_shipping_calculator_30dp"
                 android:title="@string/shipping_calculator"/>
             <item
                 android:id="@+id/nav_contactUs"
                 android:icon="@mipmap/ic_inner_mail_30dp"
-                android:title="@string/inner_mail"/>
+                app:actionLayout="@layout/nav_counter"
+                android:title="@string/contact_us"/>
         </menu>
     </item>
 

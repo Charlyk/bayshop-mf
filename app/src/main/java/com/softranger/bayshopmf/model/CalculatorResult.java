@@ -55,7 +55,7 @@ public class CalculatorResult implements Parcelable {
         return mCountriesMap;
     }
 
-    public ArrayList<Shipper> getShippersl() {
+    public ArrayList<Shipper> getShippers() {
         return mShippersl;
     }
 

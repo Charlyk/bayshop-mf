@@ -47,7 +47,6 @@ import com.softranger.bayshopmf.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmf.ui.auth.LoginActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalFragment;
 import com.softranger.bayshopmf.ui.calculator.ShippingCalculatorActivity;
-import com.softranger.bayshopmf.ui.contact.ContactUsActivity;
 import com.softranger.bayshopmf.ui.instock.DetailsFragment;
 import com.softranger.bayshopmf.ui.instock.InStockFragment;
 import com.softranger.bayshopmf.ui.payment.PaymentActivity;
@@ -66,6 +65,7 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.intercom.android.sdk.Intercom;
 import retrofit2.Call;
 
 public class MainActivity extends ParentActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -189,12 +189,17 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         }
 
         String pushToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d("Push token", pushToken);
         if (pushToken == null) return;
         if (!Application.getInstance().isPushSent() || !pushToken.equals(Application.getInstance().getPushToken())) {
             Application.apiInterface().sendPushToken(pushToken, Application.getInstance().getPushToken())
                     .enqueue(mPushTokenCallback);
             Application.getInstance().setPushToken(pushToken);
         }
+
+        Log.d("Push token", pushToken);
+
+        setMenuCounter(R.id.nav_contactUs, Intercom.client().getUnreadConversationCount());
     }
 
     private ResponseCallback mPushTokenCallback = new ResponseCallback() {
@@ -429,9 +434,10 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                 closeDrawer = false;
                 break;
             case R.id.nav_contactUs:
-                Intent contactUs = new Intent(this, ContactUsActivity.class);
-                startActivity(contactUs);
-                closeDrawer = false;
+                Intercom.client().displayMessenger();
+//                Intent contactUs = new Intent(this, ContactUsActivity.class);
+//                startActivity(contactUs);
+//                closeDrawer = false;
                 break;
             case R.id.nav_addresses:
                 Intent addresses = new Intent(this, WarehouseAddressesActivity.class);

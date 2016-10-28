@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#ededed"
     android:orientation="vertical"
     tools:context=".ui.calculator.ShippingCalculatorActivity">
 
@@ -42,28 +42,26 @@
     <LinearLayout
         android:id="@+id/countryBtnLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_below="@id/toolbar"
-        android:background="?selectableItemBackground"
+        android:background="@drawable/selectable_background"
         android:clickable="true"
         android:gravity="center_vertical"
         android:onClick="selectCountry"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingRight="16dp">
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/ic_country_24dp"/>
+            android:src="@mipmap/ic_country_30dp"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -71,7 +69,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:gravity="bottom"
                 android:text="@string/country"/>
 
@@ -81,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/select_country"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -90,14 +87,14 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@id/countryBtnLayout"
-        android:layout_marginBottom="10dp"
         android:background="#ededed"/>
 
     <!--Weight-->
     <LinearLayout
         android:id="@+id/weightLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
+        android:background="@android:color/white"
         android:layout_below="@id/countrySeparator"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -105,15 +102,15 @@
         android:paddingRight="16dp">
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/ic_weight_24dp"/>
+            android:src="@mipmap/ic_weight_30dp"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -127,9 +124,11 @@
             <EditText
                 android:id="@+id/calculatorWeightInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                android:layout_height="24dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical|start"
                 android:focusableInTouchMode="true"
+                android:textSize="16sp"
                 android:hint="@string/_0_0"
                 android:inputType="numberDecimal"
                 android:nextFocusDown="@+id/calculatorVolumeXInput"
@@ -142,8 +141,6 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@id/weightLayout"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:background="#ededed"/>
 
     <!--Volume-->
@@ -151,20 +148,21 @@
     <LinearLayout
         android:id="@+id/volumeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_below="@id/weightSeparator"
+        android:background="@android:color/white"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/ic_weight_24dp"/>
+            android:src="@mipmap/ic_volume_30dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -181,13 +179,15 @@
             <EditText
                 android:id="@+id/calculatorVolumeXInput"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
                 android:ems="10"
+                android:gravity="center_vertical|start"
+                android:background="@android:color/white"
                 android:focusableInTouchMode="true"
                 android:hint="@string/_0"
                 android:inputType="numberDecimal"
                 android:nextFocusDown="@+id/calculatorVolumeYInput"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -205,13 +205,15 @@
             <EditText
                 android:id="@+id/calculatorVolumeYInput"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
                 android:ems="10"
+                android:gravity="center_vertical|start"
+                android:background="@android:color/white"
                 android:focusableInTouchMode="true"
                 android:hint="@string/_0"
                 android:inputType="numberDecimal"
                 android:nextFocusDown="@+id/calculatorVolumeZInput"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -229,8 +231,11 @@
             <EditText
                 android:id="@+id/calculatorVolumeZInput"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
+                android:gravity="center_vertical|start"
+                android:background="@android:color/white"
                 android:ems="10"
+                android:textSize="16sp"
                 android:focusableInTouchMode="true"
                 android:hint="@string/_0"
                 android:inputType="numberDecimal"/>
@@ -244,53 +249,70 @@
         android:layout_below="@id/volumeLayout"
         android:background="#ededed"/>
 
-    <!--Separator-->
     <RelativeLayout
-        android:id="@+id/methodsSeparator"
+        android:id="@+id/shippingCalculatorResultLayout"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_below="@id/volumeSeparator"
-        android:background="#f1f1f1"
-        android:clickable="true"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:background="@android:color/white"
+        android:layout_above="@+id/calculatorResetButton"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/volumeSeparator">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:gravity="bottom"
-            android:text="@string/shipping_method"
-            android:textColor="@color/textColor"
-            android:textSize="18sp"/>
+        <!--Separator-->
+        <RelativeLayout
+            android:id="@+id/methodsSeparator"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="#f1f1f1"
+            android:clickable="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:gravity="bottom"
+                android:text="@string/shipping_method"
+                android:textColor="@color/textColor"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/calculatorShippingList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/calculatorResetButton"
+            android:layout_below="@id/methodsSeparator"
+            tools:listitem="@layout/shipping_list_item"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/methodsSeparator"
+            android:background="@drawable/drop_shadow"/>
     </RelativeLayout>
 
-    <Button
+    <LinearLayout
         android:id="@+id/calculatorResetButton"
-        style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/green_button_bg"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:text="@string/reset"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:background="@drawable/green_button_bg"
+        android:layout_alignParentBottom="true">
 
-    methods list
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/calculatorShippingList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/calculatorResetButton"
-        android:layout_below="@id/methodsSeparator"
-        tools:listitem="@layout/shipping_list_item"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/methodsSeparator"
-        android:background="@drawable/drop_shadow"/>
+        <TextView
+            style="@style/Base.Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:drawableLeft="@mipmap/ic_reset_30dp"
+            android:drawableStart="@mipmap/ic_reset_30dp"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="@string/reset"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+    </LinearLayout>
 </RelativeLayout>
