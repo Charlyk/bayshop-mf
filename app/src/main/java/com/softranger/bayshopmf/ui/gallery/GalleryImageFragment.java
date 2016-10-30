@@ -87,7 +87,13 @@ public class GalleryImageFragment extends Fragment {
             try {
                 URL biImageUlr = new URL(mPhoto.getBigImage());
                 mPhoto.setBigBitmap(BitmapFactory.decodeStream(biImageUlr.openStream()));
-                mGalleryActivity.runOnUiThread(() -> mImageView.setImage(ImageSource.bitmap(mPhoto.getBigBitmap())));
+                mGalleryActivity.runOnUiThread(() -> {
+                    if (mPhoto.getBigBitmap() != null) {
+                        mImageView.setImage(ImageSource.bitmap(mPhoto.getBigBitmap()));
+                    } else {
+                        mImageView.setImage(ImageSource.resource(R.drawable.no_image));
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {

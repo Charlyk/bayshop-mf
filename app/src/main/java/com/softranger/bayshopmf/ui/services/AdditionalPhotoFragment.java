@@ -23,6 +23,7 @@ import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import butterknife.BindView;
@@ -55,7 +56,7 @@ public class AdditionalPhotoFragment extends ParentFragment {
     Button mConfirmButton;
 
     private Unbinder mUnbinder;
-    private MainActivity mActivity;
+    private ParentActivity mActivity;
     private String mId;
     private boolean mIsInProgress;
     private boolean mIsPreorder;
@@ -80,7 +81,7 @@ public class AdditionalPhotoFragment extends ParentFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_additional_services, container, false);
-        mActivity = (MainActivity) getActivity();
+        mActivity = (ParentActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
 
         IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);

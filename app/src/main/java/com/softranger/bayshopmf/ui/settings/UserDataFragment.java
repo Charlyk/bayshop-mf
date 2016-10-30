@@ -134,7 +134,10 @@ public class UserDataFragment extends ParentFragment {
 
         mDataCall = Application.apiInterface().getUserPersonalData();
         mDataCall.enqueue(mResponseCallback);
-        setDataOnPosition();
+
+        if (Application.user != null) {
+            setDataOnPosition();
+        }
         return view;
     }
 
@@ -300,7 +303,11 @@ public class UserDataFragment extends ParentFragment {
         mLanguageSpinner.setAdapter(languagesAdapter);
         mPhoneCodeSpinner.setAdapter(spinnerAdapter);
 
-        setDataOnPosition();
+        if (Application.user != null) {
+            setDataOnPosition();
+        } else {
+
+        }
     }
 
     private void setDataOnPosition() {

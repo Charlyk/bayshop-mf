@@ -10,6 +10,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -468,7 +469,9 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
      */
     @Override
     public void onOpenUrl(String url, int position) {
-        mTabsIntent.launchUrl(this, Uri.parse(url));
+        if (url != null && Patterns.WEB_URL.matcher(url).matches()) {
+            mTabsIntent.launchUrl(this, Uri.parse(url));
+        }
     }
 
     /**

@@ -23,6 +23,7 @@ import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.util.Application;
+import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 
 import butterknife.BindView;
@@ -42,7 +43,7 @@ public class CheckProductFragment extends ParentFragment {
     private static final String ID_ARG = "id argument";
     private static final String STATUS_ARG = "status argument";
 
-    private MainActivity mActivity;
+    private ParentActivity mActivity;
     private String mId;
     private boolean mIsInprogress;
     private boolean mIsPreorder;
@@ -79,7 +80,7 @@ public class CheckProductFragment extends ParentFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_additional_services, container, false);
-        mActivity = (MainActivity) getActivity();
+        mActivity = (ParentActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, view);
 
         IntentFilter intentFilter = new IntentFilter(Application.ACTION_RETRY);
