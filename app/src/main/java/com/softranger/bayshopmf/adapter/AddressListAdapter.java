@@ -28,6 +28,7 @@ import butterknife.OnClick;
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.ViewHolder> implements SectionTitleProvider {
 
     private ArrayList<Address> mAddresses;
+
     private OnAddressClickListener mOnAddressClickListener;
     private boolean showOptions = true;
 
