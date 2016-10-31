@@ -275,8 +275,8 @@ public class PUSParcelDetailed extends PUSParcel {
     }
 
     public String getPhotoUrl() {
-        if (mPhotoUrl == null) return null;
-        return Constants.Api.BASE_URL + mPhotoUrl;
+        if (mPhotoUrl != null && mPhotoUrl.contains("http")) return mPhotoUrl;
+        else return Constants.Api.BASE_URL + mPhotoUrl;
     }
 
     @Override

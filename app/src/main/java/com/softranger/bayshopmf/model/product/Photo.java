@@ -43,11 +43,19 @@ public class Photo implements Parcelable, Imageble {
     };
 
     public String getSmallImage() {
-        return Constants.Api.BASE_URL + mSmallImage;
+        if (mSmallImage != null && mSmallImage.contains("http")) {
+            return mSmallImage;
+        } else {
+            return Constants.Api.BASE_URL + mSmallImage;
+        }
     }
 
     public String getBigImage() {
-        return Constants.Api.BASE_URL + mBigImage;
+        if (mBigImage != null && mBigImage.contains("http")) {
+            return mBigImage;
+        } else {
+            return Constants.Api.BASE_URL + mBigImage;
+        }
     }
 
     public Bitmap getSmallBitmap() {
