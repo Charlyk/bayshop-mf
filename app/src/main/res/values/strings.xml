@@ -5,6 +5,8 @@
     <string name="server_client_id" translatable="false">675996002572-a8ubjajrhundd08o76cipt37l9ngeqqh.apps.googleusercontent.com</string>
     <string name="facebook_app_id" translatable="false">1448296545440676</string>
     <string name="fb_login_protocol_scheme" translatable="false">1448296545440676</string>
+    <string name="gde_posylka_api_key" translatable="false">01df6c70b0421d7f62c2764a6f5a831acc874623a731f9eddba9f2eac9b1ae8d55fd8c1a9a737472</string>
+    <string name="empty_string" translatable="false"> </string>
     <string name="warehouse_usa">Warehouse in USA</string>
     <string name="in_processing">In processing</string>
     <string name="awaiting_sending">Awaiting sending</string>
@@ -402,4 +404,13 @@
     <string name="edit_feedback">Change feedback</string>
     <string name="_10">$10</string>
     <string name="number_format_error">Please use only numbers dots and comas</string>
+    <string name="accepted">Посылка принята</string>
+    <string name="info_recieved">Информация о посылке получена</string>
+    <string name="in_transit_left">В пути - Покинула промежуточный пункт</string>
+    <string name="in_transit_arrived">В пути - Прибыла в промежуточный пункт</string>
+    <string name="in_transit">Посылка в пути</string>
+    <string name="arrived">Прибыла в пункт назначения</string>
+    <string name="soon_delivery">Посылка готовится к доставке</string>
+    <string name="delivered">Посылка доставлена</string>
+    <string name="geting_status">Getting status...</string>
 </resources>

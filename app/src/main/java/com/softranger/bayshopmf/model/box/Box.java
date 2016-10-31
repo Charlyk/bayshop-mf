@@ -22,7 +22,8 @@ public class Box implements Parcelable {
     @JsonProperty("uid") private String mUid;
     @JsonProperty("title") private String mTitle;
     @JsonProperty("tracking") private String mTracking;
-    @JsonProperty("price") private String mPrice;
+    @JsonProperty("price")
+    protected String mPrice;
     @JsonProperty("quantity") private int mQuantity;
     @JsonProperty("weight") private String mWeight;
     @JsonProperty("photos") private ArrayList<Photo> mPhotos;

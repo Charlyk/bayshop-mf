@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.util.TypedValue;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.user.User;
 import com.softranger.bayshopmf.network.BayShopApiInterface;
+import com.softranger.bayshopmf.network.GdePosylkaApiInterface;
 import com.softranger.bayshopmf.ui.settings.SettingsFragment;
 
 import java.text.DateFormat;
@@ -28,12 +30,14 @@ import io.intercom.android.sdk.Intercom;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * Created by eduard on 29.04.16.
+ *
  */
-public class Application extends android.app.Application {
+public class Application extends MultiDexApplication {
 
     private static final String PREFERENCE_NAME = "BayShop MF preferences";
     private static final String AUTOPACK_PREFS = "com.softranger.bayshopmf.settings.AutopackagingPreferences";
@@ -52,6 +56,7 @@ public class Application extends android.app.Application {
     public static HashMap<String, Integer> counters;
 
     private static Retrofit retrofit;
+    private static Retrofit trackingRetrofit;
 
     public static Application getInstance() {
         return instance;
@@ -102,6 +107,31 @@ public class Application extends android.app.Application {
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .client(client)
                 .build();
+
+        // build a client for tracking parcel
+        OkHttpClient.Builder trackClientBuilder = new OkHttpClient.Builder();
+        trackClientBuilder.readTimeout(20, TimeUnit.SECONDS);
+        trackClientBuilder.connectTimeout(20, TimeUnit.SECONDS);
+        trackClientBuilder.writeTimeout(20, TimeUnit.SECONDS);
+        trackClientBuilder.addInterceptor((chain) -> {
+            Request original = chain.request();
+            Request request = original.newBuilder()
+                    .header("X-Authorization-Token", getString(R.string.gde_posylka_api_key))
+                    .header("Content-Type", "application/json")
+                    .method(original.method(), original.body())
+                    .build();
+
+            return chain.proceed(request);
+        });
+
+        OkHttpClient trackingClient = trackClientBuilder.build();
+        trackingRetrofit = new Retrofit.Builder()
+                .baseUrl(Constants.Api.TRACK_URL)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .client(trackingClient)
+                .build();
+
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         Intercom.initialize(this, "android_sdk-7c1e0502c5d35150b1f9ef443859612dadf8aa73", "xht0fqt3");
     }
@@ -249,6 +279,10 @@ public class Application extends android.app.Application {
      */
     public static BayShopApiInterface apiInterface() {
         return retrofit.create(BayShopApiInterface.class);
+    }
+
+    public static GdePosylkaApiInterface trackApiInterface() {
+        return trackingRetrofit.create(GdePosylkaApiInterface.class);
     }
 
     /**

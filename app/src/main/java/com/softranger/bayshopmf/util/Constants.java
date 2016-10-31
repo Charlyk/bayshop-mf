@@ -49,6 +49,7 @@ public class Constants {
     }
 
     public static class Api {
+        public static final String TRACK_URL = "https://gdeposylka.ru/api/v4/";
         public static final String TEMP_URL = "http://bay-test.tk/api/";
         public static final String URL = "http://md.bay-dev.tk/api/";
         public static final String BASE_URL = "http://md.bay-test.tk";

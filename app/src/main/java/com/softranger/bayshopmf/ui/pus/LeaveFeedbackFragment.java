@@ -98,6 +98,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     ImageView mImageView;
 
     private HashMap<Float, Integer> mRatingStrings = new HashMap<Float, Integer>() {{
+        put(0f, R.string.empty_string);
         put(1f, R.string.hated_it);
         put(2f, R.string.disliked_it);
         put(3f, R.string.it_is_ok);
@@ -141,7 +142,11 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
 
         if (mParcelDetailed != null) {
             mRatingBar.setRating(mParcelDetailed.getRating());
-            mRatingLabel.setText(getString(mRatingStrings.get((float) mParcelDetailed.getRating())));
+            int rating;
+            if (mParcelDetailed.getRating() > 5) rating = 5;
+            else if (mParcelDetailed.getRating() < 0) rating = 0;
+            else rating = mParcelDetailed.getRating();
+            mRatingLabel.setText(getString(mRatingStrings.get((float) rating)));
             mCommentInput.setText(mParcelDetailed.getComment());
             if (mParcelDetailed.getPhotoUrl() != null) {
                 Picasso.with(mActivity).load(Uri.parse(mParcelDetailed.getPhotoUrl())).into(mImageView);

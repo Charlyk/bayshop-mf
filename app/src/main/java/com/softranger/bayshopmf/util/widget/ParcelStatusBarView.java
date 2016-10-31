@@ -165,11 +165,15 @@ public class ParcelStatusBarView extends RelativeLayout {
     public void setNewColorsMap(SparseArray<BarColor> colorsMap) {
         mColors = colorsMap;
         // set the initial maximum statuses
-        mStatusesCount = mColors.size();
+        mStatusesCount = mColors.size() - 1;
         // get holder width
         mTotalWidth = mStatusBarHolder.getWidth();
         // compute the with for one status
         mOneStatusWidth = mTotalWidth / mStatusesCount;
+    }
+
+    public void startLoading() {
+
     }
 
     public void setProgress(int progress, String progressName) {
@@ -221,8 +225,10 @@ public class ParcelStatusBarView extends RelativeLayout {
         // get text view center
         float halfTextWidth = textRect.centerX();
         // create animator
-        mTextAnimation = ValueAnimator.ofFloat(halfTextWidth, mToWidth);
-        mTextAnimation.addUpdateListener(mNameAnimatorListener);
+        if (progress != 0) {
+            mTextAnimation = ValueAnimator.ofFloat(halfTextWidth, mToWidth);
+            mTextAnimation.addUpdateListener(mNameAnimatorListener);
+        }
 
         // create an animator to update text view alpha value
         ValueAnimator alphaAnimator = ValueAnimator.ofFloat(mStatusNameLabel.getAlpha(), 1.0f);
@@ -233,7 +239,11 @@ public class ParcelStatusBarView extends RelativeLayout {
         set.setDuration(300);
         set.setInterpolator(mInterpolator);
         set.play(mIndicatorAnimation);
-        set.playTogether(mTextAnimation, alphaAnimator);
+        if (mTextAnimation != null) {
+            set.playTogether(mTextAnimation, alphaAnimator);
+        } else {
+            set.play(alphaAnimator);
+        }
         set.start();
     }
 

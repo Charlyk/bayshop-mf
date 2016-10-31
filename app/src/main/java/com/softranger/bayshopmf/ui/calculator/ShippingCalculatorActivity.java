@@ -48,6 +48,7 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
     TextView mCountryNameLabel;
     @BindView(R.id.calculatorResetButton)
     LinearLayout mResetBtn;
+
     private ShippingMethodAdapter mAdapter;
     private static String selectedStorage;
 
@@ -74,10 +75,6 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
 
         selectedStorage = Constants.US;
 
-        Country country = Application.user.getCountries().get(0);
-        mCountryId = String.valueOf(country.getId());
-        mCountryNameLabel.setText(country.getName());
-
         mShippers = new ArrayList<>();
         mAdapter = new ShippingMethodAdapter(mShippers, Constants.USD_SYMBOL);
         mAdapter.setCalculatorPrice(true);
@@ -86,6 +83,16 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
         recyclerView.setAdapter(mAdapter);
 
         toggleResultVisibility(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Application.user != null) {
+            Country country = Application.user.getCountries().get(0);
+            mCountryId = String.valueOf(country.getId());
+            mCountryNameLabel.setText(country.getName());
+        }
     }
 
     @OnClick(R.id.countryBtnLayout)

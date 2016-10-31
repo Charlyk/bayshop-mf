@@ -1,8 +1,7 @@
-package com.softranger.bayshopmf.model;
+package com.softranger.bayshopmf.model.box;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.softranger.bayshopmf.model.box.InStock;
 
 import java.util.ArrayList;
 

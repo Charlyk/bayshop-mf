@@ -349,4 +349,13 @@
     <string name="edit_feedback">Change feedback</string>
     <string name="_10">$10</string>
     <string name="number_format_error">Please use only numbers dots and comas</string>
+    <string name="accepted">Посылка принята</string>
+    <string name="info_recieved">Информация о посылке получена</string>
+    <string name="in_transit_left">В пути - Покинула промежуточный пункт</string>
+    <string name="in_transit_arrived">В пути - Прибыла в промежуточный пункт</string>
+    <string name="in_transit">Посылка в пути</string>
+    <string name="arrived">Прибыла в пункт назначения</string>
+    <string name="soon_delivery">Посылка готовится к доставке</string>
+    <string name="delivered">Посылка доставлена</string>
+    <string name="geting_status">Getting status...</string>
 </resources>

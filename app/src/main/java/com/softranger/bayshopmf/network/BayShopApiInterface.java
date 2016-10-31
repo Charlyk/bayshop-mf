@@ -2,7 +2,7 @@ package com.softranger.bayshopmf.network;
 
 import com.softranger.bayshopmf.model.CalculatorResult;
 import com.softranger.bayshopmf.model.CreationDetails;
-import com.softranger.bayshopmf.model.InStockList;
+import com.softranger.bayshopmf.model.box.InStockList;
 import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.WarehouseAddress;
 import com.softranger.bayshopmf.model.address.Address;

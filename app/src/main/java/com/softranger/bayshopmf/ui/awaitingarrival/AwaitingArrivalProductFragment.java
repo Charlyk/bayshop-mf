@@ -20,6 +20,11 @@ import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.box.AwaitingArrival;
 import com.softranger.bayshopmf.model.box.AwaitingArrivalDetails;
+import com.softranger.bayshopmf.model.tracking.Checkpoint;
+import com.softranger.bayshopmf.model.tracking.Courier;
+import com.softranger.bayshopmf.model.tracking.CourierService;
+import com.softranger.bayshopmf.model.tracking.TrackApiResponse;
+import com.softranger.bayshopmf.model.tracking.TrackingResult;
 import com.softranger.bayshopmf.network.ResponseCallback;
 import com.softranger.bayshopmf.ui.general.DeclarationActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
@@ -29,8 +34,10 @@ import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
+import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,11 +46,13 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AwaitingArrivalProductFragment extends ParentFragment {
+public class AwaitingArrivalProductFragment extends ParentFragment implements ParcelStatusBarView.OnStatusBarReadyListener {
 
     private static final String PRODUCT_ARG = "product";
 
@@ -58,6 +67,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
     TextView mAdditionalPhoto;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
+    @BindView(R.id.awaitingTrackingStatusBarView)
+    ParcelStatusBarView mStatusBarView;
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
@@ -84,6 +95,9 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
         View rootView = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
         mActivity = (ParentActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, rootView);
+
+        mStatusBarView.setNewColorsMap(AwaitingArrivalFragment.COLOR_MAP);
+        mStatusBarView.setOnStatusBarReadyListener(this);
 
         // hide all layout while we don't have detailed parcel
         mHolderLayout.setVisibility(View.GONE);
@@ -154,6 +168,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
             mArrivalDetails = data;
             setDataInPlace(mArrivalDetails);
             mActivity.toggleLoadingProgress(false);
+            getTrackingCourierService(data);
         }
 
         @Override
@@ -169,6 +184,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
             mActivity.toggleLoadingProgress(false);
         }
     };
+
 
     private void setDataInPlace(AwaitingArrivalDetails arrivalDetails) {
         mProductId.setText(arrivalDetails.getUid());
@@ -215,6 +231,42 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
         editParcel.putExtra(DeclarationActivity.AWAITING_ID, mArrivalDetails.getId());
         editParcel.putExtra(DeclarationActivity.TRACKING_NUM, mArrivalDetails.getTracking());
         mActivity.startActivityForResult(editParcel, AwaitingArrivalFragment.ADD_PARCEL_RC);
+    }
+
+    private void getTrackingCourierService(AwaitingArrival data) {
+        String trackingNumber = data.getTracking();
+        // get courier service by tracking number
+        Application.trackApiInterface().detectCourierService(trackingNumber)
+                .subscribeOn(Schedulers.io())
+                .subscribe(arrayListTrackApiResponse -> {
+                    // on response get first courier service from the list
+                    ArrayList<CourierService> services = arrayListTrackApiResponse.getData();
+                    if (services != null && services.size() > 0) {
+                        CourierService service = services.get(0);
+                        Courier courier = service.getCourier();
+                        if (courier != null) {
+                            getTrackingInfo(data, courier.getSlug(), trackingNumber);
+                        }
+                    }
+                });
+    }
+
+    private void getTrackingInfo(AwaitingArrival awaitingArrival, String slug, String trackingNumber) {
+        Application.trackApiInterface().trackParcelByCourierAndTracking(slug, trackingNumber)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(trackingResultTrackApiResponse -> {
+                    if (trackingResultTrackApiResponse.getResult() == TrackApiResponse.Result.waiting) {
+                        getTrackingInfo(awaitingArrival, slug, trackingNumber);
+                    } else {
+                        // when we have an response show the progressbar
+                        TrackingResult result = trackingResultTrackApiResponse.getData();
+                        awaitingArrival.setTrackingResult(result);
+                        if (result != null) {
+                            onStatusBarReady();
+                        }
+                    }
+                });
     }
 
     @OnClick(R.id.awaitingDetailsDeleteButton)
@@ -291,5 +343,26 @@ public class AwaitingArrivalProductFragment extends ParentFragment {
     @Override
     public MainActivity.SelectedFragment getSelectedFragment() {
         return MainActivity.SelectedFragment.awaiting_arrival;
+    }
+
+    @Override
+    public void onStatusBarReady() {
+        if (mArrivalDetails != null && mArrivalDetails.getTrackingResult() != null) {
+            TrackingResult result = mArrivalDetails.getTrackingResult();
+            Checkpoint checkpoint = result.getCheckpoints().get(0);
+            String statusName = checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.other ?
+                    checkpoint.getStatusName() : Application.getInstance().getString(checkpoint.getCheckpointStatus().translatedStatus());
+
+            int statusStep;
+            if (checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.delivered) {
+                statusStep = 2;
+            } else {
+                statusStep = 1;
+            }
+
+            mStatusBarView.setProgress(statusStep, statusName);
+        } else {
+            mStatusBarView.setProgress(0, Application.getInstance().getString(R.string.geting_status));
+        }
     }
 }

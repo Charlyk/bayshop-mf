@@ -59,10 +59,9 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     private View mPlaceHolder;
 
     public static final SparseArray<ParcelStatusBarView.BarColor> COLOR_MAP = new SparseArray<ParcelStatusBarView.BarColor>() {{
-        put(1, ParcelStatusBarView.BarColor.green);
-        put(2, ParcelStatusBarView.BarColor.gray);
-        put(3, ParcelStatusBarView.BarColor.red);
-        put(4, ParcelStatusBarView.BarColor.green);
+        put(0, ParcelStatusBarView.BarColor.gray);
+        put(1, ParcelStatusBarView.BarColor.yellow);
+        put(2, ParcelStatusBarView.BarColor.green);
     }};
 
     @BindView(R.id.fragmentRecyclerView)
@@ -198,6 +197,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     };
+
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
