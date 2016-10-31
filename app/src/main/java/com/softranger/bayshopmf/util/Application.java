@@ -103,7 +103,7 @@ public class Application extends MultiDexApplication {
         // build the client and set mapper and client to retrofit
         OkHttpClient client = httpClient.build();
         retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.Api.TEMP_URL)
+                .baseUrl(Constants.Api.BASE_API_URL)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .client(client)
                 .build();
@@ -198,6 +198,14 @@ public class Application extends MultiDexApplication {
 
     public String getIntercomToken() {
         return preferences.getString("intercom", "");
+    }
+
+    public void setIntroShown(boolean shown) {
+        preferences.edit().putBoolean("intro", shown).apply();
+    }
+
+    public boolean isIntroShown() {
+        return preferences.getBoolean("intro", false);
     }
 
     /**

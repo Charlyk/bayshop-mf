@@ -1,37 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal|center_vertical"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:theme="@style/AppThemeNoToolbar"
     tools:context=".ui.auth.SplashActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/logo_imageViewCircle"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@mipmap/ic_log_125dp"/>
+        <ImageView
+            android:id="@+id/logo_imageViewCircle"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@mipmap/ic_log_125dp"/>
 
-    <TextView
-        android:id="@+id/textView2"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mail_forwarding"
+            android:textSize="18sp"/>
+
+        <ProgressBar
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/splashActivityProgressBar"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/splashActivityViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator
+        android:id="@+id/splashActivityDotsView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/mail_forwarding"
-        android:textSize="18sp"/>
+        android:padding="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:numberOfDots="3"
+        app:selectedDotIndex="0"/>
 
-    <ProgressBar
-        android:layout_marginTop="20dp"
+    <Button
+        android:id="@+id/splashActivityNextBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/splashActivityProgressBar"
-        android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+        android:background="?selectableItemBackground"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:text="@string/next"
+        android:textColor="@android:color/white"
+        android:drawableRight="@mipmap/ic_next_48dp"
+        android:drawableEnd="@mipmap/ic_next_48dp"
+        android:gravity="center_vertical"/>
+</RelativeLayout>

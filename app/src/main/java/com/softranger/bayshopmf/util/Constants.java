@@ -50,9 +50,8 @@ public class Constants {
 
     public static class Api {
         public static final String TRACK_URL = "https://gdeposylka.ru/api/v4/";
-        public static final String TEMP_URL = "http://bay-test.tk/api/";
-        public static final String URL = "http://md.bay-dev.tk/api/";
-        public static final String BASE_URL = "http://md.bay-test.tk";
+        public static final String BASE_URL = "http://bayshop.com";
+        public static final String BASE_API_URL = "http://bayshop.com/api/";
         private static final String AUTH = "auth/";
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";
@@ -65,7 +64,7 @@ public class Constants {
          * @return authentication to bay shop url
          */
         public static String urlAuth() {
-            return URL + AUTH;
+            return BASE_API_URL + AUTH;
         }
 
         /**
@@ -74,16 +73,7 @@ public class Constants {
          * @return strung url to access get how many parcels are in each status
          */
         public static String urlParcelsCounter() {
-            return URL + MEMBER + PARCELS_COUNTER;
-        }
-
-        /**
-         * GET/POST
-         * Create an url used to access user mail settings
-         * @return string url to access or update user mail options
-         */
-        public static String urlMailOptions() {
-            return URL + MEMBER + MAIL_OPTIONS;
+            return BASE_API_URL + MEMBER + PARCELS_COUNTER;
         }
     }
 

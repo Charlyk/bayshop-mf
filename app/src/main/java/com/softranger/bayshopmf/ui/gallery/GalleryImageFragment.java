@@ -15,6 +15,10 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.product.Photo;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.URL;
 
 import butterknife.BindView;
@@ -35,6 +39,7 @@ public class GalleryImageFragment extends Fragment {
     SubsamplingScaleImageView mImageView;
     private GalleryActivity mGalleryActivity;
     private Unbinder mUnbinder;
+    private DownloadThread mDownloadThread;
 
     public GalleryImageFragment() {
         // Required empty public constructor
@@ -57,13 +62,15 @@ public class GalleryImageFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this, view);
         Photo photo = getArguments().getParcelable(PHOTOS_ARG);
         if (photo != null) {
-            new DownloadThread(photo).start();
+            mDownloadThread = new DownloadThread(photo);
+            mDownloadThread.start();
             toggleLoading();
         }
         return view;
     }
 
     private void toggleLoading() {
+        if (mProgressBar == null) return;
         mGalleryActivity.runOnUiThread(() -> {
             if (mProgressBar.getVisibility() == View.VISIBLE) {
                 mProgressBar.setVisibility(View.GONE);
@@ -85,8 +92,10 @@ public class GalleryImageFragment extends Fragment {
         public void run() {
             Looper.prepare();
             try {
-                URL biImageUlr = new URL(mPhoto.getBigImage());
-                mPhoto.setBigBitmap(BitmapFactory.decodeStream(biImageUlr.openStream()));
+                URL bigImageUrl = new URL(mPhoto.getBigImage());
+                File image = getImageFile(bigImageUrl);
+                mPhoto.setBigBitmap(BitmapFactory.decodeFile(image.getAbsolutePath()));
+                if (mImageView == null) return;
                 mGalleryActivity.runOnUiThread(() -> {
                     if (mPhoto.getBigBitmap() != null) {
                         mImageView.setImage(ImageSource.bitmap(mPhoto.getBigBitmap()));
@@ -101,6 +110,28 @@ public class GalleryImageFragment extends Fragment {
             }
             Looper.loop();
         }
+    }
+
+    private File getImageFile(URL url) throws Exception {
+        File image = new File(mGalleryActivity.getCacheDir(), urlToFileName(url.toString()));
+        if (!image.exists()) {
+            image.createNewFile();
+            BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
+            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(image));
+            byte[] buffer = new byte[1024];
+            int byteCount;
+            while ((byteCount = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, byteCount);
+            }
+            inputStream.close();
+            outputStream.flush();
+            outputStream.close();
+        }
+        return image;
+    }
+
+    private String urlToFileName(String url) {
+        return url.replace("/", "").replace(".", "") + ".png";
     }
 
     @Override

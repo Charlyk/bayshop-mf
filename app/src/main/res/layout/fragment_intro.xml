@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/introFragmentLayout"
+                android:background="@color/colorAccent"
+                tools:context="com.softranger.bayshopmf.ui.auth.intro.IntroFragment">
+
+    <ImageView
+        android:id="@+id/introFragmentImageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_presentation_250dp"/>
+
+    <TextView
+        android:id="@+id/introFragmentTitleLabel"
+        android:layout_below="@id/introFragmentImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textSize="20sp"
+        android:text="Example title"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/introFragmentDescriptionLabel"
+        android:layout_below="@id/introFragmentTitleLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:padding="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:text="This is an example of screen description so we can see how it looks on a real device"
+        android:textColor="@android:color/white"/>
+</RelativeLayout>
