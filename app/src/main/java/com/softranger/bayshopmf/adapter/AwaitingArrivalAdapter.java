@@ -61,7 +61,6 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemHolder.mDateLabel.setText(Application.getFormattedDate(itemHolder.mAwaitingArrival.getCreatedDate()));
             itemHolder.mPriceLabel.setText("---");
             itemHolder.mWeightLabel.setText("---");
-            itemHolder.mStatusBarView.setProgress(position + 1, "Some progress");
         }
     }
 
@@ -74,12 +73,10 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         notifyItemRemoved(position);
     }
 
-    class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-            ParcelStatusBarView.OnStatusBarReadyListener {
+    class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.awaitingUidLabel) TextView mUidLabel;
         @BindView(R.id.awaitingDescriptionLabel) TextView mDescriptionLabel;
-        @BindView(R.id.awaitingTrackingStatusBarView) ParcelStatusBarView mStatusBarView;
         @BindView(R.id.awaitingDateLabel) TextView mDateLabel;
         @BindView(R.id.awaitingWeightLabel) TextView mWeightLabel;
         @BindView(R.id.awaitingPriceLabel) TextView mPriceLabel;
@@ -89,8 +86,6 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
-            mStatusBarView.setNewColorsMap(mBarColorSparseArray);
-            mStatusBarView.setOnStatusBarReadyListener(this);
         }
 
         @OnClick(R.id.awaitingDeleteButton)
@@ -105,11 +100,6 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             if (mOnAwaitingClickListener != null) {
                 mOnAwaitingClickListener.onAwaitingClick(mAwaitingArrival, getAdapterPosition());
             }
-        }
-
-        @Override
-        public void onStatusBarReady() {
-            mStatusBarView.setProgress(getAdapterPosition() + 1, "Some progress");
         }
     }
 

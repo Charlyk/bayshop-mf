@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.adapter.ImagesAdapter;
 import com.softranger.bayshopmf.adapter.InProcessingDetailsAdapter;
+import com.softranger.bayshopmf.model.address.Address;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.model.product.Photo;
 import com.softranger.bayshopmf.model.pus.PUSParcel;
@@ -135,6 +136,9 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
                     mActivity.removeNoConnectionView();
                     refreshFragment();
                     break;
+                case Constants.ACTION_CHANGE_ADDRESS:
+                    Address address = intent.getExtras().getParcelable("address");
+                    mPUSParcelDetailed.setAddress(address);
                 default:
                     mAdapter.notifyItemChanged(0);
                     break;

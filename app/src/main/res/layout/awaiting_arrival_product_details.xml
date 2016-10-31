@@ -110,14 +110,18 @@
             android:layout_alignParentRight="true"
             android:src="@mipmap/ic_cancel_30dp"/>
 
-        <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
-            android:id="@+id/awaitingArrivalStatusBar"
-            android:layout_width="match_parent"
-            android:layout_marginTop="7.5dp"
+        <TextView
+            tools:text="TextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="16dp"
-            android:paddingLeft="16dp"
-            android:layout_below="@id/awaitingDetailsProductName"/>
+            android:layout_alignParentTop="true"
+            android:textColor="@android:color/white"
+            android:padding="3dp"
+            android:textSize="13sp"
+            android:layout_toLeftOf="@id/awaitingDetailsDeleteButton"
+            android:layout_toStartOf="@id/awaitingDetailsDeleteButton"
+            tools:background="@drawable/yelow_5dp_corner"
+            android:id="@+id/awaitingArrivalStatusLabel"/>
     </RelativeLayout>
 
     <View

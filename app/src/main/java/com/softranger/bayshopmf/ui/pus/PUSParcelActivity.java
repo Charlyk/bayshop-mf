@@ -1,4 +1,4 @@
-package com.softranger.bayshopmf.model.pus;
+package com.softranger.bayshopmf.ui.pus;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.ui.pus.PUSParcelDetails;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
 

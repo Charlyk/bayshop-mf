@@ -12,8 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmf.R;
-import com.softranger.bayshopmf.adapter.CalculatorAdapter;
+import com.softranger.bayshopmf.adapter.ShippingMethodAdapter;
 import com.softranger.bayshopmf.model.CalculatorResult;
+import com.softranger.bayshopmf.model.Shipper;
 import com.softranger.bayshopmf.model.address.Country;
 import com.softranger.bayshopmf.model.app.ServerResponse;
 import com.softranger.bayshopmf.network.ResponseCallback;
@@ -47,8 +48,10 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
     TextView mCountryNameLabel;
     @BindView(R.id.calculatorResetButton)
     LinearLayout mResetBtn;
-    private CalculatorAdapter mAdapter;
+    private ShippingMethodAdapter mAdapter;
     private static String selectedStorage;
+
+    private ArrayList<Shipper> mShippers;
 
     private double mWeight;
     private double X;
@@ -75,7 +78,9 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
         mCountryId = String.valueOf(country.getId());
         mCountryNameLabel.setText(country.getName());
 
-        mAdapter = new CalculatorAdapter();
+        mShippers = new ArrayList<>();
+        mAdapter = new ShippingMethodAdapter(mShippers, Constants.USD_SYMBOL);
+        mAdapter.setCalculatorPrice(true);
         RecyclerView recyclerView = ButterKnife.findById(this, R.id.calculatorShippingList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
@@ -146,11 +151,12 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
     @SuppressWarnings("unused")
     @OnClick(R.id.calculatorResetButton)
     void resetInputs() {
+        mShippers.clear();
         mWeightInput.setText("");
         mXInput.setText("");
         mYInput.setText("");
         mZInput.setText("");
-        mAdapter.refreshList(new ArrayList<>());
+        mAdapter.refreshList();
         toggleResultVisibility(false);
     }
 
@@ -190,7 +196,13 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
         @Override
         public void onSuccess(CalculatorResult data) {
             toggleResultVisibility(data != null && data.getShippers().size() > 0);
-            mAdapter.refreshList(data.getShippers());
+
+            mShippers.clear();
+            if (data != null) {
+                mShippers.addAll(data.getShippers());
+            }
+
+            mAdapter.refreshList();
         }
 
         @Override

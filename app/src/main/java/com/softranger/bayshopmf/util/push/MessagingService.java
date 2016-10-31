@@ -16,7 +16,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.NotificationMessage;
-import com.softranger.bayshopmf.model.pus.PUSParcelActivity;
+import com.softranger.bayshopmf.ui.pus.PUSParcelActivity;
 import com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalActivity;
 import com.softranger.bayshopmf.ui.general.MainActivity;
 import com.softranger.bayshopmf.ui.instock.InStockActivity;

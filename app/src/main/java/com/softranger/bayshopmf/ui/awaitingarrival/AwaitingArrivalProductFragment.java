@@ -29,7 +29,6 @@ import com.softranger.bayshopmf.util.Application;
 import com.softranger.bayshopmf.util.Constants;
 import com.softranger.bayshopmf.util.ParentActivity;
 import com.softranger.bayshopmf.util.ParentFragment;
-import com.softranger.bayshopmf.util.widget.ParcelStatusBarView;
 
 import java.io.IOException;
 
@@ -44,7 +43,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AwaitingArrivalProductFragment extends ParentFragment implements ParcelStatusBarView.OnStatusBarReadyListener {
+public class AwaitingArrivalProductFragment extends ParentFragment {
 
     private static final String PRODUCT_ARG = "product";
 
@@ -59,8 +58,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     TextView mAdditionalPhoto;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
-    @BindView(R.id.awaitingArrivalStatusBar)
-    ParcelStatusBarView mStatusBarView;
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
@@ -87,9 +84,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         View rootView = inflater.inflate(R.layout.fragment_awaiting_arrival_product, container, false);
         mActivity = (ParentActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, rootView);
-
-        mStatusBarView.setNewColorsMap(AwaitingArrivalFragment.COLOR_MAP);
-        mStatusBarView.setOnStatusBarReadyListener(this);
 
         // hide all layout while we don't have detailed parcel
         mHolderLayout.setVisibility(View.GONE);
@@ -297,10 +291,5 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     @Override
     public MainActivity.SelectedFragment getSelectedFragment() {
         return MainActivity.SelectedFragment.awaiting_arrival;
-    }
-
-    @Override
-    public void onStatusBarReady() {
-        mStatusBarView.setProgress(3, "Some progress");
     }
 }

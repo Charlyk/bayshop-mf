@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Eduard Albu on 5/13/16, 05, 2016
@@ -339,12 +340,14 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             mAddressSeparator.setVisibility(View.VISIBLE);
         }
 
-        @Override
+        @OnClick({R.id.addressItemLayout, R.id.shippingByLayoutButton})
         public void onClick(View v) {
             if (mOnItemClickListener == null) return;
             switch (v.getId()) {
                 case R.id.addressItemLayout:
-                    mOnItemClickListener.onSelectAddressClick(mProcessingParcel, getAdapterPosition());
+                    if (mProcessingParcel.getParcelStatus() == PUSParcel.PUSStatus.local_depot) {
+                        mOnItemClickListener.onSelectAddressClick(mProcessingParcel, getAdapterPosition());
+                    }
                     break;
                 case R.id.shippingByLayoutButton:
                     mOnItemClickListener.onStartTrackingClick(mProcessingParcel, getAdapterPosition());

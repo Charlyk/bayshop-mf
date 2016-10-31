@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmf.R;
 import com.softranger.bayshopmf.model.Shipper;
-import com.softranger.bayshopmf.model.product.ShippingMethod;
 
 import java.util.ArrayList;
 
@@ -28,6 +27,7 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private OnShippingClickListener mOnShippingClickListener;
     private String mCurrency;
     private boolean mShowPrice = true;
+    private boolean mCalculatorPrice;
 
     public ShippingMethodAdapter(ArrayList<Shipper> shippingMethods, String currency) {
         mShippingMethods = shippingMethods;
@@ -38,12 +38,18 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         mOnShippingClickListener = onShippingClickListener;
     }
 
+    public void setCalculatorPrice(boolean calculatorPrice) {
+        mCalculatorPrice = calculatorPrice;
+    }
+
     public void setShowPrice(boolean showPrice) {
         mShowPrice = showPrice;
     }
 
     @Override
     public int getItemViewType(int position) {
+        if (mCalculatorPrice) return 1;
+
         switch (position) {
             case 0:
                 return 0;
@@ -68,36 +74,35 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
+            int index = mCalculatorPrice ? position : position - 1;
             ViewHolder itemHolder = (ViewHolder) holder;
-            itemHolder.mShippingMethodObj = mShippingMethods.get(position - 1);
+            itemHolder.mShippingMethodObj = mShippingMethods.get(index);
             itemHolder.mShippingMethod.setText(itemHolder.mShippingMethodObj.getTitle());
             itemHolder.mVolumeLabel.setText(String.valueOf(itemHolder.mShippingMethodObj.getMaxVolume()));
             itemHolder.mTimeLabel.setText(itemHolder.mShippingMethodObj.getTime());
 
             if (mShowPrice) {
-                String price = String.valueOf(mCurrency + itemHolder.mShippingMethodObj.getCalculatedPrice());
+                String price = String.valueOf(mCurrency);
+                if (mCalculatorPrice) {
+                    price = price + itemHolder.mShippingMethodObj.getPrice();
+                } else {
+                    price = price + itemHolder.mShippingMethodObj.getCalculatedPrice();
+                }
                 itemHolder.mMethodPrice.setText(price);
-
             }
+
             itemHolder.mMethodPrice.setVisibility(mShowPrice ? View.VISIBLE : View.GONE);
             itemHolder.mDetailsButton.setVisibility(mShowPrice ? View.VISIBLE : View.GONE);
-
-            String html = itemHolder.mShippingMethodObj.getDescription();
-            html = html.replaceAll("<(.*?)\\>", " ");//Removes all items in brackets
-            html = html.replaceAll("<(.*?)\\\n", " ");//Must be undeneath
-            html = html.replaceFirst("(.*?)\\>", " ");//Removes any connected item to the last bracket
-            html = html.replaceAll("&nbsp;", " ");
-            html = html.replaceAll("&amp;", " ");
-//            String description = Html.fromHtml(itemHolder.mShippingMethodObj.getDescription()).toString();
         }
     }
 
     @Override
     public int getItemCount() {
-        return mShippingMethods.size() + 1;
+        if (mCalculatorPrice) return mShippingMethods.size();
+        else return mShippingMethods.size() + 1;
     }
 
-    public void refreshList(ArrayList<ShippingMethod> methods) {
+    public void refreshList() {
         notifyDataSetChanged();
     }
 

@@ -209,6 +209,10 @@ public class PUSParcelDetailed extends PUSParcel {
         return mAddress;
     }
 
+    public void setAddress(Address address) {
+        mAddress = address;
+    }
+
     public ArrayList<Box> getBoxes() {
         return mBoxes;
     }

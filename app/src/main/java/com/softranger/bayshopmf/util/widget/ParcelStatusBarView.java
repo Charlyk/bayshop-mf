@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -87,11 +88,11 @@ public class ParcelStatusBarView extends RelativeLayout {
         View rootView = inflater.inflate(R.layout.status_bar_view, this);
         mStatusBarHolder = (LinearLayout) rootView.findViewById(R.id.statusBarHolderLayout);
 
-        mStatusesCount = 10;
+        mStatusesCount = mColors.size() - 1;
         mStatusBarHolder.measure(MeasureSpec.EXACTLY, MeasureSpec.UNSPECIFIED);
         mTotalWidth = mStatusBarHolder.getWidth();
 
-        mOneStatusWidth = mTotalWidth / (mStatusesCount - 1);
+        mOneStatusWidth = mTotalWidth / mStatusesCount;
 
         mStatusIndicator = rootView.findViewById(R.id.statusBarStatusIndicator);
         mStatusNameLabel = (TextView) rootView.findViewById(R.id.statusViewNameLabel);
@@ -103,7 +104,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         // get holder width
         mTotalWidth = mStatusBarHolder.getWidth();
         // compute the with for one status
-        mOneStatusWidth = mTotalWidth / (mStatusesCount - 1);
+        mOneStatusWidth = mTotalWidth / mStatusesCount;
         // get parent left and right sides position
         Rect parentRect = new Rect();
         mStatusBarHolder.getGlobalVisibleRect(parentRect);
@@ -147,7 +148,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         mStatusBarHolder = (LinearLayout) findViewById(R.id.statusBarHolderLayout);
 
         // set the initial maximum statuses
-        mStatusesCount = mColors.size();
+        mStatusesCount = mColors.size() - 1;
 
         mStatusIndicator = findViewById(R.id.statusBarStatusIndicator);
         mStatusNameLabel = (TextView) findViewById(R.id.statusViewNameLabel);
@@ -169,7 +170,7 @@ public class ParcelStatusBarView extends RelativeLayout {
         // get holder width
         mTotalWidth = mStatusBarHolder.getWidth();
         // compute the with for one status
-        mOneStatusWidth = mTotalWidth / (mStatusesCount - 1);
+        mOneStatusWidth = mTotalWidth / mStatusesCount;
     }
 
     public void setProgress(int progress, String progressName) {
@@ -303,7 +304,9 @@ public class ParcelStatusBarView extends RelativeLayout {
             mStatusNameLabel.getGlobalVisibleRect(rect);
             // if text right or left side is not greater the parent right or left side,
             // update text position
-            if (rect.left > parentLeft && (rect.right + (animatedValue - (rect.width() / 2))) <= parentRight) {
+            if (rect.left > parentLeft && rect.right <= parentRight) {
+                Log.d("ParcelStatusBarView", "Rect left: " + rect.left + " Parent left: " + parentLeft);
+                Log.d("ParcelStatusBarView", "Rect right: " + rect.right + " Parent right: " + parentRight);
                 mStatusNameLabel.setX(animatedValue - (rect.width() / 2));
             }
         }
