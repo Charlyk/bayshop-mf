@@ -5,7 +5,7 @@
               android:background="@android:color/white"
               android:clickable="true"
               android:orientation="vertical"
-              tools:context="com.softranger.bayshopmf.ui.pus.ReceivedSignature">
+              tools:context="com.softranger.bayshopmfr.ui.pus.ReceivedSignature">
 
     <View
         android:layout_width="match_parent"

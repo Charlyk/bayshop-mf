@@ -15,7 +15,7 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
-            tools:context="com.softranger.bayshopmf.ui.pus.ReturnAddressFragment">
+            tools:context="com.softranger.bayshopmfr.ui.pus.ReturnAddressFragment">
 
             <!--last name-->
             <RelativeLayout

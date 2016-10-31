@@ -5,7 +5,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/introFragmentLayout"
                 android:background="@color/colorAccent"
-                tools:context="com.softranger.bayshopmf.ui.auth.intro.IntroFragment">
+                tools:context="com.softranger.bayshopmfr.ui.auth.intro.IntroFragment">
 
     <ImageView
         android:id="@+id/introFragmentImageView"

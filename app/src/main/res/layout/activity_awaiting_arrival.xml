@@ -6,7 +6,7 @@
     android:id="@+id/activity_awaiting_arrival"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.softranger.bayshopmf.ui.awaitingarrival.AwaitingArrivalActivity">
+    tools:context="com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

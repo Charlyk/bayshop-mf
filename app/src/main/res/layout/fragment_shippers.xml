@@ -4,7 +4,7 @@
                 android:layout_height="match_parent"
                 android:background="#ededed"
                 android:clickable="true"
-                tools:context="com.softranger.bayshopmf.ui.settings.ShippersFragment">
+                tools:context="com.softranger.bayshopmfr.ui.settings.ShippersFragment">
 
     <View
         android:layout_width="match_parent"

@@ -6,7 +6,7 @@
     android:id="@+id/activity_create_parcel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.softranger.bayshopmf.ui.steps.CreateParcelActivity">
+    tools:context="com.softranger.bayshopmfr.ui.steps.CreateParcelActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

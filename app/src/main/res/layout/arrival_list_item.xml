@@ -53,7 +53,7 @@
         android:textSize="16sp"
         tools:text="Computer shiushit"/>
 
-    <com.softranger.bayshopmf.util.widget.ParcelStatusBarView
+    <com.softranger.bayshopmfr.util.widget.ParcelStatusBarView
         android:id="@+id/awaitingTrackingStatusBarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -6,7 +6,7 @@
     android:id="@+id/activity_payment_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.softranger.bayshopmf.ui.payment.PaymentDetailsActivity">
+    tools:context="com.softranger.bayshopmfr.ui.payment.PaymentDetailsActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
