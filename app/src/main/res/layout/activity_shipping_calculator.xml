@@ -283,7 +283,6 @@
             android:id="@+id/calculatorShippingList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/calculatorResetButton"
             android:layout_below="@id/methodsSeparator"
             tools:listitem="@layout/shipping_list_item"/>
 
