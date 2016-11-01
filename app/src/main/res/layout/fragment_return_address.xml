@@ -89,7 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@android:color/white"
-                        android:hint="@string/address_and_house"
+                        android:hint="@string/address"
                         android:inputType="textPostalAddress"
                         android:nextFocusDown="@+id/returnCityInput"
                         android:paddingLeft="16dp"

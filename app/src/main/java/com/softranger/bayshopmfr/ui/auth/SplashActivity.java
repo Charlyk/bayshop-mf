@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -146,6 +147,10 @@ public class SplashActivity extends ParentActivity {
         }
     };
 
+    long personalDataStart;
+    long countersStart;
+
+
     /**
      * Callback for personal data request
      */
@@ -160,6 +165,8 @@ public class SplashActivity extends ParentActivity {
             HashMap<String, Object> userData = new HashMap<>();
             userData.put("name", data.getFullName());
             Intercom.client().updateUser(userData);
+            long duration = System.currentTimeMillis() - personalDataStart;
+            Log.d("Personal data", duration + "");
             getCounters();
         }
 
@@ -178,12 +185,14 @@ public class SplashActivity extends ParentActivity {
     };
 
     private void getPersonalData() {
+        personalDataStart = System.currentTimeMillis();
         mPersonalDataCall = Application.apiInterface().getUserPersonalData();
         mLoadingStep = LoadingStep.personal_data;
         mPersonalDataCall.enqueue(mPersonalDataCallback);
     }
 
     private void getCounters() {
+        countersStart = System.currentTimeMillis();
         mCountersCall = Application.apiInterface().getParcelsCounters();
         mLoadingStep = LoadingStep.counters;
         mCountersCall.enqueue(mCountersCallback);
@@ -196,6 +205,8 @@ public class SplashActivity extends ParentActivity {
         @Override
         public void onSuccess(ParcelsCount data) {
             try {
+                long duration = System.currentTimeMillis() - countersStart;
+                Log.d("Counters", duration + "");
                 Application.counters = data.getCountersMap();
                 startActivity(mIntent);
                 finish();

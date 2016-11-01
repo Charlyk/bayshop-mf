@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -53,6 +54,10 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
     private Call<ServerResponse<User>> mDataCall;
     private Call<ServerResponse<ParcelsCount>> mCountersCall;
 
+    long loginStart;
+    long personalDataStart;
+    long countersStart;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,10 +79,6 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
                 .addApi(Auth.GOOGLE_SIGN_IN_API, options)
                 .build();
         mCallbackManager = CallbackManager.Factory.create();
-    }
-
-    public String getColoredSpanned(String text, String color) {
-        return "<font color=" + color + ">" + text + "</font>";
     }
 
     /**
@@ -118,6 +119,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
             return;
         }
 
+        loginStart = System.currentTimeMillis();
         mLoginFragment.showLoading();
         mLoginCall = Application.apiInterface().loginWithCredentials(email, password);
         mLoginCall.enqueue(mLoginCallback);
@@ -140,6 +142,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
             GoogleSignInAccount acct = result.getSignInAccount();
             if (acct != null) {
                 String serverCode = acct.getServerAuthCode();
+                loginStart = System.currentTimeMillis();
                 mSocialLoginCall = Application.apiInterface().loginWithSocialNetworks(serverCode, "google");
                 mSocialLoginCall.enqueue(mLoginCallback);
             } else {
@@ -190,6 +193,11 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
             Application.getInstance().setLoginStatus(true);
             Application.currentToken = user.getToken();
             Application.getInstance().setAuthToken(user.getToken());
+
+            long duration = System.currentTimeMillis() - loginStart;
+            Log.d("Login", duration + "");
+
+            personalDataStart = System.currentTimeMillis();
             mDataCall = Application.apiInterface().getUserPersonalData();
             mDataCall.enqueue(mPersonalDataCallback);
         }
@@ -214,6 +222,11 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         @Override
         public void onSuccess(User data) {
             Application.user = data;
+
+            long duration = System.currentTimeMillis() - personalDataStart;
+            Log.d("Personal data", duration + "");
+
+            countersStart = System.currentTimeMillis();
             mCountersCall = Application.apiInterface().getParcelsCounters();
             mCountersCall.enqueue(mCountersCallback);
         }
@@ -239,6 +252,8 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         @Override
         public void onSuccess(ParcelsCount data) {
             try {
+                long duration = System.currentTimeMillis() - countersStart;
+                Log.d("Counters", duration + "");
                 Application.counters = data.getCountersMap();
                 Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(mainActivity);
@@ -276,6 +291,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
 
     @Override
     public void onLoginDataReady(String facebookData) {
+        loginStart = System.currentTimeMillis();
         mSocialLoginCall = Application.apiInterface().loginWithSocialNetworks(facebookData, "facebook");
         mSocialLoginCall.enqueue(mLoginCallback);
     }

@@ -63,8 +63,7 @@ import retrofit2.Call;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.OnRatingBarChangeListener,
-        LoadingDialogFragment.OnDoneListener {
+public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.OnRatingBarChangeListener {
 
     private static final String DETAILED_PARCEL = "detailed parcel arg";
     private static final int UPLOAD_RESULT_CODE = 12;
@@ -403,10 +402,5 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             v = 1.0f;
         }
         mRatingLabel.setText(getString(mRatingStrings.get(v)));
-    }
-
-    @Override
-    public void onDone(int action) {
-
     }
 }

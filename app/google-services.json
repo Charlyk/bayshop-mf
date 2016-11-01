@@ -1,33 +1,39 @@
 {
   "project_info": {
-    "project_number": "675996002572",
-    "project_id": "kinetic-physics-645"
+    "project_number": "376156188250",
+    "firebase_url": "https://baymd-148208.firebaseio.com",
+    "project_id": "baymd-148208",
+    "storage_bucket": "baymd-148208.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:675996002572:android:7953ca7e9014943b",
+        "mobilesdk_app_id": "1:376156188250:android:7c69811938e92858",
         "android_client_info": {
-          "package_name": "com.softranger.bayshopmf"
+          "package_name": "com.softranger.bayshopmfr"
         }
       },
       "oauth_client": [
         {
-          "client_id": "675996002572-el6qlu6q7jtolhmk89smsi000drtq9me.apps.googleusercontent.com",
+          "client_id": "376156188250-v3l8js0mndcvbdifad7euf3j1p6vd3dn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.softranger.bayshopmf",
+            "package_name": "com.softranger.bayshopmfr",
             "certificate_hash": "6D861682776DECE909FD2EA74522364F49BB435F"
           }
         },
         {
-          "client_id": "675996002572-a8ubjajrhundd08o76cipt37l9ngeqqh.apps.googleusercontent.com",
+          "client_id": "376156188250-kckv4j8ljr7mljkldjdee4tvsf5m2gpf.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "376156188250-8is8v8qi3dn4hntrota8nsnebhdkllf0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDbtZmtnHa-hMA_MFjkGRGBuaecJCGhXo4"
+          "current_key": "AIzaSyCMN7EpLHZ2HC1kXtVtwWWkdfTw6uqE7e0"
         }
       ],
       "services": {
@@ -35,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376156188250-kckv4j8ljr7mljkldjdee4tvsf5m2gpf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

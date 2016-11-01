@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
-                android:text="@string/item"/>
+                android:text="@string/units_quantity"/>
 
             <TextView
                 android:id="@+id/inProcessingDetailsProductItemsCount"
@@ -85,7 +85,7 @@
                 android:id="@+id/inProcessingDetailsProductWeightLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/place_holder"
+                android:text="@string/kg"
                 android:textSize="13sp"
                 android:textColor="@android:color/black"
                 tools:text="21kg"/>

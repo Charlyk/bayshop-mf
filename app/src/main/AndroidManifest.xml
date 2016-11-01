@@ -91,22 +91,7 @@
             android:name="com.softranger.bayshopmfr.ui.calculator.ShippingCalculatorActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.contact.ContactUsActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.softranger.bayshopmfr.ui.contact.SearchMailActivity"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name="com.softranger.bayshopmfr.ui.addresses.WarehouseAddressesActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.softranger.bayshopmfr.ui.contact.ChatActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.softranger.bayshopmfr.ui.contact.NewMessageActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.softranger.bayshopmfr.ui.services.ReplenishmentActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.softranger.bayshopmfr.ui.general.ResultActivity"

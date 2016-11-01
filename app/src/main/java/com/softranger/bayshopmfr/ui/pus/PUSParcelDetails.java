@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ActivityCompat;
@@ -66,8 +65,7 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
  * A simple {@link Fragment} subclass.
  */
 public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.OnImageClickListener,
-        InProcessingDetailsAdapter.OnItemClickListener, LoadingDialogFragment.OnDoneListener,
-        PullToRefreshLayout.PullToRefreshListener {
+        InProcessingDetailsAdapter.OnItemClickListener, PullToRefreshLayout.PullToRefreshListener {
 
     private static final String PRODUCT_ARG = "in processing arguments";
     private static final int UPLOAD_RESULT_CODE = 12;
@@ -386,28 +384,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
                 Log.d(this.getClass().getSimpleName(), "Take picture done");
             }
-            LoadingDialogFragment dialogFragment = LoadingDialogFragment.newInstance(requestCode);
-            dialogFragment.setOnDoneListener(this);
-            dialogFragment.show(mActivity.getFragmentManager(), "Loading dialog fragment");
         }
-    }
-
-    @Override
-    public void onDone(int action) {
-        String topMessage = "";
-        @DrawableRes int image = R.mipmap.logo_toolbar;
-        String bottomMessage = getString(R.string.upload_wait);
-        switch (action) {
-            case UPLOAD_RESULT_CODE:
-                topMessage = getString(R.string.document_uploaded);
-                image = R.mipmap.ic_upload_document_250dp;
-                break;
-            case TAKE_PICTURE_CODE:
-                topMessage = getString(R.string.photo_taken);
-                image = R.mipmap.ic_take_photo_250dp;
-                break;
-        }
-        mActivity.showResultActivity(topMessage, image, bottomMessage);
     }
 
     public void onUploadDocumentClick() {

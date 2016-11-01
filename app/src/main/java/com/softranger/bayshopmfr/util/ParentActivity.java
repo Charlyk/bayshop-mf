@@ -21,14 +21,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.network.ResponseCallback;
-import com.softranger.bayshopmfr.ui.general.MainActivity;
 import com.softranger.bayshopmfr.ui.general.ResultActivity;
 
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
@@ -123,51 +121,7 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         return dialogBuilder.create();
     }
 
-    public AlertDialog getEditDialog(@NonNull String title, @NonNull String message, @DrawableRes int imageResource,
-                                     @Nullable String positiveButtonText,
-                                     @Nullable String negativeButtonText, int inputType,
-                                     @Nullable final MainActivity.OnEditDialogClickListener onEditDialogClickListener) {
-        // inflate dialog layout and bind all views
-        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.edit_text_dialog, null, false);
-        ImageView dialogImage = (ImageView) dialogLayout.findViewById(R.id.editDialogImageLabel);
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.editDialogTitleLabel);
-        final EditText dialogMessage = (EditText) dialogLayout.findViewById(R.id.editDialogInput);
-        Button negativeButton = (Button) dialogLayout.findViewById(R.id.editDialogNegativeButton);
-        Button positiveButton = (Button) dialogLayout.findViewById(R.id.editDialogPositiveButton);
 
-        // set not null data, as text and image for dialog
-        dialogTitle.setText(title);
-        dialogMessage.setText(message);
-        dialogImage.setImageResource(imageResource);
-
-        // check and set buttons either text and listener or visibility to GONE
-        if (positiveButtonText != null) {
-            positiveButton.setText(positiveButtonText);
-            positiveButton.setOnClickListener(v -> {
-                if (onEditDialogClickListener != null) {
-                    onEditDialogClickListener.onPositiveClick(String.valueOf(dialogMessage.getText()));
-                }
-            });
-        } else {
-            positiveButton.setVisibility(View.GONE);
-        }
-
-        if (negativeButtonText != null) {
-            negativeButton.setText(negativeButtonText);
-            negativeButton.setOnClickListener(v -> {
-                if (onEditDialogClickListener != null) {
-                    onEditDialogClickListener.onNegativeClick();
-                }
-            });
-        } else {
-            negativeButton.setVisibility(View.GONE);
-        }
-
-        // Create the dialog with the given layout and return it
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
-                .setView(dialogLayout);
-        return dialogBuilder.create();
-    }
 
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
@@ -206,8 +160,6 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         in_stock(R.string.warehouse_usa),
         awaiting_arrival(R.string.awaiting_arrival),
         parcels(R.string.parcels),
-        account_replenishment(R.string.account_replenishment),
-        add_awaiting_parcel(R.string.add_awaiting_package),
         addresses_list(R.string.addresses_list),
         add_address(R.string.add_new_address),
         edit_awaiting_arrival(R.string.edit_details),
@@ -222,7 +174,6 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         autopacking(R.string.autopacking),
         change_password(R.string.change_password),
         notifications(R.string.notifications),
-        regional(R.string.regional),
         settings(R.string.settings),
         user_data(R.string.user_data),
         forgot_password(R.string.forgot_password),
@@ -230,10 +181,9 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         confirmation(R.string.check_parcel_details),
         register_user(R.string.register),
         insurance(R.string.insurance),
-        items_list(R.string.list_items),
         shipping_method(R.string.shipping_method),
         received(R.string.received),
-        storage(R.string.storage),
+        //        storage(R.string.storage),
         login_fragment(R.string.login),
         select_address(R.string.select_address),
         warehouse_address(R.string.warehouse_addresses),

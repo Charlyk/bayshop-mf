@@ -33,8 +33,7 @@
             android:layout_height="65dp"
             android:src="@drawable/ic_log_in"
             android:scaleType="centerCrop"
-            app:civ_border_width="0dp"
-            android:contentDescription="@string/user_image"/>
+            app:civ_border_width="0dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

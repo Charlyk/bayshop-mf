@@ -52,6 +52,7 @@ public class Constants {
         public static final String TRACK_URL = "https://gdeposylka.ru/api/v4/";
         public static final String BASE_URL = "http://bayshop.com";
         public static final String BASE_API_URL = "http://bayshop.com/api/";
+        //        public static final String BASE_API_URL = "http://bay-test.tk/api/";
         private static final String AUTH = "auth/";
         public static final String OPTION_PHOTO = "photo";
         public static final String OPTION_CHECK = "verification";
