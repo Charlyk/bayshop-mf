@@ -192,7 +192,7 @@ public class RegisterFragment extends ParentFragment {
     }
 
 
-    @OnFocusChange({R.id.registerNameInput, R.id.registerEmailInput, R.id.registerPasswordInput, R.id.registerConfirmPassword})
+    @OnFocusChange({R.id.registerNameInput, R.id.registerEmailInput, R.id.registerPasswordInput})
     void inputFocusHasBeenChanged(View view, boolean hasFocus) {
         if (!hasFocus) return;
         if (mFocusIndicator.getVisibility() != View.VISIBLE)
