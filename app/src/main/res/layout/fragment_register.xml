@@ -2,6 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@android:color/white"
                 android:clickable="true"
                 tools:context="com.softranger.bayshopmfr.ui.auth.RegisterFragment">
@@ -91,7 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:paddingTop="15dp"
-            android:layout_above="@+id/registerPasswordInputSeparator"
+            app:passwordToggleDrawable="@drawable/password_toggle"
+            android:layout_above="@+id/registerConfirmPasswordSeparator"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp">
 
@@ -107,33 +109,7 @@
                 android:textSize="16sp"/>
         </android.support.design.widget.TextInputLayout>
 
-        <View
-            android:id="@+id/registerPasswordInputSeparator"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_above="@+id/registerConfirmPasswordLayout"
-            android:background="#ededed"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/registerConfirmPasswordLayout"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:paddingTop="15dp"
-            android:layout_above="@+id/registerConfirmPasswordSeparator"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/registerConfirmPassword"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:background="@android:color/white"
-                android:hint="@string/confirm_password"
-                android:inputType="textPassword"
-                android:nextFocusDown="@+id/registerConfirmPassword"
-                android:singleLine="true"
-                android:textSize="16sp"/>
-        </android.support.design.widget.TextInputLayout>
 
         <View
             android:id="@+id/registerConfirmPasswordSeparator"

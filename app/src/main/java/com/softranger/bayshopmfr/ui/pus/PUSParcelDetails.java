@@ -28,7 +28,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmfr.R;
@@ -249,35 +248,35 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
                     onDamageToDisbandClick();
                 });
                 break;
-            case held_due_to_debt:
-                RelativeLayout payTheDebt = ButterKnife.findById(mButtonsHolder, R.id.payTheDebtLayout);
-                TextView debtLabel = ButterKnife.findById(mButtonsHolder, R.id.payTheDebtAmountLabel);
-                payTheDebt.setOnClickListener((view) -> {
-                    onPayTheDebtClick();
-                });
-                break;
+//            case held_due_to_debt:
+//                RelativeLayout payTheDebt = ButterKnife.findById(mButtonsHolder, R.id.payTheDebtLayout);
+//                TextView debtLabel = ButterKnife.findById(mButtonsHolder, R.id.payTheDebtAmountLabel);
+//                payTheDebt.setOnClickListener((view) -> {
+//                    onPayTheDebtClick();
+//                });
+//                break;
             case sent:
                 RelativeLayout trackParcel = ButterKnife.findById(mButtonsHolder, R.id.sentParcelHeaderLayout);
                 trackParcel.setOnClickListener((view) -> {
                     onStartTrackingClick();
                 });
                 break;
-            case held_by_customs:
-                Button upload = ButterKnife.findById(mButtonsHolder, R.id.prohibitionHeldUploadDocumentBtn);
-                upload.setOnClickListener((view) -> {
-                    onUploadDocumentClick();
-                });
-                Button takePhoto = ButterKnife.findById(mButtonsHolder, R.id.prohibitionHeldTakePhotoBtn);
-                takePhoto.setOnClickListener((view) -> {
-                    onTakePictureClick();
-                });
-                break;
-            case local_depot:
-                RelativeLayout orderDelivery = ButterKnife.findById(mButtonsHolder, R.id.orderHomeDeliveryLayout);
-                orderDelivery.setOnClickListener((view) -> {
-                    onOrderDeliveryClick();
-                });
-                break;
+//            case held_by_customs:
+//                Button upload = ButterKnife.findById(mButtonsHolder, R.id.prohibitionHeldUploadDocumentBtn);
+//                upload.setOnClickListener((view) -> {
+//                    onUploadDocumentClick();
+//                });
+//                Button takePhoto = ButterKnife.findById(mButtonsHolder, R.id.prohibitionHeldTakePhotoBtn);
+//                takePhoto.setOnClickListener((view) -> {
+//                    onTakePictureClick();
+//                });
+//                break;
+//            case local_depot:
+//                RelativeLayout orderDelivery = ButterKnife.findById(mButtonsHolder, R.id.orderHomeDeliveryLayout);
+//                orderDelivery.setOnClickListener((view) -> {
+//                    onOrderDeliveryClick();
+//                });
+//                break;
             case in_the_way:
                 LinearLayout callCourier = ButterKnife.findById(mButtonsHolder, R.id.takenCallCourierBtn);
                 callCourier.setOnClickListener((view) -> {

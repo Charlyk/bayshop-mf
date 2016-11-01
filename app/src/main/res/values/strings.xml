@@ -149,6 +149,7 @@
     <string name="send_parcel">Send parcel</string>
     <string name="allow_shipping">Allow shipping</string>
     <string name="shipping_price_aproximate">Shipping price (approximate):</string>
+    <string name="vkg" translatable="false">Vkg</string>
     <!-- result screen -->
     <string name="parcel_details">Parcel details</string>
     <string name="disband_request_sent">Disband request was sent.</string>

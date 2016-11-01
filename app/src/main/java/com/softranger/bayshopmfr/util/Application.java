@@ -19,6 +19,8 @@ import com.softranger.bayshopmfr.network.BayShopApiInterface;
 import com.softranger.bayshopmfr.network.GdePosylkaApiInterface;
 import com.softranger.bayshopmfr.ui.settings.SettingsFragment;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -291,6 +293,14 @@ public class Application extends MultiDexApplication {
 
     public static GdePosylkaApiInterface trackApiInterface() {
         return trackingRetrofit.create(GdePosylkaApiInterface.class);
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     /**

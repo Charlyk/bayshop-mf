@@ -84,7 +84,7 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
         period = getArguments().getString(PERIOD);
         mRefreshLayout.setPullToRefreshListener(this);
 
-        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period.toString());
+        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period);
         mCall.enqueue(mResponseCallback);
         return view;
     }
@@ -136,7 +136,7 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
     };
 
     public void onRefresh() {
-        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period.toString());
+        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period);
         mCall.enqueue(mResponseCallback);
     }
 
@@ -150,7 +150,7 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period.toString());
+        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period);
         mCall.enqueue(mResponseCallback);
     }
 }

@@ -13,9 +13,6 @@
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:text="@string/edit_declaration"
-        android:drawableLeft="@mipmap/ic_edit_declaration_30dp"
-        android:drawableStart="@mipmap/ic_edit_declaration_30dp"
-        android:drawablePadding="10dp"
         android:textSize="18sp"
         android:textColor="@color/colorPrimary"
         android:id="@+id/editAwaitingDeclarationBtn"/>

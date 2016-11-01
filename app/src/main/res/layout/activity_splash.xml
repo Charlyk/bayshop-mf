@@ -64,7 +64,5 @@
         android:paddingLeft="16dp"
         android:text="@string/next"
         android:textColor="@android:color/white"
-        android:drawableRight="@mipmap/ic_next_48dp"
-        android:drawableEnd="@mipmap/ic_next_48dp"
         android:gravity="center_vertical"/>
 </RelativeLayout>

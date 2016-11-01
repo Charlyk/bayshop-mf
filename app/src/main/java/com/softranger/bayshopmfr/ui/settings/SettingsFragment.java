@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmfr.R;
+import com.softranger.bayshopmfr.model.NotificationSettings;
 import com.softranger.bayshopmfr.model.Shipper;
 import com.softranger.bayshopmfr.model.address.Address;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
@@ -27,8 +28,6 @@ import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +58,7 @@ public class SettingsFragment extends ParentFragment {
 
     private SettingsActivity mActivity;
     private Unbinder mUnbinder;
-    private Call<ServerResponse<HashMap<String, Integer>>> mCall;
+    private Call<ServerResponse<NotificationSettings>> mCall;
 
     // autopackaging views
     @BindView(R.id.settingsAutopackagingAddressSubtitle)
@@ -98,6 +97,8 @@ public class SettingsFragment extends ParentFragment {
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         setValuesFromPreferences();
+
+        Application.apiInterface().getUserNotificationsSettings().enqueue(mResponseCallback);
         return view;
     }
 
@@ -160,22 +161,25 @@ public class SettingsFragment extends ParentFragment {
     @OnClick(R.id.settingsNotificationsSmsBtn)
     void toggleSmsNotifications() {
         mSmsCheckBox.setChecked(!mSmsCheckBox.isChecked());
-        Application.notifyPrefs.edit().putBoolean(SMS, mSmsCheckBox.isChecked()).apply();
         saveNotificationsSettings();
     }
 
     @OnClick(R.id.settingsNotificationsNotifyBtn)
     void togglePushNotifications() {
         mNotifyCheckBox.setChecked(!mNotifyCheckBox.isChecked());
-        Application.notifyPrefs.edit().putBoolean(PUSH, mNotifyCheckBox.isChecked()).apply();
         saveNotificationsSettings();
     }
 
     @OnClick(R.id.settingsNotificationsEmailsBtn)
     void toggleEmailNotifications() {
         mEmailsCheckbox.setChecked(!mEmailsCheckbox.isChecked());
-        Application.notifyPrefs.edit().putBoolean(EMAILS, mEmailsCheckbox.isChecked()).apply();
         saveNotificationsSettings();
+    }
+
+    private void saveNotificationSettiongsToPreferences() {
+        Application.notifyPrefs.edit().putBoolean(SMS, mSmsCheckBox.isChecked()).apply();
+        Application.notifyPrefs.edit().putBoolean(PUSH, mNotifyCheckBox.isChecked()).apply();
+        Application.notifyPrefs.edit().putBoolean(EMAILS, mEmailsCheckbox.isChecked()).apply();
     }
 
     // log out button click
@@ -244,16 +248,18 @@ public class SettingsFragment extends ParentFragment {
         }
     };
 
-    private ResponseCallback<HashMap<String, Integer>> mResponseCallback = new ResponseCallback<HashMap<String, Integer>>() {
+    private ResponseCallback<NotificationSettings> mResponseCallback = new ResponseCallback<NotificationSettings>() {
         @Override
-        public void onSuccess(HashMap<String, Integer> data) {
-            boolean sms = data.get(_SMS) != 0;
-            boolean push = data.get(_PUSH) != 0;
-            boolean mail = data.get(_EMAIL) != 0;
+        public void onSuccess(NotificationSettings data) {
+            boolean sms = data.getObtainSms() != 0;
+            boolean push = data.getObtainGCM() != 0;
+            boolean mail = data.getObtainMails() != 0;
 
             mSmsCheckBox.setChecked(sms);
             mNotifyCheckBox.setChecked(push);
             mEmailsCheckbox.setChecked(mail);
+
+            saveNotificationSettiongsToPreferences();
         }
 
         @Override
@@ -262,7 +268,7 @@ public class SettingsFragment extends ParentFragment {
         }
 
         @Override
-        public void onError(Call<ServerResponse<HashMap<String, Integer>>> call, Throwable t) {
+        public void onError(Call<ServerResponse<NotificationSettings>> call, Throwable t) {
             Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
         }
     };

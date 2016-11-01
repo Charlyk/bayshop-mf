@@ -71,32 +71,32 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemHolder.mDateLabel.setText(Application.getFormattedDate(itemHolder.mAwaitingArrival.getCreatedDate()));
             itemHolder.mPriceLabel.setText(itemHolder.mAwaitingArrival.getPrice());
             itemHolder.mWeightLabel.setText("---");
-            if (itemHolder.mAwaitingArrival.getTrackingResult() == null) {
-                getTrackingCourierService(itemHolder.mAwaitingArrival);
+//            if (itemHolder.mAwaitingArrival.getTrackingResult() == null) {
+//                getTrackingCourierService(itemHolder.mAwaitingArrival);
                 itemHolder.mStatusBarView.setProgress(0, Application.getInstance().getString(R.string.geting_status));
-            } else {
-                ArrayList<Checkpoint> checkpoints = itemHolder.mAwaitingArrival.getTrackingResult().getCheckpoints();
-                if (checkpoints != null && checkpoints.size() > 0) {
-                    Checkpoint checkpoint = checkpoints.get(0);
-
-                    String statusName;
-                    if (checkpoint.getCheckpointStatus() != Checkpoint.CheckpointStatus.other) {
-                        statusName = Application.getInstance()
-                                .getString(checkpoint.getCheckpointStatus().translatedStatus());
-                    } else {
-                        statusName = checkpoint.getStatusName();
-                    }
-
-                    int statusStep;
-                    if (checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.delivered) {
-                        statusStep = 2;
-                    } else {
-                        statusStep = 1;
-                    }
-
-                    itemHolder.mStatusBarView.setProgress(statusStep, statusName);
-                }
-            }
+//            } else {
+//                ArrayList<Checkpoint> checkpoints = itemHolder.mAwaitingArrival.getTrackingResult().getCheckpoints();
+//                if (checkpoints != null && checkpoints.size() > 0) {
+//                    Checkpoint checkpoint = checkpoints.get(0);
+//
+//                    String statusName;
+//                    if (checkpoint.getCheckpointStatus() != Checkpoint.CheckpointStatus.other) {
+//                        statusName = Application.getInstance()
+//                                .getString(checkpoint.getCheckpointStatus().translatedStatus());
+//                    } else {
+//                        statusName = checkpoint.getStatusName();
+//                    }
+//
+//                    int statusStep;
+//                    if (checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.delivered) {
+//                        statusStep = 2;
+//                    } else {
+//                        statusStep = 1;
+//                    }
+//
+//                    itemHolder.mStatusBarView.setProgress(statusStep, statusName);
+//                }
+//            }
         }
     }
 

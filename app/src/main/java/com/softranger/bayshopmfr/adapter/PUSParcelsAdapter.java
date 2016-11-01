@@ -3,7 +3,6 @@ package com.softranger.bayshopmfr.adapter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +30,10 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
     private ArrayList<PUSParcel> mPUSParcels;
     private OnPusItemClickListener mOnPusItemClickListener;
     private Context mContext;
-    private SparseBooleanArray mAnimatedItems;
 
     public PUSParcelsAdapter(ArrayList<PUSParcel> pusParcels, Context context) {
         mPUSParcels = pusParcels;
         mContext = context;
-        mAnimatedItems = new SparseBooleanArray();
 
 
     }
@@ -66,9 +63,14 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
         // compute kilos from grams and set the result in weight label
         double realWeight = Double.parseDouble(holder.mPUSParcel.getRealWeight());
         double kg = realWeight / 1000;
-        holder.mWeightLabel.setText(kg + "kg.");
+        double vkg = holder.mPUSParcel.getVolumeWeight() / 1000;
 
-        holder.mPriceLabel.setText(holder.mPUSParcel.getCurrency() + holder.mPUSParcel.getPrice());
+        String volumeAndWeight = Application.round(kg, 2) + mContext.getString(R.string.kilos) + " / "
+                + Application.round(vkg, 2) + mContext.getString(R.string.vkg);
+        holder.mWeightLabel.setText(volumeAndWeight);
+
+        String price = holder.mPUSParcel.getCurrency() + holder.mPUSParcel.getPrice();
+        holder.mPriceLabel.setText(price);
     }
 
     @Override

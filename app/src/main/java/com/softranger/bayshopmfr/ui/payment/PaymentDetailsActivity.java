@@ -30,9 +30,7 @@ public class PaymentDetailsActivity extends AppCompatActivity {
         }
 
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
-        toolbar.setNavigationOnClickListener((view) -> {
-            onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener((view) -> onBackPressed());
 
         TextView description = ButterKnife.findById(this, R.id.paymentDetailsDescriptionLabel);
         TextView totalAmount = ButterKnife.findById(this, R.id.paymentDetailsTotalAmountLabel);

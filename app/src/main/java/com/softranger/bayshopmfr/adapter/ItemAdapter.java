@@ -65,7 +65,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         // compute kilos from grams and set the result in weight label
         double realWeight = Double.parseDouble(processingHolder.mProduct.getRealWeight());
         double kg = realWeight / 1000;
-        processingHolder.mWeightLabel.setText(kg + "kg.");
+        double vkg = processingHolder.mProduct.getVolumeWeight() / 1000;
+
+        String volumeAndWeight = Application.round(kg, 2) + mContext.getString(R.string.kilos) + " / "
+                + Application.round(vkg, 2) + mContext.getString(R.string.vkg);
+
+        processingHolder.mWeightLabel.setText(volumeAndWeight);
     }
 
     @Override

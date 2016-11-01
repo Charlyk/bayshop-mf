@@ -11,10 +11,7 @@
         android:layout_height="50dp"
         android:layout_centerInParent="true"
         style="@style/Base.Widget.AppCompat.ActionButton"
-        android:drawableLeft="@mipmap/ic_sent_30dp"
-        android:drawableStart="@mipmap/ic_sent_30dp"
         android:gravity="center"
-        android:drawablePadding="10dp"
         android:textSize="18sp"
         android:textColor="@color/colorPrimary"
         android:text="@string/track_parcel"/>

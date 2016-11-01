@@ -2,7 +2,7 @@ package com.softranger.bayshopmfr.network;
 
 import com.softranger.bayshopmfr.model.CalculatorResult;
 import com.softranger.bayshopmfr.model.CreationDetails;
-import com.softranger.bayshopmfr.model.box.InStockList;
+import com.softranger.bayshopmfr.model.NotificationSettings;
 import com.softranger.bayshopmfr.model.Shipper;
 import com.softranger.bayshopmfr.model.WarehouseAddress;
 import com.softranger.bayshopmfr.model.address.Address;
@@ -13,6 +13,7 @@ import com.softranger.bayshopmfr.model.box.AwaitingArrival;
 import com.softranger.bayshopmfr.model.box.AwaitingArrivalDetails;
 import com.softranger.bayshopmfr.model.box.Declaration;
 import com.softranger.bayshopmfr.model.box.InStockDetailed;
+import com.softranger.bayshopmfr.model.box.InStockList;
 import com.softranger.bayshopmfr.model.payment.PaymentHistories;
 import com.softranger.bayshopmfr.model.pus.PUSParcel;
 import com.softranger.bayshopmfr.model.pus.PUSParcelDetailed;
@@ -20,7 +21,6 @@ import com.softranger.bayshopmfr.model.pus.PUSStatuses;
 import com.softranger.bayshopmfr.model.user.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -232,9 +232,12 @@ public interface BayShopApiInterface {
 
     @FormUrlEncoded
     @POST("member/mail-options/")
-    Call<ServerResponse<HashMap<String, Integer>>> changeUserNotificationsSettings(@Field("obtainSms") int sms,
-                                                                                   @Field("obtainGcm") int push,
-                                                                                   @Field("obtainMails") int emails);
+    Call<ServerResponse<NotificationSettings>> changeUserNotificationsSettings(@Field("obtainSms") int sms,
+                                                                               @Field("obtainGcm") int push,
+                                                                               @Field("obtainMails") int emails);
+
+    @GET("member/mail-options/")
+    Call<ServerResponse<NotificationSettings>> getUserNotificationsSettings();
 
     @FormUrlEncoded
     @POST("member/gcm-token")

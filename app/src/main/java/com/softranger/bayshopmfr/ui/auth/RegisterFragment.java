@@ -50,16 +50,12 @@ public class RegisterFragment extends ParentFragment {
     TextInputEditText mEmailInput;
     @BindView(R.id.registerPasswordInput)
     TextInputEditText mPasswordInput;
-    @BindView(R.id.registerConfirmPassword)
-    TextInputEditText mConfirmPassInput;
     @BindView(R.id.registerNameInputLayout)
     TextInputLayout mNameLayout;
     @BindView(R.id.registerEmailInputLayout)
     TextInputLayout mEmailLayout;
     @BindView(R.id.registerPasswordInputLayout)
     TextInputLayout mPassLayout;
-    @BindView(R.id.registerConfirmPasswordLayout)
-    TextInputLayout mConfirmPassLayout;
     @BindView(R.id.registerFocusIndicator)
     View mFocusIndicator;
 
@@ -96,7 +92,6 @@ public class RegisterFragment extends ParentFragment {
         String firstName = String.valueOf(mFirstNameInput.getText());
         String email = String.valueOf(mEmailInput.getText());
         String password = String.valueOf(mPasswordInput.getText());
-        String confirmPass = String.valueOf(mConfirmPassInput.getText());
 
         if (firstName.equals("")) {
             mFirstNameInput.setError(mActivity.getString(R.string.enter_your_first_name));
@@ -110,11 +105,6 @@ public class RegisterFragment extends ParentFragment {
 
         if (password.equals("") || password.length() < 6) {
             mPasswordInput.setError(mActivity.getString(R.string.enter_valid_password));
-            return;
-        }
-
-        if (!confirmPass.equals(password)) {
-            mConfirmPassInput.setError(mActivity.getString(R.string.passwords_does_not_match));
             return;
         }
 
@@ -216,9 +206,6 @@ public class RegisterFragment extends ParentFragment {
                 break;
             case R.id.registerPasswordInput:
                 ObjectAnimator.ofFloat(mFocusIndicator, "y", mPassLayout.getY()).setDuration(300).start();
-                break;
-            case R.id.registerConfirmPassword:
-                ObjectAnimator.ofFloat(mFocusIndicator, "y", mConfirmPassLayout.getY()).setDuration(300).start();
                 break;
         }
     }

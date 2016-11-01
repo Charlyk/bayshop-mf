@@ -54,10 +54,7 @@ public class Constants {
         public static final String BASE_API_URL = "http://bayshop.com/api/";
         //        public static final String BASE_API_URL = "http://bay-test.tk/api/";
         private static final String AUTH = "auth/";
-        public static final String OPTION_PHOTO = "photo";
-        public static final String OPTION_CHECK = "verification";
         private static final String MEMBER = "member/";
-        private static final String MAIL_OPTIONS = "mail-options/";
         private static final String PARCELS_COUNTER = "parcels-counter/";
 
         /**

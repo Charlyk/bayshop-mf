@@ -62,9 +62,8 @@
             android:id="@+id/receivedItemWeightLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView47"
-            android:layout_alignStart="@+id/textView47"
             android:layout_below="@+id/textView47"
+            android:layout_centerHorizontal="true"
             android:textColor="@android:color/black"
             android:textSize="13sp"
             tools:text="10kg"/>

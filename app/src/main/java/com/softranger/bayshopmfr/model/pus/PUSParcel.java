@@ -30,6 +30,8 @@ public class PUSParcel implements Parcelable {
     protected int mRating;
     @JsonProperty("courierContacts")
     private CourierContacts mCourierContacts;
+    @JsonProperty("volumeWeight")
+    private double mVolumeWeight;
 
     private PUSStatus mParcelStatus;
     private String mRealWeight;
@@ -48,6 +50,7 @@ public class PUSParcel implements Parcelable {
         mCurrency = in.readString();
         mRating = in.readInt();
         mCourierContacts = in.readParcelable(CourierContacts.class.getClassLoader());
+        mVolumeWeight = in.readDouble();
     }
 
     public static final Creator<PUSParcel> CREATOR = new Creator<PUSParcel>() {
@@ -115,6 +118,10 @@ public class PUSParcel implements Parcelable {
         }
     }
 
+    public double getVolumeWeight() {
+        return mVolumeWeight;
+    }
+
     public CourierContacts getCourierContacts() {
         return mCourierContacts;
     }
@@ -138,6 +145,7 @@ public class PUSParcel implements Parcelable {
         parcel.writeString(mCurrency);
         parcel.writeInt(mRating);
         parcel.writeParcelable(mCourierContacts, i);
+        parcel.writeDouble(mVolumeWeight);
     }
 
     public enum PUSStatus {
@@ -145,10 +153,10 @@ public class PUSParcel implements Parcelable {
         held_by_prohibition(R.string.held_by_prohibition, R.layout.prohibition_details_header, "held-by-prohibition", 2),
         held_by_damage(R.string.held_by_damage, R.layout.damage_recorded_btn, "held-by-damage", 3),
         awaiting_sending(R.string.awaiting_sending, -1, "packed", 4),
-        held_due_to_debt(R.string.held_due_to_debt, R.layout.pay_debt_layout, "dept", 5),
+        held_due_to_debt(R.string.held_due_to_debt, -1, "dept", 5),
         sent(R.string.sent, R.layout.sent_parcels_header_layout, "sent", 6),
-        held_by_customs(R.string.held_by_customs, R.layout.upload_document_layout, "customs-held", 7),
-        local_depot(R.string.local_deposit, R.layout.order_home_delivery, "local-depo", 8),
+        held_by_customs(R.string.held_by_customs, -1, "customs-held", 7),
+        local_depot(R.string.local_deposit, -1, "local-depo", 8),
         in_the_way(R.string.take_to_delivery, R.layout.take_to_delivery_btn, "taken-to-delivery", 9),
         received(R.string.received, R.layout.signature_geolocation_btn, "received", 10),
         held_by_user(R.string.held_by_user, R.layout.held_by_user_btn, "held-by-user", 11),
