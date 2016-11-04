@@ -8,10 +8,10 @@
         <option name="gradleHome" value="$APPLICATION_HOME_DIR$/gradle/gradle-2.14.1" />
         <option name="modules">
           <set>
-            <option value="/Users/owner/StudioProjects/bayshop-mf" />
-            <option value="/Users/owner/StudioProjects/bayshop-mf/app" />
-            <option value="/Users/owner/StudioProjects/bayshop-mf/jellyrefresh" />
-            <option value="/Users/owner/StudioProjects/bayshop-mf/library" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/jellyrefresh" />
+            <option value="$PROJECT_DIR$/library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

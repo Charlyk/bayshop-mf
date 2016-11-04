@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file:///Users/owner/StudioProjects/bayshop-mf/app/app.iml" filepath="/Users/owner/StudioProjects/bayshop-mf/app/app.iml" />
-      <module fileurl="file:///Users/owner/StudioProjects/bayshop-mf/bayshop-mf.iml" filepath="/Users/owner/StudioProjects/bayshop-mf/bayshop-mf.iml" />
-      <module fileurl="file:///Users/owner/StudioProjects/bayshop-mf/jellyrefresh/jellyrefresh.iml" filepath="/Users/owner/StudioProjects/bayshop-mf/jellyrefresh/jellyrefresh.iml" />
-      <module fileurl="file:///Users/owner/StudioProjects/bayshop-mf/library/library.iml" filepath="/Users/owner/StudioProjects/bayshop-mf/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bayshop-mf.iml" filepath="$PROJECT_DIR$/bayshop-mf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jellyrefresh/jellyrefresh.iml" filepath="$PROJECT_DIR$/jellyrefresh/jellyrefresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
   </component>
 </project>
