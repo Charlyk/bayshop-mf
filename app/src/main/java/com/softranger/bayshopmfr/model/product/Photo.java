@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.Imageble;
 
@@ -56,6 +57,16 @@ public class Photo implements Parcelable, Imageble {
         } else {
             return Constants.Api.BASE_URL + mBigImage;
         }
+    }
+
+    @JsonSetter("thumbnail")
+    public void setSmallImage(String smallImage) {
+        mSmallImage = smallImage;
+    }
+
+    @JsonSetter("original")
+    public void setBigImage(String bigImage) {
+        mBigImage = bigImage;
     }
 
     public Bitmap getSmallBitmap() {

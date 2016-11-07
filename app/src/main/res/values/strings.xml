@@ -85,8 +85,10 @@
     <string name="check_product">Check product</string>
     <string name="warehouse_usa">Warehouse in USA</string>
     <string name="declaration_not_filled">Declaration is not filled in</string>
-    <string name="remained">Remained</string> <!-- number of days goes after this word -->
-    <string name="days">days</string>
+    <plurals name="days_remained">
+        <item quantity="one">Remained %s day</item>
+        <item quantity="other">Remained %s days</item>
+    </plurals>
     <!-- Warehouse USA Details -->
     <string name="details">Details</string>
     <string name="edit_declaration">Edit declaration</string>
@@ -261,7 +263,10 @@
     <string name="parcel_added">Parcel added</string>
     <string name="select_insurance">Select insurance</string>
     <string name="create_parcel">Create parcel</string>
-    <string name="your_parcel_added">Your parcel was added successfully with ID\u0020</string>
+    <string name="insure_parcel">По условиям программы защиты в стоимость страхования включаются инвойсовая стоимость товаров и стоимость международной доставки. По этой причине итоговая стоимость страховки будет известна после упаковки посылки.</string>
+    <string name="refuse_insurace">В случае утери посылки службой доставки, недостачи или повреждения товара в процессе доставки вы не сможете подать претензию и не получите возмещение.</string>
+    <string name="your_parcel_added">Your parcel was added successfully with ID %1$s</string>
+
     <!-- Build steps dialogs -->
     <string name="save_address">Save address</string>
     <string name="save_selected_address">Do you want to save this address as selected for autopackaging?</string>
@@ -323,7 +328,7 @@
     <!-- Untranslatable inputs hints -->
     <string name="_0_0" translatable="false">0.0</string>
     <string name="kg" translatable="false">---</string>
-    <string name="kilos" translatable="false">kg.</string>
+    <string name="kilos">kg.</string>
     <string name="tracking_example" translatable="false">12345678901234567890</string>
     <string name="_10" translatable="false">$10</string>
     <string name="_0" translatable="false">0</string>

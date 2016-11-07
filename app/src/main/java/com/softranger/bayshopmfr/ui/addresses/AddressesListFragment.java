@@ -139,7 +139,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         if (!mIsGetRequest) {
             if (!Application.isAutopackaging() && !Application.askedAboutAutoPackaging()) {
                 mAlertDialog = mActivity.getDialog(getString(R.string.use_autopacking),
-                        getString(R.string.autopacking_descriptio), R.mipmap.ic_auto_packaging_36dp,
+                        getString(R.string.autopacking_descriptio), R.mipmap.ic_auto_packing_30dp,
                         getString(R.string.enable),
                         view -> {
                             Application.autoPackPrefs.edit().putBoolean(SettingsFragment.AUTOPACKAGING, true).apply();
@@ -309,7 +309,7 @@ public class AddressesListFragment extends ParentFragment implements AddressList
         if (mCreationDetails != null && !mIsGetRequest) {
             if (Application.isAutopackaging() && !Application.isAutopackagingAddressSelected()) {
                 mAlertDialog = mActivity.getDialog(getString(R.string.save_address),
-                        getString(R.string.save_selected_address), R.mipmap.ic_address_36dp,
+                        getString(R.string.save_selected_address), R.mipmap.ic_address_pop_up_30dp,
                         getString(R.string.yes), (view) -> {
                             // save selected address to preferences
                             Application.autoPackPrefs.edit().putString(SettingsFragment.ADDRESS_ID,

@@ -177,9 +177,12 @@ public class SettingsFragment extends ParentFragment {
     }
 
     private void saveNotificationSettiongsToPreferences() {
-        Application.notifyPrefs.edit().putBoolean(SMS, mSmsCheckBox.isChecked()).apply();
-        Application.notifyPrefs.edit().putBoolean(PUSH, mNotifyCheckBox.isChecked()).apply();
-        Application.notifyPrefs.edit().putBoolean(EMAILS, mEmailsCheckbox.isChecked()).apply();
+        if (mSmsCheckBox != null)
+            Application.notifyPrefs.edit().putBoolean(SMS, mSmsCheckBox.isChecked()).apply();
+        if (mNotifyCheckBox != null)
+            Application.notifyPrefs.edit().putBoolean(PUSH, mNotifyCheckBox.isChecked()).apply();
+        if (mEmailsCheckbox != null)
+            Application.notifyPrefs.edit().putBoolean(EMAILS, mEmailsCheckbox.isChecked()).apply();
     }
 
     // log out button click
@@ -255,9 +258,9 @@ public class SettingsFragment extends ParentFragment {
             boolean push = data.getObtainGCM() != 0;
             boolean mail = data.getObtainMails() != 0;
 
-            mSmsCheckBox.setChecked(sms);
-            mNotifyCheckBox.setChecked(push);
-            mEmailsCheckbox.setChecked(mail);
+            if (mSmsCheckBox != null) mSmsCheckBox.setChecked(sms);
+            if (mNotifyCheckBox != null) mNotifyCheckBox.setChecked(push);
+            if (mEmailsCheckbox != null) mEmailsCheckbox.setChecked(mail);
 
             saveNotificationSettiongsToPreferences();
         }

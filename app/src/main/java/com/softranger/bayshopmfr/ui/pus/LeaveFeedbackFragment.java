@@ -7,12 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -20,6 +23,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +69,7 @@ import retrofit2.Call;
  */
 public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.OnRatingBarChangeListener {
 
+    private static final String TAG = "LeaveFeedbackFragment";
     private static final String DETAILED_PARCEL = "detailed parcel arg";
     private static final int UPLOAD_RESULT_CODE = 12;
     private static final int TAKE_PICTURE_CODE = 13;
@@ -147,8 +152,8 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             else rating = mParcelDetailed.getRating();
             mRatingLabel.setText(getString(mRatingStrings.get((float) rating)));
             mCommentInput.setText(mParcelDetailed.getComment());
-            if (mParcelDetailed.getPhotoUrl() != null) {
-                Picasso.with(mActivity).load(Uri.parse(mParcelDetailed.getPhotoUrl())).into(mImageView);
+            if (mParcelDetailed.getPhoto() != null) {
+                Picasso.with(mActivity).load(Uri.parse(mParcelDetailed.getPhoto().getSmallImage())).into(mImageView);
             }
         }
 
@@ -191,8 +196,61 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             }
             int width = Application.getPixelsFromDp(160);
             int height = Application.getPixelsFromDp(120);
+            if (mUserPhoto != null) {
+                int orientation = getOrientationFromExif();
+                if (orientation <= 0) {
+                    orientation = getOrientationFromMediaStore();
+                }
+                Toast.makeText(mActivity, String.valueOf(orientation), Toast.LENGTH_SHORT).show();
+            }
             Picasso.with(mActivity).load(mUserPhoto).resize(width, height).into(mImageView);
         }
+    }
+
+    private int getOrientationFromExif() {
+        int orientation = -1;
+        try {
+            ExifInterface exif = new ExifInterface(mUserPhoto.getPath());
+            int exifOrientation;
+            exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            switch (exifOrientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    orientation = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    orientation = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    orientation = 90;
+                    break;
+                case ExifInterface.ORIENTATION_NORMAL:
+                    orientation = 0;
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orientation;
+    }
+
+    private int getOrientationFromMediaStore() {
+        Cursor cur;
+        String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
+        if (Build.VERSION.SDK_INT < 11)
+            cur = mActivity.managedQuery(Uri.parse(mUserPhoto.getAbsolutePath()), orientationColumn, null, null, null);
+        else
+            cur = mActivity.getContentResolver().query(Uri.parse(mUserPhoto.getAbsolutePath()), orientationColumn, null, null, null);
+
+        int orientation = -1;
+        if (cur != null && cur.moveToFirst()) {
+            orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
+            Log.d(TAG, "Image Orientation: " + orientation);
+        }
+
+        return orientation;
     }
 
     @Override

@@ -26,4 +26,10 @@
             android:background="@android:color/white"
             tools:listitem="@layout/payment_history_list_item"/>
     </uk.co.imallan.jellyrefresh.JellyRefreshLayout>
+
+    <ProgressBar
+        android:id="@+id/historiesFragmentProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 </RelativeLayout>

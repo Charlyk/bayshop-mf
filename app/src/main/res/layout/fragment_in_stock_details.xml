@@ -1,66 +1,81 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
-                xmlns:app="http://schemas.android.com/apk/res-auto">
+                android:clickable="true">
 
-    <ScrollView
+    <uk.co.imallan.jellyrefresh.JellyRefreshLayout
+        android:id="@+id/jellyPullToRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/fill_declarationButton"
-        android:background="@android:color/white"
-        android:clipToPadding="false"
-        android:fillViewport="true">
+        android:text="@string/loading"
+        android:textColor="@color/colorPrimary"
+        app:headerHeight="56dp"
+        app:jellyColor="@color/colorAccent"
+        app:loadingViewLayout="@layout/refresh_header"
+        app:pullHeight="128dp"
+        app:triggerHeight="96dp">
 
-        <LinearLayout
-            android:id="@+id/inStockDetailsHolderLayout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/fill_declarationButton"
+            android:background="@android:color/white"
+            android:clipToPadding="false"
+            android:fillViewport="true">
 
-            <include
-                layout="@layout/additional_buttons"/>
-
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/inStockDetailsHolderLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="16dp"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/inStockDetailsItemId"
-                    android:layout_width="wrap_content"
+                <include
+                    layout="@layout/additional_buttons"/>
+
+                <RelativeLayout
+                    android:id="@+id/inStockDetailsMfCopyBtn"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    tools:text="MF3121241412"/>
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="16dp">
 
-                <TextView
-                    android:id="@+id/inStockDetailsProductName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@id/inStockDetailsItemId"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    tools:text="Product name will be here"/>
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/inStockDetailsItemId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        tools:text="MF3121241412"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#ededed"/>
+                    <TextView
+                        android:id="@+id/inStockDetailsProductName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/inStockDetailsItemId"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        tools:text="Product name will be here"/>
+                </RelativeLayout>
 
-            <include
-                layout="@layout/detailed_item_details"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#ededed"/>
 
-            <android.support.v7.widget.RecyclerView
+                <include
+                    layout="@layout/detailed_item_details"/>
+
+                <android.support.v7.widget.RecyclerView
                 android:id="@+id/inStockDetailsImageList"
                 android:layout_width="match_parent"
                 android:layout_height="125dp"
@@ -71,25 +86,20 @@
                 android:clipToPadding="false"
                 android:layout_marginBottom="16dp"/>
 
-            <include layout="@layout/no_photos_layout"/>
-        </LinearLayout>
-    </ScrollView>
+                <include layout="@layout/no_photos_layout"/>
+            </LinearLayout>
+        </ScrollView>
+    </uk.co.imallan.jellyrefresh.JellyRefreshLayout>
 
     <Button
         android:id="@+id/fill_declarationButton"
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/green_button_bg"
         android:gravity="center"
-        android:layout_alignParentBottom="true"
         android:text="@string/fill_in_the_declaration"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/drop_shadow"
-        android:layout_alignParentTop="true"/>
 </RelativeLayout>

@@ -333,4 +333,8 @@ public class Application extends MultiDexApplication {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
+    public static String getDeviceLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
 }

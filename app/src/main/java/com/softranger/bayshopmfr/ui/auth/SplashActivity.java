@@ -164,6 +164,7 @@ public class SplashActivity extends ParentActivity {
             // update his name in intercom database
             HashMap<String, Object> userData = new HashMap<>();
             userData.put("name", data.getFullName());
+            userData.put("language_override", Application.getDeviceLanguage());
             Intercom.client().updateUser(userData);
             long duration = System.currentTimeMillis() - personalDataStart;
             Log.d("Personal data", duration + "");

@@ -232,7 +232,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
     private void deleteItem(final AwaitingArrival product, final int position) {
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
-                        + product.getTitle() + "?", R.mipmap.ic_delete_parcel_popup_30dp,
+                        + product.getUid() + "?", R.mipmap.ic_delete_parcel_popup_30dp,
                 getString(R.string.yes), ((view) -> {
                     mActivity.toggleLoadingProgress(true);
                     DeleteAsyncTask deleteAsyncTask = new DeleteAsyncTask(position, mAwaitingArrivals, mActivity, mAdapter);

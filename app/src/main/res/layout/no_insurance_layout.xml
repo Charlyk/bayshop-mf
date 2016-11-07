@@ -63,11 +63,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/noInsuranceButtonLayout"
         android:ellipsize="end"
-        android:maxLines="3"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/lorem_ipsum"/>
+        android:text="@string/refuse_insurace"/>
 
     <!-- Details button-->
 

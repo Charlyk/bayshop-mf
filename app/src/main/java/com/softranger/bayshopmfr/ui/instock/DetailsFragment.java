@@ -3,6 +3,8 @@ package com.softranger.bayshopmfr.ui.instock;
 
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -44,12 +46,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
+import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
+import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnImageClickListener {
+public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnImageClickListener, PullToRefreshLayout.PullToRefreshListener {
 
     private static final String ITEM_ARG = "ITEM ARGUMENT";
     public static final int DECLARATION_RC = 1528;
@@ -68,6 +72,8 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
     @BindView(R.id.inStockDetailsImageList) RecyclerView mRecyclerView;
     @BindView(R.id.inStockDetailsHolderLayout) LinearLayout mHolderLayout;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotoLayout;
+    @BindView(R.id.jellyPullToRefresh)
+    JellyRefreshLayout mRefreshLayout;
 
     @BindView(R.id.details_date_label)  TextView date;
     @BindView(R.id.details_weight_label)  TextView weight;
@@ -112,6 +118,8 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
+        mRefreshLayout.setPullToRefreshListener(this);
+
         // set up recycler view
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
@@ -124,11 +132,15 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
 
         mFillDeclaration.setVisibility(View.GONE);
 
+        mActivity.toggleLoadingProgress(true);
+        getItemDetails();
+        return rootView;
+    }
+
+    private void getItemDetails() {
         // send request to server for item details
         mCall = Application.apiInterface().getInStockItemDetails(mParcelId);
-        mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
-        return rootView;
     }
 
     private BroadcastReceiver mStatusReceiver = new BroadcastReceiver() {
@@ -193,21 +205,38 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
             showDetails(mInStockDetailed);
             mHolderLayout.setVisibility(View.VISIBLE);
             mActivity.toggleLoadingProgress(false);
+            if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
             mActivity.toggleLoadingProgress(false);
+            if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(Call<ServerResponse<InStockDetailed>> call, Throwable t) {
             mActivity.toggleLoadingProgress(false);
+            if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             t.printStackTrace();
         }
     };
+
+    @OnClick(R.id.inStockDetailsMfCopyBtn)
+    void copyParcelUID() {
+        if (mInStockDetailed == null) return;
+        // Gets a handle to the clipboard service.
+        ClipboardManager clipboard = (ClipboardManager)
+                mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+        // Creates a new text clip to put on the clipboard
+        ClipData clip = ClipData.newPlainText("simple text", mInStockDetailed.getUid());
+        // Set the clipboard's primary clip.
+        clipboard.setPrimaryClip(clip);
+
+        Toast.makeText(mActivity, getString(R.string.copied), Toast.LENGTH_SHORT).show();
+    }
 
     private void showDetails(final InStockDetailed detailed) {
         // fill text views
@@ -302,5 +331,10 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         mActivity.unregisterReceiver(mStatusReceiver);
         if (mCall != null) mCall.cancel();
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+        getItemDetails();
     }
 }

@@ -5,11 +5,11 @@ import android.os.Parcel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.softranger.bayshopmfr.model.product.ShippingMethod;
 import com.softranger.bayshopmfr.model.address.Address;
 import com.softranger.bayshopmfr.model.address.Coordinates;
 import com.softranger.bayshopmfr.model.box.Box;
-import com.softranger.bayshopmfr.util.Constants;
+import com.softranger.bayshopmfr.model.product.Photo;
+import com.softranger.bayshopmfr.model.product.ShippingMethod;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,7 +80,7 @@ public class PUSParcelDetailed extends PUSParcel {
     @JsonProperty("price_additional_materials")
     private double mAdditionalMaterialsPrice;
     @JsonProperty("service_photo")
-    private String mPhotoUrl;
+    private Photo mPhoto;
 
 
     public PUSParcelDetailed() {
@@ -128,7 +128,7 @@ public class PUSParcelDetailed extends PUSParcel {
         mBoxesPrice = in.readDouble();
         mRepackingPrice = in.readDouble();
         mAdditionalMaterialsPrice = in.readDouble();
-        mPhotoUrl = in.readString();
+        mPhoto = in.readParcelable(getClass().getClassLoader());
     }
 
     public static final Creator<PUSParcelDetailed> CREATOR = new Creator<PUSParcelDetailed>() {
@@ -274,9 +274,8 @@ public class PUSParcelDetailed extends PUSParcel {
         return mAdditionalMaterialsPrice;
     }
 
-    public String getPhotoUrl() {
-        if (mPhotoUrl != null && mPhotoUrl.contains("http")) return mPhotoUrl;
-        else return Constants.Api.BASE_URL + mPhotoUrl;
+    public Photo getPhoto() {
+        return mPhoto;
     }
 
     @Override
@@ -311,6 +310,6 @@ public class PUSParcelDetailed extends PUSParcel {
         parcel.writeDouble(mBoxesPrice);
         parcel.writeDouble(mRepackingPrice);
         parcel.writeDouble(mAdditionalMaterialsPrice);
-        parcel.writeString(mPhotoUrl);
+        parcel.writeParcelable(mPhoto, i);
     }
 }

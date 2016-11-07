@@ -187,6 +187,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
             // update his name in intercom database
             HashMap<String, Object> userData = new HashMap<>();
             userData.put("name", user.getFullName());
+            userData.put("language_override", Application.getDeviceLanguage());
             Intercom.client().updateUser(userData);
 
             Application.getInstance().setUserId(user.getUserId());
@@ -210,6 +211,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
 
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
+            Toast.makeText(getBaseContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             t.printStackTrace();
             mLoginFragment.hideLoading();
         }

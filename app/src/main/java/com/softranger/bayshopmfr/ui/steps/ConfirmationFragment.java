@@ -257,7 +257,7 @@ public class ConfirmationFragment extends ParentFragment {
             mActivity.sendBroadcast(update);
 
             mActivity.showResultActivity(data + " " + getString(R.string.parcel_added), R.mipmap.ic_confirm_3steps_250dp,
-                    getString(R.string.your_parcel_added) + data);
+                    String.format(getString(R.string.your_parcel_added), data));
             mActivity.finish();
         }
 

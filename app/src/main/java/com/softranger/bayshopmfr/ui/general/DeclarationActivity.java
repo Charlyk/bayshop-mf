@@ -137,6 +137,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
 
         if (intent.hasExtra(IN_STOCK_ID)) {
             mInStockId = intent.getExtras().getString(IN_STOCK_ID);
+            mToolbarTitle.setText(getString(R.string.edit_declaration));
         }
 
         boolean hasDeclaration = intent.hasExtra(HAS_DECLARATION) && intent.getExtras().getBoolean(HAS_DECLARATION);

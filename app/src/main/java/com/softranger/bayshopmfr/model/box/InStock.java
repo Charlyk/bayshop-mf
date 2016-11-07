@@ -17,6 +17,8 @@ public class InStock extends Box {
     @JsonProperty("remainingDays") private int mRemainingDays;
     @JsonProperty("isDeclarationFilled") private int mDeclarationFilled;
     @JsonProperty("separationRequest") private int mSeparationRequest;
+    @JsonProperty("free_days_storage")
+    private int mFreeStorage;
     @JsonProperty("isHeldByProhibition")
     private int mIsHeldByProhibition;
 
@@ -32,6 +34,7 @@ public class InStock extends Box {
         mDeclarationFilled = in.readInt();
         mSeparationRequest = in.readInt();
         mIsHeldByProhibition = in.readInt();
+        mFreeStorage = in.readInt();
     }
 
     public static final Creator<InStock> CREATOR = new Creator<InStock>() {
@@ -77,6 +80,10 @@ public class InStock extends Box {
         mDeclarationFilled = declarationFilled ? 1 : 0;
     }
 
+    public int getFreeStorage() {
+        return mFreeStorage;
+    }
+
     public boolean isSelected() {
         return mIsSelected;
     }
@@ -92,5 +99,6 @@ public class InStock extends Box {
         parcel.writeInt(mDeclarationFilled);
         parcel.writeInt(mSeparationRequest);
         parcel.writeInt(mIsHeldByProhibition);
+        parcel.writeInt(mFreeStorage);
     }
 }

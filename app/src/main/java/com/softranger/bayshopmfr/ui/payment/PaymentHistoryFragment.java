@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.softranger.bayshopmfr.R;
@@ -49,6 +50,8 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
     RecyclerView mRecyclerView;
     @BindView(R.id.jellyPullToRefresh)
     JellyRefreshLayout mRefreshLayout;
+    @BindView(R.id.historiesFragmentProgressBar)
+    ProgressBar mProgressBar;
 
     public PaymentHistoryFragment() {
         // Required empty public constructor
@@ -84,9 +87,15 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
         period = getArguments().getString(PERIOD);
         mRefreshLayout.setPullToRefreshListener(this);
 
-        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period);
-        mCall.enqueue(mResponseCallback);
+        toggleLoading(true);
+        onRefresh();
         return view;
+    }
+
+    private void toggleLoading(boolean show) {
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 
     private ResponseCallback<PaymentHistories> mResponseCallback = new ResponseCallback<PaymentHistories>() {
@@ -99,6 +108,7 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
             Collections.sort(mAllHistories, (lhs, rhs) -> lhs.getDate().compareTo(rhs.getDate()));
             Collections.reverse(mAllHistories);
             mAdapter.refreshList(mAllHistories);
+            toggleLoading(false);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);
         }
@@ -107,6 +117,7 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
         public void onFailure(ServerResponse errorData) {
             Log.e("PaymentHistory", errorData.getMessage());
             Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            toggleLoading(false);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);
         }
@@ -115,6 +126,7 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
         public void onError(Call<ServerResponse<PaymentHistories>> call, Throwable t) {
             t.printStackTrace();
             Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            toggleLoading(false);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);
         }
@@ -150,7 +162,6 @@ public class PaymentHistoryFragment extends Fragment implements HistoryAdapter.O
 
     @Override
     public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-        mCall = Application.apiInterface().getPaymentHistoryForPeriod(period);
-        mCall.enqueue(mResponseCallback);
+        onRefresh();
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.box.InStock;
+import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ViewAnimator;
 
 import java.text.SimpleDateFormat;
@@ -140,22 +141,20 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             itemHolder.mDateLabel.setText(mDateFormat.format(parcelDate));
 
             // set the weight into it's label
-            itemHolder.mWeightLabel.setText(kilos + "kg");
+            itemHolder.mWeightLabel.setText(kilos + mContext.getString(R.string.kilos));
 
             // set the price into it's label
-            itemHolder.mPriceLabel.setText("$" + price);
+            itemHolder.mPriceLabel.setText(Constants.USD_SYMBOL + price);
 
             // calculate how many days current parcel spent at warehouse
-            int spent = getSpentDays(itemHolder.mInStock);
-            int remains = 45 - spent;
-            String remained = mContext.getString(R.string.remained) + " " + remains +
-                    " " + mContext.getString(R.string.days);
+            int storageDays = itemHolder.mInStock.getFreeStorage();
+            String test = mContext.getResources().getQuantityString(R.plurals.days_remained, storageDays, storageDays);
             // set the result into remaining label
-            itemHolder.mRemainingLabel.setText(remained);
+            itemHolder.mRemainingLabel.setText(test);
 
             // set remaining text background to correspond to spent time
             itemHolder.mRemainingLabel.setBackgroundDrawable(mContext.getResources()
-                    .getDrawable(getBarColors(spent)));
+                    .getDrawable(getBarColors(storageDays)));
         }
     }
 
@@ -268,9 +267,9 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @DrawableRes
     private int getBarColors(int remains) {
-        if (remains <= 15) {
+        if (remains >= 25) {
             return R.drawable.green_5dp_corner;
-        } else if (remains > 15 && remains <= 40) {
+        } else if (remains > 15 && remains < 25) {
             return R.drawable.yelow_5dp_corner;
         } else {
             return R.drawable.red_5dp_corner;

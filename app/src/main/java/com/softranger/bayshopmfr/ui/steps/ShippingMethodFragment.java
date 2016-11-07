@@ -132,7 +132,7 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
     public void onSelectClick(Shipper shippingMethod, int position) {
         if (Application.isAutopackagingAddressSelected() && !Application.isAutopackagingShipperSelected()) {
             mAlertDialog = mActivity.getDialog(getString(R.string.save_shipper),
-                    getString(R.string.save_selected_method), R.mipmap.ic_shipping_by_36dp,
+                    getString(R.string.save_selected_method), R.mipmap.ic_shipping_method_30dp,
                     getString(R.string.yes), (view) -> {
                         // save selected shipper to preferences
                         Application.autoPackPrefs.edit().putString(SettingsFragment.SHIPPING_ID,
