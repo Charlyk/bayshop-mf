@@ -1,8 +1,10 @@
 package com.softranger.bayshopmfr.ui.steps;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +56,8 @@ public class ConfirmationFragment extends ParentFragment {
     private int mInsurancePriceValue;
     private double mTotalPriceValue;
     private Call<ServerResponse<String>> mResponseCall;
+    // chrome tabs intent used to open products url
+    private CustomTabsIntent mTabsIntent;
 
     @BindView(R.id.insuranceRadioButton) RadioButton mInsuranceSelector;
     @BindView(R.id.noInsuranceRadioButton) RadioButton mNoIsuranceSelector;
@@ -76,6 +80,7 @@ public class ConfirmationFragment extends ParentFragment {
 
     @BindView(R.id.confirmFinishAndSendBtn)
     Button mConfirmBtn;
+
 
     public ConfirmationFragment() {
         // require emtpy constructor
@@ -127,6 +132,12 @@ public class ConfirmationFragment extends ParentFragment {
 
         mConfirmBtn.setEnabled(mTermsAndConditions.isChecked());
         mConfirmBtn.setClickable(mTermsAndConditions.isChecked());
+
+        // create tabs intent for products url
+        CustomTabsIntent.Builder tabsBuilder = new CustomTabsIntent.Builder();
+        tabsBuilder.setToolbarColor(getResources().getColor(R.color.colorAccent));
+        tabsBuilder.setSecondaryToolbarColor(getResources().getColor(R.color.colorPrimary));
+        mTabsIntent = tabsBuilder.build();
 
         return view;
     }
@@ -186,7 +197,7 @@ public class ConfirmationFragment extends ParentFragment {
      */
     @OnClick(R.id.confirmAdditionalPackageDetails)
     void showAdditionalPackagesDetails() {
-        HelpDialog.showDialog(mActivity);
+        HelpDialog.showDialog(mActivity, getString(R.string.additional_package_details));
     }
 
     /**
@@ -202,7 +213,7 @@ public class ConfirmationFragment extends ParentFragment {
      */
     @OnClick(R.id.confirmLocalDeliveryDetails)
     void showLocalDeliveryDetails() {
-        HelpDialog.showDialog(mActivity);
+        HelpDialog.showDialog(mActivity, getString(R.string.local_delivery_details));
     }
 
     /**
@@ -218,12 +229,13 @@ public class ConfirmationFragment extends ParentFragment {
      */
     @OnClick(R.id.confirmSentOnUserAlertDetails)
     void showOnUserAlertDetails() {
-        HelpDialog.showDialog(mActivity);
+        HelpDialog.showDialog(mActivity, getString(R.string.sent_on_request_details));
     }
 
     @OnClick(R.id.confirmAgreeTermsDetails)
     void showTermsAndConditions() {
-        HelpDialog.showDialog(mActivity);
+        String strUrl = "https://md.bayshop.com/en/page/terms-of-use.html";
+        mTabsIntent.launchUrl(mActivity, Uri.parse(strUrl));
     }
 
     @OnClick(R.id.confirmAgreeTermsButton)
