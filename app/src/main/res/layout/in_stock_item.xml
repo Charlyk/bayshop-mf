@@ -84,10 +84,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
                 android:layout_below="@id/inStockWeightTitle"
-                android:layout_alignLeft="@id/inStockWeightTitle"
-                android:layout_alignStart="@id/inStockWeightTitle"
-                android:layout_alignRight="@id/inStockWeightTitle"
-                android:layout_alignEnd="@id/inStockWeightTitle"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:textColor="@android:color/black"
                 tools:text="10kg"/>

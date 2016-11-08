@@ -23,12 +23,12 @@
     <string name="create_new_account">"Создать аккаунт"</string>
 
     <!-- Navigation drawer -->
-    <string name="received">"Получена"</string>
+    <string name="received">"Полученные"</string>
     <string name="profile_settings">"Настройки аккаунта"</string>
     <string name="contact_us">"Свяжитесь с нами"</string>
     <string name="shipping_calculator">"Калькулятор доставки"</string>
     <string name="payment_history">"История платежей"</string>
-    <string name="addresses">"Адреса"</string>
+    <string name="addresses">"Адрес в США"</string>
     <string name="services">"Услуги"</string>
 
     <!-- Common for multiple screens -->
@@ -62,19 +62,17 @@
     <string name="add_item">"Добавить товар"</string>
     <string name="save">"Сохранить"</string>
     <string name="tracking_number">"Трекинг-номер:"</string>
-    <string name="additional_services">"Доп. услуги"</string>
+    <string name="additional_services">"Дополнительные услуги"</string>
     <string name="pre_order_photos">"Предзаказ доп. фото"</string>
     <string name="pre_order_checking">"Предзаказ проверки товаров"</string>
     <string name="declaration_saved">"Декларация успешно сохранена"</string>
-    <string name="preorder_photo_details">Мы сделаем 8 дополнительных фотографий товара на складе и пришлем вам уведомление, когда они будут готовы.</string>
-    <string name="preorder_checking_details">Мы проверим, соответствуют ли товары заказу и нет ли на них повреждений. Если мы выявим дефекты или несоответствия, вы получите уведомление об этом.</string>
-    <string name="preorder_repacking_details">Для вашего товара мы используем упаковку, идеально подходящую по размеру. Сократив свободное пространство, мы уменьшим вес посылки и стоимость доставки.</string>
-    <string name="declaration_toolbar_details">Если у вас есть трекинг-номер заказа, оформите его в системе и отслеживайте его поступление на склад. Если вы не знаете трекинг-номер, мы вручную добавим заказ в систему при поступлении.</string>
-
-
-    <string name="add_awaiting_package">"Добавить заказ"</string>
+    <string name="add_awaiting_package">"Добавить ожидаемый заказ"</string>
     <string name="example_product">"book"</string>
     <string name="help">"Помощь"</string>
+    <string name="preorder_photo_details">"Мы сделаем 8 дополнительных фотографий товара на складе и пришлем вам уведомление, когда они будут готовы."</string>
+    <string name="preorder_checking_details">"Мы проверим, соответствуют ли товары заказу и нет ли на них повреждений. Если мы выявим дефекты или несоответствия, вы получите уведомление об этом."</string>
+    <string name="preorder_repacking_details">"Для вашего товара мы используем упаковку, идеально подходящую по размеру. Сократив свободное пространство, мы уменьшим вес посылки и стоимость доставки."</string>
+    <string name="declaration_toolbar_details">"Если у вас есть трекинг-номер заказа, оформите его в системе и отслеживайте его поступление на склад. Если вы не знаете трекинг-номер, мы вручную добавим заказ в систему при поступлении."</string>
 
     <!-- Delete parcel dialog -->
     <string name="delete_item">"Удалить заказ"</string>
@@ -86,15 +84,12 @@
     <string name="check_product">"Проверка товара"</string>
     <string name="warehouse_usa">"На складе"</string>
     <string name="declaration_not_filled">"Декларация не заполнена"</string>
-    <!--<string name="remained">"Осталось"</string>-->
-    <!--<plurals name="days_remained">-->
-    <!--<item quantity="one">Остался %s день</item>-->
-    <!--<item quantity="few">Остались %s дня</item>-->
-    <!--<item quantity="many">Осталось %s дней</item>-->
-    <!--<item quantity="other">Осталось %s дней</item>-->
-    <!--</plurals>-->
 
-    <!-- Warehouse USA Details -->
+    <!-- <plurals name="days_remained">
+    <item quantity="one">Remained %s day</item>
+    <item quantity="other">Remained %s days</item>
+    </plurals>
+     Warehouse USA Details -->
     <string name="details">"Подробнее"</string>
     <string name="edit_declaration">"Редактировать декларацию"</string>
     <string name="fill_in_the_declaration">"Заполнить декларацию"</string>
@@ -108,7 +103,7 @@
     <string name="local_deposit">"На складе в стране"</string>
     <string name="take_to_delivery">"Courier delivery"</string>
     <string name="held_by_prohibition">"Held by prohibition"</string>
-    <string name="processing">"Обрабатывается"</string>
+    <string name="processing">"В обработке"</string>
     <string name="awaiting_declaration">"Посылка ожидает декларации"</string>
     <string name="in_the_way">"В пути"</string>
     <string name="held_by_damage">"Held by damage"</string>
@@ -133,11 +128,11 @@
     <string name="repacking_in_progress">"Переупаковка в процессе"</string>
 
     <!-- PUS Parcels screen -->
-    <string name="shipping_by">"Доставляется службой:"</string>
-    <string name="goods_price">"Стоимость товаров:"</string>
+    <string name="shipping_by">"Доставлять службой:"</string>
+    <string name="goods_price">"Товары на сумму:"</string>
     <string name="shipping_price">"Стоимость доставки:"</string>
-    <string name="insurance_price">"Стоимость страховки:"</string>
-    <string name="additional_package_price">"Стоимость дополнительной упаковки:"</string>
+    <string name="insurance_price">"Страховка отправления:"</string>
+    <string name="additional_package_price">"Дополнительная упаковка:"</string>
     <string name="declared_price">"Задекларировано:"</string>
     <string name="edit_feedback">"Изменить отзыв"</string>
     <string name="parcel_components">"Товары в посылке"</string>
@@ -165,15 +160,15 @@
     <string name="disband_request_received">"Мы сообщим, когда ваша посылка будет расформирована."</string>
     <string name="feedback_added">"Спасибо за вашу оценку!"</string>
     <string name="feedback_comment">"Спасибо за ваш отзыв!"</string>
-    <string name="allow_request_sent">"You allowed parcel sending"</string>
-    <string name="we_will_send_parcel">"You request was received and we will send your parcel as asap."</string>
+    <string name="allow_request_sent">"Вы разрешили отправку посылки."</string>
+    <string name="we_will_send_parcel">"Вы запросили отправку посылки, и в скором времени она будет отправлена."</string>
     <string name="send_request">"Request received"</string>
     <string name="parcel_will_be_sent">"Thanks for your request, we will send you parcel to specified address asap."</string>
     <string name="request_received">"Request received"</string>
     <string name="return_request_received">"Ваша посылка вскоре будет возвращена продавцу. Вы получите уведомление об этом."</string>
 
     <!-- Dialog -->
-    <string name="confirm_delivery">"Please confirm your ordering delivery to"</string>
+    <string name="confirm_delivery">"Подтвердите доставку в"</string>
     <string name="order_sent">"Посылка отправлена"</string>
     <string name="please_wait_call">"Дождитесь звонка от курьера"</string>
 
@@ -203,7 +198,7 @@
 
     <!-- Warehouse address -->
     <string name="click_on_field_to_copy">"Кликните на строку, чтобы скопировать текст."</string>
-    <string name="warehouse_addresses">"Адрес склада в Делавере"</string>
+    <string name="warehouse_addresses">"Ваш виртуальный адрес"</string>
 
     <!-- Screens with addresses and personal data -->
     <string name="full_name">"Полное имя"</string>
@@ -232,11 +227,11 @@
     <string name="user_data">"Личные данные"</string>
     <string name="change_password">"Сменить пароль"</string>
     <string name="autopacking">"Автоупаковка"</string>
-    <string name="address">"Адрес"</string>
+    <string name="address">"Адрес доставки:"</string>
     <string name="insurance">"Застраховать\u0020"</string>
     <string name="sms">"SMS"</string>
-    <string name="push_notifications">"Push–уведомления"</string>
     <string name="notifications">"Уведомления"</string>
+    <string name="push_notifications">"Push–уведомления"</string>
     <string name="emails">"Письма на e-mail"</string>
     <string name="log_out">"Выйти"</string>
     <string name="user_settings">"Настройки аккаунта"</string>
@@ -266,18 +261,18 @@
     <string name="additional_package">"Упаковать дополнительно $10"</string>
     <string name="sent_on_user_alert">"Задержать перед отправкой"</string>
     <string name="check_parcel_details">"Проверьте итоговую стоимость"</string>
-    <string name="accepte_terms_and_conditions">"Я принимаю Пользовательское Соглашение:"</string>
+    <string name="accepte_terms_and_conditions">"Принять Пользовательское Соглашение:"</string>
     <string name="declaration">"Заполнение декларации:"</string>
     <string name="total_shipping_price">"Итого за доставку:"</string>
     <string name="parcel_added">"Заказ добавлен"</string>
     <string name="select_insurance">"Застраховать посылку"</string>
     <string name="create_parcel">"Создать посылку"</string>
-    <string name="insure_parcel">По условиям программы защиты в стоимость страхования включаются инвойсовая стоимость товаров и стоимость международной доставки. По этой причине итоговая стоимость страховки будет известна после упаковки посылки.</string>
-    <string name="refuse_insurace">В случае утери посылки службой доставки, недостачи или повреждения товара в процессе доставки вы не сможете подать претензию и не получите возмещение.</string>
+    <string name="insure_parcel">"По условиям программы защиты в стоимость страхования включаются задекларированная стоимость товаров и стоимость международной доставки."</string>
+    <string name="refuse_insurace">"В случае утери посылки службой доставки, недостачи или повреждения товара в процессе доставки вы не сможете подать претензию и не получите возмещение."</string>
     <string name="your_parcel_added">"Ваша посылка с номером ID %1$s была успешно добавлена"</string>
-    <string name="additional_package_details">Упакуйте хрупкие товары, чтобы уберечь их от повреждений. Мы упакуем их по принципу «коробка в коробке», а пространство между коробками будет заполнено воздушно-пузырьковой пленкой.</string>
-    <string name="local_delivery_details">Посылка будет доставлена по указанному вами адресу.</string>
-    <string name="sent_on_request_details">Несколько посылок для одного покупателя могут быть приняты Таможенной службой за коммерческую партию. Мы можем задержать посылки на складе и отправить в следующих партиях. За хранение посылок на нашем складе дольше 7 дней снимается $5, плюс $1 на каждый кг веса.</string>
+    <string name="additional_package_details">"Упакуйте хрупкие товары, чтобы уберечь их от повреждений. Мы упакуем их по принципу «коробка в коробке», а пространство между коробками будет заполнено воздушно-пузырьковой пленкой."</string>
+    <string name="local_delivery_details">"Посылка будет доставлена по указанному вами адресу."</string>
+    <string name="sent_on_request_details">"Несколько посылок для одного покупателя могут быть приняты Таможенной службой за коммерческую партию. Мы можем задержать посылки на складе и отправить в следующих партиях. За хранение посылок на нашем складе дольше 7 дней снимается $5, плюс $1 на каждый кг веса."</string>
 
     <!-- Build steps dialogs -->
     <string name="save_address">"Сохранить адрес"</string>
@@ -337,6 +332,7 @@
     <!-- Received fragment info -->
     <string name="received_date">"Дата получения:"</string>
 
+    <!-- Untranslatable inputs hints -->
     <string name="kilos">"кг"</string>
 
     <!-- Gallery image count -->
@@ -378,10 +374,10 @@
     <string name="lorem_ipsum">" Lorem ipsum dolor sit amet, fermentum eros vivamus, turpis tempor facilisi libero. Fusce adipiscing ornare, lorem libero massa ipsum velit ac mauris, nec tristique odio, cras morbi augue. Orci porta semper varius ut vel, non purus tincidunt. Sollicitudin dui posuere facilisis posuere, semper mauris quisque, vitae nam lacus, aenean aliquam odio. Dolor diam fringilla molestie et dolor porta, vel nec maecenas sed. A in magna vehicula neque sed, lacus dolor cras malesuada suspendisse euismod. Pede vel curabitur, cras libero morbi sodales venenatis scelerisque "</string>
     <string name="parcels">"Отправленные"</string>
     <string name="use_autopacking">"Автоупаковка"</string>
-    <string name="intro_first_description">This is an example of screen description so we can see how it looks on a real device</string>
-    <string name="intro_first_title">Example title</string>
-    <string name="intro_second_title">Example title</string>
-    <string name="intro_second_description">This is an example of screen description so we can see how it looks on a real device</string>
-    <string name="intro_third_title">Example title</string>
-    <string name="intro_third_description">This is an example of screen description so we can see how it looks on a real device</string>
+    <string name="intro_first_description">"Отслеживайте путь посылки по международному трекинг-номеру непосредственно в приложении."</string>
+    <string name="intro_first_title">"Будьте в курсе"</string>
+    <string name="intro_second_title">"Будьте мобильны"</string>
+    <string name="intro_second_description">"Добавляйте посылки, ожидаемые на складе в США, с вашего телефона."</string>
+    <string name="intro_third_title">"Будьте на связи"</string>
+    <string name="intro_third_description">"Получайте push-уведомления о прогрессе отправки ваших покупок."</string>
 </resources>

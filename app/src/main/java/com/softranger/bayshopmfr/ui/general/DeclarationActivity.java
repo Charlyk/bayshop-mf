@@ -221,7 +221,9 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_help:
-                HelpDialog.showDialog(this);
+                if (!mIsInStock) {
+                    HelpDialog.showDialog(this, getString(R.string.declaration_toolbar_details));
+                }
                 return true;
         }
         return false;
@@ -309,17 +311,17 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
 
     @OnClick(R.id.addAwaitingPreCheckDetails)
     void showPreCheckServiceDetails() {
-        HelpDialog.showDialog(this);
+        HelpDialog.showDialog(this, getString(R.string.preorder_checking_details));
     }
 
     @OnClick(R.id.addAwaitingPrePhotoDetails)
     void showPrePhotoServiceDetails() {
-        HelpDialog.showDialog(this);
+        HelpDialog.showDialog(this, getString(R.string.preorder_photo_details));
     }
 
     @OnClick(R.id.addAwaitingRepackingDetails)
     void showRepackingServiceDetails() {
-        HelpDialog.showDialog(this);
+        HelpDialog.showDialog(this, getString(R.string.preorder_repacking_details));
     }
 
     /**

@@ -34,7 +34,6 @@
     <string name="contact_us">Help and Support</string>
     <string name="shipping_calculator">Shipping calculator</string>
     <string name="payment_history">Payment history</string>
-    <string name="addresses">Addresses</string>
     <string name="services">Services</string>
 
     <!-- Common for multiple screens -->
@@ -89,10 +88,7 @@
     <string name="check_product">Check product</string>
     <string name="warehouse_usa">Warehouse in USA</string>
     <string name="declaration_not_filled">Declaration is not filled in</string>
-    <!--<plurals name="days_remained">-->
-    <!--<item quantity="one">Remained %s day</item>-->
-    <!--<item quantity="other">Remained %s days</item>-->
-    <!--</plurals>-->
+
     <!-- Warehouse USA Details -->
     <string name="details">Details</string>
     <string name="edit_declaration">Edit declaration</string>
@@ -229,6 +225,7 @@
     <string name="change_password">Change password</string>
     <string name="autopacking">Auto Packaging</string>
     <string name="address">Address</string>
+    <string name="addresses">Addresses</string>
     <string name="insurance">Insurance\u0020</string>
     <string name="sms">Sms</string>
     <string name="notifications">Notifications</string>

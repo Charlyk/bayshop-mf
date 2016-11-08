@@ -38,15 +38,12 @@
             android:id="@+id/pusItemWeightLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView47"
-            android:layout_alignStart="@+id/textView47"
-            android:layout_alignRight="@+id/textView47"
-            android:layout_alignEnd="@+id/textView47"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:layout_below="@+id/textView47"
             android:textColor="@android:color/black"
             android:textSize="13sp"
-            tools:text="10kg"/>
+            tools:text="10 kg / 24.54 Vkg"/>
 
         <TextView
             android:id="@+id/pusItemDateLabel"
@@ -55,13 +52,11 @@
             android:layout_alignLeft="@+id/textView45"
             android:layout_alignStart="@+id/textView45"
             android:layout_below="@+id/textView45"
-            android:layout_toLeftOf="@id/pusItemWeightLabel"
-            android:layout_toStartOf="@id/pusItemWeightLabel"
             android:textSize="13sp"
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@android:color/black"
-            tools:text="12.10.16 (3 days ago)"/>
+            tools:text="12.10.16"/>
 
         <TextView
             android:id="@+id/pusItemPriceLabel"

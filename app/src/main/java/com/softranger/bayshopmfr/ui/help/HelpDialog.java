@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.softranger.bayshopmfr.R;
+import com.softranger.bayshopmfr.util.Application;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,6 +62,15 @@ public class HelpDialog extends DialogFragment {
 
         if (mContentText != null) mContentLabel.setText(mContentText);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT + Application.getPixelsFromDp(300);
+        params.height = Application.getPixelsFromDp(300);
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
 
     @Override
