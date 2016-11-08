@@ -85,10 +85,10 @@
     <string name="check_product">Check product</string>
     <string name="warehouse_usa">Warehouse in USA</string>
     <string name="declaration_not_filled">Declaration is not filled in</string>
-    <plurals name="days_remained">
-        <item quantity="one">Remained %s day</item>
-        <item quantity="other">Remained %s days</item>
-    </plurals>
+    <!--<plurals name="days_remained">-->
+    <!--<item quantity="one">Remained %s day</item>-->
+    <!--<item quantity="other">Remained %s days</item>-->
+    <!--</plurals>-->
     <!-- Warehouse USA Details -->
     <string name="details">Details</string>
     <string name="edit_declaration">Edit declaration</string>
@@ -228,6 +228,7 @@
     <string name="insurance">Insurance\u0020</string>
     <string name="sms">Sms</string>
     <string name="notifications">Notifications</string>
+    <string name="push_notifications">"Push–notifications"</string>
     <string name="emails">Emails</string>
     <string name="log_out">Logout</string>
     <string name="user_settings">User settings</string>
@@ -373,6 +374,12 @@
     <string name="lorem_ipsum"> Lorem ipsum dolor sit amet, fermentum eros vivamus, turpis tempor facilisi libero. Fusce adipiscing ornare, lorem libero massa ipsum velit ac mauris, nec tristique odio, cras morbi augue. Orci porta semper varius ut vel, non purus tincidunt. Sollicitudin dui posuere facilisis posuere, semper mauris quisque, vitae nam lacus, aenean aliquam odio. Dolor diam fringilla molestie et dolor porta, vel nec maecenas sed. A in magna vehicula neque sed, lacus dolor cras malesuada suspendisse euismod. Pede vel curabitur, cras libero morbi sodales venenatis scelerisque </string>
     <string name="parcels">Parcels</string>
     <string name="use_autopacking">Use autopacking</string>
+    <string name="intro_first_description">This is an example of screen description so we can see how it looks on a real device</string>
+    <string name="intro_first_title">Example title</string>
+    <string name="intro_second_title">Example title</string>
+    <string name="intro_second_description">This is an example of screen description so we can see how it looks on a real device</string>
+    <string name="intro_third_title">Example title</string>
+    <string name="intro_third_description">This is an example of screen description so we can see how it looks on a real device</string>
 
     <!--<string name="storage">Storage</string>-->
 </resources>

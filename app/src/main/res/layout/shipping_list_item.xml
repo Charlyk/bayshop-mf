@@ -76,8 +76,7 @@
         android:textColor="@android:color/black"
         tools:text="1.5 meters"
         android:textSize="13sp"
-        android:layout_alignLeft="@id/shippingMethodVolumeTitle"
-        android:layout_alignStart="@id/shippingMethodVolumeTitle"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/shippingMethodVolumeTitle"/>
 
     <ImageButton
@@ -87,7 +86,6 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/shippingMethodPriceLabel"
         android:layout_toStartOf="@id/shippingMethodPriceLabel"
-        android:clickable="true"
         android:paddingTop="6dp"
         android:src="@mipmap/ic_detail_24dp"/>
 

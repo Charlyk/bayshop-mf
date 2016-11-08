@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,6 +48,7 @@ import com.softranger.bayshopmfr.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmfr.ui.auth.LoginActivity;
 import com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalFragment;
 import com.softranger.bayshopmfr.ui.calculator.ShippingCalculatorActivity;
+import com.softranger.bayshopmfr.ui.help.ServicesInfoActivity;
 import com.softranger.bayshopmfr.ui.instock.DetailsFragment;
 import com.softranger.bayshopmfr.ui.instock.InStockFragment;
 import com.softranger.bayshopmfr.ui.payment.PaymentActivity;
@@ -246,6 +248,14 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                     break;
             }
         }
+    }
+
+    public void showServicesInfo(String title, String content, @DrawableRes int image) {
+        Intent info = new Intent(this, ServicesInfoActivity.class);
+        info.putExtra(ServicesInfoActivity.TITLE, title);
+        info.putExtra(ServicesInfoActivity.CONTENT_TEXT, content);
+        info.putExtra(ServicesInfoActivity.IMAGE_ID, image);
+        startActivity(info);
     }
 
     /**

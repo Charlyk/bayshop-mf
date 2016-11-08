@@ -125,7 +125,6 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
-            mDetailsButton.setOnClickListener(this);
         }
 
         @Override

@@ -33,6 +33,7 @@ import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.model.box.Declaration;
 import com.softranger.bayshopmfr.model.box.Product;
 import com.softranger.bayshopmfr.network.ResponseCallback;
+import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
@@ -220,7 +221,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_help:
-                Toast.makeText(this, "Help will be here", Toast.LENGTH_SHORT).show();
+                HelpDialog.showDialog(this);
                 return true;
         }
         return false;
@@ -308,17 +309,17 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
 
     @OnClick(R.id.addAwaitingPreCheckDetails)
     void showPreCheckServiceDetails() {
-
+        HelpDialog.showDialog(this);
     }
 
     @OnClick(R.id.addAwaitingPrePhotoDetails)
     void showPrePhotoServiceDetails() {
-
+        HelpDialog.showDialog(this);
     }
 
     @OnClick(R.id.addAwaitingRepackingDetails)
     void showRepackingServiceDetails() {
-
+        HelpDialog.showDialog(this);
     }
 
     /**

@@ -295,7 +295,7 @@
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
                 android:background="?selectableItemBackground"
-                android:text="@string/notifications"
+                android:text="@string/push_notifications"
                 android:textColor="@color/textColor"
                 android:textSize="16sp"/>
 

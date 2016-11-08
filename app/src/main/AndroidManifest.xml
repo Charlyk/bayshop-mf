@@ -22,7 +22,7 @@
         android:required="true"/>
 
     <application
-        android:name="com.softranger.bayshopmfr.util.Application"
+        android:name=".util.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo_48dp"
         android:label="@string/app_name"
@@ -44,13 +44,13 @@
             android:exported="true"/>
 
         <activity
-            android:name="com.softranger.bayshopmfr.ui.general.MainActivity"
+            android:name=".ui.general.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.auth.SplashActivity"
+            android:name=".ui.auth.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoToolbar">
             <intent-filter>
@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.auth.LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
@@ -73,12 +73,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.gallery.GalleryActivity"
+            android:name=".ui.gallery.GalleryActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.settings.SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.softranger.bayshopmfr.ui.payment.PaymentActivity"/>
+        <activity
+            android:name=".ui.payment.PaymentActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -88,28 +90,28 @@
             android:value="AIzaSyDbtZmtnHa-hMA_MFjkGRGBuaecJCGhXo4"/>
 
         <activity
-            android:name="com.softranger.bayshopmfr.ui.calculator.ShippingCalculatorActivity"
+            android:name=".ui.calculator.ShippingCalculatorActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.addresses.WarehouseAddressesActivity"
+            android:name=".ui.addresses.WarehouseAddressesActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.general.ResultActivity"
+            android:name=".ui.general.ResultActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.addresses.EditAddressActivity"
+            android:name=".ui.addresses.EditAddressActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.steps.CreateParcelActivity"
+            android:name=".ui.steps.CreateParcelActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.addresses.SearchAddressActivity"
+            android:name=".ui.addresses.SearchAddressActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.payment.PaymentDetailsActivity"
+            android:name=".ui.payment.PaymentDetailsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.softranger.bayshopmfr.ui.general.DeclarationActivity"
+            android:name=".ui.general.DeclarationActivity"
             android:screenOrientation="portrait"/>
 
         <provider
@@ -122,23 +124,29 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <service android:name="com.softranger.bayshopmfr.util.push.MessagingService">
+        <service android:name=".util.push.MessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <service android:name="com.softranger.bayshopmfr.util.push.InstanceIDService">
+        <service android:name=".util.push.InstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 
-        <activity android:name="com.softranger.bayshopmfr.ui.instock.InStockActivity">
-        </activity>
-        <activity android:name="com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalActivity">
-        </activity>
-        <activity android:name="com.softranger.bayshopmfr.ui.pus.PUSParcelActivity">
-        </activity>
+        <activity
+            android:name=".ui.instock.InStockActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.awaitingarrival.AwaitingArrivalActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.pus.PUSParcelActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.help.ServicesInfoActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

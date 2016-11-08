@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.softranger.bayshopmfr.adapter.ShippingMethodAdapter;
 import com.softranger.bayshopmfr.model.CreationDetails;
 import com.softranger.bayshopmfr.model.Shipper;
 import com.softranger.bayshopmfr.model.address.Address;
+import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.ui.settings.SettingsFragment;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.ParentActivity;
@@ -125,7 +127,8 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
 
     @Override
     public void onDetailsClick(Shipper shippingMethod, int position, ImageButton detailsButton) {
-
+        String description = String.valueOf(Html.fromHtml(shippingMethod.getDescription()));
+        HelpDialog.showDialog(mActivity, description);
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.CreationDetails;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
+import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
@@ -137,7 +138,7 @@ public class ConfirmationFragment extends ParentFragment {
         if (mInsurancePriceLayout.getVisibility() != View.VISIBLE) mInsurancePriceLayout.setVisibility(View.VISIBLE);
         mInsurancePrice.setText(mCreationDetails.getCurrencySign() + mInsurancePriceValue);
         mTotalPriceValue = mTotalPriceValue + mInsurancePriceValue;
-        mTotalPrice.setText(mCreationDetails.getCurrencySign() + mTotalPriceValue);
+        mTotalPrice.setText(mCreationDetails.getCurrencySign() + Application.round(mTotalPriceValue, 2));
         toggleDescriptionVisibility();
         if (mDetailsLayout.getVisibility() != View.VISIBLE) mDetailsLayout.setVisibility(View.VISIBLE);
     }
@@ -148,7 +149,7 @@ public class ConfirmationFragment extends ParentFragment {
         mNoIsuranceSelector.setChecked(true);
         if (mInsurancePriceLayout.getVisibility() == View.VISIBLE) mInsurancePriceLayout.setVisibility(View.GONE);
         mTotalPriceValue = mTotalPriceValue - mInsurancePriceValue;
-        mTotalPrice.setText(mCreationDetails.getCurrencySign() + mTotalPriceValue);
+        mTotalPrice.setText(mCreationDetails.getCurrencySign() + Application.round(mTotalPriceValue, 2));
         toggleDescriptionVisibility();
         if (mDetailsLayout.getVisibility() != View.VISIBLE) mDetailsLayout.setVisibility(View.VISIBLE);
     }
@@ -177,7 +178,7 @@ public class ConfirmationFragment extends ParentFragment {
             mTotalPriceValue -= 10f;
         }
 
-        mTotalPrice.setText(mCreationDetails.getCurrencySign() + mTotalPriceValue);
+        mTotalPrice.setText(mCreationDetails.getCurrencySign() + Application.round(mTotalPriceValue, 2));
     }
 
     /**
@@ -185,7 +186,7 @@ public class ConfirmationFragment extends ParentFragment {
      */
     @OnClick(R.id.confirmAdditionalPackageDetails)
     void showAdditionalPackagesDetails() {
-
+        HelpDialog.showDialog(mActivity);
     }
 
     /**
@@ -201,7 +202,7 @@ public class ConfirmationFragment extends ParentFragment {
      */
     @OnClick(R.id.confirmLocalDeliveryDetails)
     void showLocalDeliveryDetails() {
-
+        HelpDialog.showDialog(mActivity);
     }
 
     /**
@@ -217,12 +218,12 @@ public class ConfirmationFragment extends ParentFragment {
      */
     @OnClick(R.id.confirmSentOnUserAlertDetails)
     void showOnUserAlertDetails() {
-        mTermsAndConditions.setChecked(!mTermsAndConditions.isChecked());
+        HelpDialog.showDialog(mActivity);
     }
 
     @OnClick(R.id.confirmAgreeTermsDetails)
     void showTermsAndConditions() {
-
+        HelpDialog.showDialog(mActivity);
     }
 
     @OnClick(R.id.confirmAgreeTermsButton)

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
+import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.ui.general.MainActivity;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.ParentActivity;
@@ -106,7 +107,7 @@ public class CheckProductFragment extends ParentFragment {
 
     @OnClick(R.id.additionalServiceDetailsBtn)
     void showDetails() {
-
+        HelpDialog.showDialog(mActivity);
     }
 
     @OnClick(R.id.additionalServiceConfirmBtn)

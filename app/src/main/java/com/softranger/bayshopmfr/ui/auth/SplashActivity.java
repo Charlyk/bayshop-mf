@@ -91,17 +91,17 @@ public class SplashActivity extends ParentActivity {
     private void initIntroScreens() {
         PagerAdapter adapter = new PagerAdapter(this, getSupportFragmentManager());
         adapter.setShowTitle(false);
-        adapter.addFragment(IntroFragment.newInstance(R.mipmap.ic_presentation_250dp, "Example title",
-                "This is an example of screen description so we can see how it looks on a real device",
+        adapter.addFragment(IntroFragment.newInstance(R.mipmap.ic_presentation_250dp, getString(R.string.intro_first_title),
+                getString(R.string.intro_first_description),
                 R.color.colorAccent), "");
 
-        adapter.addFragment(IntroFragment.newInstance(R.mipmap.ic_sent_250dp, "Example title",
-                "This is an example of screen description so we can see how it looks on a real device",
-                R.color.colorLocalDepot), "");
-
-        adapter.addFragment(IntroFragment.newInstance(R.mipmap.ic_notification_250dp, "Example title",
-                "This is an example of screen description so we can see how it looks on a real device",
+        adapter.addFragment(IntroFragment.newInstance(R.mipmap.ic_sent_250dp, getString(R.string.intro_second_title),
+                getString(R.string.intro_second_description),
                 R.color.colorGreenAction), "");
+
+        adapter.addFragment(IntroFragment.newInstance(R.mipmap.ic_notification_250dp, getString(R.string.intro_third_title),
+                getString(R.string.intro_third_description),
+                R.color.colorLocalDepot), "");
 
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -296,8 +296,8 @@ public class SplashActivity extends ParentActivity {
 
     enum IntroStep {
         delivery(0, R.string.next, R.color.colorAccent),
-        sent(1, R.string.next, R.color.colorLocalDepot),
-        notifications(2, R.string.done, R.color.colorGreenAction);
+        sent(1, R.string.next, R.color.colorGreenAction),
+        notifications(2, R.string.done, R.color.colorLocalDepot);
 
         private int stepIndex;
         @StringRes

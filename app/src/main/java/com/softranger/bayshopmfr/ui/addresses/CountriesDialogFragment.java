@@ -32,6 +32,9 @@ public class CountriesDialogFragment extends DialogFragment implements Countries
     private ArrayList<Country> mCountries;
     private OnCountrySelectListener mOnCountrySelectListener;
 
+    int style = DialogFragment.STYLE_NO_TITLE;
+    int theme = R.style.MyDialog;
+
     @BindView(R.id.countriesDialogRecyclerView) RecyclerView mRecyclerView;
 
     public static CountriesDialogFragment newInstance(ArrayList<Country> countries) {
@@ -40,6 +43,12 @@ public class CountriesDialogFragment extends DialogFragment implements Countries
         CountriesDialogFragment fragment = new CountriesDialogFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(style, theme);
     }
 
     @Nullable

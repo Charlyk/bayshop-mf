@@ -33,6 +33,9 @@ public class CodesDialogFragment extends DialogFragment implements CodesListAdap
     private OnCodeSelectedListener mOnCodeSelectedListener;
     private ArrayList<CountryCode> mCountryCodes;
 
+    int style = DialogFragment.STYLE_NO_TITLE;
+    int theme = R.style.MyDialog;
+
     @BindView(R.id.codesDialogRecyclerView) RecyclerView mRecyclerView;
 
     public static CodesDialogFragment newInstance(@NonNull ArrayList<CountryCode> countryCodes) {
@@ -41,6 +44,12 @@ public class CodesDialogFragment extends DialogFragment implements CodesListAdap
         CodesDialogFragment fragment = new CodesDialogFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(style, theme);
     }
 
     @Nullable

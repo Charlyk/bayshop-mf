@@ -46,7 +46,8 @@ import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 public class InStockFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener,
-        InStockAdapter.OnInStockClickListener, Animator.AnimatorListener, TotalsView.OnCreateParcelClickListener {
+        InStockAdapter.OnInStockClickListener, Animator.AnimatorListener, TotalsView.OnCreateParcelClickListener,
+        InStockAdapter.OnAdditionalBtnsClickListener {
 
     public static final String ACTION_CREATE_PARCEL = "START CREATING PARCEL";
     public static final String ACTION_HIDE_TOTALS = "HIDE TOTALS VIEW";
@@ -116,6 +117,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
         mInStocks = new ArrayList<>();
         mAdapter = new InStockAdapter(mInStocks, mActivity);
         mAdapter.setOnInStockClickListener(this);
+        mAdapter.setOnAdditionalBtnsClickListener(this);
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -382,5 +384,29 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
     @Override
     public void onNavIconClick() {
 
+    }
+
+    @Override
+    public void additionalPhotoClick() {
+        mActivity.showServicesInfo(getString(R.string.additional_photo),
+                getString(R.string.additional_photo_description), R.mipmap.ic_photo_product_250dp);
+    }
+
+    @Override
+    public void verificationClick() {
+        mActivity.showServicesInfo(getString(R.string.check_product),
+                getString(R.string.check_product_description), R.mipmap.ic_check_product_250dp);
+    }
+
+    @Override
+    public void divideParcelClick() {
+        mActivity.showServicesInfo(getString(R.string.divide_parcel),
+                getString(R.string.lorem_ipsum), R.mipmap.ic_divide_250dp);
+    }
+
+    @Override
+    public void repackingClick() {
+        mActivity.showServicesInfo(getString(R.string.repacking),
+                getString(R.string.repacking_description), R.mipmap.ic_repacking_250dp);
     }
 }

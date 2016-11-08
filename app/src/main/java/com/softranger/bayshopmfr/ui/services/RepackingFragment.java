@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
+import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
@@ -107,7 +108,7 @@ public class RepackingFragment extends ParentFragment {
     @SuppressWarnings("unused")
     @OnClick(R.id.additionalServiceDetailsBtn)
     void showRepackingDetails() {
-
+        HelpDialog.showDialog(mActivity);
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
