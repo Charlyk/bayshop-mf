@@ -77,7 +77,8 @@
     <string name="preorder_photo_details">Мы сделаем 8 дополнительных фотографий товара на складе и пришлем вам уведомление, когда они будут готовы.</string>
     <string name="preorder_checking_details">Мы проверим, соответствуют ли товары заказу и нет ли на них повреждений. Если мы выявим дефекты или несоответствия, вы получите уведомление об этом.</string>
     <string name="preorder_repacking_details">Для вашего товара мы используем упаковку, идеально подходящую по размеру. Сократив свободное пространство, мы уменьшим вес посылки и стоимость доставки.</string>
-    <string name="declaration_toolbar_details">Если у вас есть трекинг-номер заказа, оформите его в системе и отслеживайте его поступление на склад. Если вы не знаете трекинг-номер, мы вручную добавим заказ в систему при поступлении.</string>
+    <string name="awaiting_toolbar_details">Если у вас есть трекинг-номер заказа, оформите его в системе и отслеживайте его поступление на склад. Если вы не знаете трекинг-номер, мы вручную добавим заказ в систему при поступлении.</string>
+    <string name="declaration_toolbar_details">Все посылки, отправленные в вашу страну из-за рубежа, сопровождаются таможенной декларацией, описывающей их содержимое, стоимость товаров и доставки. Правильное заполнение декларации поможет заранее убедиться в том, что стоимость вашей посылки не превышает таможенный лимит страны, а пересылка товаров не запрещена.</string>
     <!-- Delete parcel dialog -->
     <string name="delete_item">Delete parcel</string>
     <string name="cancel">Cancel</string>
@@ -126,6 +127,7 @@
     <string name="repacking">Repacking</string>
     <string name="additional_photo_cost">This service costs $3</string>
     <string name="repacking_in_progress">Rpacking in progress</string>
+    <string name="divide_parcel_details">Разделите большой заказ и обойдите таможенный лимит. Стоимость услуги: $1 за одно разделение.</string>
 
     <!-- PUS Parcels screen -->
     <string name="shipping_by">Shipping by:</string>

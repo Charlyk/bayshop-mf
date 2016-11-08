@@ -81,6 +81,7 @@ public class ConfirmationFragment extends ParentFragment {
     @BindView(R.id.confirmFinishAndSendBtn)
     Button mConfirmBtn;
 
+    private boolean wasInsuranceSelected;
 
     public ConfirmationFragment() {
         // require emtpy constructor
@@ -144,6 +145,7 @@ public class ConfirmationFragment extends ParentFragment {
 
     @OnClick(R.id.insuranceSelector)
     void selectInsurance() {
+        wasInsuranceSelected = true;
         mInsuranceSelector.setChecked(true);
         mNoIsuranceSelector.setChecked(false);
         if (mInsurancePriceLayout.getVisibility() != View.VISIBLE) mInsurancePriceLayout.setVisibility(View.VISIBLE);
@@ -159,7 +161,9 @@ public class ConfirmationFragment extends ParentFragment {
         mInsuranceSelector.setChecked(false);
         mNoIsuranceSelector.setChecked(true);
         if (mInsurancePriceLayout.getVisibility() == View.VISIBLE) mInsurancePriceLayout.setVisibility(View.GONE);
-        mTotalPriceValue = mTotalPriceValue - mInsurancePriceValue;
+        if (wasInsuranceSelected) {
+            mTotalPriceValue = mTotalPriceValue - mInsurancePriceValue;
+        }
         mTotalPrice.setText(mCreationDetails.getCurrencySign() + Application.round(mTotalPriceValue, 2));
         toggleDescriptionVisibility();
         if (mDetailsLayout.getVisibility() != View.VISIBLE) mDetailsLayout.setVisibility(View.VISIBLE);
@@ -301,6 +305,7 @@ public class ConfirmationFragment extends ParentFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        wasInsuranceSelected = false;
         mUnbinder.unbind();
     }
 }

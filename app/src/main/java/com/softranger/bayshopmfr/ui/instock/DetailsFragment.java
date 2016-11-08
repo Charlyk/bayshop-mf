@@ -262,13 +262,20 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
             weight.setText(detailed.getWeight() + "kg");
             price.setText(detailed.getCurrency() + detailed.getPrice());
 
-            if (detailed.getPhotosInProgress() == Constants.IN_PROGRESS) {
-                mAdditionalPhoto.setSelected(true);
+            mAdditionalPhoto.setSelected(detailed.getPhotosInProgress() != 0);
+            if (mAdditionalPhoto.isSelected()) {
+                mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
             }
 
-            if (detailed.isCheckInProgress()) {
-                mCheckProduct.setSelected(true);
+            mCheckProduct.setSelected(detailed.isCheckInProgress());
+            if (mCheckProduct.isSelected()) {
+                mCheckProduct.setText(mActivity.getString(R.string.photos_in_progress));
             }
+
+            mRepackingBtn.setSelected(detailed.getRepackingRequested() != 0);
+            String title = mRepackingBtn.isSelected() ?
+                    getString(R.string.repacking_in_progress) : getString(R.string.repacking);
+            mRepackingBtn.setText(title);
 
             if (detailed.getDeclarationFilled() != 0) {
                 mFillDeclaration.setText(mActivity.getString(R.string.edit_declaration));

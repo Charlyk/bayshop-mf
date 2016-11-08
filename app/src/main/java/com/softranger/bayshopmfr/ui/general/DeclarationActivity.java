@@ -222,6 +222,8 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
         switch (item.getItemId()) {
             case R.id.toolbar_help:
                 if (!mIsInStock) {
+                    HelpDialog.showDialog(this, getString(R.string.awaiting_toolbar_details));
+                } else {
                     HelpDialog.showDialog(this, getString(R.string.declaration_toolbar_details));
                 }
                 return true;

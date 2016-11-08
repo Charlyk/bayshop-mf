@@ -401,7 +401,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
     @Override
     public void divideParcelClick() {
         mActivity.showServicesInfo(getString(R.string.divide_parcel),
-                getString(R.string.lorem_ipsum), R.mipmap.ic_divide_250dp);
+                getString(R.string.divide_parcel_details), R.mipmap.ic_divide_250dp);
     }
 
     @Override

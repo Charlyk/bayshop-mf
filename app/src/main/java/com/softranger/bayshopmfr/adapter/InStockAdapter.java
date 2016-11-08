@@ -112,18 +112,15 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             // finally set the image into image view
             itemHolder.mImageView.setImageResource(image);
 
-            // check if item title (general description) is null or not
-            boolean isNullTitle = itemHolder.mInStock.getTitle() == null;
-
             // if is null set text as "Declaration is not filled" and text color to darker_gray
-            if (isNullTitle) {
-                itemHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
-                itemHolder.mDescriptionLabel.setText(mContext.getString(R.string.declaration_not_filled));
-            } else {
+            if (itemHolder.mInStock.getDeclarationFilled() != 0) {
                 // otherwise set text color to black
                 itemHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.black));
                 // and set description into text view
                 itemHolder.mDescriptionLabel.setText(itemHolder.mInStock.getTitle());
+            } else {
+                itemHolder.mDescriptionLabel.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+                itemHolder.mDescriptionLabel.setText(mContext.getString(R.string.declaration_not_filled));
             }
 
             // get parcel creation date

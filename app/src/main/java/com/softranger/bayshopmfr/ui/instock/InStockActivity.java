@@ -2,6 +2,7 @@ package com.softranger.bayshopmfr.ui.instock;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -70,6 +71,18 @@ public class InStockActivity extends ParentActivity {
         transaction.add(R.id.fragment_container, fragment, fragment.getClass().getSimpleName());
         transaction.addToBackStack(fragment.getClass().getSimpleName());
         transaction.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case DetailsFragment.DECLARATION_RC:
+                    sendBroadcast(new Intent(InStockFragment.ACTION_UPDATE_LIST));
+                    break;
+            }
+        }
     }
 
     @Override

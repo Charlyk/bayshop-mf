@@ -7,17 +7,12 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
-
-import com.bhargavms.dotloader.DotLoader;
 
 /**
  * Created by yilun
@@ -290,7 +285,6 @@ public class PullToRefreshLayout extends FrameLayout {
     }
 
     public void setRefreshing(boolean refreshing) {
-        Log.d(this.getClass().getSimpleName(), "Refresh value: " + refreshing);
         if (refreshing) {
             if (mChildView != null) {
                 mChildView.animate().translationY(mHeaderHeight)
@@ -318,10 +312,6 @@ public class PullToRefreshLayout extends FrameLayout {
                         .start();
             }
         } else {
-            Log.d(this.getClass().getSimpleName(), "Is refreshing: " + isRefreshing());
-//            if (!isRefreshing()) {
-//                return;
-//            }
             if (mChildView != null) {
                 mChildView.animate().translationY(0)
                         .setListener(null)
