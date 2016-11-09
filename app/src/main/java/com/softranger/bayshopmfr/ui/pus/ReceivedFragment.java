@@ -149,7 +149,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
 
     @Override
     public String getFragmentTitle() {
-        return getString(R.string.received);
+        return getString(R.string.nav_received);
     }
 
     @Override

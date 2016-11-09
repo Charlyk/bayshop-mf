@@ -169,7 +169,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:background="?selectableItemBackground"
-                    android:text="@string/shipping_by"
+                    android:text="@string/deliver_with"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"/>
 

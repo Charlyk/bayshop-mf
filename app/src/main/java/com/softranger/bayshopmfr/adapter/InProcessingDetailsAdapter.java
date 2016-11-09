@@ -111,38 +111,13 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
             // check parcel status and set visibility of additional buttons and views
             // also set the right warning text and icon
-            String warningMessage = "";
+            String warningMessage = mContext.getString(headerHolder.mProcessingParcel.getParcelStatus().warning());
             switch (headerHolder.mProcessingParcel.getParcelStatus()) {
-                case processing:
-                    warningMessage = "Some text for in processing packages description will go here at the top"; // TODO: 7/18/16 replace text
-                    break;
-                case awaiting_sending:
-                    warningMessage = "Some text for awaiting sending packages description will go here at the top"; // TODO: 7/18/16 replace text
-                    break;
-                case held_due_to_debt:
-                    warningMessage = "Some text for held due to debt packages description will go here at the top"; // TODO: 7/18/16 replace text
-                    break;
-                case held_by_prohibition:
-                    warningMessage = "Some text for held by prohibition packages description will go here at the top"; // TODO: 7/18/16 replace text
-                    break;
-                case held_by_damage:
-                    warningMessage = "Some text for taken to delivery packages description will go here at the top"; // TODO: 7/18/16 replace text
-                    break;
-                case sent:
-                    warningMessage = "Some text for sent packages description will go here at the top"; // TODO: 7/18/16 replace text
-                    break;
                 case held_by_customs:
                     warningMessage = headerHolder.mProcessingParcel.getCustomsCause();
                     break;
-                case local_depot:
-                    warningMessage = "Some text for local depot packages description will go here at the top"; // TODO: 7/18/16 replace text
-                    break;
                 case in_the_way:
                     headerHolder.mToDeliveryDetails.setVisibility(View.VISIBLE);
-                    warningMessage = "Some text for taken to delivery packages description will go here at the top"; // TODO: 7/18/16 replace text
-                    break;
-                case received:
-                    warningMessage = "Some text for received packages description will go here at the top"; // TODO: 7/18/16 replace text
                     break;
             }
 

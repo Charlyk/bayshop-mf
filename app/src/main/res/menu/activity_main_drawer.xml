@@ -23,7 +23,7 @@
             android:id="@+id/nav_received"
             app:actionLayout="@layout/nav_counter"
             android:icon="@mipmap/ic_received_30dp"
-            android:title="@string/received"/>
+            android:title="@string/nav_received"/>
     </group>
 
     <item android:title="@string/services">

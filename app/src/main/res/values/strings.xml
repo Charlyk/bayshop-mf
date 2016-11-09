@@ -29,7 +29,7 @@
     <string name="create_new_account">Create new account</string>
 
     <!-- Navigation drawer -->
-    <string name="received">Received</string>
+    <string name="nav_received">Received</string>
     <string name="profile_settings">Profile settings</string>
     <string name="contact_us">Help and Support</string>
     <string name="shipping_calculator">Shipping calculator</string>
@@ -109,6 +109,22 @@
     <string name="in_the_way">In the way</string>
     <string name="held_by_damage">Held by damage</string>
     <string name="held_by_user">Held by user</string>
+    <string name="received">Received</string>
+    <!-- Statuses warnings -->
+    <string name="in_processing_warning">В обработке</string>
+    <string name="awaiting_sending_warning">Ожидает отправки</string>
+    <string name="held_due_to_debt_warning">Ожидается оплата доставки</string>
+    <string name="sent_warning">Отправлена</string>
+    <string name="held_by_customs_warning">Задержана на таможне</string>
+    <string name="local_deposit_warning">На складе в стране</string>
+    <string name="take_to_delivery_warning">Доставляется на дом</string>
+    <string name="held_by_prohibition_warning">Запрещенные товары</string>
+    <string name="processing_warning">В обработке</string>
+    <string name="awaiting_declaration_warning">Посылка ожидает декларации</string>
+    <string name="in_the_way_warning">В пути</string>
+    <string name="held_by_damage_warning">Поврежденные товары</string>
+    <string name="held_by_user_warning">Отправка приостановлена</string>
+    <string name="received_warning">Получено</string>
 
     <!-- Profile settings -->
     <string name="settings">Settings</string>
@@ -224,6 +240,7 @@
 
     <!-- Settings -->
     <string name="user_data">User data</string>
+    <string name="deliver_with">Доставляется службой:</string>
     <string name="change_password">Change password</string>
     <string name="autopacking">Auto Packaging</string>
     <string name="address">Address</string>

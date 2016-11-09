@@ -182,7 +182,7 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         register_user(R.string.register),
         insurance(R.string.insurance),
         shipping_method(R.string.shipping_method),
-        received(R.string.received),
+        received(R.string.nav_received),
         //        storage(R.string.storage),
         login_fragment(R.string.login),
         select_address(R.string.select_address),

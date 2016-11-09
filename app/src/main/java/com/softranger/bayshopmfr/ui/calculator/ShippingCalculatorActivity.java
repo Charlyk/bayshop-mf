@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import com.softranger.bayshopmfr.model.address.Country;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
 import com.softranger.bayshopmfr.ui.addresses.CountriesDialogFragment;
+import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
@@ -32,7 +35,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import retrofit2.Call;
 
-public class ShippingCalculatorActivity extends ParentActivity implements CountriesDialogFragment.OnCountrySelectListener {
+public class ShippingCalculatorActivity extends ParentActivity implements CountriesDialogFragment.OnCountrySelectListener, ShippingMethodAdapter.OnShippingClickListener {
 
     @BindView(R.id.calculatorWeightInput)
     EditText mWeightInput;
@@ -228,5 +231,16 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
     protected void onDestroy() {
         super.onDestroy();
         if (mCall != null) mCall.cancel();
+    }
+
+    @Override
+    public void onDetailsClick(Shipper shippingMethod, int position, ImageButton detailsButton) {
+        String description = String.valueOf(Html.fromHtml(shippingMethod.getDescription()));
+        HelpDialog.showDialog(this, description);
+    }
+
+    @Override
+    public void onSelectClick(Shipper shippingMethod, int position) {
+
     }
 }
