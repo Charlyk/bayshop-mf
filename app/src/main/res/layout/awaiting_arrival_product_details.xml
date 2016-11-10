@@ -27,8 +27,8 @@
             android:layout_weight="1"
             android:drawablePadding="5dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawableLeft="@mipmap/ic_additional_photo_55dp"
-            android:drawableStart="@mipmap/ic_additional_photo_55dp"
+            android:drawableLeft="@mipmap/ic_pre_additional_photo_55dp"
+            android:drawableStart="@mipmap/ic_pre_additional_photo_55dp"
             android:text="@string/order_photos"
             android:textColor="@android:color/black"
             android:textSize="13sp"/>
@@ -46,8 +46,8 @@
             android:paddingEnd="5dp"
             android:gravity="center_vertical"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawableLeft="@mipmap/ic_check_products_55dp"
-            android:drawableStart="@mipmap/ic_check_products_55dp"
+            android:drawableLeft="@mipmap/ic_pre_check_product_55dp"
+            android:drawableStart="@mipmap/ic_pre_check_product_55dp"
             android:text="@string/order_checking"
             android:textColor="@android:color/black"
             android:textSize="13sp"/>

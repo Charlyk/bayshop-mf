@@ -21,6 +21,7 @@ import com.softranger.bayshopmfr.model.pus.PUSStatuses;
 import com.softranger.bayshopmfr.model.user.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -118,10 +119,10 @@ public interface BayShopApiInterface {
     Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Part("comment") String comment,
                                        @Part("rating") int rating, @Part MultipartBody.Part file);
 
-    @Multipart
+    @FormUrlEncoded
     @POST("parcels/view/{parcelId}")
-    Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Part("comment") String comment,
-                                       @Part("rating") int rating);
+    Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Field("comment") String comment,
+                                       @Field("rating") int rating);
 
     @FormUrlEncoded
     @POST("parcels/view/{parcelId}")
@@ -254,4 +255,7 @@ public interface BayShopApiInterface {
 
     @DELETE("auth/?")
     Call<ServerResponse> logOut(@Query("gcm_token") String pushToken);
+
+    @GET("additional-services/")
+    Call<ServerResponse<HashMap<String, Double>>> getAdditionalServicesPrices();
 }

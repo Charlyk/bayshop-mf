@@ -29,6 +29,15 @@ public class Constants {
         public static final String OK_MESSAGE = "Ok";
     }
 
+    public static class Services {
+        public static final String PHOTOS = "order_photo";
+        public static final String PRE_PHOTOS = "pre_order_photo";
+        public static final String MATERIALS = "order_additional_materials";
+        public static final String VERIFICATION = "order_verification";
+        public static final String PRE_VERIFICATION = "pre_order_verification";
+        public static final String REPACKING = "order_repacking";
+    }
+
     public static class ParcelStatus {
         public static final String AWAITING_ARRIVAL = "waitingMf";
         public static final String IN_STOCK = "mf";

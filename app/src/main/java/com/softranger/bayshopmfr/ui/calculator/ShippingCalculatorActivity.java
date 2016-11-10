@@ -80,6 +80,7 @@ public class ShippingCalculatorActivity extends ParentActivity implements Countr
 
         mShippers = new ArrayList<>();
         mAdapter = new ShippingMethodAdapter(mShippers, Constants.USD_SYMBOL);
+        mAdapter.setOnShippingClickListener(this);
         mAdapter.setCalculatorPrice(true);
         RecyclerView recyclerView = ButterKnife.findById(this, R.id.calculatorShippingList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

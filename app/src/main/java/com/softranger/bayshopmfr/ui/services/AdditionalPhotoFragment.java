@@ -21,11 +21,13 @@ import android.widget.Toast;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
-import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.ui.general.MainActivity;
 import com.softranger.bayshopmfr.util.Application;
+import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,8 +51,6 @@ public class AdditionalPhotoFragment extends ParentFragment {
     ImageView mServiceImage;
     @BindView(R.id.additionalServiceDescription)
     TextView mDescriptionaLabel;
-    @BindView(R.id.additionalServicePrice)
-    TextView mPriceLabel;
     @BindView(R.id.additionalServiceCommentInput)
     EditText mCommentInput;
     @BindView(R.id.additionalServiceConfirmBtn)
@@ -63,6 +63,7 @@ public class AdditionalPhotoFragment extends ParentFragment {
     private boolean mIsPreorder;
 
     private Call<ServerResponse> mCall;
+    private Call<ServerResponse<HashMap<String, Double>>> mPricesCall;
 
     public AdditionalPhotoFragment() {
         // Required empty public constructor
@@ -91,25 +92,48 @@ public class AdditionalPhotoFragment extends ParentFragment {
         // set service default views
         mServiceImage.setImageResource(R.mipmap.ic_photo_product_250dp);
         mDescriptionaLabel.setText(getString(R.string.additional_photo_description));
-        mPriceLabel.setText(getString(R.string.additional_photo_cost));
 
         mId = getArguments().getString(ID_ARG);
         mIsInProgress = getArguments().getBoolean(STATUS_ARG);
         mIsPreorder = getArguments().getBoolean(PREORDER_ARG);
 
         if (mIsInProgress) {
+            mConfirmButton.setVisibility(View.VISIBLE);
             mConfirmButton.setText(getString(R.string.cancel_request));
             Drawable redBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
             mConfirmButton.setBackgroundDrawable(redBg);
+        } else {
+            mActivity.toggleLoadingProgress(true);
+            mPricesCall = Application.apiInterface().getAdditionalServicesPrices();
+            mPricesCall.enqueue(mPricesCallback);
         }
 
         return view;
     }
 
-    @OnClick(R.id.additionalServiceDetailsBtn)
-    void showDetails() {
-        HelpDialog.showDialog(mActivity);
-    }
+    private ResponseCallback<HashMap<String, Double>> mPricesCallback = new ResponseCallback<HashMap<String, Double>>() {
+        @Override
+        public void onSuccess(HashMap<String, Double> data) {
+            mConfirmButton.setVisibility(View.VISIBLE);
+            if (!mIsInProgress) {
+                String key = mIsPreorder ? Constants.Services.PRE_PHOTOS : Constants.Services.PHOTOS;
+                mConfirmButton.setText(getString(R.string.request_for, data.get(key)));
+            }
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<HashMap<String, Double>>> call, Throwable t) {
+            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @OnClick(R.id.additionalServiceConfirmBtn)
     void sendRequest() {
@@ -185,6 +209,7 @@ public class AdditionalPhotoFragment extends ParentFragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
+        if (mPricesCall != null) mPricesCall.cancel();
         mUnbinder.unbind();
         mActivity.hideKeyboard();
         mActivity.unregisterReceiver(mBroadcastReceiver);

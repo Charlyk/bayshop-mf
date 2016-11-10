@@ -11,6 +11,7 @@
     <string name="fb_login_protocol_scheme" translatable="false">1448296545440676</string>
     <string name="gde_posylka_api_key" translatable="false">01df6c70b0421d7f62c2764a6f5a831acc874623a731f9eddba9f2eac9b1ae8d55fd8c1a9a737472</string>
     <string name="empty_string" translatable="false"> </string>
+    <string name="google_maps_api_key" translatable="false">AIzaSyCXEDAkhx0J1JYX93llnJUpJmrczBMWxxw</string>
 
     <!-- Splash screen -->
     <string name="mail_forwarding">MAIL FORWARDING</string>
@@ -96,7 +97,6 @@
     <string name="fill_in_the_declaration">Fill in the declaration</string>
 
     <!-- Parcel statuses -->
-    <string name="in_processing">In processing</string>
     <string name="awaiting_sending">Awaiting sending</string>
     <string name="held_due_to_debt">Held due to debt</string>
     <string name="sent">Sent</string>
@@ -106,12 +106,10 @@
     <string name="held_by_prohibition">Held by prohibition</string>
     <string name="processing">Processing</string>
     <string name="awaiting_declaration">Awaiting declaration</string>
-    <string name="in_the_way">In the way</string>
     <string name="held_by_damage">Held by damage</string>
     <string name="held_by_user">Held by user</string>
     <string name="received">Received</string>
     <!-- Statuses warnings -->
-    <string name="in_processing_warning">В обработке</string>
     <string name="awaiting_sending_warning">Ожидает отправки</string>
     <string name="held_due_to_debt_warning">Ожидается оплата доставки</string>
     <string name="sent_warning">Отправлена</string>
@@ -121,7 +119,6 @@
     <string name="held_by_prohibition_warning">Запрещенные товары</string>
     <string name="processing_warning">В обработке</string>
     <string name="awaiting_declaration_warning">Посылка ожидает декларации</string>
-    <string name="in_the_way_warning">В пути</string>
     <string name="held_by_damage_warning">Поврежденные товары</string>
     <string name="held_by_user_warning">Отправка приостановлена</string>
     <string name="received_warning">Получено</string>
@@ -130,18 +127,15 @@
     <string name="settings">Settings</string>
 
     <!-- Additional services -->
-    <string name="check_product_cost">The service costs $8</string>
     <string name="check_product_description">During product checking at the warehouse you allow to open the parcel and remove the original package. If we find the defect, you will receive the automatic notification about it.</string>
     <string name="additional_photo_description">We provide 2 product photos for free. BayShop staff will take them, when the parcel is delivered to the warehouse.\n\nYou can order 8 additional photos if needed.</string>
     <string name="leave_comment">Leave a comment</string>
-    <string name="confirm">Confirm</string>
+    <string name="request_for">Request for $%.0f</string>
     <string name="repacking_description">This is the description of repacking service, I don\'t know what should be here so I wrote this stuff.</string>
-    <string name="repacking_cost">This service cost: $5</string>
     <string name="enter_your_comment">Enter your comment…</string>
     <string name="cancel_request">Cancel the request</string>
     <string name="divide_parcel">Divide parcel</string>
     <string name="repacking">Repacking</string>
-    <string name="additional_photo_cost">This service costs $3</string>
     <string name="repacking_in_progress">Rpacking in progress</string>
     <string name="divide_parcel_details">Разделите большой заказ и обойдите таможенный лимит. Стоимость услуги: $1 за одно разделение.</string>
 
@@ -282,6 +276,7 @@
     <string name="declaration">Declaration filling:</string>
     <string name="total_shipping_price">Total shipping cost:</string>
     <string name="parcel_added">Parcel added</string>
+    <string name="confirm">Confirm</string>
     <string name="select_insurance">Select insurance</string>
     <string name="create_parcel">Create parcel</string>
     <string name="insure_parcel">По условиям программы защиты в стоимость страхования включаются инвойсовая стоимость товаров и стоимость международной доставки. По этой причине итоговая стоимость страховки будет известна после упаковки посылки.</string>

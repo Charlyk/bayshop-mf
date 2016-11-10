@@ -21,11 +21,13 @@ import android.widget.Toast;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
-import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.ui.general.MainActivity;
 import com.softranger.bayshopmfr.util.Application;
+import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,17 +48,16 @@ public class CheckProductFragment extends ParentFragment {
 
     private ParentActivity mActivity;
     private String mId;
-    private boolean mIsInprogress;
+    private boolean mIsInProgress;
     private boolean mIsPreorder;
     private Unbinder mUnbinder;
     private Call<ServerResponse> mCall;
+    private Call<ServerResponse<HashMap<String, Double>>> mPricesCall;
 
     @BindView(R.id.additionalServiceImage)
     ImageView mServiceImage;
     @BindView(R.id.additionalServiceDescription)
     TextView mDescriptionaLabel;
-    @BindView(R.id.additionalServicePrice)
-    TextView mPriceLabel;
     @BindView(R.id.additionalServiceCommentInput)
     EditText mCommentInput;
     @BindView(R.id.additionalServiceConfirmBtn)
@@ -90,35 +91,58 @@ public class CheckProductFragment extends ParentFragment {
         // set service default views
         mServiceImage.setImageResource(R.mipmap.ic_check_product_250dp);
         mDescriptionaLabel.setText(getString(R.string.check_product_description));
-        mPriceLabel.setText(getString(R.string.check_product_cost));
 
         mId = getArguments().getString(ID_ARG);
-        mIsInprogress = getArguments().getBoolean(STATUS_ARG);
+        mIsInProgress = getArguments().getBoolean(STATUS_ARG);
         mIsPreorder = getArguments().getBoolean(PREORDER_ARG);
 
-        if (mIsInprogress) {
+        if (mIsInProgress) {
+            mConfirmButton.setVisibility(View.VISIBLE);
             mConfirmButton.setText(getString(R.string.cancel_request));
             Drawable redBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
             mConfirmButton.setBackgroundDrawable(redBg);
+        } else {
+            mActivity.toggleLoadingProgress(true);
+            mPricesCall = Application.apiInterface().getAdditionalServicesPrices();
+            mPricesCall.enqueue(mPricesCallback);
         }
 
         return view;
     }
 
-    @OnClick(R.id.additionalServiceDetailsBtn)
-    void showDetails() {
-        HelpDialog.showDialog(mActivity);
-    }
+    private ResponseCallback<HashMap<String, Double>> mPricesCallback = new ResponseCallback<HashMap<String, Double>>() {
+        @Override
+        public void onSuccess(HashMap<String, Double> data) {
+            mConfirmButton.setVisibility(View.VISIBLE);
+            if (!mIsInProgress) {
+                String key = mIsPreorder ? Constants.Services.PRE_VERIFICATION : Constants.Services.VERIFICATION;
+                mConfirmButton.setText(getString(R.string.request_for, data.get(key)));
+            }
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<HashMap<String, Double>>> call, Throwable t) {
+            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @OnClick(R.id.additionalServiceConfirmBtn)
     void sendCheckRequest() {
         String comment = String.valueOf(mCommentInput.getText());
         mActivity.toggleLoadingProgress(true);
         if (!mIsPreorder) {
-            mCall = Application.apiInterface().requestParcelVerification(mId, comment, mIsInprogress ? 0 : 1);
+            mCall = Application.apiInterface().requestParcelVerification(mId, comment, mIsInProgress ? 0 : 1);
             mCall.enqueue(mResponseCallback);
         } else {
-            mCall = Application.apiInterface().requestCheckForAwaiting(mId, mIsInprogress ? 0 : 1, comment);
+            mCall = Application.apiInterface().requestCheckForAwaiting(mId, mIsInProgress ? 0 : 1, comment);
             mCall.enqueue(mResponseCallback);
         }
     }
@@ -140,11 +164,11 @@ public class CheckProductFragment extends ParentFragment {
         @Override
         public void onSuccess(Object data) {
             mActivity.toggleLoadingProgress(false);
-            if (mIsInprogress && mIsPreorder) {
+            if (mIsInProgress && mIsPreorder) {
                 Intent intent = new Intent(ACTION_CANCEL_CHECK_PRODUCT);
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
-            } else if (mIsInprogress) {
+            } else if (mIsInProgress) {
                 Intent intent = new Intent(ACTION_CANCEL_CHECK_PRODUCT);
                 mActivity.sendBroadcast(intent);
                 mActivity.onBackPressed();
@@ -184,6 +208,7 @@ public class CheckProductFragment extends ParentFragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
+        if (mPricesCall != null) mPricesCall.cancel();
         mUnbinder.unbind();
         mActivity.hideKeyboard();
         mActivity.unregisterReceiver(mBroadcastReceiver);

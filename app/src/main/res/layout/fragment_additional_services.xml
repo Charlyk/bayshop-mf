@@ -50,30 +50,13 @@
                         android:text="@string/additional_photo_description"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/additionalServicePrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/additional_photo_cost"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="16sp"/>
                 </LinearLayout>
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/additionalServiceDetailsBtn"
-                style="@style/Base.Widget.AppCompat.ActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:contentDescription="@string/details"
-                android:src="@mipmap/ic_detail_24dp"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginTop="7.5dp"
                 android:background="@color/colorDivider"/>
 
             <EditText
@@ -106,13 +89,14 @@
         android:id="@+id/additionalServiceConfirmBtn"
         style="@style/Base.Widget.AppCompat.ActionButton"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/additional_btns_bg"
         android:minWidth="100dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="@string/confirm"
+        android:text="@string/request_for"
         android:textColor="@android:color/white"
         android:textSize="18sp"/>
 </RelativeLayout>

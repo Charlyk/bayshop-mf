@@ -20,10 +20,12 @@ import android.widget.Toast;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
-import com.softranger.bayshopmfr.ui.help.HelpDialog;
 import com.softranger.bayshopmfr.util.Application;
+import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,8 +46,6 @@ public class RepackingFragment extends ParentFragment {
     ImageView mServiceImage;
     @BindView(R.id.additionalServiceDescription)
     TextView mDescriptionaLabel;
-    @BindView(R.id.additionalServicePrice)
-    TextView mPriceLabel;
     @BindView(R.id.additionalServiceCommentInput)
     EditText mCommentInput;
     @BindView(R.id.additionalServiceConfirmBtn)
@@ -54,6 +54,7 @@ public class RepackingFragment extends ParentFragment {
     private Unbinder mUnbinder;
     private ParentActivity mActivity;
     private Call<ServerResponse> mCall;
+    private Call<ServerResponse<HashMap<String, Double>>> mPricesCall;
 
     private String mId;
     private boolean mIsInProgress;
@@ -87,15 +88,43 @@ public class RepackingFragment extends ParentFragment {
 
         mServiceImage.setImageResource(R.mipmap.ic_repacking_250dp);
         mDescriptionaLabel.setText(getString(R.string.repacking_description));
-        mPriceLabel.setText(getString(R.string.repacking_cost));
 
         if (mIsInProgress) {
+            mConfirmButton.setVisibility(View.VISIBLE);
             mConfirmButton.setText(getString(R.string.cancel_request));
             Drawable redBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
             mConfirmButton.setBackgroundDrawable(redBg);
+        } else {
+            mActivity.toggleLoadingProgress(true);
+            mPricesCall = Application.apiInterface().getAdditionalServicesPrices();
+            mPricesCall.enqueue(mPricesCallback);
         }
+
         return view;
     }
+
+    private ResponseCallback<HashMap<String, Double>> mPricesCallback = new ResponseCallback<HashMap<String, Double>>() {
+        @Override
+        public void onSuccess(HashMap<String, Double> data) {
+            mConfirmButton.setVisibility(View.VISIBLE);
+            if (!mIsInProgress) {
+                mConfirmButton.setText(getString(R.string.request_for, data.get(Constants.Services.REPACKING)));
+            }
+            mActivity.toggleLoadingProgress(false);
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call<ServerResponse<HashMap<String, Double>>> call, Throwable t) {
+            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @OnClick(R.id.additionalServiceConfirmBtn)
     void makeRepackingRequest() {
@@ -103,12 +132,6 @@ public class RepackingFragment extends ParentFragment {
         mActivity.toggleLoadingProgress(true);
         mCall = Application.apiInterface().requestParcelRepacking(mId, comment, mIsInProgress ? 0 : 1);
         mCall.enqueue(mResponseCallback);
-    }
-
-    @SuppressWarnings("unused")
-    @OnClick(R.id.additionalServiceDetailsBtn)
-    void showRepackingDetails() {
-        HelpDialog.showDialog(mActivity);
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -162,6 +185,7 @@ public class RepackingFragment extends ParentFragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
+        if (mPricesCall != null) mPricesCall.cancel();
         mUnbinder.unbind();
         mActivity.unregisterReceiver(mBroadcastReceiver);
     }
