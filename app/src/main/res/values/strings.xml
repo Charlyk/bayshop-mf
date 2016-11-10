@@ -398,5 +398,7 @@
     <string name="intro_third_title">Example title</string>
     <string name="intro_third_description">This is an example of screen description so we can see how it looks on a real device</string>
 
+    <string name="app_version">Version %1$s(%2$d)</string>
+
     <!--<string name="storage">Storage</string>-->
 </resources>

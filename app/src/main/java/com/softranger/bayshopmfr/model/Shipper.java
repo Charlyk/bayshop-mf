@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.softranger.bayshopmfr.util.Constants;
 
 /**
  * Created by Eduard Albu on 9/29/16, 09, 2016
@@ -52,6 +53,8 @@ public class Shipper implements Parcelable {
     private double mPrice;
     @JsonProperty("price_lei")
     private double mPriceLei;
+    @JsonProperty("flag")
+    private String mIconUrl;
 
     public Shipper() {
         // empty constructor for jackson
@@ -92,6 +95,7 @@ public class Shipper implements Parcelable {
         mCalculatedPrice = in.readDouble();
         mPrice = in.readDouble();
         mPriceLei = in.readDouble();
+        mIconUrl = in.readString();
     }
 
     public static final Creator<Shipper> CREATOR = new Creator<Shipper>() {
@@ -248,6 +252,11 @@ public class Shipper implements Parcelable {
         return mPriceLei;
     }
 
+    public String getIconUrl() {
+        if (mIconUrl.contains("http")) return mIconUrl;
+        else return Constants.Api.BASE_URL + mIconUrl;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -289,6 +298,7 @@ public class Shipper implements Parcelable {
         dest.writeDouble(mCalculatedPrice);
         dest.writeDouble(mPrice);
         dest.writeDouble(mPriceLei);
+        dest.writeString(mIconUrl);
     }
 
     @Override

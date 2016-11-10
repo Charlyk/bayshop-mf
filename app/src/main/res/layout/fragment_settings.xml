@@ -361,5 +361,12 @@
             android:text="@string/log_out"
             android:textColor="@color/textColor"
             android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/appVersionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
     </LinearLayout>
 </ScrollView>

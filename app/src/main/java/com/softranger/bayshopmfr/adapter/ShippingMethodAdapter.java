@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.Shipper;
+import com.softranger.bayshopmfr.util.Application;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -93,6 +96,10 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             itemHolder.mMethodPrice.setVisibility(mShowPrice ? View.VISIBLE : View.GONE);
             itemHolder.mDetailsButton.setVisibility(mShowPrice ? View.VISIBLE : View.GONE);
+
+            Picasso.with(Application.getInstance())
+                    .load(itemHolder.mShippingMethodObj.getIconUrl())
+                    .into(itemHolder.mImageView);
         }
     }
 
@@ -119,6 +126,8 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         @BindView(R.id.shippingMethodTimeLabel) TextView mTimeLabel;
         @BindView(R.id.shippingMethodVolumeLabel) TextView mVolumeLabel;
         @BindView(R.id.shippingMethodDetailsBtn) ImageButton mDetailsButton;
+        @BindView(R.id.shippingMethodIcon)
+        ImageView mImageView;
         Shipper mShippingMethodObj;
 
         public ViewHolder(View itemView) {

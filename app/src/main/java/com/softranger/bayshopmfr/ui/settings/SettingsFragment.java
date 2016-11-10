@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -71,6 +73,8 @@ public class SettingsFragment extends ParentFragment {
     SwitchCompat mAutopackagingSwitch;
     @BindView(R.id.settingsAutoPackagingLayout)
     LinearLayout mAutopackagingLayout;
+    @BindView(R.id.appVersionLabel)
+    TextView mAppVersionLabel;
 
     // notifications views
     @BindView(R.id.settingsNotificationsSmsCheckBox)
@@ -99,6 +103,16 @@ public class SettingsFragment extends ParentFragment {
         setValuesFromPreferences();
 
         Application.apiInterface().getUserNotificationsSettings().enqueue(mResponseCallback);
+
+
+        try {
+            PackageInfo packageInfo = Application.getInstance().getPackageManager().getPackageInfo(Application.getInstance().getPackageName(), 0);
+            String appVersion = packageInfo.versionName;
+            int codeVersion = packageInfo.versionCode;
+            mAppVersionLabel.setText(getString(R.string.app_version, appVersion, codeVersion));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 
