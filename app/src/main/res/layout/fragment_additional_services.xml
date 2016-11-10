@@ -53,29 +53,37 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <View
+            <LinearLayout
+                android:id="@+id/additionalServicesCommentLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="7.5dp"
-                android:background="@color/colorDivider"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/additionalServiceCommentInput"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@android:color/white"
-                android:gravity="top"
-                android:hint="@string/enter_your_comment"
-                android:inputType="textMultiLine"
-                android:paddingBottom="10dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="7.5dp"
+                    android:background="@color/colorDivider"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/colorDivider"/>
+                <EditText
+                    android:id="@+id/additionalServiceCommentInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@android:color/white"
+                    android:gravity="top"
+                    android:hint="@string/enter_your_comment"
+                    android:inputType="textMultiLine"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="10dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/colorDivider"/>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

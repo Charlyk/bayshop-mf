@@ -77,7 +77,7 @@
     <!-- Delete parcel dialog -->
     <string name="delete_item">"Удалить заказ"</string>
     <string name="cancel">"Отмена"</string>
-    <string name="confirm_deleting">"Вы уверены, что хотите удалить?"</string>
+    <string name="confirm_deleting">"Вы уверены, что хотите удалить"</string>
 
     <!-- Warehouse USA -->
     <string name="additional_photo">"Дополнительные фото"</string>
@@ -108,7 +108,6 @@
     <string name="awaiting_sending_warning">"Ваша посылка упакована и скоро будет отправлена."</string>
     <string name="held_due_to_debt_warning">"Баланс вашего счета отрицательный. Пополните счет, и посылка будет отправлена автоматически."</string>
     <string name="sent_warning">"Посылка была отправлена на склад в вашей стране. Вы можете отследить ее путь."</string>
-    <string name="held_by_customs_warning">"Посылка была задержана таможенной службой. Для подтверждения стоимости товаров загрузите инвойс (скриншот заказа с нашего сайта), подтверждение банковской транзакции, либо чек от терминала. Также, оплатите таможенную пошлину."</string>
     <string name="local_deposit_warning">"Посылка пришла на склад в вашей стране. Закажите доставку на дом или получите посылку в нашем офисе."</string>
     <string name="take_to_delivery_warning">"Посылка передана курьеру, и скоро вы получите ее по указанному адресу."</string>
     <string name="held_by_prohibition_warning">"Посылка была задержана из-за наличия запрещенных товаров. Расформируйте ее и создайте 2 новые посылки: верните запрещенный товар продавцу, поменяв адрес доставки, а остальные товары отправьте на свой адрес."</string>
@@ -129,7 +128,7 @@
     <string name="enter_your_comment">"Оставьте пожелания к заказу"</string>
     <string name="cancel_request">"Отменить заказ"</string>
     <string name="divide_parcel">"Разделение заказа"</string>
-    <string name="request_for">Заказать за $%.0f</string>
+    <string name="request_for">"Заказать за $%.0f"</string>
     <string name="repacking">"Переупаковка заказа"</string>
     <string name="repacking_in_progress">"Переупаковка в процессе"</string>
     <string name="divide_parcel_details">"Разделите большой заказ и обойдите таможенный лимит. Стоимость услуги: $1 за одно разделение."</string>
@@ -272,7 +271,7 @@
     <string name="check_parcel_details">"Проверьте итоговую стоимость"</string>
     <string name="accepte_terms_and_conditions">"Принять Пользовательское Соглашение:"</string>
     <string name="declaration">"Стоимость товаров:"</string>
-    <string name="total_shipping_price">"Итого за доставку:"</string>
+    <string name="total_shipping_price">"Итого за доставку и услуги:"</string>
     <string name="confirm">"Подтвердить"</string>
     <string name="parcel_added">"Заказ добавлен"</string>
     <string name="select_insurance">"Застраховать посылку"</string>

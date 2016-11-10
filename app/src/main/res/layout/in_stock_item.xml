@@ -18,7 +18,7 @@
         android:paddingRight="16dp"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:src="@mipmap/ic_uncheck_45dp"/>
+        android:src="@mipmap/ic_red_button_50dp"/>
 
     <LinearLayout
         android:id="@+id/inStockItemDataLayout"

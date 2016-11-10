@@ -113,7 +113,6 @@
     <string name="awaiting_sending_warning">Ожидает отправки</string>
     <string name="held_due_to_debt_warning">Ожидается оплата доставки</string>
     <string name="sent_warning">Отправлена</string>
-    <string name="held_by_customs_warning">Задержана на таможне</string>
     <string name="local_deposit_warning">На складе в стране</string>
     <string name="take_to_delivery_warning">Доставляется на дом</string>
     <string name="held_by_prohibition_warning">Запрещенные товары</string>

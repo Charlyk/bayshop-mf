@@ -1,8 +1,6 @@
 package com.softranger.bayshopmfr.adapter;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,7 +24,6 @@ import com.softranger.bayshopmfr.model.box.Box;
 import com.softranger.bayshopmfr.model.pus.PUSParcel;
 import com.softranger.bayshopmfr.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmfr.util.Application;
-import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.widget.ParcelStatusBarView;
 
 import java.util.ArrayList;
@@ -216,19 +213,6 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public int getItemCount() {
         return mItems.size();
-    }
-
-    @DrawableRes
-    private int getStorageIcon(@Nullable String storage) {
-        if (storage == null) return R.mipmap.ic_usa_flag;
-        switch (storage) {
-            case Constants.DE:
-                return R.mipmap.ic_de_flag;
-            case Constants.GB:
-                return R.mipmap.ic_uk_flag;
-            default:
-                return R.mipmap.ic_usa_flag;
-        }
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnMapReadyCallback,

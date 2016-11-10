@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,8 @@ public class AdditionalPhotoFragment extends ParentFragment {
     EditText mCommentInput;
     @BindView(R.id.additionalServiceConfirmBtn)
     Button mConfirmButton;
+    @BindView(R.id.additionalServicesCommentLayout)
+    LinearLayout mLinearLayout;
 
     private Unbinder mUnbinder;
     private ParentActivity mActivity;
@@ -99,6 +102,7 @@ public class AdditionalPhotoFragment extends ParentFragment {
 
         if (mIsInProgress) {
             mConfirmButton.setVisibility(View.VISIBLE);
+            mLinearLayout.setVisibility(View.GONE);
             mConfirmButton.setText(getString(R.string.cancel_request));
             Drawable redBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
             mConfirmButton.setBackgroundDrawable(redBg);

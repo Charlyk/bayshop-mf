@@ -276,7 +276,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
 
     private void deleteItem(final AwaitingArrival product) {
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
-                        + product.getTitle() + "?", R.mipmap.ic_delete_box_24dp,
+                        + product.getTitle() + "?", R.mipmap.ic_delete_parcel_popup_30dp,
                 getString(R.string.yes), v -> {
                     mActivity.toggleLoadingProgress(true);
 

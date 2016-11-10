@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,8 @@ public class CheckProductFragment extends ParentFragment {
     EditText mCommentInput;
     @BindView(R.id.additionalServiceConfirmBtn)
     Button mConfirmButton;
+    @BindView(R.id.additionalServicesCommentLayout)
+    LinearLayout mLinearLayout;
 
     public CheckProductFragment() {
         // Required empty public constructor
@@ -99,6 +102,7 @@ public class CheckProductFragment extends ParentFragment {
         if (mIsInProgress) {
             mConfirmButton.setVisibility(View.VISIBLE);
             mConfirmButton.setText(getString(R.string.cancel_request));
+            mLinearLayout.setVisibility(View.GONE);
             Drawable redBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
             mConfirmButton.setBackgroundDrawable(redBg);
         } else {

@@ -2,11 +2,13 @@ package com.softranger.bayshopmfr.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.softranger.bayshopmfr.R;
 
 /**
  * Created by Eduard Albu on 10/28/16, 10, 2016
@@ -96,16 +98,36 @@ public class NotificationMessage implements Parcelable {
     }
 
     public enum Action {
-        mf("mf"), waitingMf("waitingMf"), processing("processing"), live("live"), packed("packed"),
-        sent("sent"), received("received"), local_depo("local-depo"), taken_to_delivery("taken-to-delivery"),
-        customs_held("customs-held"), dept("dept"), held_by_prohibition("held-by-prohibition"),
-        awaiting_declaration("awaiting-declaration"), packing("packing"), held_by_user("held-by-user"),
-        held_by_damage("held-by-damage"), unknown("");
+        mf(R.mipmap.ic_warehouse_usa_30dp, "mf"),
+        waitingMf(R.mipmap.ic_awaiting_arrival_30dp, "waitingMf"),
+        processing(R.mipmap.ic_in_processing_30dp, "processing"),
+        live(R.mipmap.ic_warehouse_usa_30dp, "live"),
+        packed(R.mipmap.ic_awaiting_sending_30dp, "packed"),
+        sent(R.mipmap.ic_send_30dp, "sent"),
+        received(R.mipmap.ic_received_30dp, "received"),
+        local_depo(R.mipmap.ic_local_deposit_44dp, "local-depo"),
+        taken_to_delivery(R.mipmap.ic_take_to_delivery_30dp, "taken-to-delivery"),
+        customs_held(R.mipmap.ic_held_by_custom_30dp, "customs-held"),
+        dept(R.mipmap.ic_held_due_to_debt_30dp, "dept"),
+        held_by_prohibition(R.mipmap.ic_prohibition_30dp, "held-by-prohibition"),
+        awaiting_declaration(R.mipmap.ic_warehouse_usa_30dp, "awaiting-declaration"),
+        packing(R.mipmap.ic_auto_packing_30dp, "packing"),
+        held_by_user(R.mipmap.ic_held_by_user_30dp, "held-by-user"),
+        held_by_damage(R.mipmap.ic_held_by_damage_30dp, "held-by-damage"),
+        unknown(R.mipmap.ic_warehouse_usa_30dp, "");
 
         private String mActionName;
+        @DrawableRes
+        private int mSmallIcon;
 
-        Action(String actionName) {
+        Action(@DrawableRes int smallIcon, String actionName) {
             mActionName = actionName;
+            mSmallIcon = smallIcon;
+        }
+
+        @DrawableRes
+        public int icon() {
+            return mSmallIcon;
         }
 
         public String getActionName() {

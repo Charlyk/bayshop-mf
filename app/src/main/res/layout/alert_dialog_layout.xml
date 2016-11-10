@@ -17,7 +17,7 @@
             android:id="@+id/alertDialogImageLabel"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            tools:src="@mipmap/ic_delete_box_24dp"
+            tools:src="@mipmap/ic_delete_parcel_popup_30dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="16dp"
             android:contentDescription="@null"/>

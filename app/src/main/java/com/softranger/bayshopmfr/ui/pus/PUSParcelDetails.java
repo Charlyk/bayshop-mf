@@ -422,21 +422,6 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
     //----------------------- LOCAL DEPOT -----------------------//
 
-    /**
-     * Order home delivery
-     */
-    public void onOrderDeliveryClick() {
-        mAlertDialog = mActivity.getDialog(getString(R.string.confirm), getString(R.string.confirm_delivery)
-                        + " " + mPUSParcelDetailed.getAddress().getClientName(), R.mipmap.ic_order_delivery_white_30dp,
-                getString(R.string.confirm), v -> {
-                    // TODO: 10/20/16 implement order delivery api
-                    mActivity.showResultActivity(getString(R.string.order_sent), R.mipmap.ic_confirm_local_depot_250dp,
-                            getString(R.string.please_wait_call));
-                    mAlertDialog.dismiss();
-                }, getString(R.string.cancel), v -> mAlertDialog.dismiss(), R.color.colorGreenAction);
-        mAlertDialog.show();
-    }
-
     @Override
     public void onSelectAddressClick(PUSParcelDetailed item, int position) {
         mActivity.addFragment(AddressesListFragment.newInstance(true), true);

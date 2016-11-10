@@ -155,7 +155,7 @@ public class PUSParcel implements Parcelable {
         awaiting_sending(R.string.awaiting_sending_warning, R.string.awaiting_sending, -1, "packed", 4),
         held_due_to_debt(R.string.held_due_to_debt_warning, R.string.held_due_to_debt, -1, "dept", 5),
         sent(R.string.sent_warning, R.string.sent, R.layout.sent_parcels_header_layout, "sent", 6),
-        held_by_customs(R.string.held_by_customs_warning, R.string.held_by_customs, -1, "customs-held", 7),
+        held_by_customs(R.string.held_by_customs, R.string.held_by_customs, -1, "customs-held", 7),
         local_depot(R.string.local_deposit_warning, R.string.local_deposit, -1, "local-depo", 8),
         in_the_way(R.string.take_to_delivery_warning, R.string.take_to_delivery, R.layout.take_to_delivery_btn, "taken-to-delivery", 9),
         received(R.string.received_warning, R.string.received, R.layout.signature_geolocation_btn, "received", 10),
