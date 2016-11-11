@@ -119,7 +119,8 @@ public class History implements Parcelable, Imageble {
 
     @Override
     public String getImageUrl() {
-        return Constants.Api.BASE_URL + mImageUrl;
+        if (mImageUrl != null && mImageUrl.contains("http")) return mImageUrl;
+        else return Constants.Api.BASE_URL + mImageUrl;
     }
 
     public String getCommission() {

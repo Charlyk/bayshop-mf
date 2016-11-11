@@ -59,32 +59,12 @@ public class Constants {
 
     public static class Api {
         public static final String TRACK_URL = "https://gdeposylka.ru/api/v4/";
-        //        public static final String BASE_URL = "http://bayshop.com";
+
+//        public static final String BASE_URL = "http://bayshop.com";
 //        public static final String BASE_API_URL = "http://bayshop.com/api/";
+
         public static final String BASE_URL = "http://bay-test.tk";
         public static final String BASE_API_URL = "http://bay-test.tk/api/";
-        private static final String AUTH = "auth/";
-        private static final String MEMBER = "member/";
-        private static final String PARCELS_COUNTER = "parcels-counter/";
-
-        /**
-         * POST
-         *
-         * @return authentication to bay shop url
-         */
-        public static String urlAuth() {
-            return BASE_API_URL + AUTH;
-        }
-
-        /**
-         * GET
-         * Create an url to obtain all parcels quantity in each status
-         *
-         * @return strung url to access get how many parcels are in each status
-         */
-        public static String urlParcelsCounter() {
-            return BASE_API_URL + MEMBER + PARCELS_COUNTER;
-        }
     }
 
     public enum Period {

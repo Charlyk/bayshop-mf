@@ -10,10 +10,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServerResponse<T> {
-    @JsonProperty("code") int mCode;
-    @JsonProperty("error") boolean mError;
-    @JsonProperty("message") String mMessage;
-    @JsonProperty("data") T mData;
+    @JsonProperty("code")
+    private int mCode;
+    @JsonProperty("error")
+    private boolean mError;
+    @JsonProperty("message")
+    private String mMessage;
+    @JsonProperty("data")
+    private T mData;
 
     public int getCode() {
         return mCode;

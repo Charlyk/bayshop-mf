@@ -8,13 +8,8 @@
 
     <ImageView
         android:id="@+id/paymentHistoryItemMethodIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="20dp"
-        android:minHeight="20dp"
-        android:maxWidth="30dp"
-        android:maxHeight="30dp"
-        android:adjustViewBounds="true"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="20dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

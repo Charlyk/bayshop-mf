@@ -15,20 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
-import com.softranger.bayshopmfr.network.ApiClient;
 import com.softranger.bayshopmfr.network.ResponseCallback;
-import com.softranger.bayshopmfr.ui.general.MainActivity;
 import com.softranger.bayshopmfr.util.Application;
-import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
-
-import org.json.JSONObject;
-
-import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -151,45 +145,47 @@ public class RegisterFragment extends ParentFragment {
         public void onFailure(ServerResponse errorData) {
             mConfirmButton.setVisibility(View.VISIBLE);
             mConfirmButton.setClickable(true);
+            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
             mProgressBar.setVisibility(View.GONE);
         }
 
         @Override
         public void onError(Call call, Throwable t) {
             mConfirmButton.setVisibility(View.VISIBLE);
+            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             mConfirmButton.setClickable(true);
             mProgressBar.setVisibility(View.GONE);
         }
     };
 
-    @Override
-    public void onServerResponse(JSONObject response) throws Exception {
-        switch (requestStep) {
-            case REGISTER:
-                requestStep = RequestStep.LOGIN;
-                ApiClient.getInstance().logIn(mEmail, mPassword, mHandler);
-                break;
-            case LOGIN: {
-                JSONObject data = response.getJSONObject("data");
-                Application.currentToken = data.optString("access_token");
-                Application.getInstance().setLoginStatus(true);
-                Application.getInstance().setAuthToken(Application.currentToken);
-                ApiClient.getInstance().getRequest(Constants.Api.urlParcelsCounter(), mHandler);
-                break;
-            }
-            case COUNTERS: {
-                JSONObject data = response.getJSONObject("data");
-                Iterator<String> keys = data.keys();
-                while (keys.hasNext()) {
-                    String key = keys.next();
-                    Application.counters.put(key, data.getInt(key));
-                }
-                mActivity.startActivity(new Intent(mActivity, MainActivity.class));
-                mActivity.finish();
-                break;
-            }
-        }
-    }
+//    @Override
+//    public void onServerResponse(JSONObject response) throws Exception {
+//        switch (requestStep) {
+//            case REGISTER:
+//                requestStep = RequestStep.LOGIN;
+//                ApiClient.getInstance().logIn(mEmail, mPassword, mHandler);
+//                break;
+//            case LOGIN: {
+//                JSONObject data = response.getJSONObject("data");
+//                Application.currentToken = data.optString("access_token");
+//                Application.getInstance().setLoginStatus(true);
+//                Application.getInstance().setAuthToken(Application.currentToken);
+//                ApiClient.getInstance().getRequest(Constants.Api.urlParcelsCounter(), mHandler);
+//                break;
+//            }
+//            case COUNTERS: {
+//                JSONObject data = response.getJSONObject("data");
+//                Iterator<String> keys = data.keys();
+//                while (keys.hasNext()) {
+//                    String key = keys.next();
+//                    Application.counters.put(key, data.getInt(key));
+//                }
+//                mActivity.startActivity(new Intent(mActivity, MainActivity.class));
+//                mActivity.finish();
+//                break;
+//            }
+//        }
+//    }
 
 
     @OnFocusChange({R.id.registerNameInput, R.id.registerEmailInput, R.id.registerPasswordInput})

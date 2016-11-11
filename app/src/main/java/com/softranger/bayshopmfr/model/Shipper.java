@@ -253,7 +253,7 @@ public class Shipper implements Parcelable {
     }
 
     public String getIconUrl() {
-        if (mIconUrl.contains("http")) return mIconUrl;
+        if (mIconUrl != null && mIconUrl.contains("http")) return mIconUrl;
         else return Constants.Api.BASE_URL + mIconUrl;
     }
 

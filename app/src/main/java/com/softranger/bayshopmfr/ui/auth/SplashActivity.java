@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -165,6 +167,13 @@ public class SplashActivity extends ParentActivity {
             HashMap<String, Object> userData = new HashMap<>();
             userData.put("name", data.getFullName());
             userData.put("language_override", Application.getDeviceLanguage());
+            try {
+                PackageInfo packageInfo = Application.getInstance().getPackageManager().getPackageInfo(Application.getInstance().getPackageName(), 0);
+                int codeVersion = packageInfo.versionCode;
+                userData.put("code_version", codeVersion);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
             Intercom.client().updateUser(userData);
             long duration = System.currentTimeMillis() - personalDataStart;
             Log.d("Personal data", duration + "");

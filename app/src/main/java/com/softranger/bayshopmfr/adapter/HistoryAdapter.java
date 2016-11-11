@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.payment.History;
-import com.softranger.bayshopmfr.util.Application;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -64,8 +63,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.mSumm.setText(summ);
         holder.mSumm.setTextColor(getTextColor(holder.mHistory.getPaymentType()));
         holder.mImageView.setImageResource(getTransactionIcon(holder.mHistory.getPaymentType()));
-        int size = Application.getPixelsFromDp(30);
-        Picasso.with(mContext).load(holder.mHistory.getImageUrl()).resize(size, size).into(holder.mIcon);
+        Picasso.with(mContext).load(holder.mHistory.getImageUrl()).into(holder.mIcon);
     }
 
     @DrawableRes
