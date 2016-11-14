@@ -2,6 +2,7 @@ package com.softranger.bayshopmfr.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,7 +15,7 @@ import com.softranger.bayshopmfr.util.Constants;
  * email eduard.albu@gmail.com
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Shipper implements Parcelable {
+public class Shipper implements Parcelable, Comparable<Shipper> {
     @JsonProperty("id") private String mId;
     @JsonProperty("systemName") private String mSystemName;
     @JsonProperty("storageId") private String mStorageId;
@@ -304,5 +305,12 @@ public class Shipper implements Parcelable {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Shipper && getId().equals(((Shipper) obj).getId());
+    }
+
+    @Override
+    public int compareTo(@NonNull Shipper shipper) {
+        Integer toCompare = shipper.getRank();
+        Integer compareTo = getRank();
+        return compareTo.compareTo(toCompare);
     }
 }

@@ -25,6 +25,7 @@ import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,6 +85,8 @@ public class ShippingMethodFragment extends ParentFragment implements ShippingMe
                     allowedShippers.add(shipper);
                 }
             }
+
+            Collections.sort(allowedShippers);
 
             if (Application.isAutopackaging() && canGoFurther(allowedShippers)) {
                 Shipper shipper = shippingMethods.get(shippingMethods.indexOf(

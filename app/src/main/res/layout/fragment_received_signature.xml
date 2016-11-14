@@ -250,6 +250,8 @@
             android:id="@+id/receivedSignatureClientSignature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxHeight="50dp"
+            android:scaleType="centerInside"
             android:layout_below="@id/addressPhoneNumberTitle"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"

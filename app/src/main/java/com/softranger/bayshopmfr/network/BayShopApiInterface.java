@@ -158,9 +158,9 @@ public interface BayShopApiInterface {
     Call<ServerResponse<String>> createNewPusParcel(@Field("boxes") String boxesArray,
                                                     @Field("addressId") String addressId,
                                                     @Field("shipperId") String shipperId,
-                                                    @Field("insurance") boolean insurance,
-                                                    @Field("sentOnUserAlert") boolean sendOnAlert,
-                                                    @Field("useAdditionalMaterials") boolean additionalMaterials);
+                                                    @Field("insurance") int insurance,
+                                                    @Field("sentOnUserAlert") int sendOnAlert,
+                                                    @Field("useAdditionalMaterials") int additionalMaterials);
 
     // replace "us" to needed storage, for now we have just "us"
     @GET("parcels/us/{status}")

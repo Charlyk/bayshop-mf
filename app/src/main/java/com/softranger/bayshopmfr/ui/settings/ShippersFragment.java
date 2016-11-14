@@ -25,6 +25,7 @@ import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,6 +96,7 @@ public class ShippersFragment extends ParentFragment implements ShippingMethodAd
     private ResponseCallback<ArrayList<Shipper>> mResponseCallback = new ResponseCallback<ArrayList<Shipper>>() {
         @Override
         public void onSuccess(ArrayList<Shipper> data) {
+            Collections.sort(data);
             mAdapter = new ShippingMethodAdapter(data, "");
             mAdapter.setOnShippingClickListener(ShippersFragment.this);
             mAdapter.setShowPrice(false);

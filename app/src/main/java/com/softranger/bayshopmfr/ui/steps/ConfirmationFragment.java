@@ -262,8 +262,8 @@ public class ConfirmationFragment extends ParentFragment {
             boxes.put(i);
         }
         mResponseCall = Application.apiInterface().createNewPusParcel(
-                boxes.toString(), mSelectedAddressId, mSelectedShipperId, mInsuranceSelector.isChecked(),
-                mSendOnAlert.isChecked(), mUseAdditionalPackage.isChecked());
+                boxes.toString(), mSelectedAddressId, mSelectedShipperId, mInsuranceSelector.isChecked() ? 1 : 0,
+                mSendOnAlert.isChecked() ? 1 : 0, mUseAdditionalPackage.isChecked() ? 1 : 0);
         mResponseCall.enqueue(mResponseCallback);
     }
 
