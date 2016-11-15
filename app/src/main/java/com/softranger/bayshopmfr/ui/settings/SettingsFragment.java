@@ -152,6 +152,16 @@ public class SettingsFragment extends ParentFragment {
         mAutopackagingSwitch.setChecked(!mAutopackagingSwitch.isChecked());
         mAutopackagingLayout.setVisibility(mAutopackagingSwitch.isChecked() ? View.VISIBLE : View.GONE);
         Application.autoPackPrefs.edit().putBoolean(AUTOPACKAGING, mAutopackagingSwitch.isChecked()).apply();
+        if (!mAutopackagingSwitch.isChecked()) {
+            Application.autoPackPrefs.edit()
+                    .remove(ADDRESS_NAME)
+                    .remove(ADDRESS_ID)
+                    .remove(ADDRESS_COUNTRY)
+                    .remove(SHIPPING_ID)
+                    .remove(SHIPPING_NAME)
+                    .remove(INSURANCE)
+                    .apply();
+        }
         Application.setAskedAutoPackaging(true);
     }
 

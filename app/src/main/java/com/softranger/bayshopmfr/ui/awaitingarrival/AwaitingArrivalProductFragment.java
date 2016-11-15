@@ -349,18 +349,22 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     public void onStatusBarReady() {
         if (mArrivalDetails != null && mArrivalDetails.getTrackingResult() != null) {
             TrackingResult result = mArrivalDetails.getTrackingResult();
-            Checkpoint checkpoint = result.getCheckpoints().get(0);
-            String statusName = checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.other ?
-                    checkpoint.getStatusName() : Application.getInstance().getString(checkpoint.getCheckpointStatus().translatedStatus());
+            if (result.getCheckpoints() != null && result.getCheckpoints().size() > 0) {
+                Checkpoint checkpoint = result.getCheckpoints().get(0);
+                String statusName = checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.other ?
+                        checkpoint.getStatusName() : Application.getInstance().getString(checkpoint.getCheckpointStatus().translatedStatus());
 
-            int statusStep;
-            if (checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.delivered) {
-                statusStep = 2;
+                int statusStep;
+                if (checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.delivered) {
+                    statusStep = 2;
+                } else {
+                    statusStep = 1;
+                }
+
+                mStatusBarView.setProgress(statusStep, statusName);
             } else {
-                statusStep = 1;
+                mStatusBarView.setProgress(0, Application.getInstance().getString(R.string.geting_status));
             }
-
-            mStatusBarView.setProgress(statusStep, statusName);
         } else {
             mStatusBarView.setProgress(0, Application.getInstance().getString(R.string.geting_status));
         }

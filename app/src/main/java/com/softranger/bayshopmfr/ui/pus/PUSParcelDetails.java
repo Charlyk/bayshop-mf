@@ -109,6 +109,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_CHANGE_ADDRESS);
         intentFilter.addAction(Application.ACTION_RETRY);
+        intentFilter.addAction(ReceivedFragment.ACTION_UPDATE);
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -136,6 +137,10 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
                 case Constants.ACTION_CHANGE_ADDRESS:
                     Address address = intent.getExtras().getParcelable("address");
                     mPUSParcelDetailed.setAddress(address);
+                    break;
+                case ReceivedFragment.ACTION_UPDATE:
+                    refreshFragment();
+                    break;
                 default:
                     mAdapter.notifyItemChanged(0);
                     break;
