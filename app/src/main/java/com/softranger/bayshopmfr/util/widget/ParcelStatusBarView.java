@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -29,21 +30,19 @@ public class ParcelStatusBarView extends RelativeLayout {
     private Context mContext;
     private LinearLayout mStatusBarHolder;
     private View mStatusIndicator;
-    private TextView mStatusNameLabel;
     private int mTotalWidth;
     private int mStatusesCount;
     private int mOneStatusWidth;
     private int mCurrentProgress;
+    private TextView mStatusName;
     private Interpolator mInterpolator;
-    private static float parentLeft;
-    private static float parentRight;
     private boolean mIsReady;
     private SparseArray<BarColor> mColors;
     private OnStatusBarReadyListener mOnStatusBarReadyListener;
     private ValueAnimator mIndicatorAnimation;
-    private ValueAnimator mTextAnimation;
     private float mToWidth;
     private Handler mUpdateHandler;
+    private ValueAnimator mLabelAnimation;
 
     public ParcelStatusBarView(Context context) {
         super(context);
@@ -94,7 +93,6 @@ public class ParcelStatusBarView extends RelativeLayout {
         mOneStatusWidth = mTotalWidth / mStatusesCount;
 
         mStatusIndicator = rootView.findViewById(R.id.statusBarStatusIndicator);
-        mStatusNameLabel = (TextView) rootView.findViewById(R.id.statusViewNameLabel);
     }
 
     @Override
@@ -108,8 +106,6 @@ public class ParcelStatusBarView extends RelativeLayout {
         Rect parentRect = new Rect();
         mStatusBarHolder.getGlobalVisibleRect(parentRect);
 
-        parentLeft = parentRect.left - getPixelsFromDp(10);
-        parentRight = parentRect.right - getPixelsFromDp(10);
         // tell to listeners that we are ready for animations
         if (mOnStatusBarReadyListener != null && !mIsReady) {
             mUpdateHandler.postDelayed(mUpdateRunnable, 200);
@@ -150,7 +146,6 @@ public class ParcelStatusBarView extends RelativeLayout {
         mStatusesCount = mColors.size() - 1;
 
         mStatusIndicator = findViewById(R.id.statusBarStatusIndicator);
-        mStatusNameLabel = (TextView) findViewById(R.id.statusViewNameLabel);
     }
 
     /**
@@ -176,33 +171,46 @@ public class ParcelStatusBarView extends RelativeLayout {
 
     }
 
-    public void setProgress(int progress, String progressName) {
+    public void setStatusNameLabel(TextView statusNameLabel) {
+        mStatusName = statusNameLabel;
+    }
+
+    public Drawable getBarColor(int progress) {
+        switch (mColors.get(progress)) {
+            case red:
+                return mContext.getResources().getDrawable(R.drawable.red_5dp_corner);
+            case green:
+                return mContext.getResources().getDrawable(R.drawable.green_5dp_corner);
+            case yellow:
+                return mContext.getResources().getDrawable(R.drawable.yelow_5dp_corner);
+            default:
+                return mContext.getResources().getDrawable(R.drawable.gray_5dp_corners);
+        }
+    }
+
+    public void setProgress(int progress) {
         // check if given progress is not greater then max progress
         // if it is greater just set it equal to max progress
         if (!mIsReady) return;
         if (progress > mStatusesCount) progress = mStatusesCount;
-        // set stetus title
-        mStatusNameLabel.setText(progressName);
         // set current progress for get method
         mCurrentProgress = progress;
 
         // update status indicator and text view backgrounds based on status color
+        if (mStatusName != null) mStatusName.setBackgroundDrawable(getBarColor(progress));
         switch (mColors.get(progress)) {
             case red:
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.red_status_bg));
-                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_status_bg_red));
+                if (mStatusName != null) mStatusName.setBackgroundDrawable(getBarColor(progress));
                 break;
             case green:
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.green_status_bg));
-                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_status_bg_green));
                 break;
             case yellow:
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.yellow_status_bg));
-                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_status_bg_yalow));
                 break;
             case gray:
                 mStatusIndicator.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.status_bar_bg));
-                mStatusNameLabel.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.ic_status_bg_silver_for_arrival));
                 break;
         }
 
@@ -218,31 +226,20 @@ public class ParcelStatusBarView extends RelativeLayout {
         mIndicatorAnimation = ValueAnimator.ofFloat(0, mToWidth);
         mIndicatorAnimation.addUpdateListener(mIndicatorAnimatorListener);
 
-        // create a value animator for text view position
-        // get text rate to compute it's center
-        Rect textRect = new Rect();
-        mStatusNameLabel.getGlobalVisibleRect(textRect);
-        // get text view center
-        float halfTextWidth = textRect.centerX();
-        // create animator
-        if (progress != 0) {
-            mTextAnimation = ValueAnimator.ofFloat(halfTextWidth, mToWidth);
-            mTextAnimation.addUpdateListener(mNameAnimatorListener);
+        // create animator for label if label is not null
+        if (mStatusName != null) {
+            mLabelAnimation = ValueAnimator.ofFloat(0f, 1f);
+            mLabelAnimation.addUpdateListener(mLabelAnimationListener);
         }
-
-        // create an animator to update text view alpha value
-        ValueAnimator alphaAnimator = ValueAnimator.ofFloat(mStatusNameLabel.getAlpha(), 1.0f);
-        alphaAnimator.addUpdateListener(mAlphaUpdateListener);
 
         // add all created animators to a set and play them together
         AnimatorSet set = new AnimatorSet();
         set.setDuration(300);
         set.setInterpolator(mInterpolator);
-        set.play(mIndicatorAnimation);
-        if (mTextAnimation != null) {
-            set.playTogether(mTextAnimation, alphaAnimator);
+        if (mStatusName != null) {
+            set.playTogether(mIndicatorAnimation, mLabelAnimation);
         } else {
-            set.play(alphaAnimator);
+            set.play(mIndicatorAnimation);
         }
         set.start();
     }
@@ -252,7 +249,6 @@ public class ParcelStatusBarView extends RelativeLayout {
      */
     public void stopAnimations() {
         if (mIndicatorAnimation != null) mIndicatorAnimation.cancel();
-        if (mTextAnimation != null) mTextAnimation.cancel();
     }
 
     public void setOnStatusBarReadyListener(OnStatusBarReadyListener onStatusBarReadyListener) {
@@ -301,32 +297,13 @@ public class ParcelStatusBarView extends RelativeLayout {
         }
     };
 
-    /**
-     * Listener below will update the position of status name text view
-     */
-    private ValueAnimator.AnimatorUpdateListener mNameAnimatorListener = new ValueAnimator.AnimatorUpdateListener() {
+    private ValueAnimator.AnimatorUpdateListener mLabelAnimationListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            float animatedValue = (float) valueAnimator.getAnimatedValue();
-            // check if the rectangle is not at the edge of the screen
-            Rect rect = new Rect();
-            mStatusNameLabel.getGlobalVisibleRect(rect);
-            // if text right or left side is not greater the parent right or left side,
-            // update text position
-            if (rect.left > parentLeft && rect.right <= parentRight) {
-                mStatusNameLabel.setX(animatedValue - (rect.width() / 2));
+            if (mStatusName != null) {
+                float animatedValue = (float) valueAnimator.getAnimatedValue();
+                mStatusName.setAlpha(animatedValue);
             }
-        }
-    };
-
-    /**
-     * Listener below will update status text view alpha value from fully transparent to fully visible
-     */
-    private ValueAnimator.AnimatorUpdateListener mAlphaUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            float animatedValue = (float) valueAnimator.getAnimatedValue();
-            mStatusNameLabel.setAlpha(animatedValue);
         }
     };
 

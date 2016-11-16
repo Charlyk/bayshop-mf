@@ -61,6 +61,10 @@ public class Box implements Parcelable {
         return mId;
     }
 
+    public void setId(String id) {
+        mId = id;
+    }
+
     public String getUid() {
         return mUid;
     }

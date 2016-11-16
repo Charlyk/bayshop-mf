@@ -10,7 +10,7 @@ android {
         applicationId "com.softranger.bayshopmfr"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 12
+        versionCode 13
         versionName "1.0"
         multiDexEnabled true
     }

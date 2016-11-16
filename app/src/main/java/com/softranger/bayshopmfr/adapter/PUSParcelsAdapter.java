@@ -52,9 +52,8 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mPUSParcel = mPUSParcels.get(position);
 
-        holder.mStatusBarView.setProgress(holder.mPUSParcel.getParcelStatus().index(),
-                mContext.getString(holder.mPUSParcel.getParcelStatus().statusName()));
-
+        holder.mStatusBarView.setProgress(holder.mPUSParcel.getParcelStatus().index());
+        holder.mStatusLabel.setText(mContext.getString(holder.mPUSParcel.getParcelStatus().statusName()));
 
         holder.mDateLabel.setText(Application.getFormattedDate(holder.mPUSParcel.getFieldTime()));
 
@@ -93,6 +92,8 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
         @BindView(R.id.pusItemPriceLabel) TextView mPriceLabel;
         @BindView(R.id.pusItemCodeNumberLabel) TextView mCodeLabel;
         @BindView(R.id.pusItemHolder) LinearLayout mHolderLayout;
+        @BindView(R.id.pusItemStatusLabel)
+        TextView mStatusLabel;
 
         PUSParcel mPUSParcel;
 
@@ -100,6 +101,7 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            mStatusBarView.setStatusNameLabel(mStatusLabel);
             mStatusBarView.setOnStatusBarReadyListener(this);
         }
 
@@ -118,8 +120,8 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
         @Override
         public void onStatusBarReady() {
             if (mPUSParcel != null) {
-                mStatusBarView.setProgress(mPUSParcel.getParcelStatus().index(),
-                        mContext.getString(mPUSParcel.getParcelStatus().statusName()));
+                mStatusLabel.setText(mContext.getString(mPUSParcel.getParcelStatus().statusName()));
+                mStatusBarView.setProgress(mPUSParcel.getParcelStatus().index());
             }
         }
     }

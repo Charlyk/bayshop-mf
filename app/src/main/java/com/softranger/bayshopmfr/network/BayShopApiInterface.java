@@ -35,6 +35,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Observable;
 
 /**
  * Created by Eduard Albu on 9/20/16, 09, 2016
@@ -57,6 +58,9 @@ public interface BayShopApiInterface {
 
     @DELETE("waiting-mf/{id}")
     Call<ServerResponse> deleteAwaitingParcel(@Path("id") String parcelId);
+
+    @DELETE("waiting-mf/{id}")
+    Observable<ServerResponse> deleteAwaitingArrivalParcel(@Path("id") String parcelId);
 
     @GET("member/personal-data")
     Call<ServerResponse<User>> getUserPersonalData();

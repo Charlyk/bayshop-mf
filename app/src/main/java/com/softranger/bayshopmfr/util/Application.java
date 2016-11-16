@@ -106,6 +106,7 @@ public class Application extends MultiDexApplication {
         OkHttpClient client = httpClient.build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.Api.BASE_API_URL)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .client(client)
                 .build();

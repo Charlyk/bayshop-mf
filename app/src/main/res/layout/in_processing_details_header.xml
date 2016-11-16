@@ -10,19 +10,39 @@
 
     <include layout="@layout/take_to_delivery_header"/>
 
-    <TextView
-        android:id="@+id/inProcessingDetailsParcelIdLabel"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingLeft="16dp"
-        android:paddingStart="16dp"
-        android:paddingRight="16dp"
-        android:paddingEnd="16dp"
-        android:background="@android:color/white"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        tools:text="MF3121241412"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/inProcessingDetailsParcelIdLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:background="@android:color/white"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            tools:text="MF3121241412"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Status goes here"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:alpha="0"
+            android:padding="3dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/green_5dp_corner"
+            android:textColor="@android:color/white"
+            android:id="@+id/pusDetailsStatusLabel"/>
+    </RelativeLayout>
 
     <com.softranger.bayshopmfr.util.widget.ParcelStatusBarView
         android:id="@+id/pusDetailsStatusProgress"
@@ -48,8 +68,8 @@
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp">
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
 
         <TextView
             android:layout_width="wrap_content"

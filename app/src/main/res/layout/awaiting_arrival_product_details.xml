@@ -80,6 +80,10 @@
             android:id="@+id/awaitingDetailsItemId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/awaitingItemStatusLabel"
+            android:layout_toStartOf="@+id/awaitingItemStatusLabel"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:paddingRight="16dp"
             android:paddingLeft="16dp"
             android:textColor="@color/colorAccent"
@@ -119,6 +123,18 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:src="@mipmap/ic_cancel_30dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Status goes here"
+            android:padding="3dp"
+            android:layout_toLeftOf="@id/awaitingDetailsDeleteButton"
+            android:layout_toStartOf="@id/awaitingDetailsDeleteButton"
+            android:alpha="0"
+            android:background="@drawable/green_5dp_corner"
+            android:textColor="@android:color/white"
+            android:id="@+id/awaitingItemStatusLabel"/>
     </RelativeLayout>
 
     <View

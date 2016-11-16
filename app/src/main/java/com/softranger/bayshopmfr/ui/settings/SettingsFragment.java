@@ -161,6 +161,9 @@ public class SettingsFragment extends ParentFragment {
                     .remove(SHIPPING_NAME)
                     .remove(INSURANCE)
                     .apply();
+            mAddressSubtitle.setText("");
+            mShippingSubtitle.setText("");
+            mInsuranceCheckbox.setChecked(false);
         }
         Application.setAskedAutoPackaging(true);
     }

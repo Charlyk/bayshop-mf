@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.model.box.AwaitingArrival;
@@ -36,7 +35,6 @@ import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
 import com.softranger.bayshopmfr.util.widget.ParcelStatusBarView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -44,8 +42,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -55,6 +51,7 @@ import rx.schedulers.Schedulers;
 public class AwaitingArrivalProductFragment extends ParentFragment implements ParcelStatusBarView.OnStatusBarReadyListener {
 
     private static final String PRODUCT_ARG = "product";
+    public static final String ACTION_ITEM_CHANGED = "com.softranger.bayshopmfr.ui.awaitingarrival.ITEM_CHANGED";
 
     @BindView(R.id.awaitingDetailsItemId) TextView mProductId;
     @BindView(R.id.awaitingDetailsProductName) TextView mProductName;
@@ -69,6 +66,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
     @BindView(R.id.awaitingTrackingStatusBarView)
     ParcelStatusBarView mStatusBarView;
+    @BindView(R.id.awaitingItemStatusLabel)
+    TextView mStatusLabel;
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
@@ -96,6 +95,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         mActivity = (ParentActivity) getActivity();
         mUnbinder = ButterKnife.bind(this, rootView);
 
+        mStatusLabel.setAlpha(0f);
+        mStatusBarView.setStatusNameLabel(mStatusLabel);
         mStatusBarView.setNewColorsMap(AwaitingArrivalFragment.COLOR_MAP);
         mStatusBarView.setOnStatusBarReadyListener(this);
 
@@ -106,7 +107,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING);
         intentFilter.addAction(AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST);
         intentFilter.addAction(CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT);
-        intentFilter.addAction(AwaitingArrivalFragment.ACTION_LIST_CHANGED);
+        intentFilter.addAction(ACTION_ITEM_CHANGED);
         intentFilter.addAction(Application.ACTION_RETRY);
         mActivity.registerReceiver(mStatusReceiver, intentFilter);
 
@@ -124,32 +125,39 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
+                // action received when user requested product verification
                 case CheckProductFragment.ACTION_CHECK_IN_PROCESSING:
                     mArrivalDetails.setVerificationRequested(1);
                     mCheckProduct.setSelected(true);
                     mCheckProduct.setText(mActivity.getString(R.string.check_in_progress));
                     break;
+                // action receiver when user requested additional photos
                 case AdditionalPhotoFragment.ACTION_PHOTO_IN_PROCESSING:
                     mArrivalDetails.setPhotoRequested(1);
                     mAdditionalPhoto.setSelected(true);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.photos_in_progress));
                     break;
+                // action received when user canceled additional photos request
                 case AdditionalPhotoFragment.ACTION_CANCEL_PHOTO_REQUEST:
                     mArrivalDetails.setPhotoRequested(0);
                     mAdditionalPhoto.setSelected(false);
                     mAdditionalPhoto.setText(mActivity.getString(R.string.additional_photo));
                     break;
+                // action received when user canceled product verification request
                 case CheckProductFragment.ACTION_CANCEL_CHECK_PRODUCT:
                     mArrivalDetails.setVerificationRequested(0);
                     mCheckProduct.setSelected(false);
                     mCheckProduct.setText(mActivity.getString(R.string.check_product));
                     break;
+                // action received from no internet view and used to send details request again
                 case Application.ACTION_RETRY:
                     mActivity.removeNoConnectionView();
                     mActivity.toggleLoadingProgress(true);
                     refreshFragment();
                     break;
-                case AwaitingArrivalFragment.ACTION_LIST_CHANGED:
+                // action received from onActivityResult() of AwaitingArrivalActivity
+                // used to refresh current fragment details
+                case ACTION_ITEM_CHANGED:
                     refreshFragment();
                     break;
             }
@@ -162,13 +170,20 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         mCall.enqueue(mResponseCallback);
     }
 
+    /**
+     * Response callback which receives the response with a detailed awaiting arrival parcel
+     */
     private ResponseCallback<AwaitingArrivalDetails> mResponseCallback = new ResponseCallback<AwaitingArrivalDetails>() {
         @Override
         public void onSuccess(AwaitingArrivalDetails data) {
+            // asign the details to global variable
             mArrivalDetails = data;
+            // set all data in their views to show it to user
             setDataInPlace(mArrivalDetails);
+            // hide loading progress
             mActivity.toggleLoadingProgress(false);
-            getTrackingCourierService(data);
+            // try to get tracking info
+            getTrackingCourierService(data.getTracking());
         }
 
         @Override
@@ -186,6 +201,11 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     };
 
 
+    /**
+     * Method used to set all data in their views in the UI
+     *
+     * @param arrivalDetails received from server
+     */
     private void setDataInPlace(AwaitingArrivalDetails arrivalDetails) {
         mProductId.setText(arrivalDetails.getUid());
         int quantity = arrivalDetails.getProducts().size();
@@ -210,33 +230,51 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         mHolderLayout.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Called when user taps on check product button
+     */
     @OnClick(R.id.awaitingDetailsCheckProductBtn)
     void toggleCheckProduct() {
         mActivity.addFragment(CheckProductFragment.newInstance(String.valueOf(mArrivalDetails.getId()),
                 mArrivalDetails.getVerificationRequested() != 0, true), true);
     }
 
+    /**
+     * Called when user taps on additional photos button
+     */
     @OnClick(R.id.awaitingDetailsAdditionalPhotosBtn)
     void toggleAdditionalPhotos() {
         mActivity.addFragment(AdditionalPhotoFragment.newInstance(String.valueOf(mArrivalDetails.getId()),
                 mArrivalDetails.getPhotoRequested() != 0, true), true);
     }
 
+    /**
+     * Called when user click on edit details button
+     */
     @OnClick(R.id.awaitingDetailsEditButton)
     void editParcelDetails() {
         if (mArrivalDetails == null) return;
+        // if we have parcel details we need to pass them to DeclarationActivity
         Intent editParcel = new Intent(mActivity, DeclarationActivity.class);
         editParcel.putExtra(DeclarationActivity.SHOW_TRACKING, true);
+        // products array list which user can edit
         editParcel.putExtra(DeclarationActivity.PRODUCTS_ARRAY, mArrivalDetails.getProducts());
+        // current parcel id used to save changes on server
         editParcel.putExtra(DeclarationActivity.AWAITING_ID, mArrivalDetails.getId());
+        // parcel tracking number so user could edit it if needed
         editParcel.putExtra(DeclarationActivity.TRACKING_NUM, mArrivalDetails.getTracking());
+        // start activity for result so we can get notification in on activity result
         mActivity.startActivityForResult(editParcel, AwaitingArrivalFragment.ADD_PARCEL_RC);
     }
 
-    private void getTrackingCourierService(AwaitingArrival data) {
-        String trackingNumber = data.getTracking();
+    /**
+     * Method used to get info about which delivery service is used for parcel tracking
+     *
+     * @param data Awaiting arrival parcel to get tracking number from
+     */
+    private void getTrackingCourierService(String data) {
         // get courier service by tracking number
-        Application.trackApiInterface().detectCourierService(trackingNumber)
+        Application.trackApiInterface().detectCourierService(data)
                 .subscribeOn(Schedulers.io())
                 .subscribe(arrayListTrackApiResponse -> {
                     // on response get first courier service from the list
@@ -245,23 +283,30 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                         CourierService service = services.get(0);
                         Courier courier = service.getCourier();
                         if (courier != null) {
-                            getTrackingInfo(data, courier.getSlug(), trackingNumber);
+                            getTrackingInfo(courier.getSlug(), data);
                         }
                     }
                 });
     }
 
-    private void getTrackingInfo(AwaitingArrival awaitingArrival, String slug, String trackingNumber) {
+    /**
+     * Method used to get tracking information from gdeposylka.ru
+     *
+     * @param slug           obtained from {@link AwaitingArrivalProductFragment#getTrackingCourierService(String)}
+     *                       method
+     * @param trackingNumber for current parcel
+     */
+    private void getTrackingInfo(String slug, String trackingNumber) {
         Application.trackApiInterface().trackParcelByCourierAndTracking(slug, trackingNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trackingResultTrackApiResponse -> {
                     if (trackingResultTrackApiResponse.getResult() == TrackApiResponse.Result.waiting) {
-                        getTrackingInfo(awaitingArrival, slug, trackingNumber);
+                        getTrackingInfo(slug, trackingNumber);
                     } else {
-                        // when we have an response show the progressbar
+                        // when we have a response show the progressbar
                         TrackingResult result = trackingResultTrackApiResponse.getData();
-                        awaitingArrival.setTrackingResult(result);
+                        mArrivalDetails.setTrackingResult(result);
                         if (result != null) {
                             onStatusBarReady();
                         }
@@ -269,22 +314,32 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                 });
     }
 
+    /**
+     * Method called when user want to delete a parcel
+     */
     @OnClick(R.id.awaitingDetailsDeleteButton)
     void deleteCurrentParcel() {
         deleteItem(mArrivalDetails);
     }
 
+    /**
+     * Called to delete a parcel from server
+     *
+     * @param product you want to delete
+     */
     private void deleteItem(final AwaitingArrival product) {
+        // create an alert dialog to show to users because this action can't be undone
         mAlertDialog = mActivity.getDialog(getString(R.string.delete), getString(R.string.confirm_deleting) + " "
-                        + product.getTitle() + "?", R.mipmap.ic_delete_parcel_popup_30dp,
+                        + product.getUid() + "?", R.mipmap.ic_delete_parcel_popup_30dp,
                 getString(R.string.yes), v -> {
+                    // if user confirmed deleting we need to send delete request to server
                     mActivity.toggleLoadingProgress(true);
-
-                    Application.apiInterface().deleteAwaitingParcel(mArrivalDetails.getId()).enqueue(new Callback<ServerResponse>() {
-                        @Override
-                        public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                            if (response.body() != null) {
-                                if (response.body().getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
+                    // start deleting process
+                    Application.apiInterface().deleteAwaitingArrivalParcel(mArrivalDetails.getId())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(serverResponse -> {
+                                if (serverResponse != null && serverResponse.getMessage().equals(Constants.ApiResponse.OK_MESSAGE)) {
                                     // get parcels count
                                     int count = Application.counters.get(Constants.ParcelStatus.AWAITING_ARRIVAL);
                                     // decrease it by one
@@ -292,28 +347,14 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                                     // put it back
                                     Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
                                     Intent intent = new Intent(AwaitingArrivalFragment.ACTION_LIST_CHANGED);
+                                    intent.putExtra("id", product.getId());
                                     mActivity.sendBroadcast(intent);
                                     mActivity.onBackPressed();
-                                } else {
-                                    Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                try {
-                                    ServerResponse serverResponse = new ObjectMapper().readValue(response.errorBody().string(), ServerResponse.class);
+                                } else if (serverResponse != null) {
                                     Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
                                 }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ServerResponse> call, Throwable t) {
-                            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            mActivity.toggleLoadingProgress(false);
-                        }
-                    });
-
+                                mActivity.toggleLoadingProgress(false);
+                            });
                     // close the dialog
                     mAlertDialog.dismiss();
                 }, getString(R.string.no), v -> {
@@ -347,6 +388,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
 
     @Override
     public void onStatusBarReady() {
+        if (mStatusBarView == null) return;
         if (mArrivalDetails != null && mArrivalDetails.getTrackingResult() != null) {
             TrackingResult result = mArrivalDetails.getTrackingResult();
             if (result.getCheckpoints() != null && result.getCheckpoints().size() > 0) {
@@ -361,12 +403,21 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                     statusStep = 1;
                 }
 
-                mStatusBarView.setProgress(statusStep, statusName);
+                if (mStatusBarView != null) {
+                    mStatusBarView.setProgress(statusStep);
+                    mStatusLabel.setText(statusName);
+                }
             } else {
-                mStatusBarView.setProgress(0, Application.getInstance().getString(R.string.geting_status));
+                if (mStatusBarView != null) {
+                    mStatusBarView.setProgress(0);
+                    mStatusLabel.setText(Application.getInstance().getString(R.string.geting_status));
+                }
             }
         } else {
-            mStatusBarView.setProgress(0, Application.getInstance().getString(R.string.geting_status));
+            if (mStatusBarView != null) {
+                mStatusLabel.setText(Application.getInstance().getString(R.string.geting_status));
+                mStatusBarView.setProgress(0);
+            }
         }
     }
 }

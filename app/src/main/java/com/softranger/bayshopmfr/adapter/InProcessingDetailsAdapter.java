@@ -103,8 +103,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
             headerHolder.mWarningWithImage.setVisibility(View.VISIBLE);
 
-            headerHolder.mStatusBarView.setProgress(headerHolder.mProcessingParcel.getParcelStatus().index(),
-                    mContext.getString(headerHolder.mProcessingParcel.getParcelStatus().statusName()));
+            headerHolder.mStatusLabel.setText(mContext.getString(headerHolder.mProcessingParcel.getParcelStatus().statusName()));
+            headerHolder.mStatusBarView.setProgress(headerHolder.mProcessingParcel.getParcelStatus().index());
 
             // check parcel status and set visibility of additional buttons and views
             // also set the right warning text and icon
@@ -241,6 +241,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView mPackagePrice;
         @BindView(R.id.inProcessingDetailsDeclaredPriceLabel)
         TextView mDeclaredPrice;
+        @BindView(R.id.pusDetailsStatusLabel)
+        TextView mStatusLabel;
 
         @BindView(R.id.pusDetailsStatusProgress)
         ParcelStatusBarView mStatusBarView;
@@ -278,6 +280,7 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
             ButterKnife.bind(this, itemView);
 
+            mStatusBarView.setStatusNameLabel(mStatusLabel);
             mStatusBarView.setOnStatusBarReadyListener(this);
 
             if (mShowMap) {
@@ -332,8 +335,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @Override
         public void onStatusBarReady() {
             if (mProcessingParcel != null) {
-                mStatusBarView.setProgress(mProcessingParcel.getParcelStatus().index(),
-                        mContext.getString(mProcessingParcel.getParcelStatus().statusName()));
+                mStatusLabel.setText(mContext.getString(mProcessingParcel.getParcelStatus().statusName()));
+                mStatusBarView.setProgress(mProcessingParcel.getParcelStatus().index());
             }
         }
     }

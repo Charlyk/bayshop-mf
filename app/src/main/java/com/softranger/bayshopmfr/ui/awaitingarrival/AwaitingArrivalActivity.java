@@ -2,6 +2,7 @@ package com.softranger.bayshopmfr.ui.awaitingarrival;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -53,6 +54,18 @@ public class AwaitingArrivalActivity extends ParentActivity {
         setToolbarTitle(fragment.getFragmentTitle());
         // now we need to update the current selected fragment
         selectedFragment = fragment.getSelectedFragment();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case AwaitingArrivalFragment.ADD_PARCEL_RC:
+                    sendBroadcast(new Intent(AwaitingArrivalProductFragment.ACTION_ITEM_CHANGED));
+                    break;
+            }
+        }
     }
 
     @Override

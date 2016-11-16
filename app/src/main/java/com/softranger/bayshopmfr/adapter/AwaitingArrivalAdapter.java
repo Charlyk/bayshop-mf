@@ -71,32 +71,8 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemHolder.mDateLabel.setText(Application.getFormattedDate(itemHolder.mAwaitingArrival.getCreatedDate()));
             itemHolder.mPriceLabel.setText(itemHolder.mAwaitingArrival.getPrice());
             itemHolder.mWeightLabel.setText("---");
-//            if (itemHolder.mAwaitingArrival.getTrackingResult() == null) {
-//                getTrackingCourierService(itemHolder.mAwaitingArrival);
-                itemHolder.mStatusBarView.setProgress(0, Application.getInstance().getString(R.string.geting_status));
-//            } else {
-//                ArrayList<Checkpoint> checkpoints = itemHolder.mAwaitingArrival.getTrackingResult().getCheckpoints();
-//                if (checkpoints != null && checkpoints.size() > 0) {
-//                    Checkpoint checkpoint = checkpoints.get(0);
-//
-//                    String statusName;
-//                    if (checkpoint.getCheckpointStatus() != Checkpoint.CheckpointStatus.other) {
-//                        statusName = Application.getInstance()
-//                                .getString(checkpoint.getCheckpointStatus().translatedStatus());
-//                    } else {
-//                        statusName = checkpoint.getStatusName();
-//                    }
-//
-//                    int statusStep;
-//                    if (checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.delivered) {
-//                        statusStep = 2;
-//                    } else {
-//                        statusStep = 1;
-//                    }
-//
-//                    itemHolder.mStatusBarView.setProgress(statusStep, statusName);
-//                }
-//            }
+            itemHolder.mStatusBarView.setProgress(0);
+            itemHolder.mStatusLabel.setText(Application.getInstance().getString(R.string.geting_status));
         }
     }
 
@@ -148,19 +124,28 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             ParcelStatusBarView.OnStatusBarReadyListener {
 
-        @BindView(R.id.awaitingUidLabel) TextView mUidLabel;
-        @BindView(R.id.awaitingDescriptionLabel) TextView mDescriptionLabel;
-        @BindView(R.id.awaitingDateLabel) TextView mDateLabel;
-        @BindView(R.id.awaitingWeightLabel) TextView mWeightLabel;
-        @BindView(R.id.awaitingPriceLabel) TextView mPriceLabel;
+        @BindView(R.id.awaitingUidLabel)
+        TextView mUidLabel;
+        @BindView(R.id.awaitingDescriptionLabel)
+        TextView mDescriptionLabel;
+        @BindView(R.id.awaitingDateLabel)
+        TextView mDateLabel;
+        @BindView(R.id.awaitingWeightLabel)
+        TextView mWeightLabel;
+        @BindView(R.id.awaitingPriceLabel)
+        TextView mPriceLabel;
         @BindView(R.id.awaitingTrackingStatusBarView)
         ParcelStatusBarView mStatusBarView;
+        @BindView(R.id.awaitingItemStatusLabel)
+        TextView mStatusLabel;
         AwaitingArrival mAwaitingArrival;
 
         public ItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
+            mStatusLabel.setAlpha(0f);
+            mStatusBarView.setStatusNameLabel(mStatusLabel);
             mStatusBarView.setNewColorsMap(mBarColorSparseArray);
             mStatusBarView.setOnStatusBarReadyListener(this);
 
@@ -196,15 +181,18 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     statusStep = 1;
                 }
 
-                mStatusBarView.setProgress(statusStep, statusName);
+                mStatusBarView.setProgress(statusStep);
+                mStatusLabel.setText(statusName);
             } else {
-                mStatusBarView.setProgress(0, Application.getInstance().getString(R.string.geting_status));
+                mStatusBarView.setProgress(0);
+                mStatusLabel.setText(Application.getInstance().getString(R.string.geting_status));
             }
         }
     }
 
     public interface OnAwaitingClickListener {
         void onAwaitingClick(AwaitingArrival awaitingArrival, int position);
+
         void onDeleteAwaitingClick(AwaitingArrival awaitingArrival, int position);
     }
 }

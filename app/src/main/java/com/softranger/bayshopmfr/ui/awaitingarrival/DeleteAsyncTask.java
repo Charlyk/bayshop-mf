@@ -20,7 +20,7 @@ import retrofit2.Response;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
+public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, String> {
 
     private int mItemPosition;
     private ArrayList<AwaitingArrival> mAwaitingArrivals;
@@ -42,9 +42,11 @@ public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(AwaitingArrival... awaitingArrivals) {
+    protected String doInBackground(AwaitingArrival... awaitingArrivals) {
         // send delete request to server
-        Call<ServerResponse> call = Application.apiInterface().deleteAwaitingParcel(awaitingArrivals[0].getId());
+        AwaitingArrival awaitingArrival = awaitingArrivals[0];
+        String awaitingId = awaitingArrival.getId();
+        Call<ServerResponse> call = Application.apiInterface().deleteAwaitingParcel(awaitingId);
         try {
             // send request
             Response<ServerResponse> response = call.execute();
@@ -57,11 +59,11 @@ public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return awaitingId;
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
+    protected void onPostExecute(String id) {
         mAdapter.deleteItem(mItemPosition);
         mActivity.toggleLoadingProgress(false);
         // get parcels count
@@ -72,10 +74,10 @@ public class DeleteAsyncTask extends AsyncTask<AwaitingArrival, Void, Void> {
         Application.counters.put(Constants.ParcelStatus.AWAITING_ARRIVAL, count);
         // update counters from menu
         mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
-        if (mOnDeleteListener != null) mOnDeleteListener.onItemDeleted();
+        if (mOnDeleteListener != null) mOnDeleteListener.onItemDeleted(id);
     }
 
     public interface OnDeleteListener {
-        void onItemDeleted();
+        void onItemDeleted(String deletedItemId);
     }
 }

@@ -12,7 +12,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp">
 
@@ -20,7 +19,14 @@
             android:id="@+id/pusItemCodeNumberLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/pusItemStatusLabel"
+            android:layout_toStartOf="@+id/pusItemStatusLabel"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/colorAccent"
+            android:layout_marginTop="16dp"
             android:textSize="18sp"
             tools:text="PUS2131432133"/>
 
@@ -33,6 +39,21 @@
             android:layout_below="@id/pusItemCodeNumberLabel"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Status goes here"
+            android:padding="3dp"
+            android:layout_marginTop="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:alpha="0"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/green_5dp_corner"
+            android:textColor="@android:color/white"
+            android:id="@+id/pusItemStatusLabel"/>
 
         <TextView
             android:id="@+id/pusItemWeightLabel"
@@ -107,6 +128,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/drop_shadow"/>
 </LinearLayout>

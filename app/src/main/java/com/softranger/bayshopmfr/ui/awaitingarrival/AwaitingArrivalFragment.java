@@ -204,8 +204,12 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case ACTION_LIST_CHANGED:
-                    onRefresh(mRefreshLayout);
-                    mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                    if (intent.hasExtra("id")) {
+                        removeItemFromList(intent.getExtras().getString("id"));
+                        mActivity.updateParcelCounters(Constants.ParcelStatus.AWAITING_ARRIVAL);
+                    } else {
+                        onRefresh(mRefreshLayout);
+                    }
                     break;
                 case ACTION_SHOW_BTN:
                     mActionButton.setVisibility(View.VISIBLE);
@@ -255,7 +259,17 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
     }
 
     @Override
-    public void onItemDeleted() {
-        togglePlaceholder(mAdapter.getItemCount() <= 0);
+    public void onItemDeleted(String deletedItemId) {
+        removeItemFromList(deletedItemId);
+    }
+
+    private void removeItemFromList(String itemId) {
+        AwaitingArrival arrival = new AwaitingArrival();
+        arrival.setId(itemId);
+        final int index = mAwaitingArrivals.indexOf(arrival);
+        if (index >= 0 && mAwaitingArrivals.size() > 0) {
+            mAwaitingArrivals.remove(index);
+            mAdapter.deleteItem(index);
+        }
     }
 }
