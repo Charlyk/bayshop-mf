@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="days_remained">
+        <item quantity="one">A rămas %s zi</item>
+        <item quantity="few">Au rămas %s zile</item>
+        <item quantity="other">Au rămas %s zile</item>
+    </plurals>
+</resources>

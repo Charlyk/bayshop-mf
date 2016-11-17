@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="days_remained">
-        <item quantity="one">Remained %s day</item>
-        <item quantity="other">Remained %s days</item>
+        <item quantity="one">%s day left</item>
+        <item quantity="other">%s days left</item>
     </plurals>
 </resources>

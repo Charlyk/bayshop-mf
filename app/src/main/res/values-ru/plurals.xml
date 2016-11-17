@@ -2,7 +2,7 @@
 <resources>
     <plurals name="days_remained">
         <item quantity="one">Остался %s день</item>
-        <item quantity="few">Остались %s дня</item>
+        <item quantity="few">Осталось %s дня</item>
         <item quantity="many">Осталось %s дней</item>
         <item quantity="other">Осталось %s дней</item>
     </plurals>

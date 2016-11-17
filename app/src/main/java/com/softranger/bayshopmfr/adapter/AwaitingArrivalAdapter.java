@@ -1,7 +1,6 @@
 package com.softranger.bayshopmfr.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import com.annimon.stream.Stream;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.box.AwaitingArrival;
+import com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalFragment;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.widget.ParcelStatusBarView;
 
@@ -28,12 +28,9 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private ArrayList<AwaitingArrival> mAwaitingArrivals;
     private OnAwaitingClickListener mOnAwaitingClickListener;
-    private SparseArray<ParcelStatusBarView.BarColor> mBarColorSparseArray;
 
-    public AwaitingArrivalAdapter(ArrayList<AwaitingArrival> awaitingArrivals,
-                                  SparseArray<ParcelStatusBarView.BarColor> barColorSparseArray) {
+    public AwaitingArrivalAdapter(ArrayList<AwaitingArrival> awaitingArrivals) {
         mAwaitingArrivals = awaitingArrivals;
-        mBarColorSparseArray = barColorSparseArray;
     }
 
     public void setOnAwaitingClickListener(OnAwaitingClickListener onAwaitingClickListener) {
@@ -78,8 +75,7 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         notifyItemRemoved(position);
     }
 
-    class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-            ParcelStatusBarView.OnStatusBarReadyListener {
+    class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ParcelStatusBarView.OnStatusBarReadyListener {
 
         @BindView(R.id.awaitingUidLabel)
         TextView mUidLabel;
@@ -101,8 +97,8 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             super(itemView);
             ButterKnife.bind(this, itemView);
 
+            mStatusBarView.setNewColorsMap(AwaitingArrivalFragment.COLOR_MAP);
             mStatusBarView.setStatusNameLabel(mStatusLabel);
-            mStatusBarView.setNewColorsMap(mBarColorSparseArray);
             mStatusBarView.setOnStatusBarReadyListener(this);
 
             itemView.setOnClickListener(this);

@@ -108,7 +108,7 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
 
         // Create the adapter for this fragment and pass it to recycler view
         mAwaitingArrivals = new ArrayList<>();
-        mAdapter = new AwaitingArrivalAdapter(mAwaitingArrivals, COLOR_MAP);
+        mAdapter = new AwaitingArrivalAdapter(mAwaitingArrivals);
         mAdapter.setOnAwaitingClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));

@@ -161,7 +161,8 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            mClientSignature.setImageBitmap(bitmap);
+            if (bitmap == null) mClientSignature.setVisibility(View.GONE);
+            else mClientSignature.setImageBitmap(bitmap);
             mDownloadProgress.setVisibility(View.GONE);
         }
 
