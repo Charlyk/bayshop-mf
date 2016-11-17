@@ -19,11 +19,7 @@ import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.model.box.AwaitingArrival;
 import com.softranger.bayshopmfr.model.box.AwaitingArrivalDetails;
-import com.softranger.bayshopmfr.model.tracking.Checkpoint;
-import com.softranger.bayshopmfr.model.tracking.Courier;
-import com.softranger.bayshopmfr.model.tracking.CourierService;
-import com.softranger.bayshopmfr.model.tracking.TrackApiResponse;
-import com.softranger.bayshopmfr.model.tracking.TrackingResult;
+import com.softranger.bayshopmfr.model.box.TrackingInfo;
 import com.softranger.bayshopmfr.network.ResponseCallback;
 import com.softranger.bayshopmfr.ui.general.DeclarationActivity;
 import com.softranger.bayshopmfr.ui.general.MainActivity;
@@ -34,8 +30,6 @@ import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
 import com.softranger.bayshopmfr.util.widget.ParcelStatusBarView;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -183,7 +177,21 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
             // hide loading progress
             mActivity.toggleLoadingProgress(false);
             // try to get tracking info
-            getTrackingCourierService(data.getTracking());
+            // TODO: 11/17/16 update progress bar
+            Application.apiInterface().getAwaitingParcelTrackingInfo(data.getId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(throwable -> {
+                        Toast.makeText(mActivity, throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    })
+                    .subscribe(trackingInfoServerResponse -> {
+                        TrackingInfo trackingInfo = trackingInfoServerResponse.getData();
+                        mArrivalDetails.setTrackingStatus(trackingInfo);
+                        if (mStatusBarView != null && mStatusLabel != null) {
+                            mStatusBarView.setProgress(trackingInfo.getTrackingStatus().progress());
+                            mStatusLabel.setText(trackingInfo.getTrackingStatus().translatedStatus());
+                        }
+                    });
         }
 
         @Override
@@ -268,53 +276,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     }
 
     /**
-     * Method used to get info about which delivery service is used for parcel tracking
-     *
-     * @param data Awaiting arrival parcel to get tracking number from
-     */
-    private void getTrackingCourierService(String data) {
-        // get courier service by tracking number
-        Application.trackApiInterface().detectCourierService(data)
-                .subscribeOn(Schedulers.io())
-                .subscribe(arrayListTrackApiResponse -> {
-                    // on response get first courier service from the list
-                    ArrayList<CourierService> services = arrayListTrackApiResponse.getData();
-                    if (services != null && services.size() > 0) {
-                        CourierService service = services.get(0);
-                        Courier courier = service.getCourier();
-                        if (courier != null) {
-                            getTrackingInfo(courier.getSlug(), data);
-                        }
-                    }
-                });
-    }
-
-    /**
-     * Method used to get tracking information from gdeposylka.ru
-     *
-     * @param slug           obtained from {@link AwaitingArrivalProductFragment#getTrackingCourierService(String)}
-     *                       method
-     * @param trackingNumber for current parcel
-     */
-    private void getTrackingInfo(String slug, String trackingNumber) {
-        Application.trackApiInterface().trackParcelByCourierAndTracking(slug, trackingNumber)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(trackingResultTrackApiResponse -> {
-                    if (trackingResultTrackApiResponse.getResult() == TrackApiResponse.Result.waiting) {
-                        getTrackingInfo(slug, trackingNumber);
-                    } else {
-                        // when we have a response show the progressbar
-                        TrackingResult result = trackingResultTrackApiResponse.getData();
-                        mArrivalDetails.setTrackingResult(result);
-                        if (result != null) {
-                            onStatusBarReady();
-                        }
-                    }
-                });
-    }
-
-    /**
      * Method called when user want to delete a parcel
      */
     @OnClick(R.id.awaitingDetailsDeleteButton)
@@ -388,36 +349,9 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
 
     @Override
     public void onStatusBarReady() {
-        if (mStatusBarView == null) return;
-        if (mArrivalDetails != null && mArrivalDetails.getTrackingResult() != null) {
-            TrackingResult result = mArrivalDetails.getTrackingResult();
-            if (result.getCheckpoints() != null && result.getCheckpoints().size() > 0) {
-                Checkpoint checkpoint = result.getCheckpoints().get(0);
-                String statusName = checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.other ?
-                        checkpoint.getStatusName() : Application.getInstance().getString(checkpoint.getCheckpointStatus().translatedStatus());
-
-                int statusStep;
-                if (checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.delivered) {
-                    statusStep = 2;
-                } else {
-                    statusStep = 1;
-                }
-
-                if (mStatusBarView != null) {
-                    mStatusBarView.setProgress(statusStep);
-                    mStatusLabel.setText(statusName);
-                }
-            } else {
-                if (mStatusBarView != null) {
-                    mStatusBarView.setProgress(0);
-                    mStatusLabel.setText(Application.getInstance().getString(R.string.geting_status));
-                }
-            }
-        } else {
-            if (mStatusBarView != null) {
-                mStatusLabel.setText(Application.getInstance().getString(R.string.geting_status));
-                mStatusBarView.setProgress(0);
-            }
+        if (mArrivalDetails != null && mStatusBarView != null && mStatusLabel != null) {
+            mStatusBarView.setProgress(mArrivalDetails.getTrackingStatus().progress());
+            mStatusLabel.setText(mArrivalDetails.getTrackingStatus().translatedStatus());
         }
     }
 }

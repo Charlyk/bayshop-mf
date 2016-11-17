@@ -519,7 +519,7 @@
     <string name="in_transit_arrived">În tranzit - A ajuns la punctul intermediar</string>
 
     <!-- может используется что-то типа in transit? -->
-    <string name="in_transit">Coletul este în tranzit</string>
+    <string name="in_transit">În tranzit</string>
     <string name="arrived">Coletul a ajuns la destinație</string>
     <string name="soon_delivery">Coletul este în pregătire pentru expediere</string>
     <string name="delivered">Coletul a fost livrat</string>

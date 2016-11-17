@@ -14,6 +14,7 @@ import com.softranger.bayshopmfr.model.box.AwaitingArrivalDetails;
 import com.softranger.bayshopmfr.model.box.Declaration;
 import com.softranger.bayshopmfr.model.box.InStockDetailed;
 import com.softranger.bayshopmfr.model.box.InStockList;
+import com.softranger.bayshopmfr.model.box.TrackingInfo;
 import com.softranger.bayshopmfr.model.payment.PaymentHistories;
 import com.softranger.bayshopmfr.model.pus.PUSParcel;
 import com.softranger.bayshopmfr.model.pus.PUSParcelDetailed;
@@ -80,10 +81,10 @@ public interface BayShopApiInterface {
 
     @FormUrlEncoded
     @POST("waiting-mf/{id}")
-    Call<ServerResponse> addNewAwaitingParcel(@Path("id") String parcelId,
-                                              @Field("storage") String storage,
-                                              @Field("tracking") String trackingNum,
-                                              @Field("declarations") String productsJsonArray);
+    Call<ServerResponse<String>> addNewAwaitingParcel(@Path("id") String parcelId,
+                                                      @Field("storage") String storage,
+                                                      @Field("tracking") String trackingNum,
+                                                      @Field("declarations") String productsJsonArray);
 
     @GET("waiting-mf/{id}")
     Call<ServerResponse<AwaitingArrivalDetails>> getAwaitingParcelDetails(@Path("id") String parcelId);
@@ -262,4 +263,7 @@ public interface BayShopApiInterface {
 
     @GET("additional-services/")
     Call<ServerResponse<HashMap<String, Double>>> getAdditionalServicesPrices();
+
+    @GET("waiting-mf-tracking/{id}")
+    Observable<ServerResponse<TrackingInfo>> getAwaitingParcelTrackingInfo(@Path("id") String parcelId);
 }

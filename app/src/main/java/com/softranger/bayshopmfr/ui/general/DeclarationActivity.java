@@ -82,7 +82,8 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     // chrome tabs intent used to open products url
     private CustomTabsIntent mTabsIntent;
     // call to server for saving parcel details
-    private Call<ServerResponse> mCall;
+    private Call<ServerResponse<String>> mCall;
+    private Call<ServerResponse> mInstockCall;
     private Call<ServerResponse<Declaration>> mDeclarationCall;
 
     // current entered parcel tracking number
@@ -395,9 +396,9 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
             }
         }
 
-        mCall = Application.apiInterface().saveInStockItemDeclaration(mInStockId,
+        mInstockCall = Application.apiInterface().saveInStockItemDeclaration(mInStockId,
                 jsonArray.toString());
-        mCall.enqueue(mResponseCallback);
+        mInstockCall.enqueue(mInStockCallback);
     }
 
     private boolean isAllDataProvided(Product product) {
@@ -492,15 +493,37 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     /**
      * Receives response from server and checks if it is successful or not
      */
-    private ResponseCallback mResponseCallback = new ResponseCallback() {
+    private ResponseCallback<String> mResponseCallback = new ResponseCallback<String>() {
+        @Override
+        public void onSuccess(String data) {
+            Intent refreshIntent = new Intent(ACTION_REFRESH_AWAITING);
+            refreshIntent.putExtra("added_id", data);
+            setResult(RESULT_OK, refreshIntent);
+            finish();
+        }
+
+        @Override
+        public void onFailure(ServerResponse errorData) {
+            toggleLoadingProgress(false);
+            Toast.makeText(DeclarationActivity.this, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Call call, Throwable t) {
+            t.printStackTrace();
+            toggleLoadingProgress(false);
+            Toast.makeText(DeclarationActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    /**
+     * Receives response from server and checks if it is successful or not
+     */
+    private ResponseCallback mInStockCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
             Intent refreshIntent = new Intent(ACTION_REFRESH_AWAITING);
             setResult(RESULT_OK, refreshIntent);
-            if (!mIsInStock) {
-                showResultActivity(getString(R.string.parcel_added), R.mipmap.ic_confirm_awaiting_250dp,
-                        getString(R.string.wait_parcel));
-            }
             finish();
         }
 

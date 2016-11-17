@@ -233,7 +233,9 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case AwaitingArrivalFragment.ADD_PARCEL_RC:
-                    sendBroadcast(new Intent(AwaitingArrivalFragment.ACTION_LIST_CHANGED));
+                    Intent addItem = new Intent(AwaitingArrivalFragment.ACTION_LIST_CHANGED);
+                    addItem.putExtra("added_id", data.getExtras().getString("added_id"));
+                    sendBroadcast(addItem);
                     break;
                 case DetailsFragment.DECLARATION_RC:
                     sendBroadcast(new Intent(InStockFragment.ACTION_UPDATE_LIST));

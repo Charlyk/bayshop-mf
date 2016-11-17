@@ -2,10 +2,9 @@ package com.softranger.bayshopmfr.model.box;
 
 import android.os.Parcel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.softranger.bayshopmfr.model.tracking.TrackingResult;
 import com.softranger.bayshopmfr.util.Constants;
 
 /**
@@ -13,13 +12,15 @@ import com.softranger.bayshopmfr.util.Constants;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AwaitingArrival extends Box {
 
-    @JsonProperty("status") private String mTrackingStatus;
     @JsonProperty("url") private String mUrl;
     @JsonProperty("storage") private String mStorage;
-    @JsonIgnore
-    private TrackingResult mTrackingResult;
+    @JsonProperty("service_name")
+    private String mTrackingServiceName;
+    @JsonProperty("tracking_status")
+    private String mStringStatus;
 
     public AwaitingArrival() {
         // empty constructor for jackson
@@ -27,9 +28,10 @@ public class AwaitingArrival extends Box {
 
     public AwaitingArrival(Parcel in) {
         super(in);
-        mTrackingStatus = in.readString();
         mUrl = in.readString();
         mStorage = in.readString();
+        mTrackingServiceName = in.readString();
+        mStringStatus = in.readString();
     }
 
     public static final Creator<AwaitingArrival> CREATOR = new Creator<AwaitingArrival>() {
@@ -44,8 +46,14 @@ public class AwaitingArrival extends Box {
         }
     };
 
-    public String getTrackingStatus() {
-        return mTrackingStatus;
+    public TrackingInfo.TrackingStatus getTrackingStatus() {
+        if (mStringStatus == null) return TrackingInfo.TrackingStatus.UNKNOWN;
+        for (TrackingInfo.TrackingStatus s : TrackingInfo.TrackingStatus.values()) {
+            if (s.name().equalsIgnoreCase(mStringStatus)) {
+                return s;
+            }
+        }
+        return TrackingInfo.TrackingStatus.UNKNOWN;
     }
 
     public String getUrl() {
@@ -66,12 +74,12 @@ public class AwaitingArrival extends Box {
         mUrl = url;
     }
 
-    public TrackingResult getTrackingResult() {
-        return mTrackingResult;
+    public String getTrackingServiceName() {
+        return mTrackingServiceName;
     }
 
-    public void setTrackingResult(TrackingResult trackingResult) {
-        mTrackingResult = trackingResult;
+    public String getStringStatus() {
+        return mStringStatus;
     }
 
     @Override
@@ -83,8 +91,14 @@ public class AwaitingArrival extends Box {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
-        parcel.writeString(mTrackingStatus);
         parcel.writeString(mUrl);
         parcel.writeString(mStorage);
+        parcel.writeString(mTrackingServiceName);
+        parcel.writeString(mStringStatus);
+    }
+
+    public void setTrackingStatus(TrackingInfo trackingInfo) {
+        mTrackingServiceName = trackingInfo.getServiceName();
+        mStringStatus = trackingInfo.getStatus();
     }
 }

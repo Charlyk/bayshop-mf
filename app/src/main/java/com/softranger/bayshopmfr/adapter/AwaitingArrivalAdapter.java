@@ -10,11 +10,6 @@ import android.widget.TextView;
 import com.annimon.stream.Stream;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.box.AwaitingArrival;
-import com.softranger.bayshopmfr.model.tracking.Checkpoint;
-import com.softranger.bayshopmfr.model.tracking.Courier;
-import com.softranger.bayshopmfr.model.tracking.CourierService;
-import com.softranger.bayshopmfr.model.tracking.TrackApiResponse;
-import com.softranger.bayshopmfr.model.tracking.TrackingResult;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.widget.ParcelStatusBarView;
 
@@ -23,8 +18,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Eduard Albu on 9/20/16, 09, 2016
@@ -35,7 +28,7 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private ArrayList<AwaitingArrival> mAwaitingArrivals;
     private OnAwaitingClickListener mOnAwaitingClickListener;
-    SparseArray<ParcelStatusBarView.BarColor> mBarColorSparseArray;
+    private SparseArray<ParcelStatusBarView.BarColor> mBarColorSparseArray;
 
     public AwaitingArrivalAdapter(ArrayList<AwaitingArrival> awaitingArrivals,
                                   SparseArray<ParcelStatusBarView.BarColor> barColorSparseArray) {
@@ -71,45 +64,9 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemHolder.mDateLabel.setText(Application.getFormattedDate(itemHolder.mAwaitingArrival.getCreatedDate()));
             itemHolder.mPriceLabel.setText(itemHolder.mAwaitingArrival.getPrice());
             itemHolder.mWeightLabel.setText("---");
-            itemHolder.mStatusBarView.setProgress(0);
-            itemHolder.mStatusLabel.setText(Application.getInstance().getString(R.string.geting_status));
+            itemHolder.mStatusBarView.setProgress(itemHolder.mAwaitingArrival.getTrackingStatus().progress());
+            itemHolder.mStatusLabel.setText(itemHolder.mAwaitingArrival.getTrackingStatus().translatedStatus());
         }
-    }
-
-    private void getTrackingCourierService(AwaitingArrival data) {
-        String trackingNumber = data.getTracking();
-        // get courier service by tracking number
-        Application.trackApiInterface().detectCourierService(trackingNumber)
-                .subscribeOn(Schedulers.io())
-                .subscribe(arrayListTrackApiResponse -> {
-                    // on response get first courier service from the list
-                    ArrayList<CourierService> services = arrayListTrackApiResponse.getData();
-                    if (services != null && services.size() > 0) {
-                        CourierService service = services.get(0);
-                        Courier courier = service.getCourier();
-                        if (courier != null) {
-                            getTrackingInfo(data, courier.getSlug(), trackingNumber);
-                        }
-                    }
-                });
-    }
-
-    private void getTrackingInfo(AwaitingArrival awaitingArrival, String slug, String trackingNumber) {
-        Application.trackApiInterface().trackParcelByCourierAndTracking(slug, trackingNumber)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(trackingResultTrackApiResponse -> {
-                    if (trackingResultTrackApiResponse.getResult() == TrackApiResponse.Result.waiting) {
-                        getTrackingInfo(awaitingArrival, slug, trackingNumber);
-                    } else {
-                        // when we have an response show the progressbar
-                        TrackingResult result = trackingResultTrackApiResponse.getData();
-                        awaitingArrival.setTrackingResult(result);
-                        if (result != null) {
-                            notifyItemChanged(mAwaitingArrivals.indexOf(awaitingArrival));
-                        }
-                    }
-                });
     }
 
     @Override
@@ -144,7 +101,6 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            mStatusLabel.setAlpha(0f);
             mStatusBarView.setStatusNameLabel(mStatusLabel);
             mStatusBarView.setNewColorsMap(mBarColorSparseArray);
             mStatusBarView.setOnStatusBarReadyListener(this);
@@ -168,25 +124,9 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onStatusBarReady() {
-            if (mAwaitingArrival.getTrackingResult() != null) {
-                TrackingResult result = mAwaitingArrival.getTrackingResult();
-                Checkpoint checkpoint = result.getCheckpoints().get(0);
-                String statusName = checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.other ?
-                        checkpoint.getStatusName() : Application.getInstance().getString(checkpoint.getCheckpointStatus().translatedStatus());
-
-                int statusStep;
-                if (checkpoint.getCheckpointStatus() == Checkpoint.CheckpointStatus.delivered) {
-                    statusStep = 2;
-                } else {
-                    statusStep = 1;
-                }
-
-                mStatusBarView.setProgress(statusStep);
-                mStatusLabel.setText(statusName);
-            } else {
-                mStatusBarView.setProgress(0);
-                mStatusLabel.setText(Application.getInstance().getString(R.string.geting_status));
-            }
+            if (mAwaitingArrival == null) return;
+            mStatusBarView.setProgress(mAwaitingArrival.getTrackingStatus().progress());
+            mStatusLabel.setText(mAwaitingArrival.getTrackingStatus().translatedStatus());
         }
     }
 
