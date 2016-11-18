@@ -2,6 +2,7 @@ package com.softranger.bayshopmfr.model.box;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +17,7 @@ import java.util.Date;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-public class Box implements Parcelable {
+public class Box implements Parcelable, Comparable<Box> {
 
     @JsonProperty("id") private String mId;
     @JsonProperty("uid") private String mUid;
@@ -143,5 +144,10 @@ public class Box implements Parcelable {
         parcel.writeTypedList(mPhotos);
         parcel.writeString(mTracking);
         parcel.writeSerializable(mCreatedDate);
+    }
+
+    @Override
+    public int compareTo(@NonNull Box box) {
+        return box.getCreatedDate().compareTo(getCreatedDate());
     }
 }

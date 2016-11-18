@@ -6,6 +6,9 @@
     <string name="navigation_drawer_open">"Open navigation drawer"</string>
     <string name="navigation_drawer_close">"Close navigation drawer"</string>
 
+    <!-- Splash screen -->
+    <string name="mail_forwarding">"MAIL FORWARDING"</string>
+
     <!-- DO NOT CHANGE OR COPY TO TRANSLATED FILE -->
     <string name="server_client_id" translatable="false">376156188250-8is8v8qi3dn4hntrota8nsnebhdkllf0.apps.googleusercontent.com</string>
     <string name="facebook_app_id" translatable="false">1448296545440676</string>
@@ -13,9 +16,6 @@
     <string name="gde_posylka_api_key" translatable="false">01df6c70b0421d7f62c2764a6f5a831acc874623a731f9eddba9f2eac9b1ae8d55fd8c1a9a737472</string>
     <string name="empty_string" translatable="false"> </string>
     <string name="google_maps_api_key" translatable="false">AIzaSyCXEDAkhx0J1JYX93llnJUpJmrczBMWxxw</string>
-
-    <!-- Splash screen -->
-    <string name="mail_forwarding">"MAIL FORWARDING"</string>
 
     <!-- Main login screen -->
     <string name="haveAnAccountText">"Don't have an account?"</string>
@@ -91,7 +91,7 @@
     <!-- Warehouse USA -->
     <string name="additional_photo">"Additional photos"</string>
     <string name="check_product">"Product checking"</string>
-    <string name="warehouse_usa">"At warehouse"</string>
+    <string name="warehouse_usa">"Warehouse"</string>
     <string name="declaration_not_filled">"Declaration isn`t filled"</string>
 
     <!-- Warehouse USA Details -->
@@ -166,7 +166,6 @@
     <string name="send_parcel">"Send parcel"</string>
     <string name="allow_shipping">"Allow sending"</string>
     <string name="shipping_price_aproximate">"Shipping cost:"</string>
-    <string name="vkg" translatable="false">Vkg</string>
 
     <!-- result screen -->
     <string name="parcel_details">"Parcel details"</string>
@@ -214,7 +213,7 @@
 
     <!-- Warehouse address -->
     <string name="click_on_field_to_copy">"Click on each line to copy the text."</string>
-    <string name="warehouse_addresses">"You address in the US"</string>
+    <string name="warehouse_addresses">"Your US address"</string>
 
     <!-- Screens with addresses and personal data -->
     <string name="full_name">"Name and surname"</string>
@@ -359,6 +358,7 @@
     <string name="_0_0" translatable="false">0.0</string>
     <string name="kg" translatable="false">---</string>
     <string name="kilos">"kg"</string>
+    <string name="vkg" translatable="false">Vkg</string>
     <string name="tracking_example" translatable="false">12345678901234567890</string>
     <string name="_10" translatable="false">$10</string>
     <string name="_0" translatable="false">0</string>
@@ -408,6 +408,5 @@
     <string name="intro_second_description">"Add orders awaited at the warehouse in the US right on your smartphone."</string>
     <string name="intro_third_title">"Stay in touch"</string>
     <string name="intro_third_description">"Get push-notifications about the shipping progress of your purchases."</string>
-
     <string name="app_version">Version %1$s(%2$d)</string>
 </resources>

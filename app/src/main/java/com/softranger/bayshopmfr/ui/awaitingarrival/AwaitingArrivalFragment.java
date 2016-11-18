@@ -38,12 +38,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import retrofit2.Call;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 
 public class AwaitingArrivalFragment extends ParentFragment implements PullToRefreshLayout.PullToRefreshListener,
-        AwaitingArrivalAdapter.OnAwaitingClickListener, DeleteAsyncTask.OnDeleteListener {
+        AwaitingArrivalAdapter.OnAwaitingClickListener {
 
     public static final String ACTION_SHOW_BTN = "SHOW FLOATING BUTTON";
     public static final String ACTION_LIST_CHANGED = "com.softranger.bayshopmf.ui.awaitingarrival.LIST_CHANGED";
@@ -239,9 +241,16 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
                         + product.getUid() + "?", R.mipmap.ic_delete_parcel_popup_30dp,
                 getString(R.string.yes), ((view) -> {
                     mActivity.toggleLoadingProgress(true);
-                    DeleteAsyncTask deleteAsyncTask = new DeleteAsyncTask(position, mAwaitingArrivals, mActivity, mAdapter);
-                    deleteAsyncTask.setOnDeleteListener(this);
-                    deleteAsyncTask.execute(product);
+                    Application.apiInterface().deleteAwaitingArrivalParcel(product.getId())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(serverResponse -> {
+                                mAdapter.removeItem(position);
+                                mActivity.toggleLoadingProgress(false);
+                            }, error -> {
+                                Toast.makeText(mActivity, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                mActivity.toggleLoadingProgress(false);
+                            });
                     // close the dialog
                     mAlertDialog.dismiss();
 
@@ -256,11 +265,6 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
         mActivity.removeNoConnectionView();
         mWaitingListCall = Application.apiInterface().getAwaitingArrivalItems();
         mWaitingListCall.enqueue(mResponseCallback);
-    }
-
-    @Override
-    public void onItemDeleted(String deletedItemId) {
-        removeItemFromList(deletedItemId);
     }
 
     private void removeItemFromList(String itemId) {

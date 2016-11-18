@@ -14,6 +14,7 @@ import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.widget.ParcelStatusBarView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +42,7 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         Stream.of(awaitingArrivals)
                 .filterNot(value -> mAwaitingArrivals.contains(value))
                 .forEach(awaitingArrival -> mAwaitingArrivals.add(awaitingArrival));
-
+        Collections.sort(mAwaitingArrivals);
         notifyDataSetChanged();
     }
 
@@ -72,6 +73,11 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void deleteItem(int position) {
+        notifyItemRemoved(position);
+    }
+
+    public void removeItem(int position) {
+        mAwaitingArrivals.remove(position);
         notifyItemRemoved(position);
     }
 

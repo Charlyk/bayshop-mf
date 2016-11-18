@@ -40,7 +40,6 @@ public class ParcelStatusBarView extends RelativeLayout {
     private SparseArray<BarColor> mColors;
     private OnStatusBarReadyListener mOnStatusBarReadyListener;
     private ValueAnimator mIndicatorAnimation;
-    private float mToWidth;
     private Handler mUpdateHandler;
     private ValueAnimator mLabelAnimation;
 
@@ -158,11 +157,14 @@ public class ParcelStatusBarView extends RelativeLayout {
     }
 
     public void setNewColorsMap(SparseArray<BarColor> colorsMap) {
-        mColors = colorsMap;
+        mColors.clear();
+
+        for (int i = 0; i < colorsMap.size(); i++) {
+            mColors.put(i, colorsMap.valueAt(i));
+        }
+
         // set the initial maximum statuses
         mStatusesCount = mColors.size() - 1;
-        // get holder width
-        mTotalWidth = mStatusBarHolder.getWidth();
         // compute the with for one status
         mOneStatusWidth = mTotalWidth / mStatusesCount;
     }
@@ -215,15 +217,15 @@ public class ParcelStatusBarView extends RelativeLayout {
         }
 
         // compute the width which we should get at the end
-        mToWidth = mOneStatusWidth * progress;
+        float toWidth = mOneStatusWidth * progress;
         // get indicator current width
         float fromWidth = mStatusIndicator.getLayoutParams().width;
         // if we have already max width just stop here
-        if ((fromWidth + mToWidth) >= mTotalWidth) {
-            mToWidth = mTotalWidth;
+        if ((fromWidth + toWidth) >= mTotalWidth && progress == mStatusesCount) {
+            toWidth = mTotalWidth;
         }
         // create a value animator to animate the indicator progress
-        mIndicatorAnimation = ValueAnimator.ofFloat(0, mToWidth);
+        mIndicatorAnimation = ValueAnimator.ofFloat(0, toWidth);
         mIndicatorAnimation.addUpdateListener(mIndicatorAnimatorListener);
 
         // create animator for label if label is not null

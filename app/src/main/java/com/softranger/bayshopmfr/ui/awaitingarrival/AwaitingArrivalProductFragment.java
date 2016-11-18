@@ -177,7 +177,6 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
             // hide loading progress
             mActivity.toggleLoadingProgress(false);
             // try to get tracking info
-            // TODO: 11/17/16 update progress bar
             Application.apiInterface().getAwaitingParcelTrackingInfo(data.getId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -191,6 +190,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
                             mStatusBarView.setProgress(trackingInfo.getTrackingStatus().progress());
                             mStatusLabel.setText(trackingInfo.getTrackingStatus().translatedStatus());
                         }
+                    }, error -> {
+                        Toast.makeText(mActivity, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     });
         }
 
