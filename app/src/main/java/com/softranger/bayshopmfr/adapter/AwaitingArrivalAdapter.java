@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.annimon.stream.Stream;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.box.AwaitingArrival;
 import com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalFragment;
@@ -39,9 +38,8 @@ public class AwaitingArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void refreshList(ArrayList<AwaitingArrival> awaitingArrivals) {
-        Stream.of(awaitingArrivals)
-                .filterNot(value -> mAwaitingArrivals.contains(value))
-                .forEach(awaitingArrival -> mAwaitingArrivals.add(awaitingArrival));
+        mAwaitingArrivals.clear();
+        mAwaitingArrivals.addAll(awaitingArrivals);
         Collections.sort(mAwaitingArrivals);
         notifyDataSetChanged();
     }

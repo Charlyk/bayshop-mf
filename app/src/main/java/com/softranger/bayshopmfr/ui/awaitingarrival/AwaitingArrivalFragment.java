@@ -245,8 +245,13 @@ public class AwaitingArrivalFragment extends ParentFragment implements PullToRef
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(serverResponse -> {
-                                mAdapter.removeItem(position);
-                                mActivity.toggleLoadingProgress(false);
+                                if (serverResponse != null && serverResponse.getMessage()
+                                        .equalsIgnoreCase(Constants.ApiResponse.OK_MESSAGE)) {
+                                    mAdapter.removeItem(position);
+                                    mActivity.toggleLoadingProgress(false);
+                                } else {
+                                    Toast.makeText(mActivity, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }, error -> {
                                 Toast.makeText(mActivity, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 mActivity.toggleLoadingProgress(false);

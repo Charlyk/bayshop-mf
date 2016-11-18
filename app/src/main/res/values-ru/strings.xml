@@ -25,7 +25,7 @@
     <!-- Navigation drawer -->
     <string name="nav_received">"Полученные"</string>
     <string name="profile_settings">"Настройки аккаунта"</string>
-    <string name="contact_us">"Свяжитесь с нами"</string>
+    <string name="contact_us">"Чат"</string>
     <string name="shipping_calculator">"Калькулятор доставки"</string>
     <string name="payment_history">"История платежей"</string>
     <string name="services">"Услуги"</string>

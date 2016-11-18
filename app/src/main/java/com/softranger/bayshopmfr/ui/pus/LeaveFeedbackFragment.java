@@ -7,23 +7,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
-import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +27,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialcamera.MaterialCamera;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.model.pus.PUSParcelDetailed;
@@ -46,12 +41,10 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -74,6 +67,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     private static final int UPLOAD_RESULT_CODE = 12;
     private static final int TAKE_PICTURE_CODE = 13;
     public static final int CAMERA_PERMISSION_CODE = 14;
+    private static final int CAMERA_RQ = 1725;
 
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
@@ -172,86 +166,56 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == MainActivity.RESULT_OK) {
-            if (requestCode == UPLOAD_RESULT_CODE) {
-                mUserPhoto = new File(mActivity.getCacheDir().getPath(), "product_photo.jpg");
-                try {
-                    // get image from intent
-                    InputStream inputStream = mActivity.getContentResolver().openInputStream(data.getData());
-                    byte[] buffer = new byte[inputStream.available()];
-                    inputStream.read(buffer);
-                    inputStream.close();
-
-                    OutputStream outputStream = new FileOutputStream(mUserPhoto);
-                    outputStream.write(buffer);
-                    outputStream.flush();
-                    outputStream.close();
-
-                    decreaseFileSize(mUserPhoto);
-                    // set it in preview
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == TAKE_PICTURE_CODE) {
+            mUserPhoto = new File(mActivity.getCacheDir().getPath(), "product_photo.jpg");
+            try {
+                // get image from intent
+                writeResultFromIntentToFile(data);
                 decreaseFileSize(mUserPhoto);
+                Bitmap original = BitmapFactory.decodeFile(mUserPhoto.getAbsolutePath());
+                if (original.getWidth() > original.getHeight()) {
+                    Bitmap rotated = rotateImage(original, 90);
+                    FileOutputStream fos = new FileOutputStream(mUserPhoto);
+                    rotated.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    rotated.recycle();
+                }
+                original.recycle();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             int width = Application.getPixelsFromDp(160);
             int height = Application.getPixelsFromDp(120);
-            if (mUserPhoto != null) {
-                int orientation = getOrientationFromExif();
-                if (orientation <= 0) {
-                    orientation = getOrientationFromMediaStore();
-                }
-                Log.d("LeaveFeedbackFragment", String.valueOf(orientation));
-
-            }
             Picasso.with(mActivity).load(mUserPhoto).resize(width, height).into(mImageView);
+        } else if (data != null) {
+            Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
+            if (e != null) {
+                e.printStackTrace();
+                Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
-    private int getOrientationFromExif() {
-        int orientation = -1;
+    private void writeResultFromIntentToFile(Intent data) {
         try {
-            ExifInterface exif = new ExifInterface(mUserPhoto.getPath());
-            int exifOrientation;
-            exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
-            switch (exifOrientation) {
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    orientation = 270;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    orientation = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    orientation = 90;
-                    break;
-                case ExifInterface.ORIENTATION_NORMAL:
-                    orientation = 0;
-                    break;
-                default:
-                    break;
-            }
+            // get image from intent
+            InputStream inputStream = mActivity.getContentResolver().openInputStream(data.getData());
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            inputStream.close();
+
+            OutputStream outputStream = new FileOutputStream(mUserPhoto);
+            outputStream.write(buffer);
+            outputStream.flush();
+            outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return orientation;
     }
 
-    private int getOrientationFromMediaStore() {
-        Cursor cur;
-        String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
-        if (Build.VERSION.SDK_INT < 11)
-            cur = mActivity.managedQuery(Uri.parse(mUserPhoto.getAbsolutePath()), orientationColumn, null, null, null);
-        else
-            cur = mActivity.getContentResolver().query(Uri.parse(mUserPhoto.getAbsolutePath()), orientationColumn, null, null, null);
-
-        int orientation = -1;
-        if (cur != null && cur.moveToFirst()) {
-            orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
-            Log.d(TAG, "Image Orientation: " + orientation);
-        }
-
-        return orientation;
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
+                true);
     }
 
     @Override
@@ -288,7 +252,12 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.upload_image_dialog, null, false);
         view.findViewById(R.id.uploadDialogTakePhoto).setOnClickListener(v -> {
-            takePhoto();
+//            takePhoto();
+            new MaterialCamera(this)
+                    .forceCamera1()
+                    /** all the previous methods can be called, but video ones would be ignored */
+                    .stillShot() // launches the Camera in stillshot mode
+                    .start(CAMERA_RQ);
             mUploadDialog.dismiss();
         });
 
@@ -323,58 +292,6 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         startActivityForResult(intent, UPLOAD_RESULT_CODE);
-    }
-
-    void takePhoto() {
-        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED) {
-            dispatchTakePictureIntent();
-        } else {
-            ArrayList<String> perms = new ArrayList<>();
-            perms.add(Manifest.permission.CAMERA);
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                perms.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            }
-
-            String[] permissions = perms.toArray(new String[perms.size()]);
-
-            ActivityCompat.requestPermissions(mActivity, permissions, CAMERA_PERMISSION_CODE);
-        }
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(mActivity.getPackageManager()) != null) {
-            // Create the File where the photo should go
-            try {
-                mUserPhoto = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                ex.printStackTrace();
-            }
-            // Continue only if the File was successfully created
-            if (mUserPhoto != null) {
-                Uri outputFileUri = FileProvider.getUriForFile(mActivity,
-                        mActivity.getApplicationContext().getPackageName() + ".fileprovider", mUserPhoto);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-                startActivityForResult(takePictureIntent, TAKE_PICTURE_CODE);
-            }
-        }
-    }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = mActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
     }
 
     @OnClick(R.id.leaveFeedbackSendCommentBtn)

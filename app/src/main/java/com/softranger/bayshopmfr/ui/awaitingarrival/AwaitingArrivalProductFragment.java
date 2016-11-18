@@ -180,15 +180,16 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
             Application.apiInterface().getAwaitingParcelTrackingInfo(data.getId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError(throwable -> {
-                        Toast.makeText(mActivity, throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    })
                     .subscribe(trackingInfoServerResponse -> {
-                        TrackingInfo trackingInfo = trackingInfoServerResponse.getData();
-                        mArrivalDetails.setTrackingStatus(trackingInfo);
-                        if (mStatusBarView != null && mStatusLabel != null) {
-                            mStatusBarView.setProgress(trackingInfo.getTrackingStatus().progress());
-                            mStatusLabel.setText(trackingInfo.getTrackingStatus().translatedStatus());
+                        if (trackingInfoServerResponse.getData() != null) {
+                            TrackingInfo trackingInfo = trackingInfoServerResponse.getData();
+                            mArrivalDetails.setTrackingStatus(trackingInfo);
+                            if (mStatusBarView != null && mStatusLabel != null) {
+                                mStatusBarView.setProgress(trackingInfo.getTrackingStatus().progress());
+                                mStatusLabel.setText(trackingInfo.getTrackingStatus().translatedStatus());
+                            }
+                        } else {
+                            Toast.makeText(mActivity, trackingInfoServerResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }, error -> {
                         Toast.makeText(mActivity, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

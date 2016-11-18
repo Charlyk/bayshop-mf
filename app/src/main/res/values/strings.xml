@@ -33,7 +33,7 @@
     <!-- Navigation drawer -->
     <string name="nav_received">"Received"</string>
     <string name="profile_settings">"Account settings"</string>
-    <string name="contact_us">"Contact us"</string>
+    <string name="contact_us">"Chat"</string>
     <string name="shipping_calculator">"Shipping calculator"</string>
     <string name="payment_history">"Payment history"</string>
     <string name="services">"Services"</string>

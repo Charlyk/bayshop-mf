@@ -29,7 +29,7 @@
     <!-- Navigation drawer -->
     <string name="nav_received">"Primite"</string>
     <string name="profile_settings">"Setări cont"</string>
-    <string name="contact_us">"Contactează-ne"</string>
+    <string name="contact_us">"Chat"</string>
 
     <!-- здесь именно "доставки". livrarii -->
     <string name="shipping_calculator">"Calculatorul livrării"</string>

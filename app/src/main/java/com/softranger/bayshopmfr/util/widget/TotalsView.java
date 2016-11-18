@@ -1,7 +1,6 @@
 package com.softranger.bayshopmfr.util.widget;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -18,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softranger.bayshopmfr.R;
-
-import io.codetail.animation.ViewAnimationUtils;
 
 /**
  * Created by Eduard Albu on 9/23/16, 09, 2016
@@ -138,46 +134,6 @@ public class TotalsView extends RelativeLayout implements View.OnClickListener {
     public void resetTotals() {
         totalWeight = 0;
         totalPrice = 0;
-    }
-
-    public void transform(boolean showToolbar) {
-        // Determine center
-        final int x = (getRight() - getLeft()) / 2;
-        final int y = (getBottom() - getTop()) / 2;
-        // Determine radius sizes
-        final int containerWidth = getWidth() / 2;
-        final int containerHeight = getHeight() / 2;
-        final int maxRadius = (int) Math.sqrt((containerWidth * containerWidth) +
-                (containerHeight * containerHeight));
-        final int startingRadius;
-        final int finalRadius;
-        if (showToolbar) {
-            startingRadius = 0;
-            finalRadius = maxRadius;
-            mToolbar.setVisibility(View.VISIBLE);
-        } else {
-            startingRadius = maxRadius;
-            finalRadius = 0;
-        }
-
-        // Animate
-        try {
-            final Animator animator = ViewAnimationUtils.createCircularReveal(mToolbar, x,
-                    y, startingRadius, finalRadius);
-            if (!showToolbar) {
-                animator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        mToolbar.setVisibility(View.GONE);
-                    }
-                });
-            }
-            animator.setDuration(600);
-            animator.setInterpolator(new DecelerateInterpolator());
-            animator.start();
-        } catch (IllegalStateException e) {
-            Log.e(this.getClass().getSimpleName(), e.getLocalizedMessage());
-        }
     }
 
     private void setNewValue(final TextView forTextView, final String newText) {
