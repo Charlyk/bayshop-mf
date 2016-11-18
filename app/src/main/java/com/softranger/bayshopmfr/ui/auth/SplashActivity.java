@@ -54,6 +54,10 @@ public class SplashActivity extends ParentActivity {
     @BindView(R.id.splashActivityNextBtn)
     Button mButton;
 
+    long personalDataStart;
+    long countersStart;
+    private boolean isIntroVisible;
+
     private Call<ServerResponse<User>> mPersonalDataCall;
     private Call<ServerResponse<ParcelsCount>> mCountersCall;
 
@@ -77,6 +81,7 @@ public class SplashActivity extends ParentActivity {
         } else {
             mButton.setVisibility(View.VISIBLE);
             mIntroStep = IntroStep.delivery;
+            isIntroVisible = true;
             initIntroScreens();
         }
     }
@@ -148,9 +153,6 @@ public class SplashActivity extends ParentActivity {
             }
         }
     };
-
-    long personalDataStart;
-    long countersStart;
 
 
     /**
@@ -275,6 +277,7 @@ public class SplashActivity extends ParentActivity {
                     }
                 }, 202);
                 mViewPager.animate().alpha(0f).setDuration(200).start();
+                isIntroVisible = false;
                 break;
         }
     }
@@ -301,6 +304,16 @@ public class SplashActivity extends ParentActivity {
     @Override
     public void replaceFragment(ParentFragment fragment) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isIntroVisible) {
+            int currentItem = mViewPager.getCurrentItem();
+            if (currentItem > 0) {
+                mViewPager.setCurrentItem(currentItem - 1);
+            }
+        }
     }
 
     enum IntroStep {

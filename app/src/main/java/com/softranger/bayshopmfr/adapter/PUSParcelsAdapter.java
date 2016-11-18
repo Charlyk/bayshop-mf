@@ -61,8 +61,8 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
 
         // compute kilos from grams and set the result in weight label
         double realWeight = Double.parseDouble(holder.mPUSParcel.getRealWeight());
-        double kg = realWeight / 1000;
-        double vkg = holder.mPUSParcel.getVolumeWeight() / 1000;
+        double kg = realWeight / 1000.0;
+        double vkg = holder.mPUSParcel.getVolumeWeight() / 1000.0;
 
         String volumeAndWeight = Application.round(kg, 2) + mContext.getString(R.string.kilos) + " / "
                 + Application.round(vkg, 2) + mContext.getString(R.string.vkg);

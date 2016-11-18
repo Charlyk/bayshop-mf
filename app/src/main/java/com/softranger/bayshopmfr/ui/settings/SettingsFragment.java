@@ -37,6 +37,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.intercom.android.sdk.Intercom;
 import retrofit2.Call;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -215,31 +217,22 @@ public class SettingsFragment extends ParentFragment {
     // log out button click
     @OnClick(R.id.settingsLogOutBtn)
     void logOut() {
-        Application.apiInterface().logOut(Application.getInstance().getPushToken()).enqueue(mLogOutCallback);
         mActivity.toggleLoadingProgress(true);
+
+        Application.apiInterface().logOut(Application.getInstance().getPushToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(serverResponse -> {
+                    // do something if needed
+                }, error -> {
+                    mActivity.toggleLoadingProgress(false);
+                    Toast.makeText(mActivity, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                });
+
+        mActivity.setResult(Activity.RESULT_OK);
+        mActivity.finish();
         Intercom.client().reset();
     }
-
-    private ResponseCallback mLogOutCallback = new ResponseCallback() {
-        @Override
-        public void onSuccess(Object data) {
-            mActivity.setResult(Activity.RESULT_OK);
-            mActivity.finish();
-        }
-
-        @Override
-        public void onFailure(ServerResponse errorData) {
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
-        }
-
-        @Override
-        public void onError(Call call, Throwable t) {
-            Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
-            t.printStackTrace();
-            mActivity.toggleLoadingProgress(false);
-        }
-    };
 
     private void saveNotificationsSettings() {
         int sms = mSmsCheckBox.isChecked() ? 1 : 0;

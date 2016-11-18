@@ -202,6 +202,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
                     orientation = getOrientationFromMediaStore();
                 }
                 Log.d("LeaveFeedbackFragment", String.valueOf(orientation));
+
             }
             Picasso.with(mActivity).load(mUserPhoto).resize(width, height).into(mImageView);
         }

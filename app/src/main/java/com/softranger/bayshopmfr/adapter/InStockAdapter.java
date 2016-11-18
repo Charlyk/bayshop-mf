@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.box.InStock;
+import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ViewAnimator;
 
@@ -132,13 +133,13 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             // convert weight from grams to kilograms
             double price = Double.parseDouble(itemHolder.mInStock.getPrice());
             int grams = Integer.parseInt(itemHolder.mInStock.getWeight());
-            double kilos = grams / 1000;
+            double kilos = grams / 1000.0;
 
             // set the date into it's label
             itemHolder.mDateLabel.setText(mDateFormat.format(parcelDate));
 
             // set the weight into it's label
-            itemHolder.mWeightLabel.setText(kilos + mContext.getString(R.string.kilos));
+            itemHolder.mWeightLabel.setText(Application.round(kilos, 2) + mContext.getString(R.string.kilos));
 
             // set the price into it's label
             itemHolder.mPriceLabel.setText(Constants.USD_SYMBOL + price);

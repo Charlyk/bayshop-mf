@@ -180,6 +180,12 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             itemHolder.mProductId.setText(itemHolder.mProduct.getUid());
             itemHolder.mProductName.setText(itemHolder.mProduct.getTitle());
 
+            // convert weight from grams to kilograms
+            int grams = Integer.parseInt(itemHolder.mProduct.getWeight());
+            double kilos = grams / 1000.0;
+
+            itemHolder.mWeightLabel.setText(Application.round(kilos, 2) + mContext.getString(R.string.kilos));
+
             String price = itemHolder.mProduct.getPrice();
             if (mCurrency != null) {
                 price = mCurrency + itemHolder.mProduct.getPrice();
@@ -347,6 +353,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.inProcessingDetailsProductItemsCount) TextView mItemCount;
         @BindView(R.id.inProcessingDetailsProductPrice) TextView mPrice;
         @BindView(R.id.inProcessingDetailsProductImagesList) RecyclerView mPhotosList;
+        @BindView(R.id.inProcessingDetailsProductWeightLabel)
+        TextView mWeightLabel;
 
         Box mProduct;
         public ItemViewHolder(View itemView) {

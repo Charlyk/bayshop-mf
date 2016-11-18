@@ -259,7 +259,7 @@ public interface BayShopApiInterface {
                                                                @Field("volume[z]") double volumeZ);
 
     @DELETE("auth/?")
-    Call<ServerResponse> logOut(@Query("gcm_token") String pushToken);
+    Observable<ServerResponse> logOut(@Query("gcm_token") String pushToken);
 
     @GET("additional-services/")
     Call<ServerResponse<HashMap<String, Double>>> getAdditionalServicesPrices();
