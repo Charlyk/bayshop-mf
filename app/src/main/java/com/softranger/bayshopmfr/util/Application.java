@@ -121,6 +121,7 @@ public class Application extends MultiDexApplication {
             Request request = original.newBuilder()
                     .header("X-Authorization-Token", getString(R.string.gde_posylka_api_key))
                     .header("Content-Type", "application/json")
+                    .header("Accept-Language", Application.getDeviceLanguage())
                     .method(original.method(), original.body())
                     .build();
 
