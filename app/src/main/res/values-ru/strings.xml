@@ -131,7 +131,7 @@
     <string name="request_for">"Заказать за $%.0f"</string>
     <string name="repacking">"Переупаковка заказа"</string>
     <string name="repacking_in_progress">"Переупаковка в процессе"</string>
-    <string name="divide_parcel_details">"Разделите большой заказ и обойдите таможенный лимит. Стоимость услуги: $1 за одно разделение."</string>
+    <string name="divide_parcel_details">"Разделите большой заказ и обойдите таможенный лимит. Стоимость услуги: $5 за одно разделение."</string>
 
     <!-- PUS Parcels screen -->
     <string name="shipping_by">"Служба доставки:"</string>

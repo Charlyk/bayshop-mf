@@ -140,7 +140,7 @@
     <string name="request_for">"Order for $%.0f"</string>
     <string name="repacking">"Order repackaging"</string>
     <string name="repacking_in_progress">"Repackaging in progress"</string>
-    <string name="divide_parcel_details">"Divide a large order and bypass the customs limit. Service cost: $1 for every division."</string>
+    <string name="divide_parcel_details">"Divide a large order and bypass the customs limit. Service cost: $5 for every division."</string>
 
     <!-- PUS Parcels screen -->
     <string name="shipping_by">"Shipping service:"</string>

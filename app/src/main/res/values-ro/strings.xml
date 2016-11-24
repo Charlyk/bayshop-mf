@@ -185,7 +185,7 @@
     <string name="repacking_in_progress">"Reambalarea în proces"</string>
 
     <!-- именно "заказ". imparte o comanda mare -->
-    <string name="divide_parcel_details">"Împarte o comandă mare în altele mai mici și evită depășirea limitei vamale. Prețul acestui serviciu este de $1 per diviziune."</string>
+    <string name="divide_parcel_details">"Împarte o comandă mare în altele mai mici și evită depășirea limitei vamale. Prețul acestui serviciu este de $5 per diviziune."</string>
 
     <!-- PUS Parcels screen -->
     <string name="shipping_by">"Serviciu livrare:"</string>
