@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.user.User;
 import com.softranger.bayshopmfr.network.BayShopApiInterface;
-import com.softranger.bayshopmfr.network.GdePosylkaApiInterface;
 import com.softranger.bayshopmfr.ui.settings.SettingsFragment;
 
 import java.math.BigDecimal;
@@ -58,7 +57,6 @@ public class Application extends MultiDexApplication {
     public static HashMap<String, Integer> counters;
 
     private static Retrofit retrofit;
-    private static Retrofit trackingRetrofit;
 
     public static Application getInstance() {
         return instance;
@@ -127,14 +125,6 @@ public class Application extends MultiDexApplication {
 
             return chain.proceed(request);
         });
-
-        OkHttpClient trackingClient = trackClientBuilder.build();
-        trackingRetrofit = new Retrofit.Builder()
-                .baseUrl(Constants.Api.TRACK_URL)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-                .client(trackingClient)
-                .build();
 
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         Intercom.initialize(this, "android_sdk-7c1e0502c5d35150b1f9ef443859612dadf8aa73", "xht0fqt3");
@@ -291,10 +281,6 @@ public class Application extends MultiDexApplication {
      */
     public static BayShopApiInterface apiInterface() {
         return retrofit.create(BayShopApiInterface.class);
-    }
-
-    public static GdePosylkaApiInterface trackApiInterface() {
-        return trackingRetrofit.create(GdePosylkaApiInterface.class);
     }
 
     public static double round(double value, int places) {

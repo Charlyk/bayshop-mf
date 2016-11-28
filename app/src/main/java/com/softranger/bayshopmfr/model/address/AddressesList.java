@@ -3,6 +3,7 @@ package com.softranger.bayshopmfr.model.address;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddressesList implements Parcelable {
 
     @JsonProperty("selectedAddress") private Address mSelectedAddress;

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.softranger.bayshopmfr.util.Constants;
@@ -14,6 +15,7 @@ import com.softranger.bayshopmfr.util.Imageble;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Photo implements Parcelable, Imageble {
     @JsonProperty("photoThumbnail")
     private String mSmallImage;

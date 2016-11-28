@@ -1,5 +1,6 @@
 package com.softranger.bayshopmfr.model.payment;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.HashMap;
  * email eduard.albu@gmail.com
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentHistories {
     @JsonProperty("balanceList")
     private HashMap<String, ArrayList<History>> mHistoriesMap;

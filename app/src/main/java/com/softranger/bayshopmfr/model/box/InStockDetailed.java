@@ -2,6 +2,7 @@ package com.softranger.bayshopmfr.model.box;
 
 import android.os.Parcel;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -9,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InStockDetailed extends InStock {
     @JsonProperty("countryCode") private String mCountryCode;
     @JsonProperty("currency") private String mCurrency;

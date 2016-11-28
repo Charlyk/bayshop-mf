@@ -107,8 +107,10 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemHolder.mProductUrl.setText(product.getUrl());
             itemHolder.mProductPrice.addTextChangedListener(new PriceTextWatcher(itemHolder.mProduct));
             itemHolder.mProductPrice.setText(String.valueOf(product.getPrice()));
-            itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProduct));
-            itemHolder.mProductQuantity.setText(String.valueOf(product.getQuantity()));
+            itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProductQuantity, itemHolder.mProduct));
+            String quantity = String.valueOf(product.getQuantity());
+            if (quantity.equals("")) quantity = "1";
+            itemHolder.mProductQuantity.setText(quantity);
         } else if (holder instanceof TrackingHolder) {
             TrackingHolder trackingHolder = (TrackingHolder) holder;
             trackingHolder.mEditText.setText(mTrackingNum);
@@ -267,9 +269,11 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class QuantityTextWatcher implements TextWatcher {
 
         private Product mProduct;
+        private EditText mEditText;
 
-        public QuantityTextWatcher(Product productBuilder) {
+        public QuantityTextWatcher(EditText editText, Product productBuilder) {
             mProduct = productBuilder;
+            mEditText = editText;
         }
 
         @Override
@@ -279,6 +283,10 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (s == null || s.equals("")) {
+                s = "1";
+                if (mEditText != null) mEditText.setText(s);
+            }
             mProduct.setQuantity(String.valueOf(s));
         }
 

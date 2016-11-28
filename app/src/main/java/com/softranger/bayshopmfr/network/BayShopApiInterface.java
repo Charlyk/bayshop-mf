@@ -81,10 +81,10 @@ public interface BayShopApiInterface {
 
     @FormUrlEncoded
     @POST("waiting-mf/{id}")
-    Call<ServerResponse<String>> addNewAwaitingParcel(@Path("id") String parcelId,
-                                                      @Field("storage") String storage,
-                                                      @Field("tracking") String trackingNum,
-                                                      @Field("declarations") String productsJsonArray);
+    Call<ServerResponse<AwaitingArrivalDetails>> addNewAwaitingParcel(@Path("id") String parcelId,
+                                                                      @Field("storage") String storage,
+                                                                      @Field("tracking") String trackingNum,
+                                                                      @Field("declarations") String productsJsonArray);
 
     @GET("waiting-mf/{id}")
     Call<ServerResponse<AwaitingArrivalDetails>> getAwaitingParcelDetails(@Path("id") String parcelId);

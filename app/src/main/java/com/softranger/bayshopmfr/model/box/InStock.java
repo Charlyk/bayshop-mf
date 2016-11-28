@@ -3,6 +3,7 @@ package com.softranger.bayshopmfr.model.box;
 import android.os.Parcel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -12,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * email eduard.albu@gmail.com
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InStock extends Box {
-
     @JsonProperty("remainingDays") private int mRemainingDays;
     @JsonProperty("isDeclarationFilled") private int mDeclarationFilled;
     @JsonProperty("separationRequest") private int mSeparationRequest;
@@ -21,6 +22,8 @@ public class InStock extends Box {
     private int mFreeStorage;
     @JsonProperty("isHeldByProhibition")
     private int mIsHeldByProhibition;
+    @JsonProperty("volume_weight")
+    private double mVolumeWeight;
 
     @JsonIgnore private boolean mIsSelected;
 
@@ -35,6 +38,7 @@ public class InStock extends Box {
         mSeparationRequest = in.readInt();
         mIsHeldByProhibition = in.readInt();
         mFreeStorage = in.readInt();
+        mVolumeWeight = in.readDouble();
     }
 
     public static final Creator<InStock> CREATOR = new Creator<InStock>() {
@@ -88,6 +92,14 @@ public class InStock extends Box {
         return mIsSelected;
     }
 
+    public double getVolumeWeight() {
+        return mVolumeWeight;
+    }
+
+    public void setVolumeWeight(double volumeWeight) {
+        mVolumeWeight = volumeWeight;
+    }
+
     public void setSelected(boolean selected) {
         mIsSelected = selected;
     }
@@ -100,5 +112,6 @@ public class InStock extends Box {
         parcel.writeInt(mSeparationRequest);
         parcel.writeInt(mIsHeldByProhibition);
         parcel.writeInt(mFreeStorage);
+        parcel.writeDouble(mVolumeWeight);
     }
 }

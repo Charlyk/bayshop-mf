@@ -5,7 +5,6 @@ import android.os.Parcel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.softranger.bayshopmfr.util.Constants;
 
 /**
  * Created by Eduard Albu on 9/20/16, 09, 2016
@@ -66,7 +65,7 @@ public class AwaitingArrival extends Box {
 
     @Override
     public String getPrice() {
-        return Constants.USD_SYMBOL + mPrice;
+        return mPrice;
     }
 
     @JsonSetter("productUrl")

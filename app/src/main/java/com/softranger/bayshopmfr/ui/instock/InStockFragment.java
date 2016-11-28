@@ -172,7 +172,7 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
         @Override
         public void onError(Call<ServerResponse<InStockList>> call, Throwable t) {
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);

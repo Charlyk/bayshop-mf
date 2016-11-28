@@ -135,7 +135,7 @@ public class AdditionalPhotoFragment extends ParentFragment {
         @Override
         public void onError(Call<ServerResponse<HashMap<String, Double>>> call, Throwable t) {
             mActivity.toggleLoadingProgress(false);
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
         }
     };
 

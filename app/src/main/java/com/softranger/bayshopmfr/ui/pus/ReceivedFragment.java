@@ -126,7 +126,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
 
         @Override
         public void onError(Call<ServerResponse<ArrayList<PUSParcel>>> call, Throwable t) {
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null)
                 mRefreshLayout.setRefreshing(false);

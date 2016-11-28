@@ -3,6 +3,7 @@ package com.softranger.bayshopmfr.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softranger.bayshopmfr.model.address.Address;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CreationDetails implements Parcelable {
     @JsonProperty("currencySign") private String mCurrencySign;
     @JsonProperty("cursCurrent") private double mCursCurrent;

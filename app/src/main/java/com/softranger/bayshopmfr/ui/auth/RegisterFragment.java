@@ -152,7 +152,7 @@ public class RegisterFragment extends ParentFragment {
         @Override
         public void onError(Call call, Throwable t) {
             mConfirmButton.setVisibility(View.VISIBLE);
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mConfirmButton.setClickable(true);
             mProgressBar.setVisibility(View.GONE);
         }

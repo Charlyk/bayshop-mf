@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.adapter.DeclarationListAdapter;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
+import com.softranger.bayshopmfr.model.box.AwaitingArrivalDetails;
 import com.softranger.bayshopmfr.model.box.Declaration;
 import com.softranger.bayshopmfr.model.box.Product;
 import com.softranger.bayshopmfr.network.ResponseCallback;
@@ -82,7 +83,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     // chrome tabs intent used to open products url
     private CustomTabsIntent mTabsIntent;
     // call to server for saving parcel details
-    private Call<ServerResponse<String>> mCall;
+    private Call<ServerResponse<AwaitingArrivalDetails>> mCall;
     private Call<ServerResponse> mInstockCall;
     private Call<ServerResponse<Declaration>> mDeclarationCall;
 
@@ -493,11 +494,11 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
     /**
      * Receives response from server and checks if it is successful or not
      */
-    private ResponseCallback<String> mResponseCallback = new ResponseCallback<String>() {
+    private ResponseCallback<AwaitingArrivalDetails> mResponseCallback = new ResponseCallback<AwaitingArrivalDetails>() {
         @Override
-        public void onSuccess(String data) {
+        public void onSuccess(AwaitingArrivalDetails data) {
             Intent refreshIntent = new Intent(ACTION_REFRESH_AWAITING);
-            refreshIntent.putExtra("added_id", data);
+            refreshIntent.putExtra("added_id", data.getId());
             setResult(RESULT_OK, refreshIntent);
             finish();
         }
@@ -512,7 +513,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
         public void onError(Call call, Throwable t) {
             t.printStackTrace();
             toggleLoadingProgress(false);
-            Toast.makeText(DeclarationActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(DeclarationActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -537,7 +538,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
         public void onError(Call call, Throwable t) {
             t.printStackTrace();
             toggleLoadingProgress(false);
-            Toast.makeText(DeclarationActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(DeclarationActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -560,7 +561,7 @@ public class DeclarationActivity extends ParentActivity implements Animator.Anim
         public void onError(Call<ServerResponse<Declaration>> call, Throwable t) {
             t.printStackTrace();
             toggleLoadingProgress(false);
-            Toast.makeText(DeclarationActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(DeclarationActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
         }
     };
 

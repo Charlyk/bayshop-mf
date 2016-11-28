@@ -63,8 +63,8 @@ public class Constants {
         public static final String BASE_URL = "http://bayshop.com";
         public static final String BASE_API_URL = "http://bayshop.com/api/";
 
-//        public static final String BASE_URL = "http://bay-test.tk";
-//        public static final String BASE_API_URL = "http://bay-test.tk/api/";
+//        public static final String BASE_URL = "http://bay-api.tk";
+//        public static final String BASE_API_URL = "http://bay-api.tk/api/";
     }
 
     public enum Period {

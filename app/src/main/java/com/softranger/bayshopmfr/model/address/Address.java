@@ -6,6 +6,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Address implements Parcelable {
     private String mClientName;
     @JsonProperty("id") private int mId;

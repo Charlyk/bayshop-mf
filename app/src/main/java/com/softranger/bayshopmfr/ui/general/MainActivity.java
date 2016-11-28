@@ -29,7 +29,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -182,18 +181,9 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
             return;
         }
-        // initialize custom error handler so if there are any unhandled exception to write it in a file
-        File sdCard = Environment.getExternalStorageDirectory();
-        File dir = new File(sdCard.getAbsolutePath() + "/BayShopMF/Errors");
-        dir.mkdirs();
-        CustomExceptionHandler customExceptionHandler = new CustomExceptionHandler(dir.getAbsolutePath(), null);
-        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(customExceptionHandler);
-        }
 
         IntercomPushClient intercomPushClient = new IntercomPushClient();
         String pushToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d("Push token", pushToken);
         if (pushToken == null) return;
         if (!Application.getInstance().isPushSent() || !pushToken.equals(Application.getInstance().getPushToken())) {
             Application.apiInterface().sendPushToken(pushToken, Application.getInstance().getPushToken())
@@ -202,27 +192,23 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
             intercomPushClient.sendTokenToIntercom(Application.getInstance(), pushToken);
         }
 
-        Log.d("Push token", pushToken);
-
         setMenuCounter(R.id.nav_contactUs, Intercom.client().getUnreadConversationCount());
     }
 
     private ResponseCallback mPushTokenCallback = new ResponseCallback() {
         @Override
         public void onSuccess(Object data) {
-            Log.d("Push", "Token was sent to server");
             Application.getInstance().setPushTokenSent(true);
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
-            Log.e("Push", errorData.getMessage());
             Application.getInstance().setPushTokenSent(false);
         }
 
         @Override
         public void onError(Call call, Throwable t) {
-            Log.e("Push", t.getMessage());
+            t.printStackTrace();
             Application.getInstance().setPushTokenSent(false);
         }
     };

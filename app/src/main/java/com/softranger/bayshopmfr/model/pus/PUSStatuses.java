@@ -3,6 +3,7 @@ package com.softranger.bayshopmfr.model.pus;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softranger.bayshopmfr.util.Constants;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
  * email eduard.albu@gmail.com
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PUSStatuses implements Parcelable {
     @JsonProperty("processing") private ArrayList<PUSParcel> mProcessingParcels;
     @JsonProperty("held-by-damage") private ArrayList<PUSParcel> mDamagedParcels;

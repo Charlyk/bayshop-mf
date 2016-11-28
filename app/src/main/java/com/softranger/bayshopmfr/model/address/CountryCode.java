@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.Imageble;
@@ -11,6 +12,7 @@ import com.softranger.bayshopmfr.util.Imageble;
 /**
  * Created by macbook on 6/17/16.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CountryCode implements Parcelable, Imageble {
     @JsonProperty("id") private int mId;
     @JsonProperty("countryId") private int mCountryId;

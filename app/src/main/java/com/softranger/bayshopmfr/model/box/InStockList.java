@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * email eduard.albu@gmail.com
  */
 
-@JsonIgnoreProperties("livePackages")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InStockList {
     @JsonProperty("list") private ArrayList<InStock> mInStocks;
 

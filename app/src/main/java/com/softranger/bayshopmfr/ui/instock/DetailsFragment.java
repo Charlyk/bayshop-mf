@@ -219,7 +219,7 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         public void onError(Call<ServerResponse<InStockDetailed>> call, Throwable t) {
             mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             t.printStackTrace();
         }
     };

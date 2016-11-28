@@ -191,7 +191,7 @@ public class SplashActivity extends ParentActivity {
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(getBaseContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             startLoginActivity();
         }
     };
@@ -238,7 +238,7 @@ public class SplashActivity extends ParentActivity {
         @Override
         public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(getBaseContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             startLoginActivity();
         }
     };

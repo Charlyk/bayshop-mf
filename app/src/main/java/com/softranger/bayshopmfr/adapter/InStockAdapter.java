@@ -139,7 +139,9 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             itemHolder.mDateLabel.setText(mDateFormat.format(parcelDate));
 
             // set the weight into it's label
-            itemHolder.mWeightLabel.setText(Application.round(kilos, 2) + mContext.getString(R.string.kilos));
+            String weight = Application.round(kilos, 2) + mContext.getString(R.string.kilos) + " / "
+                    + Application.round(itemHolder.mInStock.getVolumeWeight(), 2) + mContext.getString(R.string.vkg);
+            itemHolder.mWeightLabel.setText(weight);
 
             // set the price into it's label
             itemHolder.mPriceLabel.setText(Constants.USD_SYMBOL + price);

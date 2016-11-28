@@ -366,7 +366,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
 
         @Override
         public void onError(Call call, Throwable t) {
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
         }
     };

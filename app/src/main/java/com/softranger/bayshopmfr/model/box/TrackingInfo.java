@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.StringRes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.util.Application;
@@ -14,7 +15,7 @@ import com.softranger.bayshopmfr.util.Application;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TrackingInfo implements Parcelable {
     @JsonProperty("service_name")
     private String mServiceName;

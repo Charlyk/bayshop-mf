@@ -127,7 +127,7 @@ public class EditAddressActivity extends ParentActivity implements CodesDialogFr
         @Override
         public void onError(Call<ServerResponse<AddressToEdit>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(EditAddressActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditAddressActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             toggleLoading(false);
             mIsSaveClicked = false;
         }

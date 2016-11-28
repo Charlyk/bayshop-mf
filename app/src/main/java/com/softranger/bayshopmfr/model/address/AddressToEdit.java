@@ -1,5 +1,6 @@
 package com.softranger.bayshopmfr.model.address;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Map;
  * for project bayshop-mf
  * email eduard.albu@gmail.com
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddressToEdit {
     @JsonProperty("maskFormatsAll") private ArrayList<CountryCode> mCountryCodes;
     @JsonProperty("countries") private Map<String, String> mCountries;

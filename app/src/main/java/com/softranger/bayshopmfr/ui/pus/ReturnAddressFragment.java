@@ -267,7 +267,7 @@ public class ReturnAddressFragment extends ParentFragment implements Callback<Se
         if (t instanceof ConnectException || t instanceof UnknownHostException) {
             Application.getInstance().sendBroadcast(new Intent(ResponseCallback.ACTION_NO_CONNECTION));
         } else {
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
         }
         mActivity.toggleLoadingProgress(false);
     }

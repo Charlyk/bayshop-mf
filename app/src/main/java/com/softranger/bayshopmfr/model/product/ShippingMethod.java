@@ -3,6 +3,7 @@ package com.softranger.bayshopmfr.model.product;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ShippingMethod implements Parcelable {
     @JsonProperty("id")
     private int mId;

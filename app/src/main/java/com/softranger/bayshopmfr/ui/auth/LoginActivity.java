@@ -220,7 +220,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
 
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
-            Toast.makeText(getBaseContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             t.printStackTrace();
             mLoginFragment.hideLoading();
         }
@@ -251,7 +251,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mLoginFragment.hideLoading();
         }
     };
@@ -285,7 +285,7 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
         @Override
         public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mLoginFragment.hideLoading();
         }
     };

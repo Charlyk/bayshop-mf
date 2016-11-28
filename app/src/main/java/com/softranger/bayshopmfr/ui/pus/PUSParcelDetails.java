@@ -196,7 +196,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         @Override
         public void onError(Call<ServerResponse<PUSParcelDetailed>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
         }
     };
@@ -528,7 +528,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
         @Override
         public void onError(Call call, Throwable t) {
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
             t.printStackTrace();
         }
@@ -575,7 +575,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
         @Override
         public void onError(Call call, Throwable t) {
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
         }
     };
@@ -602,7 +602,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
         @Override
         public void onError(Call call, Throwable t) {
-            Toast.makeText(mActivity, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             mActivity.toggleLoadingProgress(false);
         }
     };
