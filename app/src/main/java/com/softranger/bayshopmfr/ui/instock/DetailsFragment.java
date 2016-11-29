@@ -212,14 +212,14 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
         public void onFailure(ServerResponse errorData) {
             mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Application.getInstance(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(Call<ServerResponse<InStockDetailed>> call, Throwable t) {
             mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
-            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             t.printStackTrace();
         }
     };
@@ -259,7 +259,8 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
             description.setTextColor(getResources().getColor(textColor));
 
             date.setText(outputFormat.format(detailed.getCreatedDate()));
-            weight.setText(detailed.getWeight() + "kg");
+            String strWeight = detailed.getWeight() + "kg / " + detailed.getVolumeWeight() + getString(R.string.vkg);
+            weight.setText(strWeight);
             price.setText(detailed.getCurrency() + detailed.getPrice());
 
             mAdditionalPhoto.setSelected(detailed.getPhotosInProgress() != 0);

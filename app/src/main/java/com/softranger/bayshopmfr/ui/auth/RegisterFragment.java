@@ -137,6 +137,9 @@ public class RegisterFragment extends ParentFragment {
             mActivity.showResultActivity(getString(R.string.registration_completed), R.mipmap.ic_registration_completed_250dp,
                     getString(R.string.thank_you_register));
             mConfirmButton.setVisibility(View.VISIBLE);
+            mFirstNameInput.setText("");
+            mEmailInput.setText("");
+            mPasswordInput.setText("");
             mConfirmButton.setClickable(true);
             mProgressBar.setVisibility(View.GONE);
         }
@@ -157,36 +160,6 @@ public class RegisterFragment extends ParentFragment {
             mProgressBar.setVisibility(View.GONE);
         }
     };
-
-//    @Override
-//    public void onServerResponse(JSONObject response) throws Exception {
-//        switch (requestStep) {
-//            case REGISTER:
-//                requestStep = RequestStep.LOGIN;
-//                ApiClient.getInstance().logIn(mEmail, mPassword, mHandler);
-//                break;
-//            case LOGIN: {
-//                JSONObject data = response.getJSONObject("data");
-//                Application.currentToken = data.optString("access_token");
-//                Application.getInstance().setLoginStatus(true);
-//                Application.getInstance().setAuthToken(Application.currentToken);
-//                ApiClient.getInstance().getRequest(Constants.Api.urlParcelsCounter(), mHandler);
-//                break;
-//            }
-//            case COUNTERS: {
-//                JSONObject data = response.getJSONObject("data");
-//                Iterator<String> keys = data.keys();
-//                while (keys.hasNext()) {
-//                    String key = keys.next();
-//                    Application.counters.put(key, data.getInt(key));
-//                }
-//                mActivity.startActivity(new Intent(mActivity, MainActivity.class));
-//                mActivity.finish();
-//                break;
-//            }
-//        }
-//    }
-
 
     @OnFocusChange({R.id.registerNameInput, R.id.registerEmailInput, R.id.registerPasswordInput})
     void inputFocusHasBeenChanged(View view, boolean hasFocus) {

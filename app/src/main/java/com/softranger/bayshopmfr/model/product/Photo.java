@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.softranger.bayshopmfr.util.Constants;
+import com.softranger.bayshopmfr.BuildConfig;
 import com.softranger.bayshopmfr.util.Imageble;
 
 /**
@@ -49,7 +49,7 @@ public class Photo implements Parcelable, Imageble {
         if (mSmallImage != null && mSmallImage.contains("http")) {
             return mSmallImage;
         } else {
-            return Constants.Api.BASE_URL + mSmallImage;
+            return BuildConfig.BASE_URL + mSmallImage;
         }
     }
 
@@ -57,7 +57,7 @@ public class Photo implements Parcelable, Imageble {
         if (mBigImage != null && mBigImage.contains("http")) {
             return mBigImage;
         } else {
-            return Constants.Api.BASE_URL + mBigImage;
+            return BuildConfig.BASE_URL + mBigImage;
         }
     }
 

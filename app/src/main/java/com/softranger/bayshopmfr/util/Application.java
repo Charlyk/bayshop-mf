@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.softranger.bayshopmfr.BuildConfig;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.user.User;
 import com.softranger.bayshopmfr.network.BayShopApiInterface;
@@ -103,7 +104,7 @@ public class Application extends MultiDexApplication {
         // build the client and set mapper and client to retrofit
         OkHttpClient client = httpClient.build();
         retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.Api.BASE_API_URL)
+                .baseUrl(BuildConfig.BASE_API_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .client(client)

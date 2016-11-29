@@ -6,11 +6,19 @@ android {
     compileSdkVersion 25
     buildToolsVersion "23.0.3"
 
+    def Properties versionProps = new Properties()
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.exists())
+        versionProps.load(new FileInputStream(versionPropsFile))
+    def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
+    versionProps['VERSION_CODE'] = code.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
+
     defaultConfig {
         applicationId "com.softranger.bayshopmfr"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 21
+        versionCode code
         versionName "1.0"
         multiDexEnabled true
     }
@@ -19,6 +27,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", "\"http://bayshop.com\""
+            buildConfigField "String", "BASE_API_URL", "\"http://bayshop.com/api/\""
+        }
+
+        debug {
+            buildConfigField "String", "BASE_URL", "\"http://bay-api.tk\""
+            buildConfigField "String", "BASE_API_URL", "\"http://bay-api.tk/api/\""
         }
     }
 

@@ -57,16 +57,6 @@ public class Constants {
         public static final String DAMAGE_RECORDED = "held-by-damage";
     }
 
-    public static class Api {
-        public static final String TRACK_URL = "https://gdeposylka.ru/api/v4/";
-
-        public static final String BASE_URL = "http://bayshop.com";
-        public static final String BASE_API_URL = "http://bayshop.com/api/";
-
-//        public static final String BASE_URL = "http://bay-api.tk";
-//        public static final String BASE_API_URL = "http://bay-api.tk/api/";
-    }
-
     public enum Period {
 
         one("one"), all("all"), week("7"), month("1");

@@ -23,10 +23,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.softranger.bayshopmfr.BuildConfig;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmfr.ui.general.MainActivity;
-import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
 
@@ -169,7 +169,7 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
         @Override
         protected Bitmap doInBackground(String... strings) {
             try {
-                URL url = new URL(Constants.Api.BASE_URL + strings[0]);
+                URL url = new URL(BuildConfig.BASE_URL + strings[0]);
                 return downloadImage(url);
             } catch (Exception e) {
                 e.printStackTrace();

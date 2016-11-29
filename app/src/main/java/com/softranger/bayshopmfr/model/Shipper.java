@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.softranger.bayshopmfr.util.Constants;
+import com.softranger.bayshopmfr.BuildConfig;
 
 /**
  * Created by Eduard Albu on 9/29/16, 09, 2016
@@ -255,7 +255,7 @@ public class Shipper implements Parcelable, Comparable<Shipper> {
 
     public String getIconUrl() {
         if (mIconUrl != null && mIconUrl.contains("http")) return mIconUrl;
-        else return Constants.Api.BASE_URL + mIconUrl;
+        else return BuildConfig.BASE_URL + mIconUrl;
     }
 
     @Override
