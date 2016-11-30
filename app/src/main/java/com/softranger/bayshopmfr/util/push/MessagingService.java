@@ -73,19 +73,7 @@ public class MessagingService extends FirebaseMessagingService {
                 intent = new Intent(this, AwaitingArrivalActivity.class);
                 intent.putExtra("id", message.getId());
                 break;
-            case awaiting_declaration:
-            case packing:
-            case held_by_prohibition:
-            case held_by_damage:
-            case held_by_user:
-            case customs_held:
-            case taken_to_delivery:
-            case local_depo:
-            case packed:
-            case received:
-            case sent:
-            case live:
-            case processing:
+            case parcel:
                 intent = new Intent(this, PUSParcelActivity.class);
                 intent.putExtra("id", message.getId());
                 break;
