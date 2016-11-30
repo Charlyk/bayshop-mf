@@ -40,6 +40,8 @@ import butterknife.OnClick;
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.identity.Registration;
 import retrofit2.Call;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class SplashActivity extends ParentActivity {
 
@@ -133,6 +135,8 @@ public class SplashActivity extends ParentActivity {
     }
 
     private void startLoginActivity() {
+        Application.autoPackPrefs.edit().clear().apply();
+        Application.notifyPrefs.edit().clear().apply();
         mIntent = new Intent(this, LoginActivity.class);
         startActivity(mIntent);
         finish();
@@ -180,6 +184,16 @@ public class SplashActivity extends ParentActivity {
             long duration = System.currentTimeMillis() - personalDataStart;
             Log.d("Personal data", duration + "");
             getCounters();
+            // get additional services prices
+            Application.apiInterface().getAdditionalServicesPrice().subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(hashMapServerResponse -> {
+                        Application.servicesPrices = hashMapServerResponse.getData();
+                    }, error -> {
+                        error.printStackTrace();
+                        // TODO: 11/30/16 send error to server
+                        Toast.makeText(Application.getInstance(), getString(R.string.cant_obtain_prices), Toast.LENGTH_SHORT).show();
+                    });
         }
 
         @Override

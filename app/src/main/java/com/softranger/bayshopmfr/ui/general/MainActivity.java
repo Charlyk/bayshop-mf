@@ -45,6 +45,7 @@ import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
 import com.softranger.bayshopmfr.ui.addresses.WarehouseAddressesActivity;
 import com.softranger.bayshopmfr.ui.auth.LoginActivity;
+import com.softranger.bayshopmfr.ui.auth.SplashActivity;
 import com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalFragment;
 import com.softranger.bayshopmfr.ui.calculator.ShippingCalculatorActivity;
 import com.softranger.bayshopmfr.ui.help.ServicesInfoActivity;
@@ -193,6 +194,16 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         }
 
         setMenuCounter(R.id.nav_contactUs, Intercom.client().getUnreadConversationCount());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Application.user == null || Application.counters.size() <= 0) {
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private ResponseCallback mPushTokenCallback = new ResponseCallback() {
@@ -378,6 +389,8 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
     public void logOut() {
         Application.getInstance().setLoginStatus(false);
+        Application.autoPackPrefs.edit().clear().apply();
+        Application.notifyPrefs.edit().clear().apply();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

@@ -26,8 +26,6 @@ import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
 
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -57,7 +55,6 @@ public class RepackingFragment extends ParentFragment {
     private Unbinder mUnbinder;
     private ParentActivity mActivity;
     private Call<ServerResponse> mCall;
-    private Call<ServerResponse<HashMap<String, Double>>> mPricesCall;
 
     private String mId;
     private boolean mIsInProgress;
@@ -98,37 +95,14 @@ public class RepackingFragment extends ParentFragment {
             mLinearLayout.setVisibility(View.GONE);
             Drawable redBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
             mConfirmButton.setBackgroundDrawable(redBg);
-        } else {
-            mActivity.toggleLoadingProgress(true);
-            mPricesCall = Application.apiInterface().getAdditionalServicesPrices();
-            mPricesCall.enqueue(mPricesCallback);
+        } else if (Application.servicesPrices != null) {
+            mConfirmButton.setVisibility(View.VISIBLE);
+            mConfirmButton.setText(getString(R.string.request_for, Application.servicesPrices.get(Constants.Services.REPACKING)));
         }
-
         return view;
     }
 
-    private ResponseCallback<HashMap<String, Double>> mPricesCallback = new ResponseCallback<HashMap<String, Double>>() {
-        @Override
-        public void onSuccess(HashMap<String, Double> data) {
-            mConfirmButton.setVisibility(View.VISIBLE);
-            if (!mIsInProgress) {
-                mConfirmButton.setText(getString(R.string.request_for, data.get(Constants.Services.REPACKING)));
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
 
-        @Override
-        public void onFailure(ServerResponse errorData) {
-            mActivity.toggleLoadingProgress(false);
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onError(Call<ServerResponse<HashMap<String, Double>>> call, Throwable t) {
-            mActivity.toggleLoadingProgress(false);
-            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-        }
-    };
 
     @OnClick(R.id.additionalServiceConfirmBtn)
     void makeRepackingRequest() {
@@ -189,7 +163,6 @@ public class RepackingFragment extends ParentFragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
-        if (mPricesCall != null) mPricesCall.cancel();
         mUnbinder.unbind();
         mActivity.unregisterReceiver(mBroadcastReceiver);
     }

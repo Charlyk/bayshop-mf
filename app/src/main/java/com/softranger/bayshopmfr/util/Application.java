@@ -56,6 +56,7 @@ public class Application extends MultiDexApplication {
     public static User user;
     private static SimpleDateFormat friendlyFormat;
     public static HashMap<String, Integer> counters;
+    public static HashMap<String, Double> servicesPrices;
 
     private static Retrofit retrofit;
 

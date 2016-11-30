@@ -4,8 +4,8 @@
               android:id="@+id/awaitingArrivalDetailsLayout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:clipToPadding="false"
               android:background="@android:color/white"
+              android:clipToPadding="false"
               android:orientation="vertical">
 
     <LinearLayout
@@ -14,67 +14,122 @@
         android:background="@android:color/white"
         android:orientation="horizontal">
 
-        <TextView
+        <RelativeLayout
             android:id="@+id/awaitingDetailsAdditionalPhotosBtn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:paddingStart="10dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawablePadding="5dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:drawableLeft="@mipmap/ic_pre_additional_photo_55dp"
-            android:drawableStart="@mipmap/ic_pre_additional_photo_55dp"
-            android:text="@string/order_photos"
-            android:textColor="@android:color/black"
-            android:textSize="13sp"/>
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
 
-        <TextView
+            <ImageView
+                android:id="@+id/preAdditionalPhotosIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/ic_additional_photo_55dp"/>
+
+            <TextView
+                android:id="@+id/preAdditionalPhotosPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/preAdditionalPhotosIcon"
+                android:layout_alignRight="@id/preAdditionalPhotosIcon"
+                android:layout_alignTop="@id/preAdditionalPhotosIcon"
+                android:background="@drawable/price_bg"
+                android:text="$0"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/preAditionalPhotosTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@id/preAdditionalPhotosIcon"
+                android:layout_toEndOf="@id/preAdditionalPhotosIcon"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/order_photos"
+                android:textColor="@android:color/black"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
             android:id="@+id/awaitingDetailsCheckProductBtn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
             android:layout_weight="1"
-            android:drawablePadding="5dp"
-            android:layout_gravity="center"
-            android:paddingRight="5dp"
-            android:paddingEnd="5dp"
-            android:gravity="center_vertical"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawableLeft="@mipmap/ic_pre_check_product_55dp"
-            android:drawableStart="@mipmap/ic_pre_check_product_55dp"
-            android:text="@string/order_checking"
-            android:textColor="@android:color/black"
-            android:textSize="13sp"/>
+            android:clickable="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:id="@+id/preCheckIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/ic_check_products_55dp"/>
+
+            <TextView
+                android:id="@+id/preCheckPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/preCheckIcon"
+                android:layout_alignRight="@id/preCheckIcon"
+                android:layout_alignTop="@id/preCheckIcon"
+                android:background="@drawable/price_bg"
+                android:text="$0"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/preCheckTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@id/preCheckIcon"
+                android:layout_toEndOf="@id/preCheckIcon"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/order_checking"
+                android:textColor="@android:color/black"
+                android:textSize="13sp"/>
+        </RelativeLayout>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/cloudImage"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:scaleType="centerInside"
         android:background="#ededed"
+        android:scaleType="centerInside"
         android:src="@drawable/white_cloud"/>
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:background="#ededed"
-        android:id="@+id/view"/>
+        android:background="#ededed"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
 
         <TextView
             android:id="@+id/awaitingDetailsItemId"
@@ -82,10 +137,10 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/awaitingItemStatusLabel"
             android:layout_toStartOf="@+id/awaitingItemStatusLabel"
-            android:singleLine="true"
             android:ellipsize="end"
-            android:paddingRight="16dp"
             android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:singleLine="true"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
             tools:text="MF3121241412"/>
@@ -96,9 +151,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:paddingRight="16dp"
-            android:paddingLeft="16dp"
             android:layout_below="@id/awaitingDetailsItemId"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             tools:text="Product name will be here"/>
@@ -119,22 +174,22 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignBottom="@id/awaitingDetailsItemId"
-            android:layout_alignTop="@id/awaitingDetailsItemId"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/awaitingDetailsItemId"
             android:src="@mipmap/ic_cancel_30dp"/>
 
         <TextView
+            android:id="@+id/awaitingItemStatusLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Status goes here"
-            android:padding="3dp"
             android:layout_toLeftOf="@id/awaitingDetailsDeleteButton"
             android:layout_toStartOf="@id/awaitingDetailsDeleteButton"
             android:alpha="0"
             android:background="@drawable/green_5dp_corner"
+            android:padding="3dp"
             android:textColor="@android:color/white"
-            android:id="@+id/awaitingItemStatusLabel"/>
+            tools:text="Status goes here"/>
     </RelativeLayout>
 
     <View
@@ -146,10 +201,10 @@
         android:id="@+id/awaitingDetailsTrackingTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
         android:background="@android:color/white"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:paddingTop="16dp"
         android:text="@string/tracking"
         android:textSize="13sp"/>
 
@@ -158,8 +213,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:paddingRight="16dp"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         tools:text="12312312312431213"/>
@@ -167,18 +222,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:background="#ededed"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:background="@android:color/white"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"

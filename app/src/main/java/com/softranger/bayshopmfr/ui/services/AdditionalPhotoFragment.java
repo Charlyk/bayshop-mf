@@ -28,8 +28,6 @@ import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
 
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,7 +44,6 @@ public class AdditionalPhotoFragment extends ParentFragment {
     private static final String ID_ARG = "id argument";
     private static final String PREORDER_ARG = "is preorder argument";
     private static final String STATUS_ARG = "status argument";
-
 
     @BindView(R.id.additionalServiceImage)
     ImageView mServiceImage;
@@ -66,7 +63,6 @@ public class AdditionalPhotoFragment extends ParentFragment {
     private boolean mIsPreorder;
 
     private Call<ServerResponse> mCall;
-    private Call<ServerResponse<HashMap<String, Double>>> mPricesCall;
 
     public AdditionalPhotoFragment() {
         // Required empty public constructor
@@ -106,38 +102,14 @@ public class AdditionalPhotoFragment extends ParentFragment {
             mConfirmButton.setText(getString(R.string.cancel_request));
             Drawable redBg = mActivity.getResources().getDrawable(R.drawable.red_button_bg);
             mConfirmButton.setBackgroundDrawable(redBg);
-        } else {
-            mActivity.toggleLoadingProgress(true);
-            mPricesCall = Application.apiInterface().getAdditionalServicesPrices();
-            mPricesCall.enqueue(mPricesCallback);
+        } else if (Application.servicesPrices != null) {
+            mConfirmButton.setVisibility(View.VISIBLE);
+            String key = mIsPreorder ? Constants.Services.PRE_PHOTOS : Constants.Services.PHOTOS;
+            mConfirmButton.setText(getString(R.string.request_for, Application.servicesPrices.get(key)));
         }
 
         return view;
     }
-
-    private ResponseCallback<HashMap<String, Double>> mPricesCallback = new ResponseCallback<HashMap<String, Double>>() {
-        @Override
-        public void onSuccess(HashMap<String, Double> data) {
-            mConfirmButton.setVisibility(View.VISIBLE);
-            if (!mIsInProgress) {
-                String key = mIsPreorder ? Constants.Services.PRE_PHOTOS : Constants.Services.PHOTOS;
-                mConfirmButton.setText(getString(R.string.request_for, data.get(key)));
-            }
-            mActivity.toggleLoadingProgress(false);
-        }
-
-        @Override
-        public void onFailure(ServerResponse errorData) {
-            mActivity.toggleLoadingProgress(false);
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onError(Call<ServerResponse<HashMap<String, Double>>> call, Throwable t) {
-            mActivity.toggleLoadingProgress(false);
-            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-        }
-    };
 
     @OnClick(R.id.additionalServiceConfirmBtn)
     void sendRequest() {
@@ -213,7 +185,6 @@ public class AdditionalPhotoFragment extends ParentFragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (mCall != null) mCall.cancel();
-        if (mPricesCall != null) mPricesCall.cancel();
         mUnbinder.unbind();
         mActivity.hideKeyboard();
         mActivity.unregisterReceiver(mBroadcastReceiver);

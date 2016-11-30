@@ -22,9 +22,9 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.adapter.InStockAdapter;
-import com.softranger.bayshopmfr.model.box.InStockList;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.model.box.InStock;
+import com.softranger.bayshopmfr.model.box.InStockList;
 import com.softranger.bayshopmfr.network.ResponseCallback;
 import com.softranger.bayshopmfr.ui.addresses.AddressesListFragment;
 import com.softranger.bayshopmfr.ui.general.MainActivity;

@@ -52,10 +52,14 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
     @BindView(R.id.awaitingDetailsProductTracking) TextView mProductTracking;
     @BindView(R.id.awaitingDetailsDate) TextView mProductDate;
     @BindView(R.id.awaitingDetailsPrice) TextView mProductPrice;
-    @BindView(R.id.awaitingDetailsCheckProductBtn)
+    @BindView(R.id.preCheckTitle)
     TextView mCheckProduct;
-    @BindView(R.id.awaitingDetailsAdditionalPhotosBtn)
+    @BindView(R.id.preAditionalPhotosTitle)
     TextView mAdditionalPhoto;
+    @BindView(R.id.preAdditionalPhotosPrice)
+    TextView mPhotoPrice;
+    @BindView(R.id.preCheckPrice)
+    TextView mCheckingPrice;
     @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotosHolder;
     @BindView(R.id.awaitingArrivalDetailsLayout) LinearLayout mHolderLayout;
     @BindView(R.id.awaitingTrackingStatusBarView)
@@ -112,6 +116,7 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         mCall = Application.apiInterface().getAwaitingParcelDetails(mAwaitingArrivalId);
         mActivity.toggleLoadingProgress(true);
         mCall.enqueue(mResponseCallback);
+
         return rootView;
     }
 
@@ -222,6 +227,13 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
         String desc = quantity + " " + (quantity > 1 ? getString(R.string.products) : getString(R.string.product));
         mProductName.setText(desc);
         mProductTracking.setText(arrivalDetails.getTracking());
+
+        if (Application.servicesPrices != null) {
+            String photos = arrivalDetails.getCurrency() + Application.servicesPrices.get(Constants.Services.PRE_PHOTOS);
+            String checking = arrivalDetails.getCurrency() + Application.servicesPrices.get(Constants.Services.PRE_VERIFICATION);
+            mPhotoPrice.setText(photos);
+            mCheckingPrice.setText(checking);
+        }
 
         mProductDate.setText(Application.getFormattedDate(arrivalDetails.getCreatedDate()));
         String productPrice = arrivalDetails.getCurrency() + arrivalDetails.getPrice();

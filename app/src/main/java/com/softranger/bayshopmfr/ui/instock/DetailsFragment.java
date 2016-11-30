@@ -60,27 +60,45 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
     private ParentActivity mActivity;
     private Unbinder mUnbinder;
 
-    @BindView(R.id.fill_declarationButton) Button mFillDeclaration;
-    @BindView(R.id.check_productButton)
+    @BindView(R.id.fill_declarationButton)
+    Button mFillDeclaration;
+    @BindView(R.id.checkProductTitle)
     TextView mCheckProduct;
-    @BindView(R.id.additional_photoButton)
+    @BindView(R.id.additionalPhotosTitle)
     TextView mAdditionalPhoto;
-    @BindView(R.id.repack_productButton)
+    @BindView(R.id.repackingTitle)
     TextView mRepackingBtn;
-    @BindView(R.id.divide_photoButton)
-    TextView mPhoto;
-    @BindView(R.id.inStockDetailsImageList) RecyclerView mRecyclerView;
-    @BindView(R.id.inStockDetailsHolderLayout) LinearLayout mHolderLayout;
-    @BindView(R.id.noPhotoLayoutHolder) LinearLayout mNoPhotoLayout;
+    @BindView(R.id.divideParcelTitle)
+    TextView mDivideParcel;
+    @BindView(R.id.inStockDetailsImageList)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.inStockDetailsHolderLayout)
+    LinearLayout mHolderLayout;
+    @BindView(R.id.noPhotoLayoutHolder)
+    LinearLayout mNoPhotoLayout;
     @BindView(R.id.jellyPullToRefresh)
     JellyRefreshLayout mRefreshLayout;
 
-    @BindView(R.id.details_date_label)  TextView date;
-    @BindView(R.id.details_weight_label)  TextView weight;
-    @BindView(R.id.details_price_label)  TextView price;
+    @BindView(R.id.details_date_label)
+    TextView date;
+    @BindView(R.id.details_weight_label)
+    TextView weight;
+    @BindView(R.id.details_price_label)
+    TextView price;
 
-    @BindView(R.id.inStockDetailsItemId)  TextView uid;
-    @BindView(R.id.inStockDetailsProductName)  TextView description;
+    @BindView(R.id.additionalButtonsPhotoPrice)
+    TextView mPhotosPrice;
+    @BindView(R.id.additionalButtonsCheckPrice)
+    TextView mCheckPrice;
+    @BindView(R.id.additionalButtonsDividePrice)
+    TextView mDividePrice;
+    @BindView(R.id.additionalButtonsRepackPrice)
+    TextView mRepackPrice;
+
+    @BindView(R.id.inStockDetailsItemId)
+    TextView uid;
+    @BindView(R.id.inStockDetailsProductName)
+    TextView description;
 
     private InStockDetailed mInStockDetailed;
     private ImagesAdapter mImagesAdapter;
@@ -138,6 +156,16 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
     }
 
     private void getItemDetails() {
+        String photoPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.PHOTOS);
+        String checkPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.VERIFICATION);
+        String dividePrice = Constants.USD_SYMBOL + 0;
+        String repackPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.REPACKING);
+
+        mPhotosPrice.setText(photoPrice);
+        mCheckPrice.setText(checkPrice);
+        mDividePrice.setText(dividePrice);
+        mRepackPrice.setText(repackPrice);
+
         // send request to server for item details
         mCall = Application.apiInterface().getInStockItemDetails(mParcelId);
         mCall.enqueue(mResponseCallback);
@@ -210,14 +238,14 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
 
         @Override
         public void onFailure(ServerResponse errorData) {
-            mActivity.toggleLoadingProgress(false);
+            if (mActivity != null) mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
             Toast.makeText(Application.getInstance(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(Call<ServerResponse<InStockDetailed>> call, Throwable t) {
-            mActivity.toggleLoadingProgress(false);
+            if (mActivity != null) mActivity.toggleLoadingProgress(false);
             if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
             Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             t.printStackTrace();

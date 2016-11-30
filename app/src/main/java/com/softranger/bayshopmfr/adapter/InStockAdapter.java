@@ -155,6 +155,19 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             // set remaining text background to correspond to spent time
             itemHolder.mRemainingLabel.setBackgroundDrawable(mContext.getResources()
                     .getDrawable(getBarColors(storageDays)));
+        } else if (holder instanceof ServicesHolder) {
+            ServicesHolder servicesHolder = (ServicesHolder) holder;
+            if (Application.servicesPrices != null) {
+                String photoPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.PHOTOS);
+                String checkPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.VERIFICATION);
+                String dividePrice = Constants.USD_SYMBOL + 0;
+                String repackPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.REPACKING);
+
+                servicesHolder.mPhotoPrice.setText(photoPrice);
+                servicesHolder.mCheckPrice.setText(checkPrice);
+                servicesHolder.mDividePrice.setText(dividePrice);
+                servicesHolder.mRepackPrice.setText(repackPrice);
+            }
         }
     }
 
@@ -230,6 +243,14 @@ public class InStockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public class ServicesHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.additionalButtonsPhotoPrice)
+        TextView mPhotoPrice;
+        @BindView(R.id.additionalButtonsCheckPrice)
+        TextView mCheckPrice;
+        @BindView(R.id.additionalButtonsDividePrice)
+        TextView mDividePrice;
+        @BindView(R.id.additionalButtonsRepackPrice)
+        TextView mRepackPrice;
         public ServicesHolder(View itemView) {
             super(itemView);
             itemView.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));

@@ -514,22 +514,24 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         @Override
         public void onSuccess(Object data) {
             Intent update = new Intent(PUSParcelsFragment.ACTION_UPDATE);
-            mActivity.sendBroadcast(update);
-            mActivity.showResultActivity(getString(R.string.send_request), R.mipmap.ic_confirm_held_by_user_250dp,
-                    getString(R.string.parcel_will_be_sent));
-            mActivity.getFragmentManager().popBackStack();
+            if (mActivity != null) {
+                mActivity.sendBroadcast(update);
+                mActivity.showResultActivity(getString(R.string.send_request), R.mipmap.ic_confirm_held_by_user_250dp,
+                        getString(R.string.parcel_will_be_sent));
+                mActivity.getFragmentManager().popBackStack();
+            }
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(Application.getInstance(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            if (mActivity != null) mActivity.toggleLoadingProgress(false);
         }
 
         @Override
         public void onError(Call call, Throwable t) {
-            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+            if (mActivity != null) mActivity.toggleLoadingProgress(false);
             t.printStackTrace();
         }
     };
@@ -562,21 +564,23 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
             int count = Application.counters.get(Constants.PARCELS);
             count = count - 1;
             Application.counters.put(Constants.PARCELS, count);
-            mActivity.sendBroadcast(refresh);
-            mActivity.onBackPressed();
-            mActivity.toggleLoadingProgress(false);
+            if (mActivity != null) {
+                mActivity.sendBroadcast(refresh);
+                mActivity.onBackPressed();
+                mActivity.toggleLoadingProgress(false);
+            }
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(Application.getInstance(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            if (mActivity != null) mActivity.toggleLoadingProgress(false);
         }
 
         @Override
         public void onError(Call call, Throwable t) {
-            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+            if (mActivity != null) mActivity.toggleLoadingProgress(false);
         }
     };
 
@@ -589,21 +593,23 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
             int count = Application.counters.get(Constants.PARCELS);
             count = count - 1;
             Application.counters.put(Constants.PARCELS, count);
-            mActivity.sendBroadcast(refresh);
-            mActivity.onBackPressed();
-            mActivity.toggleLoadingProgress(false);
+            if (mActivity != null) {
+                mActivity.sendBroadcast(refresh);
+                mActivity.onBackPressed();
+                mActivity.toggleLoadingProgress(false);
+            }
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(Application.getInstance(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            if (mActivity != null) mActivity.toggleLoadingProgress(false);
         }
 
         @Override
         public void onError(Call call, Throwable t) {
-            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+            if (mActivity != null) mActivity.toggleLoadingProgress(false);
         }
     };
 

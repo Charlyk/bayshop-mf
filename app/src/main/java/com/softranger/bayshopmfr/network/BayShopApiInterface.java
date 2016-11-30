@@ -264,6 +264,9 @@ public interface BayShopApiInterface {
     @GET("additional-services/")
     Call<ServerResponse<HashMap<String, Double>>> getAdditionalServicesPrices();
 
+    @GET("additional-services/")
+    Observable<ServerResponse<HashMap<String, Double>>> getAdditionalServicesPrice();
+
     @GET("waiting-mf-tracking/{id}")
     Observable<ServerResponse<TrackingInfo>> getAwaitingParcelTrackingInfo(@Path("id") String parcelId);
 }

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -16,10 +17,10 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.NotificationMessage;
-import com.softranger.bayshopmfr.ui.pus.PUSParcelActivity;
 import com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalActivity;
 import com.softranger.bayshopmfr.ui.general.MainActivity;
 import com.softranger.bayshopmfr.ui.instock.InStockActivity;
+import com.softranger.bayshopmfr.ui.pus.PUSParcelActivity;
 
 import java.util.Map;
 
@@ -105,6 +106,8 @@ public class MessagingService extends FirebaseMessagingService {
                 .setContentTitle(message.getTitle())
                 .setContentText(message.getMessage())
                 .setAutoCancel(true)
+                .setVibrate(new long[]{3000, 1000})
+                .setLights(Color.RED, 3000, 3000)
                 .setSound(defaultSoundUri)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setStyle(new NotificationCompat.BigTextStyle()
