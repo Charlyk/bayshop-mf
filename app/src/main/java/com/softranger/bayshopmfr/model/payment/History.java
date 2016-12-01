@@ -4,13 +4,18 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softranger.bayshopmfr.BuildConfig;
 import com.softranger.bayshopmfr.util.Imageble;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by macbook on 6/30/16.
@@ -37,6 +42,20 @@ public class History implements Parcelable, Imageble {
     private String mCurrency;
     @JsonProperty("img_payment")
     private String mImageUrl;
+
+    @JsonCreator
+    public static History Create(String json) {
+        ObjectMapper mapper = new ObjectMapper();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        mapper.setDateFormat(dateFormat);
+        History history = null;
+        try {
+            history = mapper.readValue(json, History.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return history;
+    }
 
     private History() {
 

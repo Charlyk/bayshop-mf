@@ -226,7 +226,7 @@ public class SettingsFragment extends ParentFragment {
                     // do something if needed
                 }, error -> {
                     mActivity.toggleLoadingProgress(false);
-                    Toast.makeText(mActivity, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Application.getInstance(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 });
 
         mActivity.setResult(Activity.RESULT_OK);

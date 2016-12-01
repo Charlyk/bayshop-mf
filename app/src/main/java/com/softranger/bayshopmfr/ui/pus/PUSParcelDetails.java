@@ -183,21 +183,27 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
             }
             mAdapter.setOnItemClickListener(PUSParcelDetails.this);
             mRecyclerView.setAdapter(mAdapter);
-            mActivity.toggleLoadingProgress(false);
+            if (mActivity != null) {
+                mActivity.toggleLoadingProgress(false);
+            }
             mRecyclerView.setItemViewCacheSize(mAdapter.getItemCount());
         }
 
         @Override
         public void onFailure(ServerResponse errorData) {
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(Application.getInstance(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
+            if (mActivity != null) {
+                mActivity.toggleLoadingProgress(false);
+            }
         }
 
         @Override
         public void onError(Call<ServerResponse<PUSParcelDetailed>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
+            Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+            if (mActivity != null) {
+                mActivity.toggleLoadingProgress(false);
+            }
         }
     };
 
