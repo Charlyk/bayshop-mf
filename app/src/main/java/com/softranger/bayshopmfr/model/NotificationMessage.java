@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.softranger.bayshopmfr.R;
+import com.softranger.bayshopmfr.model.payment.History;
 
 /**
  * Created by Eduard Albu on 10/28/16, 10, 2016
@@ -29,6 +30,8 @@ public class NotificationMessage implements Parcelable {
     private String mId;
     @JsonIgnore
     private Action mAction;
+    @JsonProperty("data")
+    private History mHistory;
 
     public NotificationMessage() {
 
@@ -68,6 +71,10 @@ public class NotificationMessage implements Parcelable {
 
     public String getMessage() {
         return mMessage;
+    }
+
+    public History getHistory() {
+        return mHistory;
     }
 
     public String getId() {

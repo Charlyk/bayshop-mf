@@ -20,6 +20,7 @@ import com.softranger.bayshopmfr.model.NotificationMessage;
 import com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalActivity;
 import com.softranger.bayshopmfr.ui.general.MainActivity;
 import com.softranger.bayshopmfr.ui.instock.InStockActivity;
+import com.softranger.bayshopmfr.ui.payment.PaymentDetailsActivity;
 import com.softranger.bayshopmfr.ui.pus.PUSParcelActivity;
 
 import java.util.Map;
@@ -64,22 +65,27 @@ public class MessagingService extends FirebaseMessagingService {
      */
     private void sendNotification(NotificationMessage message) {
         Intent intent;
-        switch (message.getAction()) {
-            case mf:
-                intent = new Intent(this, InStockActivity.class);
-                intent.putExtra("id", message.getId());
-                break;
-            case waitingMf:
-                intent = new Intent(this, AwaitingArrivalActivity.class);
-                intent.putExtra("id", message.getId());
-                break;
-            case parcel:
-                intent = new Intent(this, PUSParcelActivity.class);
-                intent.putExtra("id", message.getId());
-                break;
-            default:
-                intent = new Intent(this, MainActivity.class);
-                break;
+        if (message.getHistory() != null) {
+            intent = new Intent(this, PaymentDetailsActivity.class);
+            intent.putExtra("history", message.getHistory());
+        } else {
+            switch (message.getAction()) {
+                case mf:
+                    intent = new Intent(this, InStockActivity.class);
+                    intent.putExtra("id", message.getId());
+                    break;
+                case waitingMf:
+                    intent = new Intent(this, AwaitingArrivalActivity.class);
+                    intent.putExtra("id", message.getId());
+                    break;
+                case parcel:
+                    intent = new Intent(this, PUSParcelActivity.class);
+                    intent.putExtra("id", message.getId());
+                    break;
+                default:
+                    intent = new Intent(this, MainActivity.class);
+                    break;
+            }
         }
 
         int intId = Integer.parseInt(message.getId());
