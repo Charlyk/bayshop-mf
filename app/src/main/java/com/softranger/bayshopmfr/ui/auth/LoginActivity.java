@@ -41,6 +41,8 @@ import java.util.HashMap;
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.identity.Registration;
 import retrofit2.Call;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class LoginActivity extends ParentActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnLoginDataReadyListener {
@@ -236,6 +238,17 @@ public class LoginActivity extends ParentActivity implements GoogleApiClient.OnC
 
             long duration = System.currentTimeMillis() - personalDataStart;
             Log.d("Personal data", duration + "");
+
+            // get additional services prices
+            Application.apiInterface().getAdditionalServicesPrice().subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(hashMapServerResponse -> {
+                        Application.getInstance().setAdditionalServicesPrices(hashMapServerResponse.getData());
+                    }, error -> {
+                        error.printStackTrace();
+                        // TODO: 11/30/16 send error to server
+                        Toast.makeText(Application.getInstance(), getString(R.string.cant_obtain_prices), Toast.LENGTH_SHORT).show();
+                    });
 
             countersStart = System.currentTimeMillis();
             mCountersCall = Application.apiInterface().getParcelsCounters();
