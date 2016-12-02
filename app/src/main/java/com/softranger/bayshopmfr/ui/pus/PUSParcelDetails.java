@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.adapter.ImagesAdapter;
-import com.softranger.bayshopmfr.adapter.InProcessingDetailsAdapter;
+import com.softranger.bayshopmfr.adapter.PUSParcelDetailsAdapter;
 import com.softranger.bayshopmfr.model.address.Address;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.model.product.Photo;
@@ -64,7 +64,7 @@ import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
  * A simple {@link Fragment} subclass.
  */
 public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.OnImageClickListener,
-        InProcessingDetailsAdapter.OnItemClickListener, PullToRefreshLayout.PullToRefreshListener {
+        PUSParcelDetailsAdapter.OnItemClickListener, PullToRefreshLayout.PullToRefreshListener {
 
     private static final String PRODUCT_ARG = "in processing arguments";
     private static final int UPLOAD_RESULT_CODE = 12;
@@ -82,7 +82,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
     private PUSParcelDetailed mPUSParcelDetailed;
     private String mPusParcelId;
     private AlertDialog mAlertDialog;
-    private InProcessingDetailsAdapter mAdapter;
+    private PUSParcelDetailsAdapter mAdapter;
     private CustomTabsIntent mTabsIntent;
     private Call<ServerResponse<PUSParcelDetailed>> mCall;
 
@@ -177,7 +177,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
             setBottomButtonsListeners();
 
-            mAdapter = new InProcessingDetailsAdapter(mPUSParcelDetailed, mActivity, PUSParcelDetails.this);
+            mAdapter = new PUSParcelDetailsAdapter(mPUSParcelDetailed, mActivity, PUSParcelDetails.this);
             if (mPUSParcelDetailed.getParcelStatus() == PUSParcel.PUSStatus.in_the_way) {
                 mAdapter.setShowMap(true);
             }
@@ -200,7 +200,7 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         @Override
         public void onError(Call<ServerResponse<PUSParcelDetailed>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Application.getInstance(), Application.getInstance().getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             if (mActivity != null) {
                 mActivity.toggleLoadingProgress(false);
             }

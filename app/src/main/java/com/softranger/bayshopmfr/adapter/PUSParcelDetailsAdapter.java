@@ -37,7 +37,7 @@ import butterknife.OnClick;
  * for project BayShop MF
  * email eduard.albu@gmail.com
  */
-public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PUSParcelDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int PARCEL = 0, PRODUCT = 1, PROHIBITED = 2, CUSTOMS_HELD = 3;
     private ArrayList<Object> mItems;
@@ -47,8 +47,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     private Context mContext;
     private String mCurrency;
 
-    public InProcessingDetailsAdapter(PUSParcelDetailed parcel, Context context,
-                                      ImagesAdapter.OnImageClickListener onImageClickListener) {
+    public PUSParcelDetailsAdapter(PUSParcelDetailed parcel, Context context,
+                                   ImagesAdapter.OnImageClickListener onImageClickListener) {
         mItems = new ArrayList<>();
         mContext = context;
         mItems.add(parcel);
@@ -79,11 +79,11 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         View view;
         switch (viewType) {
             case PARCEL: {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_processing_details_header, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pus_parcel_details_header, parent, false);
                 return new HeaderViewHolder(view);
             }
             case PRODUCT: {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_processing_product_list_item, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list_item, parent, false);
                 return new ItemViewHolder(view);
             }
         }
@@ -134,6 +134,12 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             headerHolder.mCity.setText(address.getCity());
             headerHolder.mCountry.setText(address.getCountry());
             headerHolder.mPostalCode.setText(address.getPostalCode());
+            // set parcel description
+            String description = headerHolder.mProcessingParcel.getDescription();
+            if (description == null || description.equals("null")) {
+                description = "";
+            }
+            headerHolder.mDescription.setText(description);
             // build full name from first and last names
             String clientFullName = address.getFirstName() + " " + address.getLastName();
             headerHolder.mClientName.setText(clientFullName);
@@ -249,6 +255,8 @@ public class InProcessingDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView mDeclaredPrice;
         @BindView(R.id.pusDetailsStatusLabel)
         TextView mStatusLabel;
+        @BindView(R.id.pusParcelDetailsDescritpionLabel)
+        TextView mDescription;
 
         @BindView(R.id.pusDetailsStatusProgress)
         ParcelStatusBarView mStatusBarView;
