@@ -188,7 +188,7 @@ public class SplashActivity extends ParentActivity {
             Application.apiInterface().getAdditionalServicesPrice().subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(hashMapServerResponse -> {
-                        Application.servicesPrices = hashMapServerResponse.getData();
+                        Application.getInstance().setAdditionalServicesPrices(hashMapServerResponse.getData());
                     }, error -> {
                         error.printStackTrace();
                         // TODO: 11/30/16 send error to server

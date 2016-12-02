@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ga_trackingId">UA-53494163-1</string>
+    <string name="ga_sampleFrequency">100.0</string>
+    <integer name="ga_sessionTimeout">1800</integer>
+    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_anonymizeIp">false</bool>
+    <bool name="ga_reportUncaughtExceptions">true</bool>
+
+    <screenName name="com.softranger.bayshopmfr.ui.addresses.SearchAddressActivity">Search Address
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.addresses.EditAddressActivity">Edit / Add
+        Address
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.addresses.WarehouseAddressesActivity">Warehouse
+        address
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.auth.LoginActivity">Login activity</screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.awaitingarrival.AwaitingArrivalActivity">Awaiting
+        details activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.auth.SplashActivity">Splash activity</screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.calculator.ShippingCalculatorActivity">Calculator
+        activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.gallery.GalleryActivity">Gallery activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.general.DeclarationActivity">Edit declaration /
+        awaiting activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.general.ResultActivity">Result activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.help.ServicesInfoActivity">Services info
+        activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.instock.InStockActivity">Warehouse details
+        activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.payment.PaymentActivity">Payment history
+        activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.payment.PaymentDetailsActivity">Payment details
+        activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.pus.PUSParcelActivity">PUS details activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.settings.SettingsActivity">Settings activity
+    </screenName>
+    <screenName name="com.softranger.bayshopmfr.ui.steps.CreateParcelActivity">Create parcel
+        activity
+    </screenName>
+</resources>

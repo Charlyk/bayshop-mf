@@ -19,6 +19,11 @@ import com.softranger.bayshopmfr.model.user.User;
 import com.softranger.bayshopmfr.network.BayShopApiInterface;
 import com.softranger.bayshopmfr.ui.settings.SettingsFragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
@@ -46,11 +51,14 @@ public class Application extends MultiDexApplication {
     private static final String NOTIFICATIONS_PREFS = "com.softranger.bayshopmf.settings.NotificationsPreferences";
     private static final String AUTH_TOKEN = "Auth token for Bay";
     public static final String ACTION_RETRY = "com.softranger.bayshopmf.RETRY_TO_CONNECT";
+    private static final String PRICES_PREFS = "com.softranger.bayshopmf.settings.AdditionalServicesPrices";
+    ;
     private static Application instance;
 
     private static SharedPreferences preferences;
     public static SharedPreferences autoPackPrefs;
     public static SharedPreferences notifyPrefs;
+    public static SharedPreferences pricesPrefs;
 
     public static String currentToken;
     public static User user;
@@ -72,8 +80,11 @@ public class Application extends MultiDexApplication {
         preferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         autoPackPrefs = getSharedPreferences(AUTOPACK_PREFS, MODE_PRIVATE);
         notifyPrefs = getSharedPreferences(NOTIFICATIONS_PREFS, MODE_PRIVATE);
+        pricesPrefs = getSharedPreferences(PRICES_PREFS, MODE_PRIVATE);
 
         currentToken = preferences.getString(AUTH_TOKEN, "no token");
+
+        servicesPrices();
 
         // initialize counters hashmap
         counters = new HashMap<>();
@@ -130,6 +141,31 @@ public class Application extends MultiDexApplication {
 
         friendlyFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         Intercom.initialize(this, "android_sdk-7c1e0502c5d35150b1f9ef443859612dadf8aa73", "xht0fqt3");
+    }
+
+    public void setAdditionalServicesPrices(HashMap<String, Double> additionalServicesPrices) {
+        try {
+            File file = new File(getDir("data", MODE_PRIVATE), "map");
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+            outputStream.writeObject(additionalServicesPrices);
+            outputStream.flush();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        servicesPrices = additionalServicesPrices;
+    }
+
+    private void servicesPrices() {
+        try {
+            File file = new File(getDir("data", MODE_PRIVATE), "map");
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
+            Object object = inputStream.readObject();
+            servicesPrices = (HashMap<String, Double>) object;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
