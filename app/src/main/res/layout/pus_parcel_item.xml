@@ -30,13 +30,20 @@
             android:textSize="18sp"
             tools:text="PUS2131432133"/>
 
+        <TextView
+            android:id="@+id/pusItemDescriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pusItemCodeNumberLabel"
+            tools:text="This is the description of this parcel"/>
+
         <com.softranger.bayshopmfr.util.widget.ParcelStatusBarView
             android:id="@+id/pusItemStatusBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7.5dp"
             android:layout_marginBottom="7.5dp"
-            android:layout_below="@id/pusItemCodeNumberLabel"
+            android:layout_below="@id/pusItemDescriptionLabel"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"/>
 

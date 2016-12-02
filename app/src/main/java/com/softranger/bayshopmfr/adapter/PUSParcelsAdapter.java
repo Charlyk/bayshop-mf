@@ -70,6 +70,12 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
 
         String price = holder.mPUSParcel.getCurrency() + holder.mPUSParcel.getPrice();
         holder.mPriceLabel.setText(price);
+
+        String description = holder.mPUSParcel.getDescription();
+        if (description == null || description.equalsIgnoreCase("null")) {
+            description = "";
+        }
+        holder.mDescription.setText(description);
     }
 
     @Override
@@ -92,6 +98,8 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
         @BindView(R.id.pusItemPriceLabel) TextView mPriceLabel;
         @BindView(R.id.pusItemCodeNumberLabel) TextView mCodeLabel;
         @BindView(R.id.pusItemHolder) LinearLayout mHolderLayout;
+        @BindView(R.id.pusItemDescriptionLabel)
+        TextView mDescription;
         @BindView(R.id.pusItemStatusLabel)
         TextView mStatusLabel;
 

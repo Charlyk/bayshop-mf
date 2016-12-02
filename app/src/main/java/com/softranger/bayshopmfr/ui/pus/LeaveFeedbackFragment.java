@@ -135,7 +135,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         if (mParcelDetailed != null) {
             mDateLabel.setText(friendlyFormat.format(mParcelDetailed.getReceivedTime()));
             mUidLabel.setText(mParcelDetailed.getCodeNumber());
-            mDescriptionLabel.setText(mParcelDetailed.getGeneralDescription());
+            mDescriptionLabel.setText(mParcelDetailed.getDescription());
         }
 
         if (mParcelDetailed != null) {

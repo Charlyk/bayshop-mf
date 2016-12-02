@@ -25,7 +25,8 @@ public class PUSParcel implements Parcelable {
     private Date fieldTime;
     @JsonProperty("totalPrice") private String mPrice;
     @JsonProperty("currency") private String mCurrency;
-    @JsonProperty("generalDescription") private String mGeneralDescription;
+    @JsonProperty("description")
+    private String mDescription;
     @JsonProperty("rating")
     protected int mRating;
     @JsonProperty("courierContacts")
@@ -51,6 +52,7 @@ public class PUSParcel implements Parcelable {
         mRating = in.readInt();
         mCourierContacts = in.readParcelable(CourierContacts.class.getClassLoader());
         mVolumeWeight = in.readDouble();
+        mDescription = in.readString();
     }
 
     public static final Creator<PUSParcel> CREATOR = new Creator<PUSParcel>() {
@@ -98,8 +100,8 @@ public class PUSParcel implements Parcelable {
         return mParcelStatus;
     }
 
-    public String getGeneralDescription() {
-        return mGeneralDescription;
+    public String getDescription() {
+        return mDescription;
     }
 
     public boolean isSelected() {
@@ -146,6 +148,7 @@ public class PUSParcel implements Parcelable {
         parcel.writeInt(mRating);
         parcel.writeParcelable(mCourierContacts, i);
         parcel.writeDouble(mVolumeWeight);
+        parcel.writeString(mDescription);
     }
 
     public enum PUSStatus {

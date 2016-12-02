@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 /**
  * Created by eduard on 28.04.16.
  */
-public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ReceivedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private ArrayList<PUSParcel> mInStockItems;
@@ -28,7 +28,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int HEADER = -1, PUS_PARCEL = 2;
 
-    public ItemAdapter(Context context) {
+    public ReceivedAdapter(Context context) {
         mContext = context;
         mInStockItems = new ArrayList<>();
     }
@@ -47,30 +47,36 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.in_procesing_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.received_list_item, parent, false);
         return new InProcessingViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        InProcessingViewHolder processingHolder = (InProcessingViewHolder) holder;
-        processingHolder.mProduct = mInStockItems.get(position);
+        InProcessingViewHolder itemHolder = (InProcessingViewHolder) holder;
+        itemHolder.mPUSParcel = mInStockItems.get(position);
         // set name id and date in position
-        processingHolder.mUidLabel.setText(String.valueOf(processingHolder.mProduct.getCodeNumber()));
+        itemHolder.mUidLabel.setText(String.valueOf(itemHolder.mPUSParcel.getCodeNumber()));
 
-        processingHolder.mRatingBar.setRating(processingHolder.mProduct.getRating());
-        processingHolder.mDateLabel.setText(Application.getFormattedDate(processingHolder.mProduct.getFieldTime()));
-        processingHolder.mPriceLabel.setText(processingHolder.mProduct.getCurrency() + processingHolder.mProduct.getPrice());
+        itemHolder.mRatingBar.setRating(itemHolder.mPUSParcel.getRating());
+        itemHolder.mDateLabel.setText(Application.getFormattedDate(itemHolder.mPUSParcel.getFieldTime()));
+        itemHolder.mPriceLabel.setText(itemHolder.mPUSParcel.getCurrency() + itemHolder.mPUSParcel.getPrice());
 
         // compute kilos from grams and set the result in weight label
-        double realWeight = Double.parseDouble(processingHolder.mProduct.getRealWeight());
+        double realWeight = Double.parseDouble(itemHolder.mPUSParcel.getRealWeight());
         double kg = realWeight / 1000;
-        double vkg = processingHolder.mProduct.getVolumeWeight() / 1000;
+        double vkg = itemHolder.mPUSParcel.getVolumeWeight() / 1000;
 
         String volumeAndWeight = Application.round(kg, 2) + mContext.getString(R.string.kilos) + " / "
                 + Application.round(vkg, 2) + mContext.getString(R.string.vkg);
 
-        processingHolder.mWeightLabel.setText(volumeAndWeight);
+        itemHolder.mWeightLabel.setText(volumeAndWeight);
+
+        String description = itemHolder.mPUSParcel.getDescription();
+        if (description == null || description.equalsIgnoreCase("null")) {
+            description = "";
+        }
+        itemHolder.mDescription.setText(description);
     }
 
     @Override
@@ -100,7 +106,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView mPriceLabel;
         @BindView(R.id.receivedItemDateLabel)
         TextView mDateLabel;
-        PUSParcel mProduct;
+        @BindView(R.id.receivedItemDescriptionLabel)
+        TextView mDescription;
+        PUSParcel mPUSParcel;
 
         public InProcessingViewHolder(View itemView) {
             super(itemView);
@@ -111,7 +119,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @Override
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
-                mOnItemClickListener.onInProcessingProductClick(mProduct, getAdapterPosition());
+                mOnItemClickListener.onInProcessingProductClick(mPUSParcel, getAdapterPosition());
             }
         }
     }

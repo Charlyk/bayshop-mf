@@ -48,13 +48,20 @@
             tools:text="PUS2131432133"/>
 
         <TextView
+            android:id="@+id/receivedItemDescriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receivedItemUidLabel"
+            tools:text="This is the description of this parcel"/>
+
+        <TextView
             android:id="@+id/textView45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7.5dp"
-            android:layout_alignLeft="@+id/receivedItemUidLabel"
-            android:layout_alignStart="@+id/receivedItemUidLabel"
-            android:layout_below="@+id/receivedItemUidLabel"
+            android:layout_alignLeft="@+id/receivedItemDescriptionLabel"
+            android:layout_alignStart="@+id/receivedItemDescriptionLabel"
+            android:layout_below="@+id/receivedItemDescriptionLabel"
             android:text="@string/date"
             android:textSize="13sp"/>
 

@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.softranger.bayshopmfr.R;
-import com.softranger.bayshopmfr.adapter.ItemAdapter;
+import com.softranger.bayshopmfr.adapter.ReceivedAdapter;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.model.pus.PUSParcel;
 import com.softranger.bayshopmfr.network.ResponseCallback;
@@ -36,14 +36,14 @@ import uk.co.imallan.jellyrefresh.JellyRefreshLayout;
 import uk.co.imallan.jellyrefresh.PullToRefreshLayout;
 
 
-public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnItemClickListener,
+public class ReceivedFragment extends ParentFragment implements ReceivedAdapter.OnItemClickListener,
         PullToRefreshLayout.PullToRefreshListener {
 
     public static final String ACTION_UPDATE = "com.softranger.bayshopmf.ui.pus.UPDATE_LIST";
     private MainActivity mActivity;
     private Unbinder mUnbinder;
     private ArrayList<PUSParcel> mPUSParcels;
-    private ItemAdapter mAdapter;
+    private ReceivedAdapter mAdapter;
     private Call<ServerResponse<ArrayList<PUSParcel>>> mCall;
     private ImageView mNoItemsImage;
 
@@ -78,7 +78,7 @@ public class ReceivedFragment extends ParentFragment implements ItemAdapter.OnIt
         mActivity.registerReceiver(mBroadcastReceiver, intentFilter);
 
         mPUSParcels = new ArrayList<>();
-        mAdapter = new ItemAdapter(mActivity);
+        mAdapter = new ReceivedAdapter(mActivity);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter.setOnItemClickListener(this);

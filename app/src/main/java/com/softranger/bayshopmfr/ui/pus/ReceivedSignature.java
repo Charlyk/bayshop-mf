@@ -115,7 +115,7 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
         }
 
         mUidLabel.setText(received.getCodeNumber());
-        mDescriptionlabel.setText(received.getGeneralDescription());
+        mDescriptionlabel.setText(received.getDescription());
 
 
         String strDate = friendlyFormat.format(received.getReceivedTime());

@@ -156,15 +156,17 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
     }
 
     private void getItemDetails() {
-        String photoPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.PHOTOS);
-        String checkPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.VERIFICATION);
-        String dividePrice = Constants.USD_SYMBOL + 0;
-        String repackPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.REPACKING);
+        if (Application.servicesPrices != null) {
+            String photoPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.PHOTOS);
+            String checkPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.VERIFICATION);
+            String dividePrice = Constants.USD_SYMBOL + 0;
+            String repackPrice = Constants.USD_SYMBOL + Application.servicesPrices.get(Constants.Services.REPACKING);
 
-        mPhotosPrice.setText(photoPrice);
-        mCheckPrice.setText(checkPrice);
-        mDividePrice.setText(dividePrice);
-        mRepackPrice.setText(repackPrice);
+            mPhotosPrice.setText(photoPrice);
+            mCheckPrice.setText(checkPrice);
+            mDividePrice.setText(dividePrice);
+            mRepackPrice.setText(repackPrice);
+        }
 
         // send request to server for item details
         mCall = Application.apiInterface().getInStockItemDetails(mParcelId);
