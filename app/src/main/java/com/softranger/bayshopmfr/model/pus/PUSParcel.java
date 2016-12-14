@@ -152,6 +152,7 @@ public class PUSParcel implements Parcelable {
     }
 
     public enum PUSStatus {
+        unknown(R.string.unknown_status, R.string.unknown, -1, "unknown", 0),
         processing(R.string.processing_warning, R.string.processing, -1, "processing", 1),
         held_by_prohibition(R.string.held_by_prohibition_warning, R.string.held_by_prohibition, R.layout.prohibition_details_header, "held-by-prohibition", 2),
         held_by_damage(R.string.held_by_damage_warning, R.string.held_by_damage, R.layout.damage_recorded_btn, "held-by-damage", 3),

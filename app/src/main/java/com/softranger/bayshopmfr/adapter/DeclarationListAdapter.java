@@ -105,11 +105,11 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemHolder.mProductName.setText(product.getTitle());
             itemHolder.mProductUrl.addTextChangedListener(new UrlTextWatcher(itemHolder.mProduct));
             itemHolder.mProductUrl.setText(product.getUrl());
-            itemHolder.mProductPrice.addTextChangedListener(new PriceTextWatcher(itemHolder.mProduct));
-            itemHolder.mProductPrice.setText(String.valueOf(product.getPrice()));
+            itemHolder.mProductPrice.addTextChangedListener(new PriceTextWatcher(itemHolder.mProductPrice, itemHolder.mProduct));
+            String price = String.valueOf(product.getPrice());
+            itemHolder.mProductPrice.setText(price);
             itemHolder.mProductQuantity.addTextChangedListener(new QuantityTextWatcher(itemHolder.mProductQuantity, itemHolder.mProduct));
             String quantity = String.valueOf(product.getQuantity());
-            if (quantity.equals("")) quantity = "1";
             itemHolder.mProductQuantity.setText(quantity);
         } else if (holder instanceof TrackingHolder) {
             TrackingHolder trackingHolder = (TrackingHolder) holder;
@@ -283,11 +283,16 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (s == null || s.equals("")) {
-                s = "1";
-                if (mEditText != null) mEditText.setText(s);
+            String value = String.valueOf(s);
+            if (!value.equals("")) {
+                int quantity = Integer.parseInt(value);
+                if (quantity <= 0) {
+                    value = "1";
+                    mEditText.setText(value);
+                }
             }
-            mProduct.setQuantity(String.valueOf(s));
+
+            mProduct.setQuantity(value);
         }
 
         @Override
@@ -299,9 +304,11 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class PriceTextWatcher implements TextWatcher {
 
         private Product mProduct;
+        private EditText mEditText;
 
-        public PriceTextWatcher(Product productBuilder) {
+        public PriceTextWatcher(EditText editText, Product productBuilder) {
             mProduct = productBuilder;
+            mEditText = editText;
         }
 
         @Override
@@ -311,7 +318,16 @@ public class DeclarationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mProduct.setPrice(String.valueOf(s));
+            String value = String.valueOf(s);
+            if (!value.equals("")) {
+                double price = Double.parseDouble(value);
+                if (price <= 0) {
+                    value = "1";
+                    mEditText.setText(value);
+                }
+            }
+
+            mProduct.setPrice(value);
         }
 
         @Override

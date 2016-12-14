@@ -247,10 +247,12 @@ public class DetailsFragment extends ParentFragment implements ImagesAdapter.OnI
 
         @Override
         public void onError(Call<ServerResponse<InStockDetailed>> call, Throwable t) {
-            if (mActivity != null) mActivity.toggleLoadingProgress(false);
-            if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
-            Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            t.printStackTrace();
+            if (isAdded()) {
+                if (mActivity != null) mActivity.toggleLoadingProgress(false);
+                if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
+                Toast.makeText(Application.getInstance(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
         }
     };
 

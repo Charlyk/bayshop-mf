@@ -19,7 +19,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode code
-        versionName "1.0"
+        versionName "1.1." + code
         multiDexEnabled true
     }
 
@@ -29,11 +29,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", "\"http://bayshop.com\""
             buildConfigField "String", "BASE_API_URL", "\"http://bayshop.com/api/\""
+            buildConfigField "String", "MF_VERSION", "\"MF.v1\""
+            buildConfigField "String", "API_VERSION", "\"1\""
+            return void
         }
 
         debug {
             buildConfigField "String", "BASE_URL", "\"http://bay-api.tk\""
             buildConfigField "String", "BASE_API_URL", "\"http://bay-api.tk/api/\""
+            buildConfigField "String", "MF_VERSION", "\"MF.v1\""
+            buildConfigField "String", "API_VERSION", "\"1\""
+            return void
         }
     }
 
@@ -89,6 +95,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.intercom.android:intercom-sdk-base:3.+'
+    compile 'io.intercom.android:intercom-sdk-fcm:3.+'
     compile 'com.mikhaellopez:circularimageview:3.0.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.annimon:stream:1.1.3'

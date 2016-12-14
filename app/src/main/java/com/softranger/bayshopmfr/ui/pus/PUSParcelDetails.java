@@ -200,9 +200,11 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
         @Override
         public void onError(Call<ServerResponse<PUSParcelDetailed>> call, Throwable t) {
             t.printStackTrace();
-            Toast.makeText(Application.getInstance(), Application.getInstance().getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            if (mActivity != null) {
-                mActivity.toggleLoadingProgress(false);
+            if (isAdded()) {
+                Toast.makeText(Application.getInstance(), Application.getInstance().getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+                if (mActivity != null) {
+                    mActivity.toggleLoadingProgress(false);
+                }
             }
         }
     };

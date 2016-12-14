@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -44,9 +45,12 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
 
     public static SelectedFragment selectedFragment;
 
+    protected boolean mShowUpdateDialog = true;
+
     protected View mNoConnectionView;
     protected boolean mNoConnectionVisible;
-
+    protected boolean isUpdateRequired;
+    protected AlertDialog mUpdateDialog;
     public abstract void setToolbarTitle(String title);
 
     public abstract void addFragment(ParentFragment fragment, boolean showAnimation);
@@ -61,6 +65,8 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mNoConnectionView = inflater.inflate(R.layout.no_connection, null, false);
         IntentFilter intentFilter = new IntentFilter(ResponseCallback.ACTION_NO_CONNECTION);
+        intentFilter.addAction(ResponseCallback.ACTION_NEW_VERSION);
+        registerReceiver(mBroadcastReceiver, intentFilter);
         registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
@@ -214,6 +220,33 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
                 case ResponseCallback.ACTION_NO_CONNECTION:
                     showNoConnectionView();
                     break;
+                case ResponseCallback.ACTION_NEW_VERSION:
+                    isUpdateRequired = intent.getExtras().getBoolean("required");
+                    // if update is not required and we don't need to show dialog, just return
+                    if (!isUpdateRequired && !mShowUpdateDialog) return;
+                    if (isUpdateRequired) cancelAllRequests();
+                    // otherwise show update dialog
+                    // first we need to know if negative button is needed or not
+                    String negativeTitle = isUpdateRequired ? null : getString(R.string.later);
+                    // after this create the dialog and show it
+                    mUpdateDialog = getDialog(getString(R.string.update), getString(R.string.new_version), R.mipmap.ic_address_pop_up_30dp,
+                            getString(R.string.update_txt), view -> {
+                                // open google play with current application, or browser if the device does not have google play installed
+                                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                } catch (android.content.ActivityNotFoundException anfe) {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                }
+                                mUpdateDialog.dismiss();
+                                if (isUpdateRequired) finish();
+                            }, negativeTitle, view -> {
+                                mUpdateDialog.dismiss();
+                            }, R.color.colorAccent);
+                    // if update is required we need to set dialog as not cancelable
+                    mUpdateDialog.setCancelable(!isUpdateRequired);
+                    mUpdateDialog.show();
+                    break;
             }
         }
     };
@@ -245,6 +278,10 @@ public abstract class ParentActivity extends AppCompatActivity implements Fragme
             wm.removeView(mNoConnectionView);
             mNoConnectionVisible = false;
         }
+    }
+
+    protected void cancelAllRequests() {
+
     }
 
     public boolean isNoConnectionVisible() {

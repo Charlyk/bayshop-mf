@@ -111,7 +111,7 @@ public class SettingsFragment extends ParentFragment {
             PackageInfo packageInfo = Application.getInstance().getPackageManager().getPackageInfo(Application.getInstance().getPackageName(), 0);
             String appVersion = packageInfo.versionName;
             int codeVersion = packageInfo.versionCode;
-            mAppVersionLabel.setText(getString(R.string.app_version, appVersion, codeVersion));
+            mAppVersionLabel.setText(getString(R.string.app_version, appVersion));
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
@@ -55,6 +56,8 @@ public class SplashActivity extends ParentActivity {
     DotIndicator mDotIndicator;
     @BindView(R.id.splashActivityNextBtn)
     Button mButton;
+    @BindView(R.id.splashActivityProgressBar)
+    ProgressBar mProgressBar;
 
     long personalDataStart;
     long countersStart;
@@ -86,6 +89,8 @@ public class SplashActivity extends ParentActivity {
             isIntroVisible = true;
             initIntroScreens();
         }
+
+        mShowUpdateDialog = false;
     }
 
     private void changeStatusBarColor(@ColorRes int color) {
@@ -138,8 +143,12 @@ public class SplashActivity extends ParentActivity {
         Application.autoPackPrefs.edit().clear().apply();
         Application.notifyPrefs.edit().clear().apply();
         mIntent = new Intent(this, LoginActivity.class);
-        startActivity(mIntent);
-        finish();
+        if (!isUpdateRequired) {
+            startActivity(mIntent);
+            finish();
+        } else {
+            runOnUiThread(() -> mProgressBar.setVisibility(View.INVISIBLE));
+        }
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -199,14 +208,22 @@ public class SplashActivity extends ParentActivity {
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            startLoginActivity();
+            if (!isUpdateRequired) {
+                startLoginActivity();
+            } else {
+                runOnUiThread(() -> mProgressBar.setVisibility(View.INVISIBLE));
+            }
         }
 
         @Override
         public void onError(Call<ServerResponse<User>> call, Throwable t) {
             t.printStackTrace();
             Toast.makeText(getBaseContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            startLoginActivity();
+            if (!isUpdateRequired) {
+                startLoginActivity();
+            } else {
+                runOnUiThread(() -> mProgressBar.setVisibility(View.INVISIBLE));
+            }
         }
     };
 
@@ -246,14 +263,22 @@ public class SplashActivity extends ParentActivity {
         @Override
         public void onFailure(ServerResponse errorData) {
             Toast.makeText(getBaseContext(), errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            startLoginActivity();
+            if (!isUpdateRequired) {
+                startLoginActivity();
+            } else {
+                runOnUiThread(() -> mProgressBar.setVisibility(View.INVISIBLE));
+            }
         }
 
         @Override
         public void onError(Call<ServerResponse<ParcelsCount>> call, Throwable t) {
             t.printStackTrace();
             Toast.makeText(getBaseContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            startLoginActivity();
+            if (!isUpdateRequired) {
+                startLoginActivity();
+            } else {
+                runOnUiThread(() -> mProgressBar.setVisibility(View.INVISIBLE));
+            }
         }
     };
 
@@ -366,5 +391,11 @@ public class SplashActivity extends ParentActivity {
 
             return delivery;
         }
+    }
+
+    @Override
+    protected void cancelAllRequests() {
+        if (mPersonalDataCall != null) mPersonalDataCall.cancel();
+        if (mCountersCall != null) mCountersCall.cancel();
     }
 }

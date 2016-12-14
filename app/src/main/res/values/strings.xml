@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"BayShop MF"</string>
+    <string name="app_name">BayShop MF</string>
 
     <!-- Navigation drawer texts (This is not visible in application -->
-    <string name="navigation_drawer_open">"Open navigation drawer"</string>
-    <string name="navigation_drawer_close">"Close navigation drawer"</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Splash screen -->
-    <string name="mail_forwarding">"MAIL FORWARDING"</string>
+    <string name="mail_forwarding">MAIL FORWARDING</string>
 
     <!-- DO NOT CHANGE OR COPY TO TRANSLATED FILE -->
     <string name="server_client_id" translatable="false">376156188250-8is8v8qi3dn4hntrota8nsnebhdkllf0.apps.googleusercontent.com</string>
@@ -18,397 +18,403 @@
     <string name="google_maps_api_key" translatable="false">AIzaSyCXEDAkhx0J1JYX93llnJUpJmrczBMWxxw</string>
 
     <!-- Main login screen -->
-    <string name="haveAnAccountText">"Don't have an account?"</string>
-    <string name="signup">"Sign up"</string>
-    <string name="facebook">"Facebook"</string>
-    <string name="google">"Google"</string>
-    <string name="login">"Sign in"</string>
-    <string name="email">"E-mail"</string>
-    <string name="password">"Password"</string>
-    <string name="enter_valid_email">"Please enter a valid e-mail"</string>
-    <string name="forgot_your_password">"Forgot your password?"</string>
-    <string name="forgot_password">"Forgot your password?"</string>
-    <string name="create_new_account">"Create new account"</string>
+    <string name="haveAnAccountText">Don\'t have an account?</string>
+    <string name="signup">Sign up</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="login">Sign in</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="enter_valid_email">Please enter a valid e-mail</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="create_new_account">Create new account</string>
 
     <!-- Navigation drawer -->
-    <string name="nav_received">"Received"</string>
-    <string name="profile_settings">"Account settings"</string>
-    <string name="contact_us">"Chat"</string>
-    <string name="shipping_calculator">"Shipping calculator"</string>
-    <string name="payment_history">"Payment history"</string>
-    <string name="services">"Services"</string>
+    <string name="nav_received">Received</string>
+    <string name="profile_settings">Account settings</string>
+    <string name="contact_us">Chat</string>
+    <string name="shipping_calculator">Shipping calculator</string>
+    <string name="payment_history">Payment history</string>
+    <string name="services">Services</string>
 
     <!-- Common for multiple screens -->
-    <string name="date">"Date:"</string>
-    <string name="price">"Price:"</string>
-    <string name="weight">"Weight &amp; volume:"</string>
-    <string name="tracking">"Tracking"</string>
+    <string name="date">Date:</string>
+    <string name="price">Price:</string>
+    <string name="weight">Weight &amp; volume:</string>
+    <string name="tracking">Tracking</string>
 
     <!-- Awaiting arrival -->
-    <string name="awaiting_arrival">"Awaiting orders"</string>
-    <string name="wait_parcel">"Your order was added as awaiting. We`ll notify you when it arrives to our warehouse."</string>
-    <string name="awaiting_instruction">"Push the button to add an awaiting order"</string>
+    <string name="awaiting_arrival">Awaiting orders</string>
+    <string name="wait_parcel">Your order was added as awaiting. We`ll notify you when it arrives to our warehouse.</string>
+    <string name="awaiting_instruction">Push the button to add an awaiting order</string>
 
     <!-- Awaiting arrival details -->
-    <string name="products">"products"</string>
-    <string name="product">"product"</string>
-    <string name="state_description">"You`ll get 2 parcel photos for free."</string>
-    <string name="edit_details">"Edit"</string>
-    <string name="order_checking">"Pre-order checking"</string>
-    <string name="order_photos">"Pre-order photos"</string>
+    <string name="products">products</string>
+    <string name="product">product</string>
+    <string name="state_description">You`ll get 2 parcel photos for free.</string>
+    <string name="edit_details">Edit</string>
+    <string name="order_checking">Pre-order checking</string>
+    <string name="order_photos">Pre-order photos</string>
 
     <!-- Awaiting arrival and Warehouse USA -->
-    <string name="check_in_progress">"Checking in progress"</string>
-    <string name="photos_in_progress">"Photos in progress"</string>
+    <string name="check_in_progress">Checking in progress</string>
+    <string name="photos_in_progress">Photos in progress</string>
 
     <!-- Add awaiting and declaration screen -->
-    <string name="total_price">"In total:"</string>
-    <string name="units_quantity">"Items:"</string>
-    <string name="product_name">"Product name:"</string>
-    <string name="url_to_the_product">"Product URL"</string>
-    <string name="add_item">"Add product"</string>
-    <string name="save">"Save"</string>
-    <string name="tracking_number">"Tracking number:"</string>
-    <string name="additional_services">"Additional services"</string>
-    <string name="pre_order_photos">"Pre-order add. photos"</string>
-    <string name="pre_order_checking">"Pre-order product checking"</string>
-    <string name="declaration_saved">"Declaration was saved successfully"</string>
-    <string name="add_awaiting_package">"Add order"</string>
-    <string name="example_product">"book"</string>
-    <string name="help">"Help"</string>
+    <string name="total_price">In total:</string>
+    <string name="units_quantity">Items:</string>
+    <string name="product_name">Product name:</string>
+    <string name="url_to_the_product">Product URL</string>
+    <string name="add_item">Add product</string>
+    <string name="save">Save</string>
+    <string name="tracking_number">Tracking number:</string>
+    <string name="additional_services">Additional services</string>
+    <string name="pre_order_photos">Pre-order add. photos</string>
+    <string name="pre_order_checking">Pre-order product checking</string>
+    <string name="declaration_saved">Declaration was saved successfully</string>
+    <string name="add_awaiting_package">Add order</string>
+    <string name="example_product">book</string>
+    <string name="help">Help</string>
     <string name="http_example_com_example_product" translatable="false">http://example.com/example-product</string>
-    <string name="preorder_photo_details">"We`ll take 8 additional product photos and will notify you when they are ready."</string>
-    <string name="preorder_checking_details">"We`ll check if products correspond to the order and aren`t damaged. We`ll notify you, if there are discrepancies or defects in the parcel."</string>
-    <string name="preorder_repacking_details">"We`ll use the package matching your product size perfectly. Having reduced the free space, we`ll reduce the parcel weight and delivery cost."</string>
-    <string name="awaiting_toolbar_details">"If you`ve got order tracking number, register the order in the system and track its arrival to the warehouse. If you don`t know the tracking, we`ll add your order to the system manually, when it arrives."</string>
-    <string name="declaration_toolbar_details">"All the parcels sent to your country from abroad are accompanied by customs declaration describing their contents, product cost and delivery cost. The correct declaration filling will help your knowing in advance, if parcel cost doesn`t bypass country customs limit and if the chosen goods aren`t prohibited from shipment."</string>
+    <string name="preorder_photo_details">We`ll take 8 additional product photos and will notify you when they are ready.</string>
+    <string name="preorder_checking_details">We`ll check if products correspond to the order and aren`t damaged. We`ll notify you, if there are discrepancies or defects in the parcel.</string>
+    <string name="preorder_repacking_details">We`ll use the package matching your product size perfectly. Having reduced the free space, we`ll reduce the parcel weight and delivery cost.</string>
+    <string name="awaiting_toolbar_details">If you`ve got order tracking number, register the order in the system and track its arrival to the warehouse. If you don`t know the tracking, we`ll add your order to the system manually, when it arrives.</string>
+    <string name="declaration_toolbar_details">All the parcels sent to your country from abroad are accompanied by customs declaration describing their contents, product cost and delivery cost. The correct declaration filling will help your knowing in advance, if parcel cost doesn`t bypass country customs limit and if the chosen goods aren`t prohibited from shipment.</string>
 
     <!-- Delete parcel dialog -->
-    <string name="delete_item">"Delete order"</string>
-    <string name="cancel">"Cancel"</string>
-    <string name="confirm_deleting">"Are you sure you want to delete"</string>
+    <string name="delete_item">Delete order</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_deleting">Are you sure you want to delete</string>
 
     <!-- Warehouse USA -->
-    <string name="additional_photo">"Additional photos"</string>
-    <string name="check_product">"Product checking"</string>
-    <string name="warehouse_usa">"Warehouse"</string>
-    <string name="declaration_not_filled">"Declaration isn`t filled"</string>
+    <string name="additional_photo">Additional photos</string>
+    <string name="check_product">Product checking</string>
+    <string name="warehouse_usa">Warehouse</string>
+    <string name="declaration_not_filled">Declaration isn`t filled</string>
 
     <!-- Warehouse USA Details -->
-    <string name="details">"Details"</string>
-    <string name="edit_declaration">"Edit declaration"</string>
-    <string name="fill_in_the_declaration">"Fill in the declaration"</string>
+    <string name="details">Details</string>
+    <string name="edit_declaration">Edit declaration</string>
+    <string name="fill_in_the_declaration">Fill in the declaration</string>
 
     <!-- Parcel statuses -->
-    <string name="awaiting_sending">"Awaiting sending"</string>
-    <string name="held_due_to_debt">"Debt for shipping"</string>
-    <string name="sent">"Sent"</string>
-    <string name="held_by_customs">"Held by Customs"</string>
-    <string name="local_deposit">"At local depot"</string>
-    <string name="take_to_delivery">"Door-to-door"</string>
-    <string name="held_by_prohibition">"Prohibited"</string>
-    <string name="processing">"Processing"</string>
-    <string name="awaiting_declaration">"Awaiting declaration"</string>
-    <string name="held_by_damage">"Damaged"</string>
-    <string name="held_by_user">"Held by customer"</string>
-    <string name="received">"Received"</string>
+    <string name="awaiting_sending">Awaiting sending</string>
+    <string name="held_due_to_debt">Debt for shipping</string>
+    <string name="sent">Sent</string>
+    <string name="held_by_customs">Held by Customs</string>
+    <string name="local_deposit">At local depot</string>
+    <string name="take_to_delivery">Door-to-door</string>
+    <string name="held_by_prohibition">Prohibited</string>
+    <string name="processing">Processing</string>
+    <string name="awaiting_declaration">Awaiting declaration</string>
+    <string name="held_by_damage">Damaged</string>
+    <string name="held_by_user">Held by customer</string>
+    <string name="received">Received</string>
 
     <!-- Statuses warnings -->
-    <string name="awaiting_sending_warning">"The parcel is packed and will be sent soon."</string>
-    <string name="held_due_to_debt_warning">"Your account balance is negative. Replenish the account and the parcel will be sent automatically."</string>
-    <string name="sent_warning">"The parcel was sent to the warehouse in your country. You can track the delivery path."</string>
-    <string name="local_deposit_warning">"The parcel arrived to the warehouse in your country. Order door-to-door delivery or receive it in our office."</string>
-    <string name="take_to_delivery_warning">"The parcel is transmitted to courier. It will be soon delivered to the address so indicated."</string>
-    <string name="held_by_prohibition_warning">"The parcel is held due to the presence of the prohibited goods. Disband it and create 2 new parcels: return the prohibited product to the seller, having changed the delivery address, and send other goods to yours."</string>
-    <string name="processing_warning">"The parcel is processed at the US warehouse. We unite orders in parcel, check for damages or prohibited goods and pack it."</string>
-    <string name="awaiting_declaration_warning">"Fill in the customs declaration in order to create the parcel."</string>
-    <string name="held_by_damage_warning">"The parcel is held due to the presence of the damaged goods. Disband it and create 2 new parcels: return the damaged product to the seller, having changed the delivery address, and send other goods to yours."</string>
-    <string name="held_by_user_warning">"You suspended the delivery for some time. Parcel storage at our warehouse for more than 7 days costs $5, plus $1 per 1 kg. Allow the shipping and parcel will be delivered to your address."</string>
-    <string name="received_warning">"You've received the parcel."</string>
+    <string name="awaiting_sending_warning">The parcel is packed and will be sent soon.</string>
+    <string name="held_due_to_debt_warning">Your account balance is negative. Replenish the account and the parcel will be sent automatically.</string>
+    <string name="sent_warning">The parcel was sent to the warehouse in your country. You can track the delivery path.</string>
+    <string name="local_deposit_warning">The parcel arrived to the warehouse in your country. Order door-to-door delivery or receive it in our office.</string>
+    <string name="take_to_delivery_warning">The parcel is transmitted to courier. It will be soon delivered to the address so indicated.</string>
+    <string name="held_by_prohibition_warning">The parcel is held due to the presence of the prohibited goods. Disband it and create 2 new parcels: return the prohibited product to the seller, having changed the delivery address, and send other goods to yours.</string>
+    <string name="processing_warning">The parcel is processed at the US warehouse. We unite orders in parcel, check for damages or prohibited goods and pack it.</string>
+    <string name="awaiting_declaration_warning">Fill in the customs declaration in order to create the parcel.</string>
+    <string name="held_by_damage_warning">The parcel is held due to the presence of the damaged goods. Disband it and create 2 new parcels: return the damaged product to the seller, having changed the delivery address, and send other goods to yours.</string>
+    <string name="held_by_user_warning">You suspended the delivery for some time. Parcel storage at our warehouse for more than 7 days costs $5, plus $1 per 1 kg. Allow the shipping and parcel will be delivered to your address.</string>
+    <string name="received_warning">You\'ve received the parcel.</string>
 
     <!-- Profile settings -->
-    <string name="settings">"Settings"</string>
+    <string name="settings">Settings</string>
 
     <!-- Additional services -->
-    <string name="check_product_description">"We`ll check the goods and will notify you on finding the defects or inconsistencies."</string>
-    <string name="additional_photo_description">"Order 8 additional product photos in order to make sure it`s safe."</string>
-    <string name="leave_comment">"Leave a comment"</string>
-    <string name="repacking_description">"We`ll use the package matching your product size perfectly and you`ll save on shipping."</string>
-    <string name="enter_your_comment">"Leave suggestions to the order"</string>
-    <string name="cancel_request">"Cancel order"</string>
-    <string name="divide_parcel">"Divide order"</string>
-    <string name="request_for">"Order for $%.1f"</string>
-    <string name="repacking">"Order repackaging"</string>
-    <string name="repacking_in_progress">"Repackaging in progress"</string>
-    <string name="divide_parcel_details">"Divide a large order and bypass the customs limit. Service cost: $5 for every division."</string>
+    <string name="check_product_description">We`ll check the goods and will notify you on finding the defects or inconsistencies.</string>
+    <string name="additional_photo_description">Order 8 additional product photos in order to make sure it`s safe.</string>
+    <string name="leave_comment">Leave a comment</string>
+    <string name="repacking_description">Order this service, begin parcel creation and it will be repacked during the creation process.</string>
+    <string name="enter_your_comment">Leave suggestions to the order</string>
+    <string name="cancel_request">Cancel order</string>
+    <string name="divide_parcel">Divide order</string>
+    <string name="request_for">Order for $%.1f</string>
+    <string name="repacking">Order repackaging</string>
+    <string name="repacking_in_progress">Repackaging in progress</string>
+    <string name="divide_parcel_details">Divide a large order and bypass the customs limit. Service cost: $5 for every division.</string>
 
     <!-- PUS Parcels screen -->
-    <string name="shipping_by">"Shipping service:"</string>
-    <string name="goods_price">"Product cost:"</string>
-    <string name="shipping_price">"Shipping cost:"</string>
-    <string name="insurance_price">"Insurance cost:"</string>
-    <string name="additional_package_price">"Additional package:"</string>
-    <string name="declared_price">"Declared amount:"</string>
-    <string name="edit_feedback">"Send feedback"</string>
-    <string name="parcel_components">"Products in parcel"</string>
-    <string name="pay_the_debt">"Pay the debt"</string>
-    <string name="geolocation">"Geolocation"</string>
-    <string name="signature">"Information"</string>
-    <string name="track_parcel">"Track the parcel"</string>
-    <string name="upload_document">"Upload document/invoice"</string>
-    <string name="take_photo">"Take a photo"</string>
-    <string name="return_to_seller_s_address">"Return to seller"</string>
-    <string name="order_delivery">"Order door-to-door delivery"</string>
-    <string name="call_courier">"Call the courier"</string>
-    <string name="signature_of_geolocation">"Reception details"</string>
-    <string name="leave_feedback">"Your review"</string>
-    <string name="to_disband">"Disband"</string>
-    <string name="send_parcel">"Send parcel"</string>
-    <string name="allow_shipping">"Allow sending"</string>
-    <string name="shipping_price_aproximate">"Shipping cost:"</string>
+    <string name="shipping_by">Shipping service:</string>
+    <string name="goods_price">Product cost:</string>
+    <string name="shipping_price">Shipping cost:</string>
+    <string name="insurance_price">Insurance cost:</string>
+    <string name="additional_package_price">Additional package:</string>
+    <string name="declared_price">Declared amount:</string>
+    <string name="edit_feedback">Send feedback</string>
+    <string name="parcel_components">Products in parcel</string>
+    <string name="pay_the_debt">Pay the debt</string>
+    <string name="geolocation">Geolocation</string>
+    <string name="signature">Information</string>
+    <string name="track_parcel">Track the parcel</string>
+    <string name="upload_document">Upload document/invoice</string>
+    <string name="take_photo">Take a photo</string>
+    <string name="return_to_seller_s_address">Return to seller</string>
+    <string name="order_delivery">Order door-to-door delivery</string>
+    <string name="call_courier">Call the courier</string>
+    <string name="signature_of_geolocation">Reception details</string>
+    <string name="leave_feedback">Your review</string>
+    <string name="to_disband">Disband</string>
+    <string name="send_parcel">Send parcel</string>
+    <string name="allow_shipping">Allow sending</string>
+    <string name="shipping_price_aproximate">Shipping cost:</string>
 
     <!-- result screen -->
-    <string name="parcel_details">"Parcel details"</string>
-    <string name="disband_request_sent">"You requested parcel disbanding."</string>
-    <string name="document_uploaded">"Document uploaded"</string>
-    <string name="photo_taken">"Photo is ready"</string>
-    <string name="disband_request_received">"We`ll notify you when the parcel is disbanded."</string>
-    <string name="feedback_added">"Thanks for your feedback!"</string>
-    <string name="feedback_comment">"Don`t hesitate to ask any questions by writing them in \"Contact us\" section."</string>
-    <string name="allow_request_sent">"Damaged product sending"</string>
-    <string name="we_will_send_parcel">"You've confirmed the damage product sending and we`ll deliver it soon."</string>
-    <string name="send_request">"Sending allowed"</string>
-    <string name="parcel_will_be_sent">"You've allowed parcel sending and we`ll deliver it soon."</string>
-    <string name="request_received">"Return to seller"</string>
-    <string name="return_request_received">"The product will be soon returned to the seller. We`ll notify you when he receives it."</string>
+    <string name="parcel_details">Parcel details</string>
+    <string name="disband_request_sent">You requested parcel disbanding.</string>
+    <string name="document_uploaded">Document uploaded</string>
+    <string name="photo_taken">Photo is ready</string>
+    <string name="disband_request_received">We`ll notify you when the parcel is disbanded.</string>
+    <string name="feedback_added">Thanks for your feedback!</string>
+    <string name="feedback_comment">Don`t hesitate to ask any questions by writing them in \"Contact us\" section.</string>
+    <string name="allow_request_sent">Damaged product sending</string>
+    <string name="we_will_send_parcel">You\'ve confirmed the damage product sending and we`ll deliver it soon.</string>
+    <string name="send_request">Sending allowed</string>
+    <string name="parcel_will_be_sent">You\'ve allowed parcel sending and we`ll deliver it soon.</string>
+    <string name="request_received">Return to seller</string>
+    <string name="return_request_received">The product will be soon returned to the seller. We`ll notify you when he receives it.</string>
 
     <!-- Dialog -->
-    <string name="confirm_delivery">"Confirm the delivery to"</string>
-    <string name="order_sent">"Parcel sent"</string>
-    <string name="please_wait_call">"Our courier will call you soon"</string>
+    <string name="confirm_delivery">Confirm the delivery to</string>
+    <string name="order_sent">Parcel sent</string>
+    <string name="please_wait_call">Our courier will call you soon</string>
 
     <!-- Address item -->
-    <string name="street_name">"Street:"</string>
-    <string name="city">"City:"</string>
-    <string name="postal_code">"Postal code:"</string>
-    <string name="country">"Country:"</string>
-    <string name="phone_number">"Phone number:"</string>
+    <string name="street_name">Street:</string>
+    <string name="city">City:</string>
+    <string name="postal_code">Postal code:</string>
+    <string name="country">Country:</string>
+    <string name="phone_number">Phone number:</string>
 
     <!-- Addresses screen -->
-    <string name="add_new_address">"Add new address"</string>
-    <string name="search_address">"Search address"</string>
+    <string name="add_new_address">Add new address</string>
+    <string name="search_address">Search address</string>
 
     <!-- Payment history -->
-    <string name="today">"Today"</string>
-    <string name="last_week">"Week"</string>
-    <string name="last_month">"Month"</string>
-    <string name="all">"All"</string>
+    <string name="today">Today</string>
+    <string name="last_week">Week</string>
+    <string name="last_month">Month</string>
+    <string name="all">All</string>
 
     <!-- Payment history details -->
-    <string name="total_amount">"Account balance"</string>
-    <string name="date_and_time">"Transaction date"</string>
-    <string name="amount">"Transaction amount"</string>
-    <string name="transaction_id">"Transaction ID"</string>
-    <string name="payment_details">"Payment information"</string>
+    <string name="total_amount">Account balance</string>
+    <string name="date_and_time">Transaction date</string>
+    <string name="amount">Transaction amount</string>
+    <string name="transaction_id">Transaction ID</string>
+    <string name="payment_details">Payment information</string>
 
     <!-- Warehouse address -->
-    <string name="click_on_field_to_copy">"Click on each line to copy the text."</string>
-    <string name="warehouse_addresses">"Your US address"</string>
+    <string name="click_on_field_to_copy">Click on each line to copy the text.</string>
+    <string name="warehouse_addresses">Your US address</string>
 
     <!-- Screens with addresses and personal data -->
-    <string name="full_name">"Name and surname"</string>
-    <string name="address_line_1">"Address line 1"</string>
-    <string name="address_line_2">"Address line 2"</string>
-    <string name="state">"State"</string>
-    <string name="copied">"Copied to clipboard"</string>
-    <string name="edit_address">"Edit"</string>
-    <string name="delete">"Delete"</string>
-    <string name="select_phone_code">"Select phone code"</string>
-    <string name="select_country">"Select country"</string>
-    <string name="addresses_list">"Address list"</string>
+    <string name="full_name">Name and surname</string>
+    <string name="address_line_1">Address line 1</string>
+    <string name="address_line_2">Address line 2</string>
+    <string name="state">State</string>
+    <string name="copied">Copied to clipboard</string>
+    <string name="edit_address">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="select_phone_code">Select phone code</string>
+    <string name="select_country">Select country</string>
+    <string name="addresses_list">Address list</string>
 
     <!-- Dialog -->
-    <string name="delete_address">"Delete address"</string>
-    <string name="confirm_address_deleteing">"Сonfirm deletion"</string>
+    <string name="delete_address">Delete address</string>
+    <string name="confirm_address_deleteing">Сonfirm deletion</string>
 
     <!-- Shipping calculator -->
-    <string name="reset">"Reset"</string>
-    <string name="volume_x">"Length:"</string>
-    <string name="volume_y">"Width:"</string>
-    <string name="volume_z">"Height:"</string>
-    <string name="number_format_error">"Please use only numbers, dots and commas"</string>
+    <string name="reset">Reset</string>
+    <string name="volume_x">Length:</string>
+    <string name="volume_y">Width:</string>
+    <string name="volume_z">Height:</string>
+    <string name="number_format_error">Please use only numbers, dots and commas</string>
 
     <!-- Settings -->
-    <string name="user_data">"User profile"</string>
-    <string name="deliver_with">"Shipped by:"</string>
-    <string name="change_password">"Change password"</string>
-    <string name="autopacking">"Auto Packaging"</string>
-    <string name="address">"Shipping address:"</string>
-    <string name="addresses">"Addresses"</string>
-    <string name="insurance">"Insure\u0020"</string>
-    <string name="sms">"SMS"</string>
-    <string name="notifications">"Notifications"</string>
-    <string name="push_notifications">"Push–notifications"</string>
-    <string name="emails">"E-mails"</string>
-    <string name="log_out">"Log out"</string>
-    <string name="user_settings">"Account settings"</string>
+    <string name="user_data">User profile</string>
+    <string name="deliver_with">Shipped by:</string>
+    <string name="change_password">Change password</string>
+    <string name="autopacking">Auto Packaging</string>
+    <string name="address">Shipping address:</string>
+    <string name="addresses">Addresses</string>
+    <string name="insurance">Insure\u0020</string>
+    <string name="sms">SMS</string>
+    <string name="notifications">Notifications</string>
+    <string name="push_notifications">Push–notifications</string>
+    <string name="emails">E-mails</string>
+    <string name="log_out">Log out</string>
+    <string name="user_settings">Account settings</string>
 
     <!-- User data -->
-    <string name="first_name">"Name"</string>
-    <string name="last_name">"Surname"</string>
-    <string name="language">"Language"</string>
-    <string name="phone_code">"Country calling code:"</string>
-    <string name="moldova">"Moldova"</string>
-    <string name="english">"English"</string>
+    <string name="first_name">Name</string>
+    <string name="last_name">Surname</string>
+    <string name="language">Language</string>
+    <string name="phone_code">Country calling code:</string>
+    <string name="moldova">Moldova</string>
+    <string name="english">English</string>
 
     <!-- Change password -->
-    <string name="current_password">"Current password"</string>
-    <string name="enter_a_new_password">"New password"</string>
-    <string name="enter_valid_password">"Please enter a 6 digits password"</string>
-    <string name="password_changed">"Password changed"</string>
-    <string name="password_has_bee_changed">"Your password has been successfully changed, you can then log in to your account using your new password."</string>
+    <string name="current_password">Current password</string>
+    <string name="enter_a_new_password">New password</string>
+    <string name="enter_valid_password">Please enter a 6 digits password</string>
+    <string name="password_changed">Password changed</string>
+    <string name="password_has_bee_changed">Your password has been successfully changed, you can then log in to your account using your new password.</string>
 
     <!-- Build steps -->
-    <string name="select_address">"Select address"</string>
-    <string name="delivery_warning">"Shipping cost is approximate. The exact cost will be known after the parcel is packed."</string>
-    <string name="delivery_time">"Delivery time:"</string>
-    <string name="max_length">"Max. length"</string>
-    <string name="no_insurance">"Don`t insure $0"</string>
+    <string name="select_address">Select address</string>
+    <string name="delivery_warning">Shipping cost is approximate. The exact cost will be known after the parcel is packed.</string>
+    <string name="delivery_time">Delivery time:</string>
+    <string name="max_length">Max. length</string>
+    <string name="no_insurance">Don`t insure $0</string>
 
     <!-- Door-to-door delivery -->
-    <string name="local_delivery">"Door-to-door delivery"</string>
-    <string name="additional_package">"Use additional package"</string>
+    <string name="local_delivery">Door-to-door delivery</string>
+    <string name="additional_package">Use additional package</string>
 
     <!-- Delay sending -->
-    <string name="sent_on_user_alert">"Send at my request"</string>
-    <string name="check_parcel_details">"Check total cost"</string>
-    <string name="accepte_terms_and_conditions">"I agree to the Terms and Conditions:"</string>
-    <string name="declaration">"Product cost:"</string>
-    <string name="total_shipping_price">"Total shipping and handling cost:"</string>
-    <string name="confirm">"Confirm"</string>
-    <string name="parcel_added">"Order added"</string>
-    <string name="select_insurance">"Insure parcel"</string>
-    <string name="create_parcel">"Create parcel"</string>
-    <string name="insure_parcel">"Under the terms of the protection program the product invoice cost and the international delivery cost are included into the insurance cost. That’s why the total insurance cost will be available after the parcel is packed."</string>
-    <string name="refuse_insurace">"In case of parcel loss by the delivery service, also any products lacking or damaged within the shipping process, you won`t be able to submit a claim and won`t receive the reimbursement."</string>
-    <string name="your_parcel_added">"You`ve successfully added the parcel with ID %1$s"</string>
-    <string name="additional_package_details">"Pack additionally the fragile goods in order to protect them from damage. We will pack them in a \"box in a box\" and will fill the space between boxes with bubble wrap."</string>
-    <string name="local_delivery_details">"The parcel will be delivered to the address so indicated."</string>
-    <string name="sent_on_request_details">"Several parcels for one customer can be considered a commercial party by the Customs Service. We can delay parcel shipping and send it in the following parties. The amount of $5 (plus $1 per kilogram of weight) will be withdrawn from your account for parcel storage at our warehouse."</string>
+    <string name="sent_on_user_alert">Send at my request</string>
+    <string name="check_parcel_details">Check total cost</string>
+    <string name="accepte_terms_and_conditions">I agree to the Terms and Conditions:</string>
+    <string name="declaration">Product cost:</string>
+    <string name="total_shipping_price">Total shipping and handling cost:</string>
+    <string name="confirm">Confirm</string>
+    <string name="parcel_added">Order added</string>
+    <string name="select_insurance">Insure parcel</string>
+    <string name="create_parcel">Create parcel</string>
+    <string name="insure_parcel">Under the terms of the protection program the product invoice cost and the international delivery cost are included into the insurance cost. That’s why the total insurance cost will be available after the parcel is packed.</string>
+    <string name="refuse_insurace">In case of parcel loss by the delivery service, also any products lacking or damaged within the shipping process, you won`t be able to submit a claim and won`t receive the reimbursement.</string>
+    <string name="your_parcel_added">You`ve successfully added the parcel with ID %1$s</string>
+    <string name="additional_package_details">Pack additionally the fragile goods in order to protect them from damage. We will pack them in a \"box in a box\" and will fill the space between boxes with bubble wrap.</string>
+    <string name="local_delivery_details">The parcel will be delivered to the address so indicated.</string>
+    <string name="sent_on_request_details">Several parcels for one customer can be considered a commercial party by the Customs Service. We can delay parcel shipping and send it in the following parties. The amount of $5 (plus $1 per kilogram of weight) will be withdrawn from your account for parcel storage at our warehouse.</string>
 
     <!-- Build steps dialogs -->
-    <string name="save_address">"Save address"</string>
-    <string name="save_selected_address">"Save this address for Auto Packaging?"</string>
-    <string name="save_shipper">"Save shipping method"</string>
-    <string name="save_selected_method">"Save this shipping method for Auto Packaging?"</string>
-    <string name="yes">"Yes"</string>
-    <string name="no">"No"</string>
-    <string name="ok">"OK"</string>
+    <string name="save_address">Save address</string>
+    <string name="save_selected_address">Save this address for Auto Packaging?</string>
+    <string name="save_shipper">Save shipping method</string>
+    <string name="save_selected_method">Save this shipping method for Auto Packaging?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
 
     <!-- Shipping methods -->
-    <string name="shipping_method">"Shipping method"</string>
+    <string name="shipping_method">Shipping method</string>
 
     <!-- Unknown error text -->
-    <string name="unknown_error">"Something went wrong"</string>
+    <string name="unknown_error">Something went wrong</string>
 
     <!-- Toast messages texts -->
-    <string name="saved_succesfuly">"Saved successfully"</string>
-    <string name="specify_all_data">"Provide all the information for"</string>
-    <string name="enter_country_code">"Enter your country calling code"</string>
-    <string name="enter_country_name">"Enter your country"</string>
-    <string name="enter_tracking_num">"Enter tracking number"</string>
-    <string name="need_photo_permission">"We need your permission to take a picture."</string>
+    <string name="saved_succesfuly">Saved successfully</string>
+    <string name="specify_all_data">Provide all the information for</string>
+    <string name="enter_country_code">Enter your country calling code</string>
+    <string name="enter_country_name">Enter your country</string>
+    <string name="enter_tracking_num">Enter tracking number</string>
+    <string name="need_photo_permission">We need your permission to take a picture.</string>
 
     <!-- Intro screens -->
-    <string name="next">"Next"</string>
+    <string name="next">Next</string>
 
     <!-- Input fields errors -->
-    <string name="enter_first_name">"Enter your name"</string>
-    <string name="enter_last_name">"Enter your surname"</string>
-    <string name="enter_street_name">"Enter your street and house number"</string>
-    <string name="enter_phone_number">"Enter your phone number"</string>
-    <string name="enter_city">"Enter your city"</string>
-    <string name="enter_postal_code">"Enter your postal code"</string>
-    <string name="enter_your_first_name">"Enter your name"</string>
-    <string name="enter_your_email_address">"Enter your e-mail"</string>
-    <string name="passwords_does_not_match">"Passwords don`t match"</string>
-    <string name="enter_state">"Enter seller's state"</string>
+    <string name="enter_first_name">Enter your name</string>
+    <string name="enter_last_name">Enter your surname</string>
+    <string name="enter_street_name">Enter your street and house number</string>
+    <string name="enter_phone_number">Enter your phone number</string>
+    <string name="enter_city">Enter your city</string>
+    <string name="enter_postal_code">Enter your postal code</string>
+    <string name="enter_your_first_name">Enter your name</string>
+    <string name="enter_your_email_address">Enter your e-mail</string>
+    <string name="passwords_does_not_match">Passwords don`t match</string>
+    <string name="enter_state">Enter seller\'s state</string>
 
     <!-- Register -->
-    <string name="confirm_password">"Confirm password"</string>
-    <string name="register">"Register"</string>
-    <string name="registration_completed">"You have successfully signed up"</string>
-    <string name="thank_you_register">"Thank you for singing up, now you can login with your credentials."</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="register">Register</string>
+    <string name="registration_completed">You have successfully signed up</string>
+    <string name="thank_you_register">Thank you for singing up, now you can login with your credentials.</string>
 
     <!-- Restore password -->
-    <string name="restore_explain">"Enter your e-mail and we`ll send you the link to reset your password."</string>
-    <string name="restore">"Reset"</string>
-    <string name="restore_password">"Reset password"</string>
-    <string name="email_has_been_sent">"E-mail has been sent."</string>
-    <string name="reset_your_password">"When you receive your login information, follow the link to reset your password."</string>
-    <string name="must_contain">"Password must contain at least 6 characters."</string>
+    <string name="restore_explain">Enter your e-mail and we`ll send you the link to reset your password.</string>
+    <string name="restore">Reset</string>
+    <string name="restore_password">Reset password</string>
+    <string name="email_has_been_sent">E-mail has been sent.</string>
+    <string name="reset_your_password">When you receive your login information, follow the link to reset your password.</string>
+    <string name="must_contain">Password must contain at least 6 characters.</string>
 
     <!-- Result screen bottom button -->
-    <string name="done">"OK"</string>
+    <string name="done">OK</string>
 
     <!-- Received fragment info -->
-    <string name="received_date">"Reception date:"</string>
+    <string name="received_date">Reception date:</string>
 
     <!-- Untranslatable inputs hints -->
     <string name="_0_0" translatable="false">0.0</string>
     <string name="kg" translatable="false">---</string>
-    <string name="kilos">"kg"</string>
+    <string name="kilos">kg</string>
     <string name="vkg" translatable="false">Vkg</string>
     <string name="tracking_example" translatable="false">12345678901234567890</string>
     <string name="_10" translatable="false">$10</string>
     <string name="_0" translatable="false">0</string>
 
     <!-- Gallery image count -->
-    <string name="from">"of"</string>
+    <string name="from">of</string>
 
     <!-- Leave feedback screeen -->
-    <string name="send_comment">"Send feedback"</string>
-    <string name="hated_it">"Hated it"</string>
-    <string name="disliked_it">"Disliked it"</string>
-    <string name="it_is_ok">"It was ok"</string>
-    <string name="liked_it">"Liked it"</string>
-    <string name="loved_it">"Loved it"</string>
-    <string name="upload_photo">"Upload photo"</string>
-    <string name="photo">"Photo"</string>
+    <string name="send_comment">Send feedback</string>
+    <string name="hated_it">Hated it</string>
+    <string name="disliked_it">Disliked it</string>
+    <string name="it_is_ok">It was ok</string>
+    <string name="liked_it">Liked it</string>
+    <string name="loved_it">Loved it</string>
+    <string name="upload_photo">Upload photo</string>
+    <string name="photo">Photo</string>
 
     <!-- Date format -->
-    <string name="yesterday">"Yesterday"</string>
+    <string name="yesterday">Yesterday</string>
 
     <!-- No internet screen -->
-    <string name="no_internet_connection">"No Internet connection"</string>
-    <string name="check_your_internet_connection_and_try_again">"Check your Internet connection and try again"</string>
-    <string name="try_again">"Try again"</string>
+    <string name="no_internet_connection">No Internet connection</string>
+    <string name="check_your_internet_connection_and_try_again">Check your Internet connection and try again</string>
+    <string name="try_again">Try again</string>
 
     <!-- Autopacking dialog -->
-    <string name="autopacking_descriptio">"Enable Auto Packaging to save your selection for future use so you could pass all the parcel creation steps automatically."</string>
-    <string name="enable">"OK"</string>
-    <string name="no_thanks">"No, thanks"</string>
+    <string name="autopacking_descriptio">Enable Auto Packaging to save your selection for future use so you could pass all the parcel creation steps automatically.</string>
+    <string name="enable">OK</string>
+    <string name="no_thanks">No, thanks</string>
 
     <!-- Tracking information statuses -->
-    <string name="accepted">"Parcel received"</string>
-    <string name="info_recieved">"Parcel information received"</string>
-    <string name="in_transit_left">"In transit - Departed from the waypoint"</string>
-    <string name="in_transit_arrived">"In transit - Arrived to the waypoint"</string>
-    <string name="in_transit">"In transit"</string>
-    <string name="arrived">"Parcel has reached the destination"</string>
-    <string name="soon_delivery">"Parcel is being prepared for shipping"</string>
-    <string name="delivered">"Delivered"</string>
-    <string name="geting_status">"Getting status…"</string>
-    <string name="lorem_ipsum">" Lorem ipsum dolor sit amet, fermentum eros vivamus, turpis tempor facilisi libero. Fusce adipiscing ornare, lorem libero massa ipsum velit ac mauris, nec tristique odio, cras morbi augue. Orci porta semper varius ut vel, non purus tincidunt. Sollicitudin dui posuere facilisis posuere, semper mauris quisque, vitae nam lacus, aenean aliquam odio. Dolor diam fringilla molestie et dolor porta, vel nec maecenas sed. A in magna vehicula neque sed, lacus dolor cras malesuada suspendisse euismod. Pede vel curabitur, cras libero morbi sodales venenatis scelerisque "</string>
-    <string name="parcels">"Sent"</string>
-    <string name="use_autopacking">"Auto Packaging"</string>
-    <string name="intro_first_description">"Track parcel location via the international tracking directly in the app."</string>
-    <string name="intro_first_title">"Stay up-to-date"</string>
-    <string name="intro_second_title">"Stay mobile"</string>
-    <string name="intro_second_description">"Add orders awaited at the warehouse in the US right on your smartphone."</string>
-    <string name="intro_third_title">"Stay in touch"</string>
-    <string name="intro_third_description">"Get push-notifications about the shipping progress of your purchases."</string>
-    <string name="app_version">Version %1$s(%2$d)</string>
+    <string name="accepted">Parcel received</string>
+    <string name="info_recieved">Parcel information received</string>
+    <string name="in_transit_left">In transit - Departed from the waypoint</string>
+    <string name="in_transit_arrived">In transit - Arrived to the waypoint</string>
+    <string name="in_transit">In transit</string>
+    <string name="arrived">Parcel has reached the destination</string>
+    <string name="soon_delivery">Parcel is being prepared for shipping</string>
+    <string name="delivered">Delivered</string>
+    <string name="geting_status">Getting status…</string>
+    <string name="lorem_ipsum"> Lorem ipsum dolor sit amet, fermentum eros vivamus, turpis tempor facilisi libero. Fusce adipiscing ornare, lorem libero massa ipsum velit ac mauris, nec tristique odio, cras morbi augue. Orci porta semper varius ut vel, non purus tincidunt. Sollicitudin dui posuere facilisis posuere, semper mauris quisque, vitae nam lacus, aenean aliquam odio. Dolor diam fringilla molestie et dolor porta, vel nec maecenas sed. A in magna vehicula neque sed, lacus dolor cras malesuada suspendisse euismod. Pede vel curabitur, cras libero morbi sodales venenatis scelerisque </string>
+    <string name="parcels">Sent</string>
+    <string name="use_autopacking">Auto Packaging</string>
+    <string name="intro_first_description">Track parcel location via the international tracking directly in the app.</string>
+    <string name="intro_first_title">Stay up-to-date</string>
+    <string name="intro_second_title">Stay mobile</string>
+    <string name="intro_second_description">Add orders awaited at the warehouse in the US right on your smartphone.</string>
+    <string name="intro_third_title">Stay in touch</string>
+    <string name="intro_third_description">Get push-notifications about the shipping progress of your purchases.</string>
+    <string name="app_version">Version %1$s</string>
     <string name="_1" translatable="false">1</string>
     <string name="cant_obtain_prices">Can\'t obtain services prices.</string>
+    <string name="update">Update available</string>
+    <string name="new_version">New app version is available on Google Play, please update it asap so you can have all new functionality.</string>
+    <string name="update_txt">Update</string>
+    <string name="later">Later</string>
+    <string name="unknown_status">Status is unknown</string>
+    <string name="unknown">Unknown</string>
 </resources>

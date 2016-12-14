@@ -52,7 +52,9 @@ public class PUSParcelsAdapter extends RecyclerView.Adapter<PUSParcelsAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mPUSParcel = mPUSParcels.get(position);
 
-        holder.mStatusBarView.setProgress(holder.mPUSParcel.getParcelStatus().index());
+        PUSParcel.PUSStatus status = holder.mPUSParcel.getParcelStatus();
+        if (status == null) status = PUSParcel.PUSStatus.unknown;
+        holder.mStatusBarView.setProgress(status.index());
         holder.mStatusLabel.setText(mContext.getString(holder.mPUSParcel.getParcelStatus().statusName()));
 
         holder.mDateLabel.setText(Application.getFormattedDate(holder.mPUSParcel.getFieldTime()));

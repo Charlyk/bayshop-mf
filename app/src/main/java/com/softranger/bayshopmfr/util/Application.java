@@ -102,7 +102,7 @@ public class Application extends MultiDexApplication {
             Request original = chain.request();
             Request request = original.newBuilder()
                     .header("Bearer", currentToken)
-                    .header("Accept", "application/vnd.MF+json; version=1")
+                    .header("Accept", "application/vnd.MF+json; version=" + BuildConfig.API_VERSION)
                     .method(original.method(), original.body())
                     .build();
 
