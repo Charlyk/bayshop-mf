@@ -80,7 +80,11 @@ public abstract class ResponseCallback<T> implements Callback<ServerResponse<T>>
      */
     private ServerResponse getErrorResponse(Call<ServerResponse<T>> call, Response<ServerResponse<T>> response) {
         try {
-            return new ObjectMapper().readValue(response.errorBody().string(), ServerResponse.class);
+            if (response.errorBody() != null) {
+                return new ObjectMapper().readValue(response.errorBody().string(), ServerResponse.class);
+            } else {
+                return null;
+            }
         } catch (IOException e) {
             onError(call, e);
         }
