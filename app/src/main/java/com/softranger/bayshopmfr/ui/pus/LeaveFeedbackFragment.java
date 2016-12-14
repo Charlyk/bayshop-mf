@@ -302,8 +302,10 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         if (mUserPhoto != null) {
             MultipartBody.Part part = MultipartBody.Part.createFormData("service_photo", mUserPhoto.getName(),
                     RequestBody.create(MEDIA_TYPE_PNG, mUserPhoto));
+            RequestBody commentBody = RequestBody.create(MediaType.parse("text/plain"), comment);
+            RequestBody ratingBody = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(rating));
             mCall = Application.apiInterface().leaveFeedback(
-                    mParcelDetailed.getId(), comment, rating, part);
+                    mParcelDetailed.getId(), commentBody, ratingBody, part);
         } else {
             mCall = Application.apiInterface().leaveFeedback(
                     mParcelDetailed.getId(), comment, rating);

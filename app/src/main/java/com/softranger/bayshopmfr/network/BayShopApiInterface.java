@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -121,8 +122,8 @@ public interface BayShopApiInterface {
 
     @Multipart
     @POST("parcels/view/{parcelId}")
-    Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Part("comment") String comment,
-                                       @Part("rating") int rating, @Part MultipartBody.Part file);
+    Call<ServerResponse> leaveFeedback(@Path("parcelId") String parcelId, @Part("comment") RequestBody comment,
+                                       @Part("rating") RequestBody rating, @Part MultipartBody.Part file);
 
     @FormUrlEncoded
     @POST("parcels/view/{parcelId}")
