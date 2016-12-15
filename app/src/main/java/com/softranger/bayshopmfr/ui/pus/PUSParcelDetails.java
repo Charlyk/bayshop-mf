@@ -21,6 +21,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -442,7 +443,8 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
 
     @Override
     public void onStartTrackingClick(PUSParcelDetailed parcelDetailed, int position) {
-        if (mPUSParcelDetailed.getTrackingUrl() != null) {
+        if (mPUSParcelDetailed.getTrackingUrl() != null &&
+                Patterns.WEB_URL.matcher(mPUSParcelDetailed.getTrackingUrl()).matches()) {
             mTabsIntent.launchUrl(mActivity, Uri.parse(mPUSParcelDetailed.getTrackingUrl()));
         }
     }
@@ -487,7 +489,8 @@ public class PUSParcelDetails extends ParentFragment implements ImagesAdapter.On
      * start tracking a parcel
      */
     public void onStartTrackingClick() {
-        if (mPUSParcelDetailed.getTrackingUrl() != null) {
+        if (mPUSParcelDetailed.getTrackingUrl() != null &&
+                Patterns.WEB_URL.matcher(mPUSParcelDetailed.getTrackingUrl()).matches()) {
             mTabsIntent.launchUrl(mActivity, Uri.parse(mPUSParcelDetailed.getTrackingUrl()));
         }
     }
