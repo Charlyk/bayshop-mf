@@ -192,7 +192,7 @@ public class UserDataFragment extends ParentFragment {
         mSaveCall = Application.apiInterface().saveUserPersonalData(Application.user.getLastName(),
                 Application.user.getFirstName(), String.valueOf(Application.user.getCountryId()),
                 String.valueOf(Application.user.getPhoneCode()), Application.user.getPhoneNumber(),
-                String.valueOf(Application.user.getLanguageId()));
+                Application.getInstance().getPushToken(), String.valueOf(Application.user.getLanguageId()));
         mSaveCall.enqueue(mSaveResponseCallback);
         mActivity.toggleLoadingProgress(true);
     }

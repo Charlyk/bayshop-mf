@@ -230,6 +230,7 @@ public interface BayShopApiInterface {
                                               @Field("countryId") String countryId,
                                               @Field("phone_code") String phoneCode,
                                               @Field("phone") String phone,
+                                              @Field("token_gcm") String gcmToken,
                                               @Field("languageId") String languageId);
 
     @FormUrlEncoded
