@@ -49,13 +49,7 @@ public class TrackingInfo implements Parcelable {
     }
 
     public TrackingStatus getTrackingStatus() {
-        if (mStatus == null) return TrackingStatus.UNKNOWN;
-        for (TrackingStatus s : TrackingStatus.values()) {
-            if (s.name().equalsIgnoreCase(mStatus)) {
-                return s;
-            }
-        }
-        return TrackingStatus.UNKNOWN;
+        return TrackingStatus.forName(mStatus);
     }
 
     public String getStatus() {
@@ -82,6 +76,16 @@ public class TrackingInfo implements Parcelable {
         TrackingStatus(@StringRes int translatedStatus, int progress) {
             mTranslatedStatus = translatedStatus;
             mProgress = progress;
+        }
+
+        static TrackingStatus forName(String name) {
+            if (name == null) return TrackingStatus.UNKNOWN;
+            for (TrackingStatus s : TrackingStatus.values()) {
+                if (s.name().equalsIgnoreCase(name)) {
+                    return s;
+                }
+            }
+            return UNKNOWN;
         }
 
         public String translatedStatus() {

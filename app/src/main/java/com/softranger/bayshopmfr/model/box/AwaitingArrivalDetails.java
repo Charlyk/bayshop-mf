@@ -5,6 +5,7 @@ import android.os.Parcel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.ArrayList;
 
@@ -77,6 +78,11 @@ public class AwaitingArrivalDetails extends AwaitingArrival {
     @JsonIgnore
     public void setVerificationRequested(int verificationRequested) {
         mVerificationRequested = verificationRequested;
+    }
+
+    @JsonSetter("tracking_status")
+    public void setTrackingStatus(String status) {
+        mStringStatus = status;
     }
 
     @JsonIgnore

@@ -19,7 +19,7 @@ public class AwaitingArrival extends Box {
     @JsonProperty("service_name")
     private String mTrackingServiceName;
     @JsonProperty("tracking_status")
-    private String mStringStatus;
+    protected String mStringStatus;
 
     public AwaitingArrival() {
         // empty constructor for jackson

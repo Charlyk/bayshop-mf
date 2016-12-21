@@ -19,7 +19,6 @@ import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.model.box.AwaitingArrival;
 import com.softranger.bayshopmfr.model.box.AwaitingArrivalDetails;
-import com.softranger.bayshopmfr.model.box.TrackingInfo;
 import com.softranger.bayshopmfr.network.ResponseCallback;
 import com.softranger.bayshopmfr.ui.general.DeclarationActivity;
 import com.softranger.bayshopmfr.ui.general.MainActivity;
@@ -181,24 +180,8 @@ public class AwaitingArrivalProductFragment extends ParentFragment implements Pa
             setDataInPlace(mArrivalDetails);
             // hide loading progress
             mActivity.toggleLoadingProgress(false);
-            // try to get tracking info
-            Application.apiInterface().getAwaitingParcelTrackingInfo(data.getId())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(trackingInfoServerResponse -> {
-                        if (trackingInfoServerResponse.getData() != null) {
-                            TrackingInfo trackingInfo = trackingInfoServerResponse.getData();
-                            mArrivalDetails.setTrackingStatus(trackingInfo);
-                            if (mStatusBarView != null && mStatusLabel != null) {
-                                mStatusBarView.setProgress(trackingInfo.getTrackingStatus().progress());
-                                mStatusLabel.setText(trackingInfo.getTrackingStatus().translatedStatus());
-                            }
-                        } else {
-                            Toast.makeText(mActivity, trackingInfoServerResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }, error -> {
-                        Toast.makeText(mActivity, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    });
+            mStatusBarView.setProgress(mArrivalDetails.getTrackingStatus().progress());
+            mStatusLabel.setText(mArrivalDetails.getTrackingStatus().translatedStatus());
         }
 
         @Override
