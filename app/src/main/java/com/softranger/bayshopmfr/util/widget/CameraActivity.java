@@ -38,6 +38,9 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
 
     private byte[] imageData;
 
+    private boolean resizeImage;
+    private int angle = -90;
+
     private Camera mCamera;
 
     @Override
@@ -45,6 +48,11 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         ButterKnife.bind(this);
+
+        Intent intent = getIntent();
+        resizeImage = intent.hasExtra("resizeImage");
+
+        if (!resizeImage) mOverlayView.setVisibility(View.GONE);
 
         if (checkCameraHardware(this)) {
             mCamera = getCameraInstance();
@@ -66,12 +74,12 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
             if (imageData != null) {
                 try {
                     Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-                    Bitmap rotated = rotateBitmap(image, -90);
+                    Bitmap rotated = rotateBitmap(image, angle);
 
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     rotated.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 
-                    File imageFile = new File(getCacheDir(), "user_avatar.jpg");
+                    File imageFile = new File(getCacheDir(), resizeImage ? "user_avatar.jpg" : System.currentTimeMillis() + ".jpg");
                     FileOutputStream outputStream = new FileOutputStream(imageFile);
                     byte[] resizedData = bos.toByteArray();
                     outputStream.write(resizedData);
@@ -97,7 +105,11 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
         Bitmap rotated = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
         int dimension = getSquareCropDimensionForBitmap(rotated);
 
-        return ThumbnailUtils.extractThumbnail(rotated, dimension, dimension);
+        if (resizeImage) {
+            rotated = ThumbnailUtils.extractThumbnail(rotated, dimension, dimension);
+        }
+
+        return rotated;
     }
 
     //I added this method because people keep asking how
@@ -135,20 +147,30 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
     }
 
     /** A safe way to get an instance of the Camera object. */
-    public static Camera getCameraInstance(){
+    public Camera getCameraInstance(){
         Camera c = null;
-        int cameraCount = 0;
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        cameraCount = Camera.getNumberOfCameras();
-        for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
-            Camera.getCameraInfo(camIdx, cameraInfo);
-            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                try {
-                    c = Camera.open(camIdx);
-                    c.setDisplayOrientation(90);
-                } catch (RuntimeException e) {
-                    Log.e(TAG, "Camera failed to open: " + e.getLocalizedMessage());
+        if (resizeImage) {
+            int cameraCount = 0;
+            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            cameraCount = Camera.getNumberOfCameras();
+            for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
+                Camera.getCameraInfo(camIdx, cameraInfo);
+                if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                    try {
+                        c = Camera.open(camIdx);
+                        c.setDisplayOrientation(90);
+                    } catch (RuntimeException e) {
+                        Log.e(TAG, "Camera failed to open: " + e.getLocalizedMessage());
+                    }
                 }
+            }
+        } else {
+            try {
+                c = Camera.open();
+                c.setDisplayOrientation(90);
+                angle = 90;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return c; // returns null if camera is unavailable

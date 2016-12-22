@@ -81,7 +81,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     public static final String ACTION_ITEM_DELETED = "ITEM_DELETED";
     private static final int PERMISSION_REQUEST_CODE = 1535;
     private static final int LOG_OUT_RC = 1110;
-    private static final int AVATAR_RC = 1704;
+    public static final int AVATAR_RC = 1704;
     public static final String ACTION_UPDATE_TITLE = "update toolbar title";
     public ActionBarDrawerToggle mDrawerToggle;
     private static String[] permissions;
@@ -170,6 +170,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
 
         mAvatarImage.setOnClickListener(view -> {
             Intent camera = new Intent(this, CameraActivity.class);
+            camera.putExtra("resizeImage", true);
             startActivityForResult(camera, AVATAR_RC);
         });
         if (Application.user != null) {

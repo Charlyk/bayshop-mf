@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -36,6 +35,7 @@ import com.softranger.bayshopmfr.ui.general.MainActivity;
 import com.softranger.bayshopmfr.util.Application;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
+import com.softranger.bayshopmfr.util.widget.CameraActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -64,6 +64,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
 
     private static final String TAG = "LeaveFeedbackFragment";
     private static final String DETAILED_PARCEL = "detailed parcel arg";
+    public static final int FEEDBACK_RC = 1831;
     private static final int UPLOAD_RESULT_CODE = 12;
     private static final int TAKE_PICTURE_CODE = 13;
     public static final int CAMERA_PERMISSION_CODE = 14;
@@ -80,20 +81,13 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
 
     private static SimpleDateFormat friendlyFormat;
 
-    @BindView(R.id.leaveFeedbackUidLabel)
-    TextView mUidLabel;
-    @BindView(R.id.leaveFeedbackDescriptionLabel)
-    TextView mDescriptionLabel;
-    @BindView(R.id.leaveFeedbackDateLabel)
-    TextView mDateLabel;
-    @BindView(R.id.leaveFeedbackRatingBar)
-    RatingBar mRatingBar;
-    @BindView(R.id.leaveFeedbackRatingLabel)
-    TextView mRatingLabel;
-    @BindView(R.id.leaveFeedbackCommentLabel)
-    EditText mCommentInput;
-    @BindView(R.id.leaveFeedbackCommentImage)
-    ImageView mImageView;
+    @BindView(R.id.leaveFeedbackUidLabel) TextView mUidLabel;
+    @BindView(R.id.leaveFeedbackDescriptionLabel) TextView mDescriptionLabel;
+    @BindView(R.id.leaveFeedbackDateLabel) TextView mDateLabel;
+    @BindView(R.id.leaveFeedbackRatingBar) RatingBar mRatingBar;
+    @BindView(R.id.leaveFeedbackRatingLabel) TextView mRatingLabel;
+    @BindView(R.id.leaveFeedbackCommentLabel) EditText mCommentInput;
+    @BindView(R.id.leaveFeedbackCommentImage) ImageView mImageView;
 
     private HashMap<Float, Integer> mRatingStrings = new HashMap<Float, Integer>() {{
         put(0f, R.string.empty_string);
@@ -166,25 +160,21 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == MainActivity.RESULT_OK) {
-            mUserPhoto = new File(mActivity.getCacheDir().getPath(), "product_photo.jpg");
-            try {
+            if (requestCode == FEEDBACK_RC) {
+                String path = data.getExtras().getString("imagePath");
+                mUserPhoto = new File(path);
+            } else {
+                mUserPhoto = new File(mActivity.getCacheDir().getPath(), "product_photo.jpg");
                 // get image from intent
                 writeResultFromIntentToFile(data);
+            }
+            try {
                 decreaseFileSize(mUserPhoto);
                 Bitmap original = BitmapFactory.decodeFile(mUserPhoto.getAbsolutePath());
-                if (original.getWidth() > original.getHeight()) {
-                    Bitmap rotated = rotateImage(original, 90);
-                    FileOutputStream fos = new FileOutputStream(mUserPhoto);
-                    rotated.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                    rotated.recycle();
-                }
-                original.recycle();
+                Picasso.with(mActivity).load(mUserPhoto).resize(original.getWidth(), original.getHeight()).into(mImageView);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            int width = Application.getPixelsFromDp(160);
-            int height = Application.getPixelsFromDp(120);
-            Picasso.with(mActivity).load(mUserPhoto).resize(width, height).into(mImageView);
         } else if (data != null) {
             Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
             if (e != null) {
@@ -209,13 +199,6 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
-                true);
     }
 
     @Override
@@ -248,16 +231,18 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         }
     }
 
+    /**
+     * Show a dialog so user can select whether to pick an image from gallery or take a new picture
+     * for this parcel feedback
+     */
     private void showPhotoDialog() {
+        // inflate the layout for photo dialog
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.upload_image_dialog, null, false);
+        // set buttons click listeners
         view.findViewById(R.id.uploadDialogTakePhoto).setOnClickListener(v -> {
-//            takePhoto();
-            new MaterialCamera(this)
-                    .forceCamera1()
-                    /** all the previous methods can be called, but video ones would be ignored */
-                    .stillShot() // launches the Camera in stillshot mode
-                    .start(CAMERA_RQ);
+            Intent intent = new Intent(mActivity, CameraActivity.class);
+            startActivityForResult(intent, FEEDBACK_RC);
             mUploadDialog.dismiss();
         });
 
@@ -266,6 +251,7 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             mUploadDialog.dismiss();
         });
 
+        // set inflated view as a custom view for the dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                 .setView(view);
         mUploadDialog = builder.create();
@@ -358,6 +344,11 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
             mActivity.sendBroadcast(update);
             mActivity.onBackPressed();
             mActivity.toggleLoadingProgress(false);
+
+            // delete image from app cache to save memory
+            if (mUserPhoto != null && mUserPhoto.exists()) {
+                mUserPhoto.delete();
+            }
         }
 
         @Override
