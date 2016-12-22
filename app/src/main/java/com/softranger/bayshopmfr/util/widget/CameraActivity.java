@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.softranger.bayshopmfr.R;
 
@@ -35,6 +36,7 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
     @BindView(R.id.circleFrameView) CircleOverlayView mOverlayView;
     @BindView(R.id.captureBtn) ImageButton mCaptureBtn;
     @BindView(R.id.cancelBtn) Button mCancelBtn;
+    @BindView(R.id.noOverlayBg) LinearLayout mNoOverlayBg;
 
     private byte[] imageData;
 
@@ -52,7 +54,10 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
         Intent intent = getIntent();
         resizeImage = intent.hasExtra("resizeImage");
 
-        if (!resizeImage) mOverlayView.setVisibility(View.GONE);
+        if (!resizeImage) {
+            mOverlayView.setVisibility(View.GONE);
+            mNoOverlayBg.setVisibility(View.VISIBLE);
+        }
 
         if (checkCameraHardware(this)) {
             mCamera = getCameraInstance();

@@ -17,6 +17,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <LinearLayout
+        android:id="@+id/noOverlayBg"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@color/black_semi_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"/>
+
     <ImageButton
         android:id="@+id/captureBtn"
         android:layout_width="wrap_content"
@@ -25,7 +34,8 @@
         android:layout_alignParentBottom="true"
         android:src="@drawable/camera_btn"
         android:layout_margin="16dp"
-        style="@style/Base.Widget.AppCompat.ActionButton"/>
+        style="@style/Base.Widget.AppCompat.ActionButton"
+        android:contentDescription="@string/take_photo"/>
 
     <Button
         android:id="@+id/cancelBtn"
