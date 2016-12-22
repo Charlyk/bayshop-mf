@@ -14,12 +14,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true"/>
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true"/>
+    <!-- For animations -->
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+    <!-- Camera -->
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
     <application
         android:name=".util.Application"
@@ -113,15 +112,14 @@
         <activity
             android:name=".ui.general.DeclarationActivity"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity"
-            android:theme="@style/MaterialCamera.CaptureActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialCamera.CaptureActivity"/>
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity2"
-            android:theme="@style/MaterialCamera.CaptureActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialCamera.CaptureActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -156,6 +154,8 @@
         <activity
             android:name=".ui.help.ServicesInfoActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".util.widget.CameraActivity">
+        </activity>
     </application>
 
 </manifest>

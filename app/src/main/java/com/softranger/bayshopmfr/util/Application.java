@@ -304,6 +304,14 @@ public class Application extends MultiDexApplication {
         }
     }
 
+    public static void saveAvatarPath(String path) {
+        preferences.edit().putString("imagePath", path).apply();
+    }
+
+    public static String getAvatarPath() {
+        return preferences.getString("imagePath", null);
+    }
+
     /**
      * Convert dp to pixels
      * @param dp to convert

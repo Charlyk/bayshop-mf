@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -40,6 +42,7 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.softranger.bayshopmfr.R;
 import com.softranger.bayshopmfr.model.app.ServerResponse;
 import com.softranger.bayshopmfr.network.ResponseCallback;
@@ -61,6 +64,7 @@ import com.softranger.bayshopmfr.util.Constants;
 import com.softranger.bayshopmfr.util.CustomExceptionHandler;
 import com.softranger.bayshopmfr.util.ParentActivity;
 import com.softranger.bayshopmfr.util.ParentFragment;
+import com.softranger.bayshopmfr.util.widget.CameraActivity;
 
 import java.io.File;
 
@@ -77,6 +81,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     public static final String ACTION_ITEM_DELETED = "ITEM_DELETED";
     private static final int PERMISSION_REQUEST_CODE = 1535;
     private static final int LOG_OUT_RC = 1110;
+    private static final int AVATAR_RC = 1704;
     public static final String ACTION_UPDATE_TITLE = "update toolbar title";
     public ActionBarDrawerToggle mDrawerToggle;
     private static String[] permissions;
@@ -84,6 +89,7 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
     public static int toolbarHeight;
     private static SelectedFragment selectedFromMenu;
 
+    private CircularImageView mAvatarImage;
     @BindView(R.id.fullScreenContainer) public LinearLayout mFrameLayout;
     @BindView(R.id.fabBackgroundLayout) FrameLayout mFabBackground;
     @BindView(R.id.activityActionMenu) public FloatingActionButton mActionsMenu;
@@ -155,6 +161,17 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
         TextView userNameLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserNameLabel);
         TextView userIdLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserIdLabel);
         TextView userBalanceLabel = ButterKnife.findById(navHeaderView, R.id.navHeaderUserBalanceLabel);
+        mAvatarImage = ButterKnife.findById(navHeaderView, R.id.userAvatarImage);
+
+        if (Application.getAvatarPath() != null) {
+            Bitmap avatar = BitmapFactory.decodeFile(Application.getAvatarPath());
+            mAvatarImage.setImageBitmap(avatar);
+        }
+
+        mAvatarImage.setOnClickListener(view -> {
+            Intent camera = new Intent(this, CameraActivity.class);
+            startActivityForResult(camera, AVATAR_RC);
+        });
         if (Application.user != null) {
             String fullName = Application.user.getFirstName() + " " + Application.user.getLastName();
             userBalanceLabel.setText(Constants.USD_SYMBOL + Application.user.getBalanceMap().get(Constants.USD));
@@ -244,6 +261,12 @@ public class MainActivity extends ParentActivity implements NavigationView.OnNav
                     Intent login = new Intent(this, LoginActivity.class);
                     startActivity(login);
                     finish();
+                    break;
+                case AVATAR_RC:
+                    String path = data.getExtras().getString("imagePath");
+                    Application.saveAvatarPath(path);
+                    Bitmap avatar = BitmapFactory.decodeFile(path);
+                    mAvatarImage.setImageBitmap(avatar);
                     break;
             }
         }
