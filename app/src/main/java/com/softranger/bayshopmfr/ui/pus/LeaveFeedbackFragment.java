@@ -45,6 +45,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -127,7 +128,9 @@ public class LeaveFeedbackFragment extends ParentFragment implements RatingBar.O
         mParcelDetailed = getArguments().getParcelable(DETAILED_PARCEL);
 
         if (mParcelDetailed != null) {
-            mDateLabel.setText(friendlyFormat.format(mParcelDetailed.getReceivedTime()));
+            Date receivedDate = mParcelDetailed.getReceivedTime();
+            if (receivedDate == null) receivedDate = new Date();
+            mDateLabel.setText(friendlyFormat.format(receivedDate));
             mUidLabel.setText(mParcelDetailed.getCodeNumber());
             mDescriptionLabel.setText(mParcelDetailed.getDescription());
         }
