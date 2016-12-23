@@ -19,6 +19,7 @@ import com.softranger.bayshopmfr.model.payment.PaymentHistories;
 import com.softranger.bayshopmfr.model.pus.PUSParcel;
 import com.softranger.bayshopmfr.model.pus.PUSParcelDetailed;
 import com.softranger.bayshopmfr.model.pus.PUSStatuses;
+import com.softranger.bayshopmfr.model.tracking.TrackingData;
 import com.softranger.bayshopmfr.model.user.User;
 
 import java.util.ArrayList;
@@ -271,4 +272,7 @@ public interface BayShopApiInterface {
 
     @GET("waiting-mf-tracking/{id}")
     Observable<ServerResponse<TrackingInfo>> getAwaitingParcelTrackingInfo(@Path("id") String parcelId);
+
+    @GET("parcel-tracking/{partyNumber}")
+    Call<ServerResponse<TrackingData>> getSentParcelTrackingData(@Path("partyNumber") String partyNumber);
 }
