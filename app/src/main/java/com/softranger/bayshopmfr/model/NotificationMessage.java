@@ -87,6 +87,7 @@ public class NotificationMessage implements Parcelable {
     }
 
     public Action getAction() {
+        if (mAction == null) mAction = Action.unknown;
         return mAction;
     }
 
@@ -108,7 +109,7 @@ public class NotificationMessage implements Parcelable {
         mf(R.mipmap.ic_warehouse_usa_30dp, "mf"),
         waitingMf(R.mipmap.ic_awaiting_arrival_30dp, "waitingMf"),
         parcel(R.mipmap.ic_parcels_30dp, "parcel"),
-        unknown(R.mipmap.ic_warehouse_usa_30dp, "");
+        unknown(R.mipmap.ic_logo_48dp, "");
 
         private String mActionName;
         @DrawableRes

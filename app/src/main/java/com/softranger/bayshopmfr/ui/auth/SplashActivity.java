@@ -142,6 +142,8 @@ public class SplashActivity extends ParentActivity {
     private void startLoginActivity() {
         Application.autoPackPrefs.edit().clear().apply();
         Application.notifyPrefs.edit().clear().apply();
+        Application.getInstance().setLoginStatus(false);
+        Application.getInstance().setPushTokenSent(false);
         mIntent = new Intent(this, LoginActivity.class);
         if (!isUpdateRequired) {
             startActivity(mIntent);

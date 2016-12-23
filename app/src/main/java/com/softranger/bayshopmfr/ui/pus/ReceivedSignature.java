@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -117,8 +118,9 @@ public class ReceivedSignature extends ParentFragment implements OnMapReadyCallb
         mUidLabel.setText(received.getCodeNumber());
         mDescriptionlabel.setText(received.getDescription());
 
-
-        String strDate = friendlyFormat.format(received.getReceivedTime());
+        Date receivedDate = received.getReceivedTime();
+        if (receivedDate == null) receivedDate = new Date();
+        String strDate = friendlyFormat.format(receivedDate);
         mReceivedDateLabel.setText(strDate);
 
         // compute kilos from grams and set the result in weight label
