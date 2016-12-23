@@ -1,5 +1,6 @@
 package com.softranger.bayshopmfr.util.widget;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,9 @@ import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +20,14 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.softranger.bayshopmfr.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +37,7 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
 
     private static final String TAG = "CameraActivity";
     public static final String ACTION_CAPTURED = "com.softranger.bayshopmfr.util.widget.IMAGE_CAPTURED";
+    private static final int CAMERA_RC = 1711;
 
     @BindView(R.id.cameraHolder) FrameLayout mCameraHolder;
     @BindView(R.id.circleFrameView) CircleOverlayView mOverlayView;
@@ -44,6 +51,8 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
     private int angle = -90;
 
     private Camera mCamera;
+
+    private static final String[] PERISSIONS = {Manifest.permission.CAMERA};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +68,46 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
             mNoOverlayBg.setVisibility(View.VISIBLE);
         }
 
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, PERISSIONS, CAMERA_RC);
+        } else {
+            openCamera();
+        }
+    }
+
+    private void openCamera() {
         if (checkCameraHardware(this)) {
             mCamera = getCameraInstance();
-            configureCamera(mCamera.getParameters());
-            CameraPreview cameraPreview = new CameraPreview(this, mCamera);
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-            mCameraHolder.addView(cameraPreview, params);
+            if (mCamera != null) {
+                configureCamera(mCamera.getParameters());
+                CameraPreview cameraPreview = new CameraPreview(this, mCamera);
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                mCameraHolder.addView(cameraPreview, params);
+            } else {
+                Toast.makeText(this, getString(R.string.camera_not_found), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CAMERA_RC:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+                    finish();
+                }
+                break;
         }
     }
 
     private void configureCamera(Camera.Parameters parameters) {
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        List<String> focusModes = parameters.getSupportedFocusModes();
+        if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO))
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         mCamera.setParameters(parameters);
     }
 
@@ -157,28 +195,43 @@ public class CameraActivity extends AppCompatActivity implements Camera.PictureC
         if (resizeImage) {
             int cameraCount = 0;
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+
             cameraCount = Camera.getNumberOfCameras();
             for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
                 Camera.getCameraInfo(camIdx, cameraInfo);
                 if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
                     try {
                         c = Camera.open(camIdx);
-                        c.setDisplayOrientation(90);
+                        int orientation = cameraInfo.orientation;
+                        if (orientation == 90) {
+                            c.setDisplayOrientation(270);
+                            angle = 90;
+                        } else {
+                            c.setDisplayOrientation(90);
+                        }
                     } catch (RuntimeException e) {
                         Log.e(TAG, "Camera failed to open: " + e.getLocalizedMessage());
                     }
                 }
             }
+
+            if (c == null) c = openAnyCamera();
         } else {
-            try {
-                c = Camera.open();
-                c.setDisplayOrientation(90);
-                angle = 90;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            c = openAnyCamera();
         }
         return c; // returns null if camera is unavailable
+    }
+
+    private Camera openAnyCamera() {
+        Camera c = null;
+        try {
+            c = Camera.open();
+            c.setDisplayOrientation(90);
+            angle = 90;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return c;
     }
 
     private void releaseCamera(){

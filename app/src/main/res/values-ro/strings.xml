@@ -560,4 +560,5 @@
     <string name="later">Mai tîrziu</string>
     <string name="unknown_status">Status is unknown</string>
     <string name="unknown">Unknown</string>
+    <string name="camera_not_found">Camera not found</string>
 </resources>
