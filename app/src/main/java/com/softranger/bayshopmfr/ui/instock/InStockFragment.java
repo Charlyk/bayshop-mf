@@ -164,18 +164,22 @@ public class InStockFragment extends ParentFragment implements PullToRefreshLayo
 
         @Override
         public void onFailure(ServerResponse errorData) {
-            Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
-            if (mRefreshLayout != null)
-                mRefreshLayout.setRefreshing(false);
+            if (isAdded()) {
+                Toast.makeText(mActivity, errorData.getMessage(), Toast.LENGTH_SHORT).show();
+                mActivity.toggleLoadingProgress(false);
+                if (mRefreshLayout != null)
+                    mRefreshLayout.setRefreshing(false);
+            }
         }
 
         @Override
         public void onError(Call<ServerResponse<InStockList>> call, Throwable t) {
-            Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
-            mActivity.toggleLoadingProgress(false);
-            if (mRefreshLayout != null)
-                mRefreshLayout.setRefreshing(false);
+            if (isAdded()) {
+                Toast.makeText(mActivity, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+                mActivity.toggleLoadingProgress(false);
+                if (mRefreshLayout != null)
+                    mRefreshLayout.setRefreshing(false);
+            }
         }
     };
 
